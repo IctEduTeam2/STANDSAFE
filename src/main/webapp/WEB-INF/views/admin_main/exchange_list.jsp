@@ -130,6 +130,7 @@ function selectAll(selectAll)  {
 
 		</div>
 		</div>
+				<jsp:include page="../Semantic/footer.jsp"></jsp:include>
 
 		<script>
 			// 검색 버튼 클릭 시 실행될 함수

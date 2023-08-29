@@ -21,7 +21,7 @@ table {
 
 /* 테이블 헤더 스타일 */
 table thead th {
-    background-color: #009879;
+   background-color: #1b5ac2;
     color: white;
     padding: 10px;
     border: 1px solid #ddd;

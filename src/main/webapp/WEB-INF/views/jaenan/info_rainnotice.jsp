@@ -91,7 +91,7 @@
 </head>
 <body onload="InitializeStaticMenu();">
 	<div id="mydiv">
-		<jsp:include page="../admin_bbs/ad_header.jsp"></jsp:include>
+		<jsp:include page="../Semantic/header.jsp"></jsp:include>
 		<section id="contents">
 		<div class="top_header">
 			<h1>■ 재난 정보</h1>
