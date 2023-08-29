@@ -1,0 +1,151 @@
+@charset "UTF-8";
+/* 전체적용 */
+#contents {
+    display: flex;
+    flex-direction: column;
+    ustify-content: center;
+    align-items: center; /* 이렇게 하면 버튼이 수평으로 중앙 정렬됩니다 */
+    min-height: 62vh;       /* 전체 뷰 포트 높이 차지 */
+    float: none;/*화면 조정 안되면 이거도 써보기*/
+}
+
+input[type="text"] {
+	width: 260px; /* 원하는 너비로 조절 */
+}
+
+.required {
+	color: red;
+}
+
+
+table {
+	width: 700px;
+	border-collapse: collapse; /* 셀 테두리를 합치려면 이 속성이 필요합니다. */
+}
+
+table, th, td {
+	border: 1px solid black;
+}
+
+table td {
+	padding: 20px;
+	width: 150px;
+}
+table td:nth-child(1) { 
+	width: 30%;
+}
+
+table td:nth-child(2) { 
+	width: 70%;
+}
+
+
+.scrollbox {
+    overflow-y: auto;
+    height: 100px; /* 스크롤 영역 높이 */
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 1px; /* 하단 마진 */
+}
+
+#mydiv {
+	width: 100%; /* 웹페이지 전체 너비를 사용 */
+	min-height: 100vh; /* 최소 높이 설정 */
+	display: flex; /* Flexbox 레이아웃 사용 */
+	flex-direction: column; /* 세로 방향 배열 */
+	float: left;
+}
+
+.save-button {
+	background-color: blue;
+	margin: auto;
+	color: white;
+	padding: 15px 50px;
+	border: none;
+	border-radius: 5px;
+	margin-top: 10px;
+	cursor: pointer;
+}
+
+
+.find-header {
+	margin-bottom: 20px;
+}
+
+.find-header h1 {
+	font-size: 30px;
+	text-align: center;
+}
+
+
+.info-form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 20px;
+}
+
+.info-input-field {
+	width: 300px;
+	padding: 10px;
+	margin: 5px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+}
+
+.table-button {
+	background-color: lightblue;
+	color: white;
+	padding: 2px 5px;
+	border: none;
+	border-radius: 5px;
+	margin: auto;
+	cursor: pointer;
+}
+
+
+.cancel-button {
+	background-color: gray;
+	color: white;
+	padding: 15px 50px;
+	border: none;
+	border-radius: 5px;
+	margin-top: 20px;
+	margin-left: 10px;
+	cursor: pointer;
+}
+
+/* 마이페이지 */
+.mypage-header {
+	margin-top: 100px;
+}
+
+
+.mypage-boxs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.mypage-box {
+	display: flex;
+    justify-content: space-between;
+    width: 400px;
+    height: 50px;
+    align-items: center;
+    border: 1px solid #000;
+    background-color: #fff;
+    cursor: pointer;
+    outline: none; /* 포커스 아웃라인 제거 */
+    transition: background-color 0.3s; /* 매끄러운 배경색 변화 */
+    padding-right: 20px;
+    padding-left: 40px;
+}
+
+.mypage-text {
+    text-align: center; /* 선택사항: 텍스트를 고유 공간 내에 중앙에 배치할 경우 */
+    flex: 1; /* 사용 가능한 공간을 차지 */
+}
+.mypage-arrow {
+    margin-left: auto; /* 이 항목을 오른쪽으로 누릅니다. */
+}
