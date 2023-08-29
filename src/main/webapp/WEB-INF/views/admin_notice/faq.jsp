@@ -194,6 +194,6 @@
     	<hr style="border-top: 1px solid black;">
 		</div>
 		<div>
-<jsp:include page="../admin_main/footer.jsp"></jsp:include>
+<jsp:include page="../Semantic/footer.jsp"></jsp:include>
 </body>
 </html>

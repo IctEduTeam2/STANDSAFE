@@ -89,7 +89,10 @@ function selectAll(selectAll)  {
 </div>
 	<div class="admin_content_wrap" style=" width:100%; ">
 		<div class="admin_content_subject" style="width: 80%; margin: auto;">
-			<span>주문상세내역 - 주문번호나옴</span>
+			
+			<div style="width: 98%; background-color: #1b5ac2; color: white;  margin: 30px 0;  padding-left: 2%; padding-top: 50px; padding-bottom: 50px; float: left; font-size: 32px;">주문상세내역 - 주문번호나옴</div>
+		</div>
+		
 		</div>
 		<div class="author_table_wrap" style="width: 80%; margin: auto;">
 			<!-- 게시물 O -->

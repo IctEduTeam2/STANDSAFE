@@ -42,7 +42,6 @@ fieldset {
 	}
 </script>
 </head>
-</head>
 <body onload="InitializeStaticMenu();">
 	<div id="mydiv">
 		<jsp:include page="ad_header.jsp"></jsp:include>

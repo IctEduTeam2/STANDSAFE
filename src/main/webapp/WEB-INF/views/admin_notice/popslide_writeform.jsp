@@ -133,8 +133,8 @@ label {
 					</form>
 			</article>
 		</section>	
-		<script src="resources/js/quick.js"></script>
-		<jsp:include page="../Semantic/footer.jsp"></jsp:include>
+
+<jsp:include page="../Semantic/footer.jsp"></jsp:include>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
     	<script src="resources/js/summernote-lite.js"></script>
