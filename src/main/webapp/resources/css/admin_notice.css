@@ -1,0 +1,95 @@
+@charset "UTF-8";
+.menu {
+	display: flex;
+	justify-content: center;
+	margin-top: 50px;
+	
+}
+
+.submenu {
+	text-align: center;
+}
+
+#top_gnb {
+	text-align: center;
+}
+
+
+
+	/* 검색 영역 */
+.search_wrap{
+	margin-top:15px;
+	flex-wrap: row nowrap;
+	
+}
+.t_button:hover{
+	background:#B5B5B5;
+}
+.search_input{
+    position: relative;
+    text-align:center;	
+}
+.search_input input[name='keyword']{
+	padding: 4px 10px;
+    font-size: 16px;
+    height: 20px;
+    line-height: 20px;
+}
+.search_btn{
+	height: 32px;
+    width: 80px;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 20px;
+    position: absolute;
+    margin-left: 15px;
+    background-color: #c3daf7;
+}
+/* 테이블 영역 */
+.table_wrap {
+    clear: both;
+    margin: 0 20px;
+    margin-right: 525px;
+    
+}
+
+.table_a {
+    border-collapse: collapse;
+    width: 100%;
+    border-collapse: separate;
+    margin-top: 80px;
+    margin-left: 180px;
+}
+
+.table_a th, .table_a td {
+	border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+}
+
+.table_a th {
+    background-color: #f2f2f2;
+    border-bottom: 1px solid black; /* 하단 선을 실선으로 설정 */
+}
+
+.table_a td {
+    border-bottom: 1px solid black; /* 테이블 셀 아래쪽 선을 실선으로 설정 */
+}
+
+/* 기존 CSS에 다음 스타일을 추가합니다. */
+.bottom-button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* 필요에 따라 버튼 스타일을 조정합니다. */
+.bottom-button-container button {
+    width: 60px;
+    height: 50px;
+    font-size: 16px;
+    border-radius: 10px;
+    background-color: #505BBD;
+    color: white;
+    border: none;
+    margin: 0 10px; /* 버튼 사이에 간격을 추가합니다. */
+}
