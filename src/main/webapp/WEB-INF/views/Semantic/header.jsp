@@ -48,7 +48,7 @@
 				<li><a href="#">재난정보</a>
 					<ul class="submenu">
 						<li><a href="/jaenan_fire.do">화재</a></li>
-						<li><a href="/jaenan_rainlive.do">지진</a></li>
+						<li><a href="/jaenan_jijinlive.do">지진</a></li>
 						<li><a href="/jaenan_rainlive.do">강수</a></li>
 					</ul></li>
 			</ul>
