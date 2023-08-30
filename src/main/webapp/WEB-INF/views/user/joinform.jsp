@@ -61,6 +61,11 @@
 						<td><input type="text" name="birth" placeholder="YYYYMMDD"></td>
 					</tr>
 					<tr>
+						<td>전화번호<span class="required">*</span></td>
+						<td><input type="text" name="phone"
+							placeholder="010-1234-5678"></td>
+					</tr>
+					<tr>
 						<td>이메일<span class="required">*</span></td>
 						<td><input type="text" name="email"
 							placeholder="email@standsafe.com"></td>
@@ -99,7 +104,7 @@
 					<div class="alarm-box">
 						[선택] 쇼핑정보 수신 동의
 						<p><%@ include file="text/alarm_text.jsp"%></p>
-						이메일 수신에 동의하십니까?<input type="checkbox" checked> 동의함
+						이메일 수신에 동의하십니까?<input type="checkbox" checked> 동의함 <input type="checkbox" checked> 동의안함
 					</div>
 					<br>
 				</div>
