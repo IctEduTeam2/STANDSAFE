@@ -248,10 +248,10 @@ function selectAll(selectAll)  {
 			<span style="float: right; margin-top: 80px; ">
 				<button type="button" value="삭제"
 				style="width: 250px; height: 60px; font-size: 25px; background-color: #505BBD; color: white; border: none;">삭제</button>
-			</span> <span style="float: right; margin-top: 80px; margin-right: 100px;">
+		<!-- 	</span> <span style="float: right; margin-top: 80px; margin-right: 100px;">
 				<button type="button" value="수정"
 				style="width: 250px; height: 60px; font-size: 25px; background-color: #505BBD; color: white; border: none;" onclick="location.href='/inventory_updateform.do'">수정</button>
-			</span> 
+			</span>  -->
 		</div>
 
 
