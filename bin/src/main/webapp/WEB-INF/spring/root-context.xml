@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+		
+		<context:property-placeholder location="classpath:props/jdbc.properties" />
+		<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">	 
+		<!-- 마리아DB 연결 정보 -->
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<property name="url" value="${jdbc.url}" /> 
+		<property name="username" value="${jdbc.user}" />
+		<property name="password" value="${jdbc.pwd}" />
+		<!-- 동시에 사용할 수 있는 최대 커넥션 수 -->
+		<property name="maxActive" value="${jdbc.maxActiv}" />		
+		<!-- 커넥션 풀에 반납할 때 최대로 유지되는 커넥션 수 -->
+		<property name="maxIdle" value="${jdbc.maxIdle}" />
+		<!-- 커넥션 풀에 반납할 때 최소로 유지되는 커넥션 수 -->		
+		<property name="minIdle" value="${jdbc.minIdle}" />		
+	</bean>
+	<bean id="sqlSessionFactoryBean"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" /> 
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+	</bean>
+	<bean id="sqlSessionTemplate"
+		class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactoryBean"></constructor-arg>
+	</bean>
+		<context:annotation-config />
+		<context:component-scan base-package="com.ict.*" />
+			
+</beans>

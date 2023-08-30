@@ -109,14 +109,10 @@ label {
 								<td><input type="text" name="subject" size="20" autocomplete='off' /></td>
 							</tr>
 							<tr align="center">
-								<td colspan="2">
-								<textarea rows="10" cols="60" name="content" id="content">
-									<div class="in_div_img">
-									 
-									</div>
-								</textarea>
-								</td>
-							</tr>
+								<td bgcolor="#1b5ac2" class="w_font" width="200px">첨부파일</td>
+								<td><input type="file" name="file" size="20" /></td>
+							</tr>	
+							
 							<tfoot>
 								<tr align="center">
 									<td colspan="2">
@@ -136,42 +132,6 @@ label {
 
 <jsp:include page="../Semantic/footer.jsp"></jsp:include>
 	</div>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
-    	<script src="resources/js/summernote-lite.js"></script>
-    	<script src="resources/js/lang/summernote-ko-KR.js"></script>
-    	<script type="text/javascript">
-    	$(function(){
-    		$('#content').summernote({
-    			lang : 'ko-KR',
-    			height : 800,
-    			focus : true,
-    			callbacks : {
-    				onImageUpload :  function(files, editor){
-    					for (var i = 0; i < files.length; i++) {
-							sendImage(files[i], editor);
-						}
-    				}
-    			}
-			});
-    	});
-    	function sendImage(file, editor) {
-			var frm = new FormData();
-			frm.append("s_file",file);
-			$.ajax({
-				url : "/saveImage.do",
-				data : frm,
-				type : "post",
-				contentType : false,
-				processData : false,
-				dataType : "json",
-			}).done(function(data) {
-				var path = data.path;
-				var fname = data.fname;
-				$("#content").summernote("editor.insertImage",path+"/"+fname);
-			});
-			consloe.log("끝");
-		}
-    	
-    	</script>
+	
 </body>
 </html>

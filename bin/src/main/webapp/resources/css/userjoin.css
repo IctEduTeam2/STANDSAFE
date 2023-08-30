@@ -1,0 +1,166 @@
+@charset "UTF-8";
+/* 전체적용 */
+#contents {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 이렇게 하면 버튼이 수평으로 중앙 정렬됩니다 */
+    min-height: 62vh;       /* 전체 뷰 포트 높이 차지 */
+    float: none;/*화면 조정 안되면 이거도 써보기*/
+}
+/* 회원가입 */
+input[type="text"] {
+	width: 260px; /* 원하는 너비로 조절 */
+}
+
+.required {
+	color: red;
+}
+
+.join-header {
+	margin-bottom: 20px;
+	margin-top: 120px;
+}
+
+.join-header h1 {
+	font-size: 30px;
+	text-align: center;
+}
+}
+
+.join-header h1 {
+	font-size: 30px;
+	text-align: center;
+}
+
+table {
+	width: 60%;
+	border-collapse: collapse; /* 셀 테두리를 합치려면 이 속성이 필요합니다. */
+}
+
+table, th, td {
+	border: 1px solid black;
+}
+
+table td {
+	padding: 20px;
+	width: 150px;
+}
+
+.agreebox {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	background-color: #fff; /* 박스 배경색 */
+	padding: 20px; /* 안쪽 간격 */
+	border-radius: 5px; /* 모서리 둥글게 */
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+	width: 60%; /* 박스 너비 */
+	box-sizing: border-box; /* 패딩과 보더를 포함한 너비/높이 계산 */
+	margin: auto;
+}
+
+.agreement-box p, .collect-box p, .alarm-box p {
+	overflow-y: auto;
+	height: 100px; /* 스크롤 영역 높이 */
+	border: 1px solid #ccc;
+	padding: 10px;
+	margin-bottom: 1px; /* 하단 마진 */
+}
+
+.agreement-box, .collect-box, .alarm-box {
+	margin-top: 20px; /* 상단 마진 */
+}
+
+#mydiv {
+	width: 100%; /* 웹페이지 전체 너비를 사용 */
+	min-height: 100vh; /* 최소 높이 설정 */
+	display: flex; /* Flexbox 레이아웃 사용 */
+	flex-direction: column; /* 세로 방향 배열 */
+	float: left;
+}
+
+.join-button {
+	background-color: blue;
+	margin: auto;
+	color: white;
+	padding: 15px 50px;
+	border: none;
+	border-radius: 5px;
+	margin-top: 10px;
+	cursor: pointer;
+}
+.login-button {
+	background-color: gray;
+	color: white;
+	padding: 5px 20px;
+	border: none;
+	border-radius: 5px;
+	margin-top: 10px;
+	cursor: pointer;
+}
+.join-form{
+	margin-top: 30px;
+	margin-bottom: 10px;
+	background-color: #fff; /* 박스 배경색 */
+	padding: 20px; /* 안쪽 간격 */
+	border-radius: 5px; /* 모서리 둥글게 */
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+	width: 400px; /* 박스 너비 */
+	height: 200px; /* 박스 너비 */
+	box-sizing: border-box; /* 패딩과 보더를 포함한 너비/높이 계산 */
+	text-align: center;
+}
+
+
+
+.find-header {
+	margin-bottom: 20px;
+}
+
+.find-header h1 {
+	font-size: 30px;
+	text-align: center;
+}
+
+
+.find-form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 20px;
+}
+
+.find-input-field {
+	width: 300px;
+	padding: 10px;
+	margin: 5px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+}
+
+.find-button {
+	background-color: blue;
+	color: white;
+	padding: 15px 50px;
+	border: none;
+	border-radius: 5px;
+	margin-top: 20px;
+	cursor: pointer;
+}
+
+.find-links {
+	display: flex;
+	flex-direction: row; 
+	align-items: center;
+	justify-content: center;
+}
+
+.cancel-button {
+	background-color: gray;
+	color: white;
+	padding: 15px 50px;
+	border: none;
+	border-radius: 5px;
+	margin-top: 20px;
+	margin-left: 10px;
+	cursor: pointer;
+}

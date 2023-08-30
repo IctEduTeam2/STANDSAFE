@@ -8,7 +8,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
 <link rel="stylesheet" href="resources/css/basis.css" /> 
-<link rel="stylesheet" href="resources/css/summernote-lite.css">
+
 <link rel="stylesheet" href="resources/css/bbs.css" />
 <style type="text/css">
 .note-btn-group{width: auto;}
@@ -136,10 +136,10 @@ fieldset {
 								<td><input type="text" name="subject" size="20" autocomplete='off' /></td>
 							</tr>
 							<tr align="center">
-								<td colspan="2">
-									<textarea rows="10" cols="60" name="content" id="content"></textarea>
-								</td>
+   								<td bgcolor="#1b5ac2" class="w_font">답변</td>
+    							<td><textarea name="answer" rows="10" cols="50" style="width: 100%;" autocomplete='off'></textarea></td>
 							</tr>
+							
 							<tfoot>
 								<tr align="center">
 									<td colspan="2">
@@ -159,42 +159,6 @@ fieldset {
 	
 		<jsp:include page="../Semantic/footer.jsp"></jsp:include>
 	</div>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
-    	<script src="resources/js/summernote-lite.js"></script>
-    	<script src="resources/js/lang/summernote-ko-KR.js"></script>
-    	<script type="text/javascript">
-    	$(function(){
-    		$('#content').summernote({
-    			lang : 'ko-KR',
-    			height : 800,
-    			focus : true,
-    			callbacks : {
-    				onImageUpload :  function(files, editor){
-    					for (var i = 0; i < files.length; i++) {
-							sendImage(files[i], editor);
-						}
-    				}
-    			}
-			});
-    	});
-    	function sendImage(file, editor) {
-			var frm = new FormData();
-			frm.append("s_file",file);
-			$.ajax({
-				url : "/saveImage.do",
-				data : frm,
-				type : "post",
-				contentType : false,
-				processData : false,
-				dataType : "json",
-			}).done(function(data) {
-				var path = data.path;
-				var fname = data.fname;
-				$("#content").summernote("editor.insertImage",path+"/"+fname);
-			});
-			consloe.log("끝");
-		}
-    	
-    	</script>
+	
 </body>
 </html>

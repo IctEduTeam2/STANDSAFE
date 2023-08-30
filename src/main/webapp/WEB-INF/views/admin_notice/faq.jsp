@@ -36,7 +36,6 @@
 		</div>
 		
 		<!-- 검색 영역 -->
-		
 		<form id="searchForm" action="/admin/orderList" method="get">
 			<div
 				style="float: left; margin-top: 5%; border: 1px solid black; width: 60%; height: 400px;">
