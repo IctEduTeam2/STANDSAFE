@@ -17,6 +17,7 @@
 	<!-- Alias : 별칭 -->
 	<typeAliases>
 		<!-- <typeAlias type="com.ict.model.vo.MembersVO" alias="mvo"/> -->
+		 <typeAlias type="com.ict.bbs.model.vo.BBS_VO" alias="bbvo"/>
 	</typeAliases>
 	<mappers>
 		<!-- <mapper resource="mappers/members-mapper.xml" /> -->

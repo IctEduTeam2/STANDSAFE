@@ -80,6 +80,16 @@ public class BBSController {
 		return new ModelAndView("bbs/review_writeform");
 	}
 	
+	//작성완료 일처리 컨트롤러
+	@RequestMapping("/bbs_qa_writeOk.do")
+	public ModelAndView BbsQaWriteOk() {
+		ModelAndView mv = new ModelAndView("redirect:/bbs_qa_go.do");
+		return mv;
+	}
+	
+	
+	
+	
 	
 	//각 삭제폼으로
 	@RequestMapping("/bbs_qa_delete.do")
