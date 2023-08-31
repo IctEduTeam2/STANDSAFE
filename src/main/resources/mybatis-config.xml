@@ -17,12 +17,22 @@
 	<!-- Alias : 별칭 -->
 	<typeAliases>
 		<!-- <typeAlias type="com.ict.model.vo.MembersVO" alias="mvo"/> -->
+<<<<<<< HEAD
 
 		<typeAlias type="com.ict.bbs.model.vo.NO_BBS_VO" alias="nbbsvo"/>
 		<typeAlias type="com.ict.bbs.model.vo.EV_BBS_VO" alias="ebbsvo"/>
 		<typeAlias type="com.ict.bbs.model.vo.FA_BBS_VO" alias="faqbbsvo"/>
 
 
+=======
+<<<<<<< HEAD
+		<typeAlias type="com.ict.bbs.model.vo.NO_BBS_VO" alias="nbbsvo"/>
+		<typeAlias type="com.ict.bbs.model.vo.EV_BBS_VO" alias="ebbsvo"/>
+		<typeAlias type="com.ict.bbs.model.vo.FA_BBS_VO" alias="faqbbsvo"/>
+=======
+		 <typeAlias type="com.ict.bbs.model.vo.BBS_VO" alias="bbvo"/>
+>>>>>>> 9b57f0788108e89f9506e0f4ece64f413d699cbf
+>>>>>>> c02d8f58f6d5211169a2ab4bcfa3ac49b36e0e97
 	</typeAliases>
 	<mappers>
 		<!-- <mapper resource="mappers/members-mapper.xml" /> -->

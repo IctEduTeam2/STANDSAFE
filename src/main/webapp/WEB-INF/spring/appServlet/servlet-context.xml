@@ -26,11 +26,21 @@
 	<interceptors>
 		<!-- 로그인후 들어가야하는 페이지만 -->
 		<interceptor>
+<<<<<<< HEAD
 			<mapping path=""/>
 			
 
 			<mapping path="/bbs_list.do"/>
 			<!--로그인인터셉터할 공간.  -->
+=======
+<<<<<<< HEAD
+			<mapping path=""/>
+			
+=======
+			<mapping path="/bbs_list.do"/>
+			<!--로그인인터셉터할 공간.  -->
+>>>>>>> 9b57f0788108e89f9506e0f4ece64f413d699cbf
+>>>>>>> c02d8f58f6d5211169a2ab4bcfa3ac49b36e0e97
 			
 			<beans:ref bean="log_inter" />
 		</interceptor>

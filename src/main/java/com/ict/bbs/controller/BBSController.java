@@ -167,6 +167,7 @@ public class BBSController {
 		List<FA_BBS_VO> list = bbsService.getfaqlist(paging.getOffset(),paging.getNumPerPage());
 		
 		String faq_num = request.getParameter("FA_NUM");
+<<<<<<< HEAD
 		
 		FA_BBS_VO fqvo = bbsService.getFaqOneList(faq_num);
 		
@@ -176,6 +177,13 @@ public class BBSController {
 		mv.addObject("fqvo", fqvo);
 		mv.addObject("paging", paging);
 
+=======
+		FA_BBS_VO fqvo = bbsService.getFaqOneList(faq_num);
+		
+		mv.addObject("list", list);
+		mv.addObject("fqvo", fqvo);
+		mv.addObject("paging", paging);
+>>>>>>> c02d8f58f6d5211169a2ab4bcfa3ac49b36e0e97
 		return mv;
 
 	}
@@ -238,6 +246,7 @@ public class BBSController {
 	}
 	
 	
+<<<<<<< HEAD
 	@RequestMapping("/bbs_faq_onelist.do")
 	public ModelAndView goBbsFaqOneList(HttpServletRequest request) {
 		
@@ -257,6 +266,8 @@ public class BBSController {
 		return mv;
 	}
 	
+=======
+>>>>>>> c02d8f58f6d5211169a2ab4bcfa3ac49b36e0e97
 	@RequestMapping("/bbs_qa_onelist.do")
 	public ModelAndView goBbsQAOneList() {
 		return new ModelAndView("bbs/qa_onelist");

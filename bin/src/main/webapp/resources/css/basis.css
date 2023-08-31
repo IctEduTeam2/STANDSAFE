@@ -1,0 +1,220 @@
+@charset "UTF-8";
+
+* {
+	padding: 0;
+	margin: 0
+}
+
+li {
+	list-style: none
+}
+
+a {
+	text-decoration: none;
+	font-size: 14px
+}
+body {
+	width: 1920px;
+	margin: 0 auto;
+}
+#mydiv {
+	margin: 0 auto;
+}
+
+#header {
+	float:left;
+	width: 100%;
+}
+
+#top_gnb {
+	width: auto;
+	font-size: 8px;
+	float: right;
+	margin-bottom: 100px;
+}
+
+.top_gnb_a {
+	border-right: 1px solid black;
+	padding-left: 7px;
+	padding-right: 8px;
+}
+
+.top_gnb_last_a {
+	padding-left: 7px;
+}
+
+a:link {
+	color: black;
+}
+
+a:visited {
+	color: black;
+}
+
+a:active {
+	color: black;
+}
+
+a:hover {
+	color: gray;
+}
+
+.menu {
+	float: left;
+	width: 99.9%;
+	border: 2px solid gray;
+	overflow: hidden;
+	margin: 0 auto;
+	overflow: hidden;
+}
+
+.menu>li {
+	width: 20%; /*20*5=100%*/
+	float: left;
+	text-align: center;
+	line-height: 40px;
+}
+
+.submenu>li {
+	line-height: 50px;
+}
+
+.submenu {
+	height: 0; /*ul의 높이를 안보이게 처리*/
+	overflow: hidden;
+}
+
+.menu> li:hover {
+	background-color: rgb(240, 240, 240);
+	transition-duration: 0.5s;
+}
+
+.menu>li:hover .submenu {
+	background-color: rgb(240, 240, 240);
+	height: 300px; /*서브메뉴 li한개의 높이 50*5*/
+	transition-duration: 1s;
+}
+
+#logo {
+	float: left;
+	width: 300px;
+	height: 100px;
+}
+
+#contents {
+	width: 100%;
+	float: left;
+	height: auto;
+}
+
+#best {
+	margin-top: 30px;
+	width: 100%;
+	height: auto;
+}
+
+#event {
+	float: left;
+	margin-top: 30px;
+	width: 100%;
+	height: auto;
+}
+.product {
+	width: 25%;
+	height: 500px;
+	text-align: center;
+	padding: 0;
+	overflow: hidden; /* 주석 안보이는 원인 */
+	position: relative;
+	float: left;
+}
+
+.product_img {
+	width: 80%;
+	height: 300px;
+	z-index: 1;
+}
+
+.product_text {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	word-break: break-all;
+	margin: auto;
+	font-weight: 800;
+	font-size: 20px;
+	width: 80%;
+}
+
+.prod-list {
+	width: 100%;
+	list-style-type: none;
+	padding: 0;
+}
+
+.prod-list  .caption {
+	position: absolute;
+	top: 200px;
+	width: 99.7%;
+	height: 299px;
+	opacity: 0; /* 화면 안보이게 하자  */
+	transition: all 0.6s ease-in-out; /* 나타날때 부드럽게 트랜지션 추가 */
+	z-index: 2;
+    border: 1px solid gray;
+}
+
+.prod-list li:hover .caption {
+	opacity: 1; /* 화면 안보이게 하자  */
+	transform: translateY(-200px); /* 위로 200px 이동하기 */
+}
+
+.prod-list .caption h2, .prod-list .caption p {
+	color: #fff;
+	text-align: center;
+}
+
+.product_btn1 {
+    width: 200px;
+    height: 50px;
+    margin-top: 400px;
+    background-color: #1b5ac2;
+    color: white;
+}
+.product_btn1:hover {
+    background-color: rgba(27,90,194,0.7);
+}
+.product_btn2 {
+    width: 200px;
+    height: 50px;
+    margin-top: 400px;
+    background-color: white;
+    color: black;
+}
+.product_btn2:hover {
+    background-color: rgba(0,0,0,0.1);
+}
+#STATICMENU {
+	position: absolute;
+	margin-right: 150px;
+	border: 1px solid black;
+	width: 100px;
+	text-align: center;
+}
+
+.quickIcon {
+	width: 100px;
+	height: 100px;
+}
+
+.quickText {
+	font-weight: 600;
+	color: rgb(160, 160, 160);
+}
+
+#footer {
+	width: 100%;
+	margin-top: 100px;
+	height: 100px;
+	background-color: lightgray;
+	float: left;
+}

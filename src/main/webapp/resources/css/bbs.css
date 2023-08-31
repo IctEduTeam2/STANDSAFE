@@ -55,7 +55,7 @@
 
 /* 위는 기본 게시판의 테이블 형식css */
 
-table td:nth-child(3) {
+/* table td:nth-child(3) {
   text-align: left;
   padding-left: 70px;
 }
@@ -64,15 +64,26 @@ table td:nth-child(3) {
 나머지 컬럼들을 가운데 정렬
 table td:not(:nth-child(3)) {
   text-align: center;
+<<<<<<< HEAD
 } 
 
 /* 테이블 제목컬럼 간격 조절 */
 #th1{ width: 10px;}
+=======
+} */
+
+/* 테이블 제목컬럼 간격 조절 */
+/* #th1{ width: 10px;}
+>>>>>>> c02d8f58f6d5211169a2ab4bcfa3ac49b36e0e97
 #th2{ width: 500px; }
 #th3{ width: 100px;}
 #th4{ width: 100px;}
 #th5{ width: 100px;}
+<<<<<<< HEAD
 #th6{ width: 100px;} 
+=======
+#th6{ width: 100px;} */
+>>>>>>> c02d8f58f6d5211169a2ab4bcfa3ac49b36e0e97
 
 /* 게시판리스트 볼때, 보이는 파일첨부되었을때의 작은 이미지 설정 */
 .f_img{

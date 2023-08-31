@@ -42,7 +42,10 @@ public interface BBS_Service {
 	public EV_BBS_VO getEventOneList(String event_num);
 	
 	
+<<<<<<< HEAD
 	
+=======
+>>>>>>> c02d8f58f6d5211169a2ab4bcfa3ac49b36e0e97
 	//이용안내 FAQ
 	//전체리스트 
 	public List<FA_BBS_VO> getfaqlist();
