@@ -14,6 +14,7 @@ import com.ict.bbs.model.service.BBS_Service;
 import com.ict.bbs.model.vo.EV_BBS_VO;
 import com.ict.bbs.model.vo.FA_BBS_VO;
 import com.ict.bbs.model.vo.NO_BBS_VO;
+import com.ict.bbs.model.vo.QA_BBS_VO;
 import com.ict.common.Paging;
 
 @Controller
@@ -167,7 +168,7 @@ public class BBSController {
 		List<FA_BBS_VO> list = bbsService.getfaqlist(paging.getOffset(),paging.getNumPerPage());
 		
 		String faq_num = request.getParameter("FA_NUM");
-<<<<<<< HEAD
+
 		
 		FA_BBS_VO fqvo = bbsService.getFaqOneList(faq_num);
 		
@@ -177,20 +178,64 @@ public class BBSController {
 		mv.addObject("fqvo", fqvo);
 		mv.addObject("paging", paging);
 
-=======
-		FA_BBS_VO fqvo = bbsService.getFaqOneList(faq_num);
-		
-		mv.addObject("list", list);
-		mv.addObject("fqvo", fqvo);
-		mv.addObject("paging", paging);
->>>>>>> c02d8f58f6d5211169a2ab4bcfa3ac49b36e0e97
+
+
 		return mv;
 
 	}
 	
 	@RequestMapping("/bbs_qa_go.do")
-	public ModelAndView goBbsQa() {
-		return new ModelAndView("bbs/qa");
+	public ModelAndView goBbsQa(HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView("bbs/qa");
+		
+		//페이징을 위해 게시물의 전체글 구하기
+		int count = bbsService.getTotalQnaCount();
+		paging.setTotalRecord(count);
+		
+		//페이징처리
+		if(paging.getTotalRecord() <= paging.getNumPerPage()) {
+			paging.setTotalPage(1);
+		}else {
+			paging.setTotalPage(paging.getTotalRecord()/paging.getNumPerPage());
+			if(paging.getTotalRecord()%paging.getNumPerPage() != 0) {
+				paging.setTotalPage(paging.getTotalPage() +1);
+			}
+		}
+		String cPage = request.getParameter("cPage");
+		if(cPage==null) {
+			paging.setNowPage(1);
+		}else {
+			paging.setNowPage(Integer.parseInt(cPage));
+		}
+		
+		paging.setOffset(paging.getNumPerPage()*(paging.getNowPage()-1));
+		
+		paging.setBeginBlock((int)((paging.getNowPage()-1)/paging.getPagePerBlock())
+				*paging.getPagePerBlock()+1);
+		
+		paging.setEndBlock(paging.getBeginBlock()+paging.getPagePerBlock()-1);
+		
+		if(paging.getEndBlock() > paging.getTotalPage()) {
+			paging.setEndBlock(paging.getTotalPage());
+		}
+		
+		List<QA_BBS_VO> list = bbsService.getqnalist(paging.getOffset(),paging.getNumPerPage());
+		
+		String qna_num = request.getParameter("BOARD_NUM");
+
+		
+		QA_BBS_VO qnavo = bbsService.getQnaOneList(qna_num);
+		
+		
+		
+		mv.addObject("list", list);
+		mv.addObject("qnavo", qnavo);
+		mv.addObject("paging", paging);
+
+
+
+		return mv;
+
 	}
 	
 	@RequestMapping("/bbs_report_go.do")
@@ -246,7 +291,6 @@ public class BBSController {
 	}
 	
 	
-<<<<<<< HEAD
 	@RequestMapping("/bbs_faq_onelist.do")
 	public ModelAndView goBbsFaqOneList(HttpServletRequest request) {
 		
@@ -266,12 +310,24 @@ public class BBSController {
 		return mv;
 	}
 	
-=======
->>>>>>> c02d8f58f6d5211169a2ab4bcfa3ac49b36e0e97
+
 	@RequestMapping("/bbs_qa_onelist.do")
-	public ModelAndView goBbsQAOneList() {
-		return new ModelAndView("bbs/qa_onelist");
+	public ModelAndView goBbsQAOneList(HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView("bbs/qa_onelist");
+		
+		String qna_num = request.getParameter("BOARD_NUM");
+		String cPage = request.getParameter("cPage");
+				
+		//onelist
+		QA_BBS_VO qnavo = bbsService.getQnaOneList(qna_num);
+		
+		mv.addObject("qnavo", qnavo);
+		mv.addObject("cPage", cPage);
+
+		return mv;
 	}
+	
+	
 	@RequestMapping("/bbs_report_onelist.do")
 	public ModelAndView goBbsReportOneList() {
 		return new ModelAndView("bbs/report_onelist");

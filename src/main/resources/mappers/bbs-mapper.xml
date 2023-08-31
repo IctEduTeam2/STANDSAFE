@@ -83,6 +83,28 @@
    	select * from FAQ_T where  FA_NUM  = #{ FA_NUM }
    </select>
    
+   
+   
+     <!-- 상품 Q&A -->
+      <!-- 페이징을 위한 시작과 끝구하고, 리스트 출력  -->
+   <select id="qnalist" parameterType="Map" resultType="qnabbsvo">
+    	select * from QA_T  where BOARD_ST = 1  
+    	order by BOARD_NUM limit #{limit} offset #{offset}
+    	
+   </select> 
+   
+      <!--게시글 갯수구하기  -->
+   <select id="qnacount" resultType="int">
+   	select count(*) from QA_T
+   </select>
+   
+   <!--상세  -->
+   <select id="qnaonelist" parameterType="String" resultType="qnabbsvo">
+   	select * from QA_T where BOARD_NUM = #{BOARD_NUM}
+   </select>
+   
+  
+   
 </mapper>
 
 

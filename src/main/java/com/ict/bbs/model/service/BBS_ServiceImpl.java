@@ -9,6 +9,7 @@ import com.ict.bbs.model.dao.BBS_DAO;
 import com.ict.bbs.model.vo.EV_BBS_VO;
 import com.ict.bbs.model.vo.FA_BBS_VO;
 import com.ict.bbs.model.vo.NO_BBS_VO;
+import com.ict.bbs.model.vo.QA_BBS_VO;
 
 
 @Service
@@ -101,6 +102,31 @@ public class BBS_ServiceImpl implements BBS_Service{
 	public FA_BBS_VO getFaqOneList(String faq_num) {		
 		return bbsDAO.getFaqOneList(faq_num);
 	}
+
+	
+	//qna
+	@Override
+	public List<QA_BBS_VO> getqnalist() {
+		return bbsDAO.getqnalist();
+	}
+
+	@Override
+	public int getTotalQnaCount() {
+		return bbsDAO.getTotalQnaCount();
+	}
+
+	@Override
+	public List<QA_BBS_VO> getqnalist(int offset, int limit) {
+		return bbsDAO.getqnatlist(offset, limit);
+	}
+
+	@Override
+	public QA_BBS_VO getQnaOneList(String qna_num) {
+		return bbsDAO.getQnaOneList(qna_num);
+	}
+	
+	
+	
 	
 
 	

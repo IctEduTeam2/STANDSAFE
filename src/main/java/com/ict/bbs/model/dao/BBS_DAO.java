@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.ict.bbs.model.vo.EV_BBS_VO;
 import com.ict.bbs.model.vo.FA_BBS_VO;
 import com.ict.bbs.model.vo.NO_BBS_VO;
+import com.ict.bbs.model.vo.QA_BBS_VO;
 
 @Repository
 public class BBS_DAO {
@@ -103,5 +104,31 @@ public class BBS_DAO {
 	
 	public FA_BBS_VO getFaqOneList(String faq_num) {
 		return sqlSessionTemplate.selectOne("bbs.faqonelist",faq_num);
+	}
+	
+	
+	//상품 Q&A 부분
+	public List<QA_BBS_VO> getqnalist() {
+		List<QA_BBS_VO> list = sqlSessionTemplate.selectList("bbs.qnalist");
+		return list;
+	}
+	
+	
+	public int getTotalQnaCount() {
+		return sqlSessionTemplate.selectOne("bbs.qnacount");
+	}
+
+
+	public List<QA_BBS_VO> getqnatlist(int offset, int limit) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("limit", limit);
+		map.put("offset", offset);
+		return sqlSessionTemplate.selectList("bbs.qnalist", map);
+
+	}
+	
+
+	public QA_BBS_VO getQnaOneList(String qna_num) {
+		return sqlSessionTemplate.selectOne("bbs.qnaonelist",qna_num);
 	}
 }

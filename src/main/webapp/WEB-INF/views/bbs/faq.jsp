@@ -148,11 +148,8 @@ $(document).ready(function() {
 													<td style="color:gray;">삭제된 게시물입니다.</td>
 												</c:when>
 												<c:otherwise>
-<<<<<<< HEAD
-													<td><a class="title" href="/bbs_faq_onelist.do?FA_NUM=${k.FA_NUM}&cPage=${paging.nowPage}" >${k.FA_SUBJECT}</a></td>									
-=======
-													<td><a class="title" href="/bbs_faq_go.do?FA_NUM=${k.FA_NUM}&cPage=${paging.nowPage}" >${k.FA_SUBJECT}</a></td>									
->>>>>>> c02d8f58f6d5211169a2ab4bcfa3ac49b36e0e97
+
+													<td><a class="title" href="/bbs_faq_onelist.do?FA_NUM=${k.FA_NUM}&cPage=${paging.nowPage}" >${k.FA_SUBJECT}</a></td>															
 												</c:otherwise>
 											</c:choose>
 												<td>${k.FA_WRITER}</td>
@@ -160,11 +157,7 @@ $(document).ready(function() {
 												<td>${k.FA_DATE.substring(0,10)}</td>
 											</tr>
 											<tr class="content-row">
-<<<<<<< HEAD
 												<td colspan="6" class="conts">${favo.FA_ANSWER }</td>
-=======
-												<td colspan="6" class="conts">${fqvo.FA_ANSWER }</td>
->>>>>>> c02d8f58f6d5211169a2ab4bcfa3ac49b36e0e97
 											</tr>
 									</c:forEach>
 								</c:otherwise>
