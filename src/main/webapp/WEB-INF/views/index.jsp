@@ -19,7 +19,7 @@
 			<article>
 				<div class="slide slide_wrap">
 					<div class="slide_item item">
-						<img src="resources/images/slide/slide_dust.png" class="slide_img">
+						<a href=""><img src="resources/images/slide/slide_dust.png" class="slide_img"></a>
 					</div>
 					<div class="slide_item item">
 						<img src="resources/images/slide/slide_fire2.png" class="slide_img">

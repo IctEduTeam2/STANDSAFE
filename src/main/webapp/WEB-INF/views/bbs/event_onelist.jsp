@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,17 +30,52 @@
 					<table class="m_table">				
 						<thead class="mh_table">
 							 <tr>
-							 	<th id="th1">번호</th><th id="th4">파일첨부</th><th id="th2">제목</th><th id="th3">작성자</th><th id="th5">조회수</th><th id="th6">날짜</th>
+							 	<th id="th1">번호</th>
+							 	<th id="th4">파일첨부</th>
+							 	<th id="th2">제목</th>
+							 	<th id="th3">작성자</th>
+							 	<th id="th5">조회수</th>
+							 	<th id="th6">날짜</th>
 							 </tr>
 						</thead>
 						<tbody class="mb_table">		
 							<tr>
-								<td>1</td><td>있음</td><td>회원가입 이벤트 5000포인트 증정!</td><td>관리자</td><td>1093</td><td>22.01.10</td>
-							</tr>		
+								<td>${evo.EVENT_NUM}</td>
+								<td>
+								<c:choose>
+									<c:when test="${empty evo.EVENT_FILE}">
+										없음
+									</c:when>
+									<c:otherwise>
+										있음
+									</c:otherwise>
+								</c:choose>				
+								</td>
+								<td>${evo.EVENT_SUBJECT}</td><td>${evo.EVENT_WRITER}</td>
+								<td>${evo.EVENT_HIT}</td><td>${evo.EVENT_DATE.substring(0,10)}</td>
+						
+							</tr>				
 						</tbody>
 					</table>
-					<div class="in_div_img"><img src="resources/images/bbs/event_sale.jpg" class="in_img"></div>
-					<div class="in_btn_div"><button class="in_btn" onclick="go_event_list()">목록</button></div>
+					
+					<div class=in_div_img>
+							   <c:choose>
+									<c:when test="${empty evo.EVENT_FILE}">
+										${evo.EVENT_CONTENT}
+									</c:when>
+										<c:otherwise>
+											<a href="">
+											<img src="/resources/images/${evo.EVENT_FILE }" style="width: 80%"></a>
+											<br>
+											${evo.EVENT_CONTENT}
+									</c:otherwise>
+								</c:choose>	
+								
+					</div> 
+					
+					<div class="in_btn_div">
+					<button class="in_btn" onclick="go_event_list()">목록</button>
+					</div>
 			</article>
 		</section>
 		<jsp:include page="../Semantic/quickmenu.jsp"></jsp:include>

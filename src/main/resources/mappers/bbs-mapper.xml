@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bbs">
+ 
+ 
+ 	<!--공지사항  -->
+      <!-- 페이징을 위한 시작과 끝구하고, 리스트 출력  -->
+   <select id="noticelist" parameterType="Map" resultType="nbbsvo">
+    	select * from NOTICE_T  where NOTICE_ST = 1  
+    	order by NOTICE_NUM limit #{limit} offset #{offset}
+    	
+   </select> 
+   
+      <!--게시글 갯수구하기  -->
+   <select id="noticecount" resultType="int">
+   	select count(*) from NOTICE_T
+   </select>
+   
+   <!--상세  -->
+   <select id="noticeonelist" parameterType="String" resultType="nbbsvo">
+   	select * from NOTICE_T where NOTICE_NUM = #{NOTICE_NUM}
+   </select>
+   
+   <!--조회수  -->
+   <update id="noticehitup" parameterType="String">
+   	update NOTICE_T
+   	set NOTICE_HIT = NOTICE_HIT +1
+   	where NOTICE_NUM = #{NOTICE_NUM}
+   </update>
+   
+   
+   
+   	<!--이벤트 -->
+      <!-- 페이징을 위한 시작과 끝구하고, 리스트 출력  -->
+   <select id="eventlist" parameterType="Map" resultType="ebbsvo">
+    	select * from EVENT_T  where EVENT_ST = 1  
+    	order by EVENT_NUM limit #{limit} offset #{offset}
+    	
+   </select> 
+   
+      <!--게시글 갯수구하기  -->
+   <select id="eventcount" resultType="int">
+   	select count(*) from EVENT_T
+   </select>
+   
+   <!--상세  -->
+   <select id="eventonelist" parameterType="String" resultType="ebbsvo">
+   	select * from EVENT_T where EVENT_NUM = #{EVENT_NUM}
+   </select>
+   
+   <!--조회수  -->
+   <update id="eventhitup" parameterType="String">
+   	update EVENT_T
+   	set EVENT_HIT = EVENT_HIT +1
+   	where EVENT_NUM = #{EVENT_NUM }
+   </update>
+   
+   
+   
+   <!-- faq  -->
+    <select id="faqlist" parameterType="Map" resultType="faqbbsvo">
+    	select * from FAQ_T  where FA_ST = 1  
+    	order by FA_NUM limit #{limit} offset #{offset}
+    	
+   </select> 
+   
+       <!--게시글 갯수구하기  -->
+   <select id="faqcount" resultType="int">
+   	select count(*) from FAQ_T
+   </select>
+
+   <!--조회수  -->
+   <update id="faqhitup" parameterType="String">
+   	update FAQ_T
+   	set FA_HIT = FA_HIT +1
+   	where FA_NUM = #{FA_NUM }
+   </update>
+   
+    <select id="faqonelist" parameterType="String" resultType="faqbbsvo">
+   	select * from FAQ_T where  FA_NUM  = #{ FA_NUM }
+   </select>
+   
+</mapper>
+
+
