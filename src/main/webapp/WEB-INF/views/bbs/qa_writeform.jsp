@@ -82,7 +82,7 @@ label {
 </style> 
 <script type="text/javascript">
 	function save_go(f) {
-		f.action="";
+		f.action="/bbs_qa_writeOk.do";
 		f.submit();
 	}
 	function list_go(f) {
@@ -108,24 +108,24 @@ label {
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">문의 유형</td>
 									<td id="radio">
-										<input type="radio" name="search" value="subject" checked />
+										<input type="radio" name="type" value="배송문의" checked />
 										<span>배송문의</span>	
 									
-										<input type="radio" name="search" value="subject" />
+										<input type="radio" name="type" value="결제/주문문의" />
 										<span>결제/주문문의</span>	
 									
-										<input type="radio" name="search" value="subject" />
+										<input type="radio" name="type" value="기타문의" />
 										<span>기타문의</span>	
 									</td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">작성자</td>
 								<!--이건 로그인한 사람이 자동으로 뜨게하기.  -->
-								<td><input type="text" name="name" size="20" autocomplete='off'/></td>
+								<td><input type="text" name="BOARD_WRITER" size="20" autocomplete='off'/></td>
 							</tr>
 							<tr align="center">
-								<td bgcolor="#1b5ac2" class="w_font">제목</td>
-								<td><input type="text" name="subject" size="20" autocomplete='off' /></td>
+								<td bgcolor="#1b5ac2" class="w_font" >제목</td>
+								<td><input type="text" name="BOARD_SUBJECT" size="20" autocomplete='off' /></td>
 							</tr>
 							
 							<tr align="center">
@@ -143,7 +143,7 @@ label {
 							</tr>
 							<tr align="center">
 								<td colspan="2">
-									<textarea rows="10" cols="60" name="content" id="content"></textarea>
+									<textarea rows="10" cols="60" name="BOARD_CONTENT" id="content"></textarea>
 								</td>
 							</tr>
 							<tfoot>
