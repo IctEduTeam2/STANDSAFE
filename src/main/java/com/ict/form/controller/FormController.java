@@ -6,10 +6,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class FormController {
-	@GetMapping("/mainform.do")
-	public ModelAndView getMainForm() {
-		return new ModelAndView("index");
-	}
 	@GetMapping("/loginform.do")
 	public ModelAndView getLoginForm() {
 		return new ModelAndView("user/loginform");

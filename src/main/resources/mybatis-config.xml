@@ -16,9 +16,14 @@
 	</settings>
 	<!-- Alias : 별칭 -->
 	<typeAliases>
-		<!-- <typeAlias type="com.ict.model.vo.MembersVO" alias="mvo"/> -->
+		<typeAlias type="com.ict.user.model.vo.UserVO" alias="uVO" /><!-- memberT -->
+		<typeAlias type="com.ict.user.model.vo.PointVO" alias="pVO" /><!-- pointT -->
+		<typeAlias type="com.ict.shopping.model.vo.PopUpVO" alias="popupVO" /><!-- 슬라이드/팝업 -->
+		<typeAlias type="com.ict.shopping.model.vo.ProductVO" alias="productVO" /><!-- 상품 -->
 	</typeAliases>
 	<mappers>
-		<!-- <mapper resource="mappers/members-mapper.xml" /> -->
+		<mapper resource="mappers/member-mapper.xml" /><!-- memberT -->
+		<mapper resource="mappers/point-mapper.xml" /><!-- memberT -->
+		<mapper resource="mappers/shopping-mapper.xml" /><!-- memberT -->
 	</mappers>
 </configuration>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shopping">
+	<select id="popupList" resultType="popupVO">
+		select * from POPUP_T where
+		popup_chk = 1 AND popup_st = 1
+	</select>
+	<select id="productBestList" resultType="productVO">
+		SELECT * FROM PRODUCT_T
+		ORDER BY prod_amount asc
+		LIMIT 10;
+	</select>
+	<select id="productNewList" resultType="productVO">
+		SELECT * FROM PRODUCT_T
+		ORDER BY prod_regdate DESC
+		LIMIT 10;
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
