@@ -1,13 +1,19 @@
 package com.ict.bbs.controller;
 
+import java.io.File;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ict.bbs.model.service.BBS_Service;
@@ -342,12 +348,10 @@ public class BBSController {
 	 //각 작성폼으로
 	
 	
-	@RequestMapping("/bbs_qa_writeform.do")
+	@GetMapping("/bbs_qa_writeform.do")
 	public ModelAndView goBbsQAWriteForm(HttpServletRequest request) {
 		return new ModelAndView("bbs/qa_writeform");
 	}
-	
-	
 	
 	@RequestMapping("/bbs_report_writeform.do")
 	public ModelAndView goBbsReportWriteForm() {
@@ -358,11 +362,55 @@ public class BBSController {
 		return new ModelAndView("bbs/review_writeform");
 	}
 	
+	
+	
 	//작성완료 일처리 컨트롤러
-	@RequestMapping("/bbs_qa_writeOk.do")
-	public ModelAndView BbsQaWriteOk() {
+	@PostMapping("/bbs_qa_writeOk.do")
+	public ModelAndView BbsQaWriteOk(QA_BBS_VO qnavo, HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("redirect:/bbs_qa_go.do");
-		return mv;
+		
+		try {
+			String path =request.getSession().getServletContext().getRealPath("/resources/upload");
+			
+			MultipartFile f_param = qnavo.getFile();
+			if(f_param.isEmpty()) {
+				qnavo.setBOARD_FILE("");
+			}else {
+				UUID uuid = UUID.randomUUID();
+				String f_name = uuid.toString()+"_"+qnavo.getFile().getOriginalFilename();
+				qnavo.setBOARD_FILE(f_name);
+				
+				byte[] in = qnavo.getFile().getBytes();
+				File out = new File(path, f_name);
+				
+				FileCopyUtils.copy(in, out);
+			}
+			//라디오체크박스 값을 맴퍼에 보내기위해
+			String type= request.getParameter("BOARD_TYPE");
+			
+			//비밀글 체크시 제목앞에 붙이기.
+			//String lock = request.getParameter("BOARD_LOCK");
+			
+			//System.out.println("바로, 비밀글:"  + lock);
+			//int result = bbsService.getQnaWriteOk(qnavo);
+		
+			
+			
+			int result2 = bbsService.getQnaWriteOk2(qnavo, type);
+			if(result2 >0) {
+			
+				System.out.println("작성완료후 3"+qnavo.getBOARD_TYPE());
+				String ssu = qnavo.getBOARD_SUBJECT();
+				//System.out.println("다녀와서, 비밀글:"  + lock3);
+				System.out.println("다녀와서2, 비밀글:"  + ssu);
+				return mv;
+			}else {
+				return null;
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		}
 	}
 	
 	

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -122,7 +123,16 @@ label {
 							
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font" width="200px;">첨부파일</td>
-								<td id="type"><img src="/resources/images/${qnavo.BOARD_FILE }" style="width: 200px; height: auto;" /></td>
+								<td id="type">
+									<c:choose>
+										<c:when test="${empty qnavo.BOARD_FILE}">
+											<b>첨부 파일 없음</b>
+										</c:when>
+										<c:otherwise>
+											<img src="/resources/upload/${qnavo.BOARD_FILE }" style="width: 200px; height: auto;" />
+										</c:otherwise>
+									</c:choose>
+								</td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">비밀글여부</td>

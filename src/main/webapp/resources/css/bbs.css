@@ -61,11 +61,10 @@ table td:nth-child(3) {
 }
 
 
-나머지 컬럼들을 가운데 정렬
+/*나머지 컬럼들을 가운데 정렬*/
 table td:not(:nth-child(3)) {
   text-align: center;
-
-} 
+}  
 
 /* 테이블 제목컬럼 간격 조절 */
 

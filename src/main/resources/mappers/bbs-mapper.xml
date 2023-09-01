@@ -10,7 +10,7 @@
       <!-- 페이징을 위한 시작과 끝구하고, 리스트 출력  -->
    <select id="noticelist" parameterType="Map" resultType="nbbsvo">
     	select * from NOTICE_T  where NOTICE_ST = 1  
-    	order by NOTICE_NUM limit #{limit} offset #{offset}
+    	order by NOTICE_NUM desc limit #{limit} offset #{offset}
     	
    </select> 
    
@@ -37,7 +37,7 @@
       <!-- 페이징을 위한 시작과 끝구하고, 리스트 출력  -->
    <select id="eventlist" parameterType="Map" resultType="ebbsvo">
     	select * from EVENT_T  where EVENT_ST = 1  
-    	order by EVENT_NUM limit #{limit} offset #{offset}
+    	order by EVENT_NUM desc limit #{limit} offset #{offset}
     	
    </select> 
    
@@ -63,7 +63,7 @@
    <!-- faq  -->
     <select id="faqlist" parameterType="Map" resultType="faqbbsvo">
     	select * from FAQ_T  where FA_ST = 1  
-    	order by FA_NUM limit #{limit} offset #{offset}
+    	order by FA_NUM desc limit #{limit} offset #{offset}
     	
    </select> 
    
@@ -89,7 +89,7 @@
       <!-- 페이징을 위한 시작과 끝구하고, 리스트 출력  -->
    <select id="qnalist" parameterType="Map" resultType="qnabbsvo">
     	select * from QA_T  where BOARD_ST = 1  
-    	order by BOARD_NUM limit #{limit} offset #{offset}
+    	order by BOARD_NUM desc limit #{limit} offset #{offset}
     	
    </select> 
    
@@ -102,6 +102,16 @@
    <select id="qnaonelist" parameterType="String" resultType="qnabbsvo">
    	select * from QA_T where BOARD_NUM = #{BOARD_NUM}
    </select>
+   
+   <insert id="qnainsert" parameterType="qnabbsvo" >
+   	insert into QA_T (BOARD_SUBJECT, BOARD_WRITER, BOARD_CONTENT, BOARD_FILE, BOARD_ST,BOARD_LOCK, BOARD_DATE, BOARD_TYPE,CLIENT_NUM,PROD_NUM)
+   	values(#{BOARD_SUBJECT},#{BOARD_WRITER},#{BOARD_CONTENT},#{BOARD_FILE},1,#{BOARD_LOCK},SYSDATE(),#{BOARD_TYPE},#{CLIENT_NUM}, #{PROD_NUM})
+   </insert>
+   
+   <insert id="qnainsert2" parameterType="Map" >
+   	insert into QA_T (BOARD_SUBJECT, BOARD_WRITER, BOARD_CONTENT, BOARD_FILE, BOARD_ST,BOARD_LOCK, BOARD_DATE, BOARD_TYPE,CLIENT_NUM,PROD_NUM)
+   	values(#{subject},#{writer},#{content},#{file},1,#{lock},SYSDATE(),#{type},#{client}, #{prod})
+   </insert>
    
   
    

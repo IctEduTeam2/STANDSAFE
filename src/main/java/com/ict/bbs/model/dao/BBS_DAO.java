@@ -131,4 +131,37 @@ public class BBS_DAO {
 	public QA_BBS_VO getQnaOneList(String qna_num) {
 		return sqlSessionTemplate.selectOne("bbs.qnaonelist",qna_num);
 	}
+	
+	public int getQnaWriteOk(QA_BBS_VO qnavo) {
+		return sqlSessionTemplate.insert("bbs.qnainsert", qnavo);
+	}
+
+	public int getQnaWriteOk2(QA_BBS_VO qnavo, String type) {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("type", type);
+		map.put("subject", qnavo.getBOARD_SUBJECT());
+		map.put("writer", qnavo.getBOARD_WRITER());
+		map.put("content", qnavo.getBOARD_CONTENT());
+		map.put("file", qnavo.getBOARD_FILE());
+		//map.put("lock", qnavo.getBOARD_LOCK());
+		
+		if(qnavo.getBOARD_LOCK().equals("on")) {
+			System.out.println("dao" + qnavo.getBOARD_LOCK());
+			qnavo.setBOARD_LOCK("1");
+			map.put("lock", qnavo.getBOARD_LOCK());		
+		} else {
+			System.out.println("dao2" + qnavo.getBOARD_LOCK());
+			qnavo.setBOARD_LOCK("0");
+			map.put("lock", qnavo.getBOARD_LOCK());
+		}
+		map.put("client", qnavo.getCLIENT_NUM());
+		map.put("prod", qnavo.getPROD_NUM());
+		
+		return sqlSessionTemplate.insert("bbs.qnainsert2", map);
+
+	}
+
+
+
+	
 }

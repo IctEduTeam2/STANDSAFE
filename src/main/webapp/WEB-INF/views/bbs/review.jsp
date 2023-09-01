@@ -29,10 +29,6 @@ table td:nth-child(4) {
 }
 
 
-/* 나머지 컬럼들을 가운데 정렬 */
-table td:not(:nth-child(4)) {
-  text-align: center;
-}
 </style> 
 <script type="text/javascript">
 

@@ -90,7 +90,29 @@ label {
 		f.submit();
 	}
 	
+	  $(document).ready(function () {
+	        $("#form").submit(function (event) {
+	            event.preventDefault(); // 기본 폼 제출 동작을 중지합니다.
+	            
+	            // 비밀글 체크 여부 확인
+	            var isSecret = $("#chkbox").is(":checked");
+	            var title = $("#BOARD_SUBJECT").val();
+	            
+	            // 제목 앞에 비밀글 아이콘 추가
+	            if (isSecret) {
+	                title = "[비밀글] " + title;
+	            }
+	            
+	            // 폼에 변경된 제목 설정
+	            $("#BOARD_SUBJECT").val(title);
+	            
+	            // 폼 제출
+	            this.submit();
+	        });
+	    });
+	
 </script>
+
 </head>
 <body>
 	<div id="mydiv"> 
@@ -108,13 +130,13 @@ label {
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">문의 유형</td>
 									<td id="radio">
-										<input type="radio" name="type" value="배송문의" checked />
+										<input type="radio" name="BOARD_TYPE" value="배송문의" checked />
 										<span>배송문의</span>	
 									
-										<input type="radio" name="type" value="결제/주문문의" />
+										<input type="radio" name="BOARD_TYPE" value="결제/주문문의" />
 										<span>결제/주문문의</span>	
 									
-										<input type="radio" name="type" value="기타문의" />
+										<input type="radio" name="BOARD_TYPE" value="기타문의" />
 										<span>기타문의</span>	
 									</td>
 							</tr>
@@ -136,7 +158,8 @@ label {
 								<td bgcolor="#1b5ac2" class="w_font">비밀글여부</td>
 								<td>
 									<div id="chkbox_div">
-										<input type="checkbox" id="chkbox" />
+										<input type="checkbox" id="chkbox" name="BOARD_LOCK" />
+										<input type="hidden" id="checnkon" name="BOARD_LOCK" value="1" checked/>
 										<label for="chkbox"></label>
 										비밀글여부
 									</div>
@@ -165,7 +188,7 @@ label {
 		<script src="resources/js/quick.js"></script>
 		<jsp:include page="../Semantic/footer.jsp"></jsp:include>
 	</div>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     	<script src="resources/js/summernote-lite.js"></script>
     	<script src="resources/js/lang/summernote-ko-KR.js"></script>
     	<script type="text/javascript">

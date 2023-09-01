@@ -29,10 +29,7 @@ table td:nth-child(4) {
 }
 
 
-/* 나머지 컬럼들을 가운데 정렬 */
-table td:not(:nth-child(4)) {
-  text-align: center;
-}
+
 
 /* paging */
 
@@ -146,7 +143,7 @@ table tfoot ol.paging li a:hover {
 													</c:otherwise>
 												</c:choose>				
 											</td>
-											<td>${BOARD_TYPE }</td>
+											<td>${k.BOARD_TYPE }</td>
 											<c:choose>
 												<c:when test="${k.BOARD_ST ==0 }">
 													<td style="color:gray;">삭제된 게시물입니다.</td>

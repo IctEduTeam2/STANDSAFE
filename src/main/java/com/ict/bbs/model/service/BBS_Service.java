@@ -70,5 +70,7 @@ public interface BBS_Service {
 	//onelist
 	public QA_BBS_VO getQnaOneList(String qna_num);
 	
-	
+	//작성
+	int getQnaWriteOk(QA_BBS_VO qnavo);
+	int getQnaWriteOk2(QA_BBS_VO qnavo, String type);
 }
