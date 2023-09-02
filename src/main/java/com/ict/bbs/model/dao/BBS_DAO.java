@@ -4,9 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestAttribute;
 
 import com.ict.bbs.model.vo.EV_BBS_VO;
 import com.ict.bbs.model.vo.FA_BBS_VO;
@@ -133,34 +136,12 @@ public class BBS_DAO {
 	}
 	
 	public int getQnaWriteOk(QA_BBS_VO qnavo) {
+	
+		
 		return sqlSessionTemplate.insert("bbs.qnainsert", qnavo);
 	}
 
-	public int getQnaWriteOk2(QA_BBS_VO qnavo, String type) {
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("type", type);
-		map.put("subject", qnavo.getBOARD_SUBJECT());
-		map.put("writer", qnavo.getBOARD_WRITER());
-		map.put("content", qnavo.getBOARD_CONTENT());
-		map.put("file", qnavo.getBOARD_FILE());
-		//map.put("lock", qnavo.getBOARD_LOCK());
-		
-		if(qnavo.getBOARD_LOCK().equals("on")) {
-			System.out.println("dao" + qnavo.getBOARD_LOCK());
-			qnavo.setBOARD_LOCK("1");
-			map.put("lock", qnavo.getBOARD_LOCK());		
-		} else {
-			System.out.println("dao2" + qnavo.getBOARD_LOCK());
-			qnavo.setBOARD_LOCK("0");
-			map.put("lock", qnavo.getBOARD_LOCK());
-		}
-		map.put("client", qnavo.getCLIENT_NUM());
-		map.put("prod", qnavo.getPROD_NUM());
-		
-		return sqlSessionTemplate.insert("bbs.qnainsert2", map);
-
-	}
-
+	
 
 
 	

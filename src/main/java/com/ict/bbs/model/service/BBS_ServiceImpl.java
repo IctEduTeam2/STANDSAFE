@@ -130,11 +130,7 @@ public class BBS_ServiceImpl implements BBS_Service{
 		return bbsDAO.getQnaWriteOk(qnavo);
 	}
 	
-	@Override
-	public int getQnaWriteOk2(QA_BBS_VO qnavo, String type) {
-		return bbsDAO.getQnaWriteOk2(qnavo,type);
-	}
-	
+
 
 	
 	

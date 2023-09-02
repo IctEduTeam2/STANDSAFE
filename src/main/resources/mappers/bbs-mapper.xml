@@ -108,10 +108,7 @@
    	values(#{BOARD_SUBJECT},#{BOARD_WRITER},#{BOARD_CONTENT},#{BOARD_FILE},1,#{BOARD_LOCK},SYSDATE(),#{BOARD_TYPE},#{CLIENT_NUM}, #{PROD_NUM})
    </insert>
    
-   <insert id="qnainsert2" parameterType="Map" >
-   	insert into QA_T (BOARD_SUBJECT, BOARD_WRITER, BOARD_CONTENT, BOARD_FILE, BOARD_ST,BOARD_LOCK, BOARD_DATE, BOARD_TYPE,CLIENT_NUM,PROD_NUM)
-   	values(#{subject},#{writer},#{content},#{file},1,#{lock},SYSDATE(),#{type},#{client}, #{prod})
-   </insert>
+ 
    
   
    

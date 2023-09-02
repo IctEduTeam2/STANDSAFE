@@ -385,24 +385,31 @@ public class BBSController {
 				
 				FileCopyUtils.copy(in, out);
 			}
-			//라디오체크박스 값을 맴퍼에 보내기위해
+			//라디오체크박스 값을 맴퍼에 보내기위해 가지고오기
 			String type= request.getParameter("BOARD_TYPE");
 			
+			//vo에 갖고온값 저장.
+			qnavo.setBOARD_TYPE(type);
+			
 			//비밀글 체크시 제목앞에 붙이기.
-			//String lock = request.getParameter("BOARD_LOCK");
+			String lock =  request.getParameter("secret_flag");
+			System.out.println("비밀글여부  : " + lock);  //1이 비밀글 0은 일반
 			
-			//System.out.println("바로, 비밀글:"  + lock);
-			//int result = bbsService.getQnaWriteOk(qnavo);
-		
+			//[비밀] 을 붙일 제목가져오기
+			String sub = qnavo.getBOARD_SUBJECT();
+			
+			if(lock.equals("1")) {
+				qnavo.setBOARD_SUBJECT("[&nbsp;&nbsp;&nbsp;비밀&nbsp;&nbsp;&nbsp;]&nbsp;&nbsp;" + sub);
+				qnavo.setBOARD_LOCK("1");
+			}else {
+				qnavo.setBOARD_SUBJECT(sub);
+				qnavo.setBOARD_LOCK("0");
+			}
+
+			int result = bbsService.getQnaWriteOk(qnavo);
 			
 			
-			int result2 = bbsService.getQnaWriteOk2(qnavo, type);
-			if(result2 >0) {
-			
-				System.out.println("작성완료후 3"+qnavo.getBOARD_TYPE());
-				String ssu = qnavo.getBOARD_SUBJECT();
-				//System.out.println("다녀와서, 비밀글:"  + lock3);
-				System.out.println("다녀와서2, 비밀글:"  + ssu);
+			if(result >0) {
 				return mv;
 			}else {
 				return null;

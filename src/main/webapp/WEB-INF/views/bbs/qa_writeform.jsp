@@ -82,6 +82,16 @@ label {
 </style> 
 <script type="text/javascript">
 	function save_go(f) {
+		 var checkbox = document.getElementById("chkbox");
+
+	        // 체크박스가 체크되었을 때
+	        if (checkbox.checked) {
+	            // 값 1을 hidden 필드에 설정합니다.
+	            document.getElementById("secret_flag").value = "1";
+	        } else {
+	            // 체크가 해제되었을 때
+	            document.getElementById("secret_flag").value = "0";
+	        }
 		f.action="/bbs_qa_writeOk.do";
 		f.submit();
 	}
@@ -89,28 +99,22 @@ label {
 		f.action="/bbs_qa_go.do";
 		f.submit();
 	}
-	
-	  $(document).ready(function () {
-	        $("#form").submit(function (event) {
-	            event.preventDefault(); // 기본 폼 제출 동작을 중지합니다.
-	            
-	            // 비밀글 체크 여부 확인
-	            var isSecret = $("#chkbox").is(":checked");
-	            var title = $("#BOARD_SUBJECT").val();
-	            
-	            // 제목 앞에 비밀글 아이콘 추가
-	            if (isSecret) {
-	                title = "[비밀글] " + title;
-	            }
-	            
-	            // 폼에 변경된 제목 설정
-	            $("#BOARD_SUBJECT").val(title);
-	            
-	            // 폼 제출
-	            this.submit();
-	        });
-	    });
-	
+</script>
+<script>
+    // 비밀글 체크박스 요소를 가져옵니다.
+    var checkbox = document.getElementById("chkbox");
+
+    // 체크박스의 상태가 변경될 때마다 실행되는 함수를 정의합니다.
+    checkbox.addEventListener("change", function() {
+        // 체크박스가 체크되었을 때
+        if (checkbox.checked) {
+            // 값 1을 hidden 필드에 설정합니다.
+            document.getElementById("secret_flag").value = "1";
+        } else {
+            // 체크가 해제되었을 때
+            document.getElementById("secret_flag").value = "0";
+        }
+    });
 </script>
 
 </head>
@@ -158,8 +162,7 @@ label {
 								<td bgcolor="#1b5ac2" class="w_font">비밀글여부</td>
 								<td>
 									<div id="chkbox_div">
-										<input type="checkbox" id="chkbox" name="BOARD_LOCK" />
-										<input type="hidden" id="checnkon" name="BOARD_LOCK" value="1" checked/>
+										<input type="checkbox" id="chkbox" name="BOARD_LOCK" />									
 										<label for="chkbox"></label>
 										비밀글여부
 									</div>
@@ -173,6 +176,7 @@ label {
 								<tr align="center">
 									<td colspan="2">
 										<input type="button" value="작성" onclick="save_go(this.form)" class="in_btn"/>
+										<input type="hidden" name="secret_flag" id="secret_flag" value="0" />
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										<input type="button" value="목록" onclick="list_go(this.form)" class="in_btn"/>
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

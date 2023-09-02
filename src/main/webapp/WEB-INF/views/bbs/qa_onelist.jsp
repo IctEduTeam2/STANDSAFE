@@ -138,10 +138,19 @@ label {
 								<td bgcolor="#1b5ac2" class="w_font">비밀글여부</td>
 								<td>
 									<div id="chkbox_div">
-										<input type="checkbox" id="chkbox" checked disabled/>
-										<label for="chkbox"></label>
+									<c:choose>
+										<c:when test="${qnavo.BOARD_LOCK == 1}">
+											<input type="checkbox" id="chkbox" checked disabled/>
+											<label for="chkbox"></label>
+										</c:when>
+										<c:otherwise>
+											<input type="checkbox" id="chkbox" disabled/>
+											<label for="chkbox"></label>
+										</c:otherwise>
+									</c:choose>
 										비밀글여부
 									</div>
+								</td>
 							</tr>
 							<tr align="center">
 							
