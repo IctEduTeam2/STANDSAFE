@@ -130,6 +130,11 @@ public class BBS_ServiceImpl implements BBS_Service{
 		return bbsDAO.getQnaWriteOk(qnavo);
 	}
 	
+	@Override
+	public int getQnaUpdateOk(QA_BBS_VO qnavo) {
+		return  bbsDAO.getQnaUpdateOk(qnavo);
+	}
+	
 
 
 	

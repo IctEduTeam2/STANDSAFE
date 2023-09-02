@@ -11,8 +11,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -399,10 +401,8 @@ public class BBSController {
 			String sub = qnavo.getBOARD_SUBJECT();
 			
 			if(lock.equals("1")) {
-				qnavo.setBOARD_SUBJECT("[&nbsp;&nbsp;&nbsp;비밀&nbsp;&nbsp;&nbsp;]&nbsp;&nbsp;" + sub);
 				qnavo.setBOARD_LOCK("1");
 			}else {
-				qnavo.setBOARD_SUBJECT(sub);
 				qnavo.setBOARD_LOCK("0");
 			}
 
@@ -425,29 +425,124 @@ public class BBSController {
 	
 	
 	//각 삭제폼으로
-	@RequestMapping("/bbs_qa_delete.do")
-	public ModelAndView goBbsQaDelete() {
-		return new ModelAndView("bbs/qa_delete");
+	@RequestMapping("/bbs_qa_deleteform.do")
+	public ModelAndView goBbsQaDelete(
+			@ModelAttribute("BOARD_NUM")String BOARD_NUM,
+			@ModelAttribute("cPage")String cPage) {
+		ModelAndView mv = new ModelAndView("bbs/qa_delete");
+		
+		return mv;
+
 	}
-	@RequestMapping("/bbs_report_delete.do")
-	public ModelAndView goBbsReportDelete() {
-		return new ModelAndView("bbs/report_delete");
-	}
-	@RequestMapping("/bbs_review_delete.do")
+
+	@RequestMapping("/bbs_review_deleteform.do")
 	public ModelAndView goBbsReviewDelete() {
 		return new ModelAndView("bbs/review_delete");
 	}
 	
 	
+	//삭제완료되는 일처리
+	/*@RequestMapping("/bbs_deleteOk.do")
+	public ModelAndView BbsQaDeleteOk(
+			@RequestParam("pwd")String pwd,
+			@ModelAttribute("BOARD_NUM")String BOARD_NUM,
+			@ModelAttribute("cPage")String cPage) {
+		
+		ModelAndView mv = new ModelAndView();
+		QA_BBS_VO qnavo = bbsService.getQnaOneList(BOARD_NUM);
+		
+		
+		return mv;
+	}*/
+	
+	
+
 	//각 수정폼으로
 	
-	@RequestMapping("/bbs_qa_update.do")
-	public ModelAndView goBbsQaUpdate() {
-		return new ModelAndView("bbs/qa_update");
+	@RequestMapping("/bbs_qa_updateform.do")
+	public ModelAndView goBbsQaUpdate(
+			@ModelAttribute("BOARD_NUM")String BOARD_NUM,
+			@ModelAttribute("cPage")String cPage) {
+		
+		ModelAndView mv = new ModelAndView("bbs/qa_update");
+		
+		QA_BBS_VO qnavo = bbsService.getQnaOneList(BOARD_NUM);
+		mv.addObject("qnavo", qnavo);
+		return mv;
+		
 	}
-	@RequestMapping("/bbs_review_update.do")
+	@RequestMapping("/bbs_review_updateform.do")
 	public ModelAndView goBbsReviewUpdate() {
 		return new ModelAndView("bbs/review_update");
 	}
+	
+	
+	
+	//수정완료 컨트롤러
+	@RequestMapping("/bbs_qa_updateOk.do")
+	public ModelAndView BbsQaUpdateOk(QA_BBS_VO qnavo,HttpServletRequest request,
+			@ModelAttribute("cPage")String cPage,
+			@ModelAttribute("BOARD_NUM")String BOARD_NUM){
+		
+		ModelAndView mv = new ModelAndView();
+		try {
+			String path = request.getSession().getServletContext().getRealPath("/resources/upload");
+			MultipartFile f_param = qnavo.getFile();
+
+			if(f_param.isEmpty()) {
+				qnavo.setBOARD_FILE(qnavo.getOld_f_name());
+			}else {
+				
+				UUID uuid = UUID.randomUUID();
+				String f_name = uuid.toString()+"_"+qnavo.getFile().getOriginalFilename();
+				qnavo.setBOARD_FILE(f_name);
+				
+				byte[] in = qnavo.getFile().getBytes();
+				
+				File out = new File(path, f_name);
+				
+				FileCopyUtils.copy(in, out);
+			}
+
+			//라디오체크박스 값을 맴퍼에 보내기위해 가지고오기
+			String type= request.getParameter("BOARD_TYPE");
+			
+			//vo에 갖고온값 저장.
+			qnavo.setBOARD_TYPE(type);
+			
+			//비밀글 체크시 제목앞에 붙이기.
+			String lock =  request.getParameter("secret_flag");
+			System.out.println("비밀글여부  : " + lock);  //1이 비밀글 0은 일반
+			
+			
+			//[비밀] 을 붙일 제목가져오기
+			String sub = qnavo.getBOARD_SUBJECT();
+			System.out.println(sub);
+			
+			if(lock.equals("1")) {
+				qnavo.setBOARD_SUBJECT(sub);
+				qnavo.setBOARD_LOCK("1");
+			}else {
+				qnavo.setBOARD_SUBJECT(sub);
+				qnavo.setBOARD_LOCK("0");
+			}
+
+			int result = bbsService.getQnaUpdateOk(qnavo);
+			
+			
+			if(result >0) {
+				mv.setViewName("redirect:/bbs_qa_go.do");
+				return mv;
+			}else {
+				return null;
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		}
+		
+	}
+	
+	
 	
 }

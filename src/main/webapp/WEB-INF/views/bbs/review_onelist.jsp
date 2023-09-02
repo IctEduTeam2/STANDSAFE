@@ -76,7 +76,7 @@ label {
 </style> 
 <script type="text/javascript">
 	function update_go(f) {
-		f.action="/bbs_review_update.do";
+		f.action="/bbs_review_updateform.do";
 		f.submit();
 	}
 	function list_go(f) {
@@ -84,7 +84,7 @@ label {
 		f.submit();
 	}
 	function delete_go(f) {
-		f.action="/bbs_review_delete.do";
+		f.action="/bbs_review_deleteform.do";
 		f.submit();
 	}
 	

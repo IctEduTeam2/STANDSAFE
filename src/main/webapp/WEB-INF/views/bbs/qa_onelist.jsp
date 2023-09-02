@@ -77,7 +77,7 @@ label {
 </style> 
 <script type="text/javascript">
 	function update_go(f) {
-		f.action="/bbs_qa_update.do";
+		f.action="/bbs_qa_updateform.do";
 		f.submit();
 	}
 	function list_go(f) {
@@ -85,7 +85,7 @@ label {
 		f.submit();
 	}
 	function delete_go(f) {
-		f.action="/bbs_qa_delete.do";
+		f.action="/bbs_qa_deleteform.do";
 		f.submit();
 	}
 	
@@ -163,6 +163,8 @@ label {
 								<tr align="center">
 									<td colspan="2">
 										<input type="button" value="수정" onclick="update_go(this.form)" class="in_btn"/>
+										<input type="hidden" value="${qnavo.BOARD_NUM}" name="BOARD_NUM">
+										<input type="hidden" value="${cPage}" name="cPage">
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										<input type="button" value="목록" onclick="list_go(this.form)" class="in_btn"/>
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

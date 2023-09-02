@@ -149,8 +149,16 @@ table tfoot ol.paging li a:hover {
 													<td style="color:gray;">삭제된 게시물입니다.</td>
 												</c:when>
 												<c:otherwise>
-													<td><a href="/bbs_qa_onelist.do?BOARD_NUM=${k.BOARD_NUM}&cPage=${paging.nowPage}">
-													${k.BOARD_SUBJECT}</a></td>									
+													<c:choose>
+														<c:when test="${k.BOARD_LOCK == 1} ">
+															<td><a href="/bbs_qa_onelist.do?BOARD_NUM=${k.BOARD_NUM}&cPage=${paging.nowPage}">
+															[&nbsp;&nbsp;&nbsp;비밀&nbsp;&nbsp;&nbsp;] ${k.BOARD_SUBJECT}</a></td>									
+														</c:when>
+														<c:otherwise>
+															<td><a href="/bbs_qa_onelist.do?BOARD_NUM=${k.BOARD_NUM}&cPage=${paging.nowPage}">
+																${k.BOARD_SUBJECT}</a></td>								
+														</c:otherwise>
+													</c:choose>
 												</c:otherwise>
 											</c:choose>
 											<!--onelist 갈때 cPage 필요하다. 같이보내자. -->

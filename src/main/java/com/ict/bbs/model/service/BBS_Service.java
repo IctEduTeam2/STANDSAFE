@@ -72,5 +72,7 @@ public interface BBS_Service {
 	
 	//작성
 	int getQnaWriteOk(QA_BBS_VO qnavo);
+	//수정
+	int getQnaUpdateOk(QA_BBS_VO qnavo);
 
 }

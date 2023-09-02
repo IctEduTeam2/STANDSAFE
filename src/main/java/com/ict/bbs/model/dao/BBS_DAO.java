@@ -140,6 +140,10 @@ public class BBS_DAO {
 		
 		return sqlSessionTemplate.insert("bbs.qnainsert", qnavo);
 	}
+	
+	public int getQnaUpdateOk(QA_BBS_VO qnavo) {
+		return sqlSessionTemplate.update("bbs.qnaupdate", qnavo);
+	}
 
 	
 

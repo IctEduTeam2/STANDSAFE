@@ -80,10 +80,26 @@ label {
 
 
 </style> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <script type="text/javascript">
 	function save_go(f) {
-		 var checkbox = document.getElementById("chkbox");
+		 if(f.BOARD_SUBJECT.value.trim().length<=0){
+				alert("제목을 입력하세요")
+				f.subject.focus();
+				return;
+			}
+		if(f.BOARD_WRITER.value.trim().length<=0){
+				alert("작성자를 입력하세요")
+				f.writer.focus();
+				return; //나중에는 이부분은 로그인 닉네임이 자동으로뜨게하기.
+			}
+		if(f.BOARD_CONTENT.value.trim().length<=0){
+				alert("내용을 입력하세요")
+				f.content.focus();
+				return;
+			}
 
+		 var checkbox = document.getElementById("chkbox");
 	        // 체크박스가 체크되었을 때
 	        if (checkbox.checked) {
 	            // 값 1을 hidden 필드에 설정합니다.
@@ -100,7 +116,7 @@ label {
 		f.submit();
 	}
 </script>
-<script>
+<!-- <script>
     // 비밀글 체크박스 요소를 가져옵니다.
     var checkbox = document.getElementById("chkbox");
 
@@ -115,7 +131,7 @@ label {
             document.getElementById("secret_flag").value = "0";
         }
     });
-</script>
+</script> -->
 
 </head>
 <body>
@@ -192,7 +208,7 @@ label {
 		<script src="resources/js/quick.js"></script>
 		<jsp:include page="../Semantic/footer.jsp"></jsp:include>
 	</div>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
     	<script src="resources/js/summernote-lite.js"></script>
     	<script src="resources/js/lang/summernote-ko-KR.js"></script>
     	<script type="text/javascript">
