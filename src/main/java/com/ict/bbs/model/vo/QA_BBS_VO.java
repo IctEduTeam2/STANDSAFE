@@ -5,10 +5,18 @@ import org.springframework.web.multipart.MultipartFile;
 	public class QA_BBS_VO {
 	private String BOARD_NUM, BOARD_SUBJECT, BOARD_WRITER, BOARD_CONTENT, BOARD_FILE,
 	BOARD_TYPE, BOARD_DATE, BOARD_UPDATE, BOARD_ST, BOARD_LOCK, PROD_NUM, CLIENT_NUM,
-	old_f_name;
+	old_f_name, c_pwd;
 	
 	
 	
+	public String getC_pwd() {
+		return c_pwd;
+	}
+
+	public void setC_pwd(String c_pwd) {
+		this.c_pwd = c_pwd;
+	}
+
 	public String getOld_f_name() {
 		return old_f_name;
 	}

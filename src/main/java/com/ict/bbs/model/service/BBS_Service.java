@@ -74,5 +74,8 @@ public interface BBS_Service {
 	int getQnaWriteOk(QA_BBS_VO qnavo);
 	//수정
 	int getQnaUpdateOk(QA_BBS_VO qnavo);
+	
+	String getClientPwd(String c_num);
+	
 
 }

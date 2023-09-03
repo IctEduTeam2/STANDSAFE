@@ -145,6 +145,9 @@ public class BBS_DAO {
 		return sqlSessionTemplate.update("bbs.qnaupdate", qnavo);
 	}
 
+	public String getClientPwd(String c_num) {
+		return sqlSessionTemplate.selectOne("bbs.clientpwd",c_num);
+	}
 	
 
 

@@ -145,22 +145,17 @@ table tfoot ol.paging li a:hover {
 											</td>
 											<td>${k.BOARD_TYPE }</td>
 											<c:choose>
-												<c:when test="${k.BOARD_ST ==0 }">
-													<td style="color:gray;">삭제된 게시물입니다.</td>
-												</c:when>
-												<c:otherwise>
-													<c:choose>
-														<c:when test="${k.BOARD_LOCK == 1} ">												
-															<td><a href="/bbs_qa_onelist.do?BOARD_NUM=${k.BOARD_NUM}&cPage=${paging.nowPage}">
-															[비밀] ${k.BOARD_SUBJECT}</a></td>									
-														</c:when>
-														<c:otherwise>
-															<td><a href="/bbs_qa_onelist.do?BOARD_NUM=${k.BOARD_NUM}&cPage=${paging.nowPage}">
-																${k.BOARD_SUBJECT}</a></td>								
-														</c:otherwise>
-													</c:choose>
-												</c:otherwise>
-											</c:choose>
+												  <c:when test="${k.BOARD_ST == 0}">
+												    <td style="color: gray;">삭제된 게시물입니다.</td>
+												  </c:when>
+												  <c:otherwise>
+												    <td>
+												      <a href="/bbs_qa_onelist.do?BOARD_NUM=${k.BOARD_NUM}&cPage=${paging.nowPage}">
+												        ${k.BOARD_LOCK == 1 ? '[비밀] ' : ''}${k.BOARD_SUBJECT}
+												      </a>
+												    </td>
+												  </c:otherwise>
+												</c:choose>
 											<!--onelist 갈때 cPage 필요하다. 같이보내자. -->
 											<td>${k.BOARD_WRITER}</td>
 											<td>${k.BOARD_DATE.substring(0,10)}</td>

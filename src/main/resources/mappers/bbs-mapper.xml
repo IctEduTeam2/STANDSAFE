@@ -125,6 +125,13 @@
    </update>
    
  
+ 	<select id="clientpwd" parameterType="String" resultType="String">
+ 	
+ 		SELECT PW form MEMBER_T 
+ 		where CLIENT_NUM = #{CLIENT_NUM}
+
+	
+ 	</select>
    
   
    

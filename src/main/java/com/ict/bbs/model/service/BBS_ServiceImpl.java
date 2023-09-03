@@ -135,7 +135,10 @@ public class BBS_ServiceImpl implements BBS_Service{
 		return  bbsDAO.getQnaUpdateOk(qnavo);
 	}
 	
-
+	@Override
+	public String getClientPwd(String c_num) {
+		return bbsDAO.getClientPwd(c_num);
+	}
 
 	
 	

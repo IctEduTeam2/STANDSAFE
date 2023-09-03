@@ -436,13 +436,17 @@ public class BBSController {
 	}
 
 	@RequestMapping("/bbs_review_deleteform.do")
-	public ModelAndView goBbsReviewDelete() {
+	public ModelAndView goBbsReviewDelete(
+			@ModelAttribute("BOARD_NUM")String BOARD_NUM,
+			@ModelAttribute("cPage")String cPage) {
+		
+		
 		return new ModelAndView("bbs/review_delete");
 	}
 	
 	
 	//삭제완료되는 일처리
-	/*@RequestMapping("/bbs_deleteOk.do")
+	@RequestMapping("/bbs_deleteOk.do")
 	public ModelAndView BbsQaDeleteOk(
 			@RequestParam("pwd")String pwd,
 			@ModelAttribute("BOARD_NUM")String BOARD_NUM,
@@ -451,9 +455,17 @@ public class BBSController {
 		ModelAndView mv = new ModelAndView();
 		QA_BBS_VO qnavo = bbsService.getQnaOneList(BOARD_NUM);
 		
+		String in_pwd = pwd;
+		System.out.println("입력한 비번:" + in_pwd);
+		String c_num = qnavo.getCLIENT_NUM();
+		System.out.println("갖고온 멤버번호:" + c_num);
+		
+		String c_pwd = bbsService.getClientPwd(c_num);
+		
+		System.out.println("멤버비번은:" + c_pwd);
 		
 		return mv;
-	}*/
+	}
 	
 	
 
