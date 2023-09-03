@@ -13,7 +13,9 @@
 <style type="text/css">
 .note-btn-group{width: auto;}
 .note-toolbar{width: auto;}
-
+.note-editable {
+  text-align: left;
+}
 .m_table{width: 80%;}
 
 label {
@@ -116,23 +118,6 @@ label {
 		f.submit();
 	}
 </script>
-<!-- <script>
-    // 비밀글 체크박스 요소를 가져옵니다.
-    var checkbox = document.getElementById("chkbox");
-
-    // 체크박스의 상태가 변경될 때마다 실행되는 함수를 정의합니다.
-    checkbox.addEventListener("change", function() {
-        // 체크박스가 체크되었을 때
-        if (checkbox.checked) {
-            // 값 1을 hidden 필드에 설정합니다.
-            document.getElementById("secret_flag").value = "1";
-        } else {
-            // 체크가 해제되었을 때
-            document.getElementById("secret_flag").value = "0";
-        }
-    });
-</script> -->
-
 </head>
 <body>
 	<div id="mydiv"> 

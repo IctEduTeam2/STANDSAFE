@@ -39,22 +39,22 @@ table tfoot ol.paging {
 }
 table tfoot ol.paging li {
     display: inline-block; /* 가로 정렬을 위해 float 제거하고 inline-block으로 변경 */
-    /* margin-right: 8px; */
+     margin-right: 8px; 
 }
 
 
 table tfoot ol.paging li a {
 	display: block;
-	/* padding: 3px 7px; */
+	padding: 3px 7px;
 	border: 1px solid #6c98c2;
 	color: #2f313e;
-	/* font-weight: bold; */
+	 font-weight: bold; 
 }
 
 table tfoot ol.paging li a:hover {
 	background: #6c98c2;
 	color: white;
-	/* font-weight: bold; */
+	font-weight: bold;
 }
 
 
@@ -150,9 +150,9 @@ table tfoot ol.paging li a:hover {
 												</c:when>
 												<c:otherwise>
 													<c:choose>
-														<c:when test="${k.BOARD_LOCK == 1} ">
+														<c:when test="${k.BOARD_LOCK == 1} ">												
 															<td><a href="/bbs_qa_onelist.do?BOARD_NUM=${k.BOARD_NUM}&cPage=${paging.nowPage}">
-															[&nbsp;&nbsp;&nbsp;비밀&nbsp;&nbsp;&nbsp;] ${k.BOARD_SUBJECT}</a></td>									
+															[비밀] ${k.BOARD_SUBJECT}</a></td>									
 														</c:when>
 														<c:otherwise>
 															<td><a href="/bbs_qa_onelist.do?BOARD_NUM=${k.BOARD_NUM}&cPage=${paging.nowPage}">

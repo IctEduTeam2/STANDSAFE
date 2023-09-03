@@ -14,7 +14,9 @@
 <style type="text/css">
 .note-btn-group{width: auto;}
 .note-toolbar{width: auto;}
-
+.note-editable {
+  text-align: left;
+}
 .m_table{width: 80%;}
 
 label {
@@ -88,9 +90,9 @@ label {
 
 
 </style> 
-<script src="https://code.jquery.com/jquery-3.7.0.min.js" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
 <script type="text/javascript">
-	function UpdateOk_go(f) {
+	function updateOk_go(f) {
 		var checkbox = document.getElementById("chkbox");
         // 체크박스가 체크되었을 때
         if (checkbox.checked) {
@@ -101,21 +103,15 @@ label {
             document.getElementById("secret_flag").value = "0";
         }	
         
-        
-		 var newContent = document.getElementById("content").value;
-	        // 이전에 저장된 내용을 가져옵니다. (예: 이전에 DB에서 가져온 내용)
-	     var prevContent = "${qnavo.BOARD_CONTENT}";
+      // 변경사항이 있는 경우 폼을 제출합니다.
+	     f.action = "/bbs_qa_updateOk.do"; // 수정완료 컨트롤러 주소로 변경
+	     f.submit();
+	     }
 
-	        // 현재 입력된 내용과 이전 내용을 trim() 함수를 사용하여 공백을 제거한 후 비교합니다.
-	        if (newContent.trim() === prevContent.trim()) {
-	            // 변경사항이 없는 경우 알림 창을 띄웁니다.
-	            alert("변경사항이 없습니다. 수정하시려면 수정 내용을 입력하세요");
-	        } else {
-	            // 변경사항이 있는 경우 폼을 제출합니다.
-	            f.action = "/bbs_qa_updateOk.do"; // 수정완료 컨트롤러 주소로 변경
-	            f.submit();
-	        }
-	    }
+
+</script>
+
+<script type="text/javascript">
 
 	function list_go(f) {
 		f.action="/bbs_qa_go.do";
@@ -123,22 +119,6 @@ label {
 	}
 	
 </script>
-<!-- <script>
-    // 비밀글 체크박스 요소를 가져옵니다.
-    var checkbox = document.getElementById("chkbox");
-
-    // 체크박스의 상태가 변경될 때마다 실행되는 함수를 정의합니다.
-    checkbox.addEventListener("change", function() {
-        // 체크박스가 체크되었을 때
-        if (checkbox.checked) {
-            // 값 1을 hidden 필드에 설정합니다.
-            document.getElementById("secret_flag").value = "1";
-        } else {
-            // 체크가 해제되었을 때
-            document.getElementById("secret_flag").value = "0";
-        }
-    });
-</script> -->
 </head>
 <body>
 	<div id="mydiv"> 
@@ -203,7 +183,7 @@ label {
 							</tr>
 							<tr align="center">
 								<td colspan="2">
-									<textarea rows="10" cols="60" name="content" id="content">
+									<textarea rows="10" cols="60" name="BOARD_CONTENT" id="content">
 									${qnavo.BOARD_CONTENT}
 									</textarea>
 								</td>
@@ -211,9 +191,9 @@ label {
 							<tfoot>
 								<tr align="center">
 									<td colspan="2">
-										<input type="button" value="작성" onclick="UpdateOk_go(this.form)" class="in_btn"/>
+										<input type="button" value="작성" onclick="updateOk_go(this.form)" class="in_btn"/>
 										<input type="hidden" name="secret_flag" id="secret_flag" value="0" />
-										<input type="hidden" name="b_idx" value="${qnavo.BOARD_NUM}">
+										<input type="hidden" name="BOARD_NUM" value="${qnavo.BOARD_NUM}">
 										<input type="hidden" name="cPage" value="${cPage}">
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										<input type="button" value="목록" onclick="list_go(this.form)" class="in_btn"/>
@@ -230,7 +210,7 @@ label {
 		<script src="resources/js/quick.js"></script>
 		<jsp:include page="../Semantic/footer.jsp"></jsp:include>
 	</div>
-	
+		
     	<script src="resources/js/summernote-lite.js"></script>
     	<script src="resources/js/lang/summernote-ko-KR.js"></script>
     	<script type="text/javascript">
@@ -263,7 +243,6 @@ label {
 				var fname = data.fname;
 				$("#content").summernote("editor.insertImage",path+"/"+fname);
 			});
-			consloe.log("끝");
 		}
     	
     	</script>

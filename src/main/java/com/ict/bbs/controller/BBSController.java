@@ -471,6 +471,8 @@ public class BBSController {
 		return mv;
 		
 	}
+	
+	
 	@RequestMapping("/bbs_review_updateform.do")
 	public ModelAndView goBbsReviewUpdate() {
 		return new ModelAndView("bbs/review_update");
@@ -520,18 +522,20 @@ public class BBSController {
 			System.out.println(sub);
 			
 			if(lock.equals("1")) {
-				qnavo.setBOARD_SUBJECT(sub);
+				
 				qnavo.setBOARD_LOCK("1");
-			}else {
 				qnavo.setBOARD_SUBJECT(sub);
+			}else {
 				qnavo.setBOARD_LOCK("0");
+				qnavo.setBOARD_SUBJECT(sub);
 			}
+			
 
 			int result = bbsService.getQnaUpdateOk(qnavo);
 			
 			
 			if(result >0) {
-				mv.setViewName("redirect:/bbs_qa_go.do");
+				mv.setViewName("redirect:/bbs_qa_onelist.do");
 				return mv;
 			}else {
 				return null;

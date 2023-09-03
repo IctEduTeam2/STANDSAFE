@@ -88,7 +88,7 @@
      <!-- 상품 Q&A -->
       <!-- 페이징을 위한 시작과 끝구하고, 리스트 출력  -->
    <select id="qnalist" parameterType="Map" resultType="qnabbsvo">
-    	select * from QA_T  where BOARD_ST = 1  
+    	select * from QA_T 
     	order by BOARD_NUM desc limit #{limit} offset #{offset}
     	
    </select> 
@@ -113,7 +113,6 @@
    	update QA_T
 	set
     BOARD_SUBJECT=#{BOARD_SUBJECT},
-    BOARD_WRITER=#{BOARD_WRITER},
     BOARD_CONTENT=#{BOARD_CONTENT},
     BOARD_FILE=#{BOARD_FILE},
     BOARD_ST=1,
