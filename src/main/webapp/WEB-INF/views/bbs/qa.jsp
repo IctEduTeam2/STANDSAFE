@@ -74,6 +74,7 @@ table tfoot ol.paging li a:hover {
 }
 
 </style> 
+
 <script type="text/javascript">
 
 	function bbs_go_qa_writeform() {
@@ -158,7 +159,16 @@ table tfoot ol.paging li a:hover {
 												</c:choose>
 											<!--onelist 갈때 cPage 필요하다. 같이보내자. -->
 											<td>${k.BOARD_WRITER}</td>
-											<td>${k.BOARD_DATE.substring(0,10)}</td>
+											<%-- <td>${k.BOARD_DATE.substring(0,10)}</td> --%>
+											 <c:choose>
+											    <c:when test="${not empty k.BOARD_UPDATE}">
+											      <!-- BOARD_UPDATE가 값이 있는 경우 -->
+											      <td>${k.BOARD_UPDATE.substring(0,10)} [수정됨]</td>
+											    </c:when>
+											    <c:otherwise>											  
+											     <td> ${k.BOARD_DATE.substring(0, 10)}</td>
+											    </c:otherwise>
+											  </c:choose>
 										</tr>
 									</c:forEach>
 								</c:otherwise>

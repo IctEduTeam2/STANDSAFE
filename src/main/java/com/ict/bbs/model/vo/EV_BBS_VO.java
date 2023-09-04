@@ -7,6 +7,8 @@ import org.springframework.web.multipart.MultipartFile;
 	EVENT_HIT, EVENT_DATE, EVENT_UPDATE, EVENT_ST, ADMIN_NUM, EVENT_TYPE;
 	
 	private MultipartFile file;
+	
+	
 
 	public String getEVENT_NUM() {
 		return EVENT_NUM;

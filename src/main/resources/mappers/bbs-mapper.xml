@@ -117,23 +117,46 @@
     BOARD_FILE=#{BOARD_FILE},
     BOARD_ST=1,
     BOARD_LOCK=#{BOARD_LOCK},
-    BOARD_DATE=SYSDATE(),
+    BOARD_UPDATE=SYSDATE(),
     BOARD_TYPE=#{BOARD_TYPE},
     CLIENT_NUM=#{CLIENT_NUM},
     PROD_NUM=#{PROD_NUM}
 	where BOARD_NUM=#{BOARD_NUM}
    </update>
-   
- 
- 	<select id="clientpwd" parameterType="String" resultType="String">
- 	
- 		SELECT PW form MEMBER_T 
- 		where CLIENT_NUM = #{CLIENT_NUM}
 
-	
- 	</select>
-   
+
+
+   <update id="qnadelete" parameterType="String">
+   	update QA_T
+   	set BOARD_ST = 0 where BOARD_NUM = #{BOARD_NUM}
+   </update>
   
+  
+  
+  
+  <!--신고 -->
+  <select id="reportlist" parameterType="Map" resultType="repbbsvo">
+    	select * from REPORT_T 
+    	order by REPORT_NUM desc limit #{limit} offset #{offset}
+    	
+   </select> 
+   
+      <!--게시글 갯수구하기  -->
+   <select id="reportcount" resultType="int">
+   	select count(*) from REPORT_T
+   </select>
+   
+   <!--상세  -->
+   <select id="reportonelist" parameterType="String" resultType="repbbsvo">
+   	select * from REPORT_T where REPORT_NUM = #{REPORT_NUM}
+   </select>
+   
+   <insert id="reportinsert" parameterType="repbbsvo" >
+   	insert into REPORT_T (REPORT_SUBJECT, REPORT_WRITER,REPORT_CONTENT, REPORT_FILE, REPORT_DATE, REPORT_TYPE,CLIENT_NUM,PROD_NUM)
+   	values(#{REPORT_SUBJECT},#{REPORT_WRITER},#{REPORT_CONTENT},#{REPORT_FILE},SYSDATE(),#{REPORT_TYPE},#{CLIENT_NUM}, #{PROD_NUM})
+   </insert>
+   
+
    
 </mapper>
 

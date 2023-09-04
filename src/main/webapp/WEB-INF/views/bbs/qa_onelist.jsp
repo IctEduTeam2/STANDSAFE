@@ -75,6 +75,7 @@ label {
 
 
 </style> 
+
 <script type="text/javascript">
 	function update_go(f) {
 		f.action="/bbs_qa_updateform.do";
@@ -88,13 +89,13 @@ label {
 		f.action="/bbs_qa_deleteform.do";
 		f.submit();
 	}
-	
-	
-	
+
 </script>
+
 </head>
 <body>
-	<div id="mydiv"> 
+	<div id="mydiv">
+
 		<jsp:include page="../Semantic/header.jsp"></jsp:include>
 		<section id="contents">
 			<article>				

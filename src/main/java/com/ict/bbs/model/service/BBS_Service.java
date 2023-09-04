@@ -6,6 +6,7 @@ import com.ict.bbs.model.vo.EV_BBS_VO;
 import com.ict.bbs.model.vo.FA_BBS_VO;
 import com.ict.bbs.model.vo.NO_BBS_VO;
 import com.ict.bbs.model.vo.QA_BBS_VO;
+import com.ict.bbs.model.vo.RE_BBS_VO;
 
 public interface BBS_Service {
 
@@ -75,7 +76,24 @@ public interface BBS_Service {
 	//수정
 	int getQnaUpdateOk(QA_BBS_VO qnavo);
 	
-	String getClientPwd(String c_num);
-	
+	int BbsQaDeleteOk(String BOARD_NUM);
 
+
+	
+	//신고
+	public List<RE_BBS_VO> getreportlist();
+	
+	//페이징을 위한 전체게시물 구하기
+	public int getTotalReportCount();
+	//시작과 끝 블럭 구하기
+	public List<RE_BBS_VO> getreportlist(int offset, int limit);
+	
+	
+	//onelist
+	public RE_BBS_VO getReportOneList(String rep_num);
+	
+	//작성
+	int getReportWriteOk(RE_BBS_VO repvo);
+	
+	
 }

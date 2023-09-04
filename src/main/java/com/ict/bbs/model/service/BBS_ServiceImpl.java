@@ -10,6 +10,7 @@ import com.ict.bbs.model.vo.EV_BBS_VO;
 import com.ict.bbs.model.vo.FA_BBS_VO;
 import com.ict.bbs.model.vo.NO_BBS_VO;
 import com.ict.bbs.model.vo.QA_BBS_VO;
+import com.ict.bbs.model.vo.RE_BBS_VO;
 
 
 @Service
@@ -135,11 +136,41 @@ public class BBS_ServiceImpl implements BBS_Service{
 		return  bbsDAO.getQnaUpdateOk(qnavo);
 	}
 	
+
 	@Override
-	public String getClientPwd(String c_num) {
-		return bbsDAO.getClientPwd(c_num);
+	public int BbsQaDeleteOk(String BOARD_NUM) {
+		return bbsDAO.BbsQaDeleteOk(BOARD_NUM);
 	}
 
+	
+	
+	
+	
+	//신고
+	@Override
+	public List<RE_BBS_VO> getreportlist() {
+		return bbsDAO.getreportlist();
+	}
+	
+	@Override
+	public int getTotalReportCount() {
+		return bbsDAO.getTotalReportCount();
+	}
+	
+	@Override
+	public List<RE_BBS_VO> getreportlist(int offset, int limit) {
+		return bbsDAO.getreportlist(offset, limit);
+	}
+	
+	@Override
+	public RE_BBS_VO getReportOneList(String rep_num) {
+		return bbsDAO.getReportOneList(rep_num);
+	}
+	
+	@Override
+	public int getReportWriteOk(RE_BBS_VO repvo) {
+		return bbsDAO.getReportWriteOk(repvo);
+	}
 	
 	
 	

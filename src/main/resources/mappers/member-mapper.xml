@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+	<!-- 회원가입 -->
+	<insert id="insert" parameterType="uVO">
+		insert into MEMBER_T(ID, 
+		<if test="PW != null and PW != ''">
+		PW,
+		</if>
+		<if test="TEMP_PW != null and TEMP_PW != ''">
+			TEMP_PW,
+		</if>
+		<if test="M_NAME != null and M_NAME != ''">
+		M_NAME,
+		</if>
+		NICKNAME, MAIL, BIRTH, 
+		<if test="PHONE != null and PHONE != ''">
+		PHONE,
+		</if>
+		<if test="ADDR != null and ADDR != ''">
+			ADDR,
+		</if>
+		IN_TIME,
+		<if test="EMAIL_ST != null and EMAIL_ST != ''">
+			EMAIL_ST,
+		</if>
+		<if test="OUT_TIME != null and OUT_TIME != ''">
+			OUT_TIME,
+		</if>
+		OUT_ST
+		)
+		values(
+		#{ID}, #{PW},
+		<if test="TEMP_PW != null and TEMP_PW != ''">
+			#{TEMP_PW},
+		</if>
+		#{M_NAME}, #{NICKNAME}, #{MAIL}, #{BIRTH}, #{PHONE},
+		<if test="ADDR != null and ADDR != ''">
+			#{ADDR},
+		</if>
+		SYSDATE(),
+		<if test="EMAIL_ST != null and EMAIL_ST != ''">
+			#{EMAIL_ST},
+		</if>
+		<if test="OUT_TIME != null and OUT_TIME != ''">
+			SYSDATE(),
+		</if>
+		1
+		)
+	</insert>
+	<!-- 아이디 중복체크 -->
+	<select id="idCheck" parameterType="String" resultType="int">
+		SELECT
+		COUNT(*) FROM MEMBER_T
+		WHERE ID = #{ID}
+	</select>
+
+	<!-- 닉네임 중복체크 -->
+	<select id="nickCheck" parameterType="String" resultType="int">
+		SELECT
+		COUNT(*) FROM MEMBER_T
+		WHERE NICKNAME = #{NICKNAME}
+	</select>
+
+	<!-- 로그인 -->
+	<select id="selectPwd" parameterType="String" resultType="uVO">
+		select
+		* from MEMBER_T where ID = #{ID}
+	</select>
+
+	<!-- sns 로그인 -->
+	<select id="emailCheck" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM MEMBER_T
+		WHERE MAIL = #{MAIL}
+	</select>
+
+	<!-- sns 가입 -->
+	<select id="snslogin" parameterType="uVO">
+		insert into MEMBER_T(ID, PW,
+		<if test="TEMP_PW != null and TEMP_PW != ''">
+			TEMP_PW,
+		</if>
+		M_NAME, NICKNAME, MAIL, BIRTH, PHONE,
+		<if test="ADDR != null and ADDR != ''">
+			ADDR,
+		</if>
+		IN_TIME,
+		<if test="EMAIL_ST != null and EMAIL_ST != ''">
+			EMAIL_ST,
+		</if>
+		<if test="OUT_TIME != null and OUT_TIME != ''">
+			OUT_TIME,
+		</if>
+		OUT_ST
+		)
+		values(
+		#{ID}, #{PW},
+		<if test="TEMP_PW != null and TEMP_PW != ''">
+			#{TEMP_PW},
+		</if>
+		#{M_NAME}, #{NICKNAME}, #{MAIL}, #{BIRTH}, #{PHONE},
+		<if test="ADDR != null and ADDR != ''">
+			#{ADDR},
+		</if>
+		SYSDATE(),
+		<if test="EMAIL_ST != null and EMAIL_ST != ''">
+			#{EMAIL_ST},
+		</if>
+		<if test="OUT_TIME != null and OUT_TIME != ''">
+			SYSDATE(),
+		</if>
+		1
+		)
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+

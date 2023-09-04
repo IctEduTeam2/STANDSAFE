@@ -87,17 +87,12 @@ label {
 	function save_go(f) {
 		 if(f.BOARD_SUBJECT.value.trim().length<=0){
 				alert("제목을 입력하세요")
-				f.subject.focus();
+				f.BOARD_SUBJECT.focus();
 				return;
-			}
-		if(f.BOARD_WRITER.value.trim().length<=0){
-				alert("작성자를 입력하세요")
-				f.writer.focus();
-				return; //나중에는 이부분은 로그인 닉네임이 자동으로뜨게하기.
 			}
 		if(f.BOARD_CONTENT.value.trim().length<=0){
 				alert("내용을 입력하세요")
-				f.content.focus();
+				f.BOARD_CONTENT.focus();
 				return;
 			}
 
@@ -148,7 +143,7 @@ label {
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">작성자</td>
 								<!--이건 로그인한 사람이 자동으로 뜨게하기.  -->
-								<td><input type="text" name="BOARD_WRITER" size="20" autocomplete='off'/></td>
+								<td><input type="text" name="BOARD_WRITER" size="20" autocomplete='off'value="${c_id}"/></td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font" >제목</td>

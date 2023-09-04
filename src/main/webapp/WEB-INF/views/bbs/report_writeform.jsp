@@ -13,6 +13,9 @@
 <style type="text/css">
 .note-btn-group{width: auto;}
 .note-toolbar{width: auto;}
+.note-editable {
+  text-align: left;
+}
 
 .m_table{width: 80%;}
 
@@ -48,9 +51,22 @@ fieldset {
 #noti{color: red; font-size: 14px; text-align: left; padding-left: 30px}
 
 </style> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <script type="text/javascript">
 	function save_go(f) {
-		f.action="";
+		
+		 if(f.REPORT_SUBJECT.value.trim().length<=0){
+				alert("제목을 입력하세요")
+				f.REPORT_SUBJECT.focus();
+				return;
+			}
+		if(f.REPORT_CONTENT.value.trim().length<=0){
+				alert("내용을 입력하세요")
+				f.REPORT_CONTENT.focus();
+				return;
+			}
+
+		f.action="/bbs_report_writeOk.do";
 		f.submit();
 	}
 	function list_go(f) {
@@ -75,20 +91,20 @@ fieldset {
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">신고 유형</td>
 									<td id="radio">
-										<input type="radio" name="search" value="subject" checked />
+										<input type="radio" name="REPORT_TYPE" value="신고" checked />
 										<span>신고</span>	
-										<input type="radio" name="search" value="subject" />
+										<input type="radio" name="REPORT_TYPE" value="건의" />
 										<span>건의</span>	
 									</td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">작성자</td>
 								<!--이건 로그인한 사람이 자동으로 뜨게하기.  -->
-								<td><input type="text" name="name" size="20" autocomplete='off'/></td>
+								<td><input type="text" name="REPORT_WRITER" size="20" autocomplete='off' value=" ${c_id}" /></td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">제목</td>
-								<td><input type="text" name="subject" size="20" autocomplete='off' /></td>
+								<td><input type="text" name="REPORT_SUBJECT" size="20" autocomplete='off' placeholder="'신고할닉네임' 신고합니다"/></td>
 							</tr>
 							
 							<tr align="center">
@@ -101,7 +117,7 @@ fieldset {
 							</tr>
 							<tr align="center">
 								<td colspan="2">
-									<textarea rows="10" cols="60" name="content" id="content"></textarea>
+									<textarea rows="10" cols="60" name="REPORT_CONTENT" id="content"></textarea>
 								</td>
 							</tr>
 							<tfoot>
@@ -124,7 +140,6 @@ fieldset {
 		<script src="resources/js/quick.js"></script>
 		<jsp:include page="../Semantic/footer.jsp"></jsp:include>
 	</div>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
     	<script src="resources/js/summernote-lite.js"></script>
     	<script src="resources/js/lang/summernote-ko-KR.js"></script>
     	<script type="text/javascript">

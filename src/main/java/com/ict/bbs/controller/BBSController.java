@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,7 +24,9 @@ import com.ict.bbs.model.vo.EV_BBS_VO;
 import com.ict.bbs.model.vo.FA_BBS_VO;
 import com.ict.bbs.model.vo.NO_BBS_VO;
 import com.ict.bbs.model.vo.QA_BBS_VO;
+import com.ict.bbs.model.vo.RE_BBS_VO;
 import com.ict.common.Paging;
+import com.ict.user.model.vo.UserVO;
 
 @Controller
 public class BBSController {
@@ -193,7 +196,7 @@ public class BBSController {
 	}
 	
 	@RequestMapping("/bbs_qa_go.do")
-	public ModelAndView goBbsQa(HttpServletRequest request) {
+	public ModelAndView goBbsQa(HttpServletRequest request, HttpSession session) {
 		ModelAndView mv = new ModelAndView("bbs/qa");
 		
 		//페이징을 위해 게시물의 전체글 구하기
@@ -226,6 +229,7 @@ public class BBSController {
 		if(paging.getEndBlock() > paging.getTotalPage()) {
 			paging.setEndBlock(paging.getTotalPage());
 		}
+	
 		
 		List<QA_BBS_VO> list = bbsService.getqnalist(paging.getOffset(),paging.getNumPerPage());
 		
@@ -233,8 +237,7 @@ public class BBSController {
 
 		
 		QA_BBS_VO qnavo = bbsService.getQnaOneList(qna_num);
-		
-		
+
 		
 		mv.addObject("list", list);
 		mv.addObject("qnavo", qnavo);
@@ -247,8 +250,58 @@ public class BBSController {
 	}
 	
 	@RequestMapping("/bbs_report_go.do")
-	public ModelAndView goBbsReport() {
-		return new ModelAndView("bbs/report");
+	public ModelAndView goBbsReport(HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView("bbs/report");
+		
+		//페이징을 위해 게시물의 전체글 구하기
+		int count = bbsService.getTotalReportCount();
+		paging.setTotalRecord(count);
+		
+		//페이징처리
+		if(paging.getTotalRecord() <= paging.getNumPerPage()) {
+			paging.setTotalPage(1);
+		}else {
+			paging.setTotalPage(paging.getTotalRecord()/paging.getNumPerPage());
+			if(paging.getTotalRecord()%paging.getNumPerPage() != 0) {
+				paging.setTotalPage(paging.getTotalPage() +1);
+			}
+		}
+		String cPage = request.getParameter("cPage");
+		
+		if(cPage==null) {
+			paging.setNowPage(1);
+		}else {
+			paging.setNowPage(Integer.parseInt(cPage));
+		}
+		
+		paging.setOffset(paging.getNumPerPage()*(paging.getNowPage()-1));
+		
+		paging.setBeginBlock((int)((paging.getNowPage()-1)/paging.getPagePerBlock())
+				*paging.getPagePerBlock()+1);
+		
+		paging.setEndBlock(paging.getBeginBlock()+paging.getPagePerBlock()-1);
+		
+		if(paging.getEndBlock() > paging.getTotalPage()) {
+			paging.setEndBlock(paging.getTotalPage());
+		}
+	
+		
+		List<RE_BBS_VO> list = bbsService.getreportlist(paging.getOffset(),paging.getNumPerPage());
+		
+		String rep_num = request.getParameter("REPORT_NUM");
+
+		
+		RE_BBS_VO repvo = bbsService.getReportOneList(rep_num);
+
+		
+		mv.addObject("list", list);
+		mv.addObject("repvo", repvo);
+		mv.addObject("paging", paging);
+
+
+
+		return mv;
+
 	}
 	
 	@RequestMapping("/bbs_review_go.do")
@@ -319,6 +372,7 @@ public class BBSController {
 	}
 	
 
+	
 	@RequestMapping("/bbs_qa_onelist.do")
 	public ModelAndView goBbsQAOneList(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("bbs/qa_onelist");
@@ -336,10 +390,23 @@ public class BBSController {
 	}
 	
 	
+	
 	@RequestMapping("/bbs_report_onelist.do")
-	public ModelAndView goBbsReportOneList() {
-		return new ModelAndView("bbs/report_onelist");
+	public ModelAndView goBbsReportOneList(HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView("bbs/report_onelist");
+		
+		String rep_num = request.getParameter("REPORT_NUM");
+		String cPage = request.getParameter("cPage");
+				
+		//onelist
+		RE_BBS_VO repvo = bbsService.getReportOneList(rep_num);
+		
+		mv.addObject("repvo", repvo);
+		mv.addObject("cPage", cPage);
+
+		return mv;
 	}
+	
 	@RequestMapping("/bbs_review_onelist.do")
 	public ModelAndView goBbsReviewOneList() {
 		return new ModelAndView("bbs/review_onelist");
@@ -356,23 +423,25 @@ public class BBSController {
 	}
 	
 	@RequestMapping("/bbs_report_writeform.do")
-	public ModelAndView goBbsReportWriteForm() {
+	public ModelAndView goBbsReportWriteForm(HttpServletRequest request) {
 		return new ModelAndView("bbs/report_writeform");
 	}
 	@RequestMapping("/bbs_review_writeform.do")
-	public ModelAndView goBbsReviewtWriteForm() {
+	public ModelAndView goBbsReviewtWriteForm(HttpServletRequest request) {
 		return new ModelAndView("bbs/review_writeform");
 	}
 	
 	
 	
-	//작성완료 일처리 컨트롤러
+	//작성완료 일처리 컨트롤러 : qa
 	@PostMapping("/bbs_qa_writeOk.do")
-	public ModelAndView BbsQaWriteOk(QA_BBS_VO qnavo, HttpServletRequest request) {
+	public ModelAndView BbsQaWriteOk(QA_BBS_VO qnavo,HttpServletRequest request, HttpSession session) {
 		ModelAndView mv = new ModelAndView("redirect:/bbs_qa_go.do");
 		
 		try {
 			String path =request.getSession().getServletContext().getRealPath("/resources/upload");
+			
+			
 			
 			MultipartFile f_param = qnavo.getFile();
 			if(f_param.isEmpty()) {
@@ -387,7 +456,23 @@ public class BBSController {
 				
 				FileCopyUtils.copy(in, out);
 			}
+			
+			//회원닉네임 갖고오기 - 작성자에 자동 뜨고 저장하기위함
+			String nick = (String) request.getSession().getAttribute("c_id");
+			System.out.println("로그인한 닉넴 : " + nick); 
+			
+			//제리똥나온다. vo저장후 맵퍼에 보내자. 저장하라고
+			qnavo.setBOARD_WRITER(nick);
+			
+			//회원client_num 갖고오자. 디비에 넣어야한다. 
+			int num = (int) request.getSession().getAttribute("c_num");
+			System.out.println("닉네임의 번호:" + num);
+			//맞는 17번 나온다, 저장하자, 혜인님이만든 유저 vo의 클라인트넘버는 인트로, 나는 스트링으로 바꿔주는 작업
+			String c_num = Integer.toString(num);
+			qnavo.setCLIENT_NUM(c_num);
+
 			//라디오체크박스 값을 맴퍼에 보내기위해 가지고오기
+			
 			String type= request.getParameter("BOARD_TYPE");
 			
 			//vo에 갖고온값 저장.
@@ -420,6 +505,66 @@ public class BBSController {
 		}
 	}
 	
+	@PostMapping("/bbs_report_writeOk.do")
+	public ModelAndView BbsReportWriteOk(RE_BBS_VO repvo,
+			HttpServletRequest request, HttpSession session) {
+		
+		ModelAndView mv = new ModelAndView("redirect:/bbs_report_go.do");
+		
+		try {
+			String path =request.getSession().getServletContext().getRealPath("/resources/upload");
+			
+			
+			
+			MultipartFile f_param = repvo.getFile();
+			if(f_param.isEmpty()) {
+				repvo.setREPORT_FILE("");
+			}else {
+				UUID uuid = UUID.randomUUID();
+				String f_name = uuid.toString()+"_"+repvo.getFile().getOriginalFilename();
+				repvo.setREPORT_FILE(f_name);
+				
+				byte[] in = repvo.getFile().getBytes();
+				File out = new File(path, f_name);
+				
+				FileCopyUtils.copy(in, out);
+			}
+			
+			//회원닉네임 갖고오기 - 작성자에 자동 뜨고 저장하기위함
+			String nick = (String) request.getSession().getAttribute("c_id");
+			System.out.println("로그인한 닉넴 : " + nick); 
+			
+			//제리똥나온다. vo저장후 맵퍼에 보내자. 저장하라고
+			repvo.setREPORT_WRITER(nick);
+			
+			//회원client_num 갖고오자. 디비에 넣어야한다. 
+			int num = (int) request.getSession().getAttribute("c_num");
+			System.out.println("닉네임의 번호:" + num);
+			//맞는 17번 나온다, 저장하자, 혜인님이만든 유저 vo의 클라인트넘버는 인트로, 나는 스트링으로 바꿔주는 작업
+			String c_num = Integer.toString(num);
+			repvo.setCLIENT_NUM(c_num);
+
+			//라디오체크박스 값을 맴퍼에 보내기위해 가지고오기
+			
+			String type= request.getParameter("REPORT_TYPE");
+			
+			//vo에 갖고온값 저장.
+			repvo.setREPORT_TYPE(type);
+			
+			
+
+			int result = bbsService.getReportWriteOk(repvo);
+			
+			if(result >0) {
+				return mv;
+			}else {
+				return null;
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		}
+	}
 	
 	
 	
@@ -429,9 +574,9 @@ public class BBSController {
 	public ModelAndView goBbsQaDelete(
 			@ModelAttribute("BOARD_NUM")String BOARD_NUM,
 			@ModelAttribute("cPage")String cPage) {
-		ModelAndView mv = new ModelAndView("bbs/qa_delete");
 		
-		return mv;
+		
+		return new ModelAndView("bbs/qa_delete");
 
 	}
 
@@ -439,36 +584,58 @@ public class BBSController {
 	public ModelAndView goBbsReviewDelete(
 			@ModelAttribute("BOARD_NUM")String BOARD_NUM,
 			@ModelAttribute("cPage")String cPage) {
-		
-		
+
 		return new ModelAndView("bbs/review_delete");
 	}
 	
 	
-	//삭제완료되는 일처리
+	//삭제완료되는 일처리 : qa
 	@RequestMapping("/bbs_deleteOk.do")
 	public ModelAndView BbsQaDeleteOk(
 			@RequestParam("pwd")String pwd,
 			@ModelAttribute("BOARD_NUM")String BOARD_NUM,
-			@ModelAttribute("cPage")String cPage) {
+			@ModelAttribute("cPage")String cPage,
+			HttpServletRequest request,
+			HttpSession session) {
 		
 		ModelAndView mv = new ModelAndView();
-		QA_BBS_VO qnavo = bbsService.getQnaOneList(BOARD_NUM);
 		
-		String in_pwd = pwd;
-		System.out.println("입력한 비번:" + in_pwd);
-		String c_num = qnavo.getCLIENT_NUM();
-		System.out.println("갖고온 멤버번호:" + c_num);
+		//로그인한 세션에 저장된 client_num 갖고오기.
+		int num = (int) request.getSession().getAttribute("c_num");
+		System.out.println("닉네임의 번호:" + num);
+		//로그인정보랑 맞게나온다.. 저장하자, 혜인님이만든 유저 vo의 클라인트넘버는 인트로, 나는 스트링으로 바꿔주는 작업
+		String c_num = Integer.toString(num); //로그인한정보와 맞는 번호임. 
 		
-		String c_pwd = bbsService.getClientPwd(c_num);
 		
-		System.out.println("멤버비번은:" + c_pwd);
+		//로그인한 회원의 비번갖고오기. 입력한 비번과 비교하기위함 
+		String dbpw = (String) request.getSession().getAttribute("pw");
+		System.out.println("디비비번은:" + dbpw);
 		
-		return mv;
+		//입력한 번호출력해보기.
+		System.out.println("입력한번호는:" + pwd);
+		
+		if( !passwordEncoder.matches(pwd, dbpw)) {
+			System.out.println("틀린암호");
+			mv.setViewName("bbs/qa_delete");
+			mv.addObject("pwchk", "fail");
+			return mv;
+			
+		}else {
+			System.out.println("맞는암호");
+			int del = bbsService.BbsQaDeleteOk(BOARD_NUM);
+			mv.setViewName("redirect:/bbs_qa_go.do");
+			return mv;
+		}
+		
+
+
+		
 	}
 	
-	
+	//삭제되는일처리 : 리뷰 
 
+	
+	
 	//각 수정폼으로
 	
 	@RequestMapping("/bbs_qa_updateform.do")
@@ -492,7 +659,7 @@ public class BBSController {
 	
 	
 	
-	//수정완료 컨트롤러
+	//수정완료 컨트롤러 : qa
 	@RequestMapping("/bbs_qa_updateOk.do")
 	public ModelAndView BbsQaUpdateOk(QA_BBS_VO qnavo,HttpServletRequest request,
 			@ModelAttribute("cPage")String cPage,
@@ -517,7 +684,21 @@ public class BBSController {
 				
 				FileCopyUtils.copy(in, out);
 			}
-
+			
+			//회원닉네임 갖고오기 - 작성자에 자동 뜨고 저장하기위함
+			String nick = (String) request.getSession().getAttribute("c_id");
+			System.out.println("로그인한 닉넴 : " + nick); 
+			
+			//제리똥나온다. vo저장후 맵퍼에 보내자. 저장하라고
+			qnavo.setBOARD_WRITER(nick);
+			
+			//회원client_num 갖고오자. 디비에 넣어야한다. 
+			int num = (int) request.getSession().getAttribute("c_num");
+			System.out.println("닉네임의 번호:" + num);
+			//맞는 17번 나온다, 저장하자, 혜인님이만든 유저 vo의 클라인트넘버는 인트로, 나는 스트링으로 바꿔주는 작업
+			String c_num = Integer.toString(num);
+			qnavo.setCLIENT_NUM(c_num);
+		
 			//라디오체크박스 값을 맴퍼에 보내기위해 가지고오기
 			String type= request.getParameter("BOARD_TYPE");
 			
@@ -559,6 +740,8 @@ public class BBSController {
 		
 	}
 	
+	
+	//수정완료 일처리 : 리뷰
 	
 	
 }

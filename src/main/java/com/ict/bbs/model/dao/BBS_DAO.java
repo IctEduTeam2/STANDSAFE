@@ -15,6 +15,7 @@ import com.ict.bbs.model.vo.EV_BBS_VO;
 import com.ict.bbs.model.vo.FA_BBS_VO;
 import com.ict.bbs.model.vo.NO_BBS_VO;
 import com.ict.bbs.model.vo.QA_BBS_VO;
+import com.ict.bbs.model.vo.RE_BBS_VO;
 
 @Repository
 public class BBS_DAO {
@@ -145,11 +146,45 @@ public class BBS_DAO {
 		return sqlSessionTemplate.update("bbs.qnaupdate", qnavo);
 	}
 
-	public String getClientPwd(String c_num) {
-		return sqlSessionTemplate.selectOne("bbs.clientpwd",c_num);
+	public int BbsQaDeleteOk(String BOARD_NUM) {
+		return sqlSessionTemplate.update("bbs.qnadelete",BOARD_NUM );
+	}
+	
+	
+	
+	//신고
+	public List<RE_BBS_VO> getreportlist() {
+		List<RE_BBS_VO> list = sqlSessionTemplate.selectList("bbs.reportlist");
+		return list;
+	}
+	
+	public int getTotalReportCount() {
+		int result = sqlSessionTemplate.selectOne("bbs.reportcount");
+		return result;
 	}
 	
 
+	public List<RE_BBS_VO> getreportlist(int offset, int limit) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("limit", limit);
+		map.put("offset", offset);
+		return sqlSessionTemplate.selectList("bbs.reportlist", map);
+	}
+	
 
+	public RE_BBS_VO getReportOneList(String rep_num) {
+		return sqlSessionTemplate.selectOne("bbs.reportonelist",rep_num);
+	}
+	
+
+	public int getReportWriteOk(RE_BBS_VO repvo) {
+		return sqlSessionTemplate.insert("bbs.reportinsert", repvo);
+	}
+	
+	
+	
+	//리뷰
+	
+	
 	
 }

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -106,22 +107,31 @@ fieldset {
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">신고 유형</td>
 									<td id="type">
-										<span>신고</span>	
+										<span>${repvo.REPORT_TYPE}</span>	
 									</td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">작성자</td>
 								<!--이건 로그인한 사람이 자동으로 뜨게하기.  -->
-								<td id="type">베인32세</td>
+								<td id="type">${repvo.REPORT_WRITER}</td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">제목</td>
-								<td id="type">솜털애기 신고합니다. </td>
+								<td id="type">${repvo.REPORT_SUBJECT}</td>
 							</tr>
 							
 							<tr align="center">
-								<td bgcolor="#1b5ac2" class="w_font" width="200px">첨부파일</td>
-								<td id="type"><img src="resources/images/bbs/report.jpg" style="width: 200px"></td>
+								<td bgcolor="#1b5ac2" class="w_font" width="200px;">첨부파일</td>
+								<td id="type">
+									<c:choose>
+										<c:when test="${empty repvo.REPORT_FILE}">
+											<b>첨부 파일 없음</b>
+										</c:when>
+										<c:otherwise>
+											<img src="/resources/upload/${repvo.REPORT_FILE }" style="width: 200px; height: auto;" />
+										</c:otherwise>
+									</c:choose>
+								</td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">비밀글여부</td>
@@ -130,7 +140,7 @@ fieldset {
 							<tr align="center">
 								<td colspan="2" style="height: 800px">
 
-										솜털애기가 욕했어요. 또만났다구요, 
+										${repvo.REPORT_CONTENT }		
 
 								</td>
 							</tr>
@@ -138,6 +148,8 @@ fieldset {
 								<tr align="center">
 									<td colspan="2">
 										<input type="button" value="목록" onclick="list_go(this.form)" class="in_btn"/>
+										<input type="hidden" value="${repvo.REPORT_NUM}" name="REPORT_NUM">
+										<input type="hidden" value="${cPage}" name="cPage">
 									</td>
 								</tr>
 							</tfoot>

@@ -56,16 +56,17 @@ th {
 </style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-<!-- <script type="text/javascript">
+<script type="text/javascript">
 	$(document).ready(function(){
 		var pwchk = "${pwchk}";
 		if(pwchk == "fail") {
-			alert("비밀번호틀림");
+			alert("비밀번호틀립니다. 다시 입력하세요");
+			$("#pwd").focus();
 			return ;
 			
 		}
 	});
-</script> -->
+</script>
 <script type="text/javascript">
 	function list_go(f) {
 		f.action="/bbs_qa_go.do";
