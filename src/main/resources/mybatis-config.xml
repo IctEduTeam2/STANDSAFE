@@ -23,7 +23,8 @@
 		<typeAlias type="com.ict.bbs.model.vo.EV_BBS_VO" alias="ebbsvo"/>
 		<typeAlias type="com.ict.bbs.model.vo.FA_BBS_VO" alias="faqbbsvo"/>
 		<typeAlias type="com.ict.bbs.model.vo.QA_BBS_VO" alias="qnabbsvo"/>
-		<typeAlias type="com.ict.bbs.model.vo.RE_BBS_VO" alias="repbbsvo"/>
+		<typeAlias type="com.ict.bbs.model.vo.REP_BBS_VO" alias="repbbsvo"/>
+		<typeAlias type="com.ict.bbs.model.vo.RE_BBS_VO" alias="reviewbbsvo"/>
 
 		<!--  user 부분 혜인님별칭  -->
 		<typeAlias type="com.ict.user.model.vo.UserVO" alias="uVO" /><!-- memberT -->

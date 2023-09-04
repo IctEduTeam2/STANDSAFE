@@ -118,6 +118,7 @@ table tfoot ol.paging li a:hover {
 								<c:otherwise>
 									<c:forEach var="k" items="${list}" varStatus="vs">
 										<tr>
+											
 											<td>${paging.totalRecord -((paging.nowPage-1)*paging.numPerPage + vs.index) }</td>
 											<td>
 												<c:choose>

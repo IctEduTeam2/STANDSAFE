@@ -15,6 +15,7 @@ import com.ict.bbs.model.vo.EV_BBS_VO;
 import com.ict.bbs.model.vo.FA_BBS_VO;
 import com.ict.bbs.model.vo.NO_BBS_VO;
 import com.ict.bbs.model.vo.QA_BBS_VO;
+import com.ict.bbs.model.vo.REP_BBS_VO;
 import com.ict.bbs.model.vo.RE_BBS_VO;
 
 @Repository
@@ -153,8 +154,8 @@ public class BBS_DAO {
 	
 	
 	//신고
-	public List<RE_BBS_VO> getreportlist() {
-		List<RE_BBS_VO> list = sqlSessionTemplate.selectList("bbs.reportlist");
+	public List<REP_BBS_VO> getreportlist() {
+		List<REP_BBS_VO> list = sqlSessionTemplate.selectList("bbs.reportlist");
 		return list;
 	}
 	
@@ -164,7 +165,7 @@ public class BBS_DAO {
 	}
 	
 
-	public List<RE_BBS_VO> getreportlist(int offset, int limit) {
+	public List<REP_BBS_VO> getreportlist(int offset, int limit) {
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		map.put("limit", limit);
 		map.put("offset", offset);
@@ -172,19 +173,52 @@ public class BBS_DAO {
 	}
 	
 
-	public RE_BBS_VO getReportOneList(String rep_num) {
+	public REP_BBS_VO getReportOneList(String rep_num) {
 		return sqlSessionTemplate.selectOne("bbs.reportonelist",rep_num);
 	}
 	
 
-	public int getReportWriteOk(RE_BBS_VO repvo) {
+	public int getReportWriteOk(REP_BBS_VO repvo) {
 		return sqlSessionTemplate.insert("bbs.reportinsert", repvo);
 	}
 	
 	
 	
 	//리뷰
-	
+	public List<RE_BBS_VO> getreviewlist() {
+		return sqlSessionTemplate.selectList("bbs.reviewlist");
+	}
+
+	public int getTotalReviewCount() {
+		return sqlSessionTemplate.selectOne("bbs.reviewcount");
+	}
+
+
+	public List<RE_BBS_VO> getreviewlist(int offset, int limit) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("limit", limit);
+		map.put("offset", offset);
+		return sqlSessionTemplate.selectList("bbs.reviewlist", map);
+	}
+
+
+	public RE_BBS_VO getReviewOneList(String review_num) {
+		return sqlSessionTemplate.selectOne("bbs.reviewonelist",review_num );
+	}
+
+
+	public int getReviewWriteOk(RE_BBS_VO reivewvo) {
+		return sqlSessionTemplate.insert("bbs.reviewinsert", reivewvo);
+	}
+
+
+	public int getReviewUpdateOk(RE_BBS_VO reivewvo) {
+		return sqlSessionTemplate.update("bbs.reviewupdate", reivewvo);
+	}
+
+	public int BbsReviewDeleteOk(String RE_NUM) {
+		return sqlSessionTemplate.update("bbs.reviewdelete", RE_NUM);
+	}
 	
 	
 }

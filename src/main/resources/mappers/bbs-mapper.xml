@@ -156,7 +156,54 @@
    	values(#{REPORT_SUBJECT},#{REPORT_WRITER},#{REPORT_CONTENT},#{REPORT_FILE},SYSDATE(),#{REPORT_TYPE},#{CLIENT_NUM}, #{PROD_NUM})
    </insert>
    
+   
+   
+   <!-- review -->
 
+    <!-- 페이징을 위한 시작과 끝구하고, 리스트 출력  -->
+   <select id="reviewlist" parameterType="Map" resultType="reviewbbsvo">
+    	select * from REVIEW_T 
+    	order by RE_NUM desc limit #{limit} offset #{offset}
+    	
+   </select> 
+   
+      <!--게시글 갯수구하기  -->
+   <select id="reviewcount" resultType="int">
+   	select count(*) from REVIEW_T
+   </select>
+   
+   <!--상세  -->
+   <select id="reviewonelist" parameterType="String" resultType="reviewbbsvo">
+   	select * from REVIEW_T where RE_NUM = #{RE_NUM}
+   </select>
+   
+   <insert id="reviewinsert" parameterType="reviewbbsvo" >
+   	insert into REVIEW_T (RE_SUBJECT, RE_WRITER, RE_CONTENT, RE_FILE, RE_TYPE,  RE_DATE, RE_UPDATE, RE_LOCK,CLIENT_NUM,PROD_NUM)
+   	values(#{RE_SUBJECT},#{RE_WRITER},#{RE_CONTENT},#{RE_FILE},#{RE_TYPE},SYSDATE(),#{RE_UPDATE},#{RE_LOCK}, #{CLIENT_NUM}, #{PROD_NUM})
+   </insert>
+   
+   
+   <update id="reviewupdate" parameterType="reviewbbsvo">
+   	update REVIEW_T
+	set
+    RE_SUBJECT=#{RE_SUBJECT},
+    RE_CONTENT=#{RE_CONTENT},
+    RE_FILE=#{RE_FILE},
+    RE_LOCK=#{RE_LOCK},
+    RE_UPDATE=SYSDATE(),
+    RE_TYPE=#{RE_TYPE},
+    CLIENT_NUM=#{CLIENT_NUM},
+    PROD_NUM=#{PROD_NUM}
+	where RE_NUM=#{RE_NUM}
+   </update>
+
+
+
+   <update id="reviewdelete" parameterType="String">
+   	update REVIEW_T
+   	set RE_ST = 0 where RE_NUM = #{RE_NUM}
+   	
+   </update>
    
 </mapper>
 

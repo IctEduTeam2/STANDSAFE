@@ -162,6 +162,7 @@ label {
 										<label for="chkbox"></label>
 										비밀글여부
 									</div>
+									</td>
 							</tr>
 							<tr align="center">
 								<td colspan="2">

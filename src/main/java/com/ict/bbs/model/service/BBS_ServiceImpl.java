@@ -10,6 +10,7 @@ import com.ict.bbs.model.vo.EV_BBS_VO;
 import com.ict.bbs.model.vo.FA_BBS_VO;
 import com.ict.bbs.model.vo.NO_BBS_VO;
 import com.ict.bbs.model.vo.QA_BBS_VO;
+import com.ict.bbs.model.vo.REP_BBS_VO;
 import com.ict.bbs.model.vo.RE_BBS_VO;
 
 
@@ -148,7 +149,7 @@ public class BBS_ServiceImpl implements BBS_Service{
 	
 	//신고
 	@Override
-	public List<RE_BBS_VO> getreportlist() {
+	public List<REP_BBS_VO> getreportlist() {
 		return bbsDAO.getreportlist();
 	}
 	
@@ -158,18 +159,57 @@ public class BBS_ServiceImpl implements BBS_Service{
 	}
 	
 	@Override
-	public List<RE_BBS_VO> getreportlist(int offset, int limit) {
+	public List<REP_BBS_VO> getreportlist(int offset, int limit) {
 		return bbsDAO.getreportlist(offset, limit);
 	}
 	
 	@Override
-	public RE_BBS_VO getReportOneList(String rep_num) {
+	public REP_BBS_VO getReportOneList(String rep_num) {
 		return bbsDAO.getReportOneList(rep_num);
 	}
 	
 	@Override
-	public int getReportWriteOk(RE_BBS_VO repvo) {
+	public int getReportWriteOk(REP_BBS_VO repvo) {
 		return bbsDAO.getReportWriteOk(repvo);
+	}
+
+	
+	
+	
+	//review
+	@Override
+	public List<RE_BBS_VO> getreviewlist() {
+		return bbsDAO.getreviewlist();
+	}
+
+	@Override
+	public int getTotalReviewCount() {
+		return bbsDAO.getTotalReviewCount();
+	}
+
+	@Override
+	public List<RE_BBS_VO> getreviewlist(int offset, int limit) {
+		return bbsDAO.getreviewlist(offset, limit);
+	}
+
+	@Override
+	public RE_BBS_VO getReviewOneList(String review_num) {
+		return bbsDAO.getReviewOneList(review_num);
+	}
+
+	@Override
+	public int getReviewWriteOk(RE_BBS_VO reivewvo) {
+		return bbsDAO.getReviewWriteOk(reivewvo);
+	}
+
+	@Override
+	public int getReviewUpdateOk(RE_BBS_VO reivewvo) {
+		return bbsDAO.getReviewUpdateOk(reivewvo);
+	}
+
+	@Override
+	public int BbsReviewDeleteOk(String RE_NUM) {
+		return bbsDAO.BbsReviewDeleteOk(RE_NUM);
 	}
 	
 	
