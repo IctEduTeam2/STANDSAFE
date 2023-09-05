@@ -53,7 +53,7 @@ public class UserController {
 	public ModelAndView getUserLoginOk(UserVO uVO, PointVO pVO, HttpSession session) {
 		// 입력한 id의 패스워드를 DB에 가져와서 입력한 pwd와 비교해서 맞으면 성공 틀리면 실패
 		// id로 DB에 저장된 pwd 가져오기
-		ModelAndView mv = new ModelAndView("index");
+		ModelAndView mv = new ModelAndView();
 		UserVO uvo = userService.getUserPw(uVO.getID());
 		System.out.println(userService.getUserPw(uVO.getID()));
 		
@@ -71,6 +71,7 @@ public class UserController {
 		if (!passwordEncoder.matches(uVO.getPW(), uvo.getPW())) {
 			session.setAttribute("loginChk", "fail");
 			System.out.println("로그인 실패");
+			mv.setViewName("user/loginform");
 			return mv;
 		} else {
 			// 유저의 포인트 보내기
@@ -88,7 +89,8 @@ public class UserController {
 			session.setAttribute("loginChk", "ok");
 			System.out.println("LoginChk: " + session.getAttribute("loginChk"));
 			System.out.println("유저 로그인 됨");
-
+			
+			mv.setViewName("index");
 			return mv;
 		}
 	}
@@ -107,6 +109,10 @@ public class UserController {
 		session.removeAttribute("c_id");
 		session.removeAttribute("c_num");
 		session.removeAttribute("pw");
+		session.removeAttribute("onelist");
+
+
+	
 		
 		return new ModelAndView("redirect:/");
 	}

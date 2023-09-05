@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -72,6 +73,17 @@ table td:nth-child(4) {
 
 #noti{color: red; font-size: 14px; text-align: center; margin-top: 30px}
 </style> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		var reponelist = "${reponelist}";
+		if(reponelist == "not"){
+			alert("다른사람이 작성한 (비밀)글입니다. 조회권한이 없습니다. ");
+			return ;
+		}
+
+	});
+</script>
 <script type="text/javascript">
 
 	function bbs_go_report_writeform() {
@@ -83,6 +95,8 @@ table td:nth-child(4) {
 		/* 이부분은 나중에 일처리해서 검색창화면으로 가게하기.  */
 		
 	}
+	
+
 </script>
 
 </head>
@@ -104,6 +118,7 @@ table td:nth-child(4) {
 									<input type="radio" name="search" value="content" " />
 									<span>내용</span>					
 								</label>
+	
 								<div id="search_bar">
 									<input type="text" id="s_bar" placeholder="검색어입력">
 									<button id="s_btn" onclick="search_go()">검색</button>			
@@ -149,7 +164,7 @@ table td:nth-child(4) {
 												       [비밀]${k.REPORT_SUBJECT}
 												      </a>
 												    </td>
-											<td>${k.REPORT_WRITER}</td>									  
+											<td>${k.REPORT_WRITER}</td>
 											<td> ${k.REPORT_DATE.substring(0, 10)}</td>
 										</tr>
 									</c:forEach>

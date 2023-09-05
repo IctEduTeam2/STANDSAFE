@@ -74,7 +74,19 @@ table tfoot ol.paging li a:hover {
 }
 
 </style> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		var qaonelist = "${qaonelist}";
+		if(qaonelist == "not"){
+			alert("다른사람이 작성한 (비밀)글입니다. 조회권한이 없습니다. ");
+			return ;
+		}else if(qaonelist=="view") {
+			return;
+		}
 
+	});
+</script>
 <script type="text/javascript">
 
 	function bbs_go_qa_writeform() {
@@ -98,12 +110,16 @@ table tfoot ol.paging li a:hover {
 						<div id="bbs_sub"><h1>상품 Q&A</h1></div>			
 							<fieldset class="radio_c">
 								<label>
-									<input type="radio" name="search" value="subject" class="cus_radio" checked />
+									<input type="radio" name="search" value="subject" checked />
 									<span>제목</span>					
 								</label>
 								<label>
-									<input type="radio" name="search" value="content" class="cus_radio" />
+									<input type="radio" name="search" value="content"  />
 									<span>내용</span>					
+								</label>
+								<label>
+									<input type="radio" name="search" value="writer"  />
+									<span>작성자</span>					
 								</label>
 								<div id="search_bar">
 									<input type="text" id="s_bar" placeholder="검색어입력">

@@ -157,7 +157,7 @@ $(document).ready(function() {
 												<td>${k.FA_DATE.substring(0,10)}</td>
 											</tr>
 											<tr class="content-row">
-												<td colspan="6" class="conts">${favo.FA_ANSWER }</td>
+												<td colspan="6" class="conts">${ans}</td>
 											</tr>
 									</c:forEach>
 								</c:otherwise>

@@ -75,7 +75,18 @@ label {
 
 
 </style> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		var qaonelist = "${qaonelist}";
+		if(qaonelist == "update") {
+			$("#viewno").css("display","none"); 
+			$("#viewok").css("display", "block");
 
+			return ;
+		}
+	});
+</script>	
 <script type="text/javascript">
 	function update_go(f) {
 		f.action="/bbs_qa_updateform.do";
@@ -161,8 +172,9 @@ label {
 							</tr>
 							</tbody>
 							<tfoot>
-								<tr align="center">
+								<tr align="center" >
 									<td colspan="2">
+									 <div id="viewok" style="display: none;">
 										<input type="button" value="수정" onclick="update_go(this.form)" class="in_btn"/>
 										<input type="hidden" value="${qnavo.BOARD_NUM}" name="BOARD_NUM">
 										<input type="hidden" value="${cPage}" name="cPage">
@@ -170,6 +182,12 @@ label {
 										<input type="button" value="목록" onclick="list_go(this.form)" class="in_btn"/>
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										<input type="button" value="삭제"  onclick="delete_go(this.form)" class="in_btn"/>
+									</div>						
+									 <div id="viewno" >									
+										<input type="hidden" value="${qnavo.BOARD_NUM}" name="BOARD_NUM">
+										<input type="hidden" value="${cPage}" name="cPage">
+										<input type="button" value="목록" onclick="list_go(this.form)" class="in_btn"/>									
+									</div>
 									</td>
 								</tr>
 							</tfoot>

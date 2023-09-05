@@ -9,11 +9,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
-		console.log("loginChk is: ", loginChk);
-		var loginChk = "${sessionScope.loginChk}";
+		var loginChk = "${loginChk}";
 		if(loginChk == "fail"){
 			alert("비밀번호틀림");
-			return ;
+			return "/user_loginform.do" ;
 		}else if(loginChk == "ok"){
 			$("#loggedOut").css("display","none");    // 감추기
 			$("#loggedIn").css("display","block"); // 나타내기	
