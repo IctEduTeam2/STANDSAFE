@@ -75,9 +75,10 @@ table tfoot ol.paging li a:hover {
 </style> 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <script type="text/javascript">
-$(document).ready(function() {
+/*$(document).ready(function() {
 	 $('.title').click(function() {
-		    const toggleCell = $(this).closest('tr').next('.content-row').find('.conts');
+		 
+		 const toggleCell = $(this).closest('tr').next('.content-row').find('.conts');
 		    
 		    // 클릭한 행의 답변 상태 확인 후 처리
 		    if (toggleCell.is(':visible')) {
@@ -88,7 +89,21 @@ $(document).ready(function() {
 		      toggleCell.show(); // 클릭한 행의 답변 열기
 		    }
 		  });
-		});
+	 
+	 
+		});*/
+$(document).ready(function() {
+	  $('.title').click(function() {
+	    // 현재 클릭한 제목행의 답변 행 찾기
+	    const toggleCell = $(this).closest('tr').next('.content-row').find('.conts');
+	    
+	    // 모든 답변 숨기기
+	    $('.conts').hide();
+
+	    // 현재 클릭한 제목행의 답변 행 보이기
+	    toggleCell.show();
+	  });
+	});
 </script>
 <script type="text/javascript">
 	function search_go() {
@@ -148,8 +163,14 @@ $(document).ready(function() {
 													<td style="color:gray;">삭제된 게시물입니다.</td>
 												</c:when>
 												<c:otherwise>
-
-													<td><a class="title" href="/bbs_faq_onelist.do?FA_NUM=${k.FA_NUM}&cPage=${paging.nowPage}" >${k.FA_SUBJECT}</a></td>															
+													<td>
+													<a class="title" href="/bbs_faq_onelist.do?FA_NUM=${k.FA_NUM}&cPage=${paging.nowPage}" >
+													${k.FA_SUBJECT}</a>
+													</td>																		 												
+													<!-- <td>
+													<a class="title" >
+													${k.FA_SUBJECT}</a>
+													</td> -->																					 												
 												</c:otherwise>
 											</c:choose>
 												<td>${k.FA_WRITER}</td>
@@ -157,7 +178,7 @@ $(document).ready(function() {
 												<td>${k.FA_DATE.substring(0,10)}</td>
 											</tr>
 											<tr class="content-row">
-												<td colspan="6" class="conts">${ans}</td>
+												<td colspan="6" class="conts">${k.FA_ANSWER}</td>
 											</tr>
 									</c:forEach>
 								</c:otherwise>

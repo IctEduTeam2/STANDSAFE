@@ -45,6 +45,9 @@ public class BBSController {
 	//공지사항 전체리스트 + 페이징
 	@RequestMapping("/bbs_notice_go.do")
 	public ModelAndView goBbsNotice(HttpServletRequest request,HttpSession session) {
+		session.removeAttribute("reponelist");
+        session.removeAttribute("qaonelist");
+        session.removeAttribute("revonelist");
 		
 		ModelAndView mv = new ModelAndView("bbs/notice");
 		
@@ -96,7 +99,9 @@ public class BBSController {
 	
 	@RequestMapping("/bbs_event_go.do")
 	public ModelAndView goBbsEvent(HttpServletRequest request,HttpSession session) {
-	
+		session.removeAttribute("reponelist");
+        session.removeAttribute("qaonelist");
+        session.removeAttribute("revonelist");
 		ModelAndView mv = new ModelAndView("bbs/event");
 		
 		//페이징을 위해 게시물의 전체글 구하기
@@ -146,8 +151,10 @@ public class BBSController {
 	
 	@RequestMapping("/bbs_faq_go.do")
 	public ModelAndView goBbsFaq(HttpServletRequest request,HttpSession session) {
-		
-		ModelAndView mv = new ModelAndView("bbs/faq");
+		session.removeAttribute("reponelist");
+        session.removeAttribute("qaonelist");
+        session.removeAttribute("revonelist");
+		ModelAndView mv = new ModelAndView();
 		
 		//페이징을 위해 게시물의 전체글 구하기
 		int count = bbsService.getTotalFaqCount();
@@ -162,6 +169,8 @@ public class BBSController {
 				paging.setTotalPage(paging.getTotalPage() +1);
 			}
 		}
+		
+		
 		String cPage = request.getParameter("cPage");
 		if(cPage==null) {
 			paging.setNowPage(1);
@@ -182,26 +191,24 @@ public class BBSController {
 		
 		List<FA_BBS_VO> list = bbsService.getfaqlist(paging.getOffset(),paging.getNumPerPage());
 		
-		String faq_num = request.getParameter("FA_NUM");
+		
 
-		
-		FA_BBS_VO fqvo = bbsService.getFaqOneList(faq_num);
-		
-		
-		
+	
+		mv.addObject("cPage", cPage);
+
 		mv.addObject("list", list);
-		mv.addObject("fqvo", fqvo);
 		mv.addObject("paging", paging);
-
-
-
+		
+		mv.setViewName("bbs/faq");
+	
 		return mv;
 
 	}
 	
 	@RequestMapping("/bbs_qa_go.do")
 	public ModelAndView goBbsQa(HttpServletRequest request, HttpSession session) {
-		
+		session.removeAttribute("reponelist");    
+        session.removeAttribute("revonelist");
 		
 		ModelAndView mv = new ModelAndView("bbs/qa");
 		
@@ -252,7 +259,9 @@ public class BBSController {
 	
 	@RequestMapping("/bbs_report_go.do")
 	public ModelAndView goBbsReport(HttpServletRequest request,HttpSession session) {
-		
+	
+        session.removeAttribute("qaonelist");
+        session.removeAttribute("revonelist");
 		ModelAndView mv = new ModelAndView("bbs/report");
 		
 		//페이징을 위해 게시물의 전체글 구하기
@@ -303,7 +312,8 @@ public class BBSController {
 	
 	@RequestMapping("/bbs_review_go.do")
 	public ModelAndView goBbsReview(HttpServletRequest request,HttpSession session) {
-		
+		session.removeAttribute("reponelist");
+        session.removeAttribute("qaonelist");
 		ModelAndView mv = new ModelAndView("bbs/review");
 		
 		//페이징을 위해 게시물의 전체글 구하기
@@ -416,11 +426,11 @@ public class BBSController {
 		//onelist
 		FA_BBS_VO favo = bbsService.getFaqOneList(faq_num);
 		
-		String ans = favo.getFA_ANSWER();
+		
 		
 		mv.addObject("favo", favo);
 		mv.addObject("cPage", cPage);
-		mv.addObject("ans", ans);
+	
 
 		return mv;
 	}
@@ -445,7 +455,7 @@ public class BBSController {
 		
 		int c_num = (int) request.getSession().getAttribute("c_num");
 		String num = Integer.toString(c_num);
-		System.out.println("로그인한 아이디의 아이디: " + num);
+		System.out.println("로그인한 아이디의 번호: " + num);
 		String dbnum = qnavo.getCLIENT_NUM();
 		System.out.println("게시물번호로 조회하여 갖고온 멤버번호:" + dbnum);
 		String lock = qnavo.getBOARD_LOCK();
