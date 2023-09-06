@@ -164,7 +164,8 @@ table td:nth-child(4) {
 												       [비밀]${k.REPORT_SUBJECT}
 												      </a>
 												    </td>
-											<td>${k.REPORT_WRITER}</td>
+										 <td>${k.REPORT_WRITER}</td>
+
 											<td> ${k.REPORT_DATE.substring(0, 10)}</td>
 										</tr>
 									</c:forEach>

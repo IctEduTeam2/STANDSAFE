@@ -12,10 +12,6 @@
 <link rel="stylesheet" href="resources/css/bbs.css" />
 <style type="text/css">
 
-label {
-  line-height: 2rem;
-  padding: 0.2em 0.4em;
-}
 fieldset {
   display: flex;
   justify-content: center;
@@ -63,50 +59,138 @@ table tfoot ol.paging li a:hover {
 	color: white;
 	font-weight: bold;
 }
+    .custom-search {
+        width: 800px;
+        margin: 20px auto;
+        background-color: white;
+        padding: 50px;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    label {
+        display: inline;
+        text-align: center;
+    }
+
+    .search-input select,
+    .search-input input[type="text"] {
+        margin-right: 10px;
+    }
+
+    .button-container {
+        text-align: right; /* 오른쪽 정렬로 변경 */
+        margin-top: 10px;
+    }
+
+    .button-container .search-button,
+    .button-container .search-button-alt {
+        width: 120px;
+        height: 40px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+        margin: 5px;
+    }
+
+    .button-container .search-button {
+        background-color: #505BBD;
+    }
+
+    .button-container .search-button-alt {
+        background-color: #D3D3D3;
+    }
+
+    .search-input {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start; /* 왼쪽 정렬로 변경 */
+    }
+
+    .date-picker {
+        margin-top: 10px;
+    }
+    #searchKey{
+    margin-left: 50px; 
+    height:50px; 
+    width: 200px;
+    font-size: 16px;
+    padding: 0px;
+    }
+    #fromDate{
+    height:50px; 
+    width: 400px;
+    font-size: 16px;
+    padding: 0px;
+    }
+    #start{
+    margin-left: 50px;
+    height:50px; 
+    width: 200px;
+    font-size: 16px;
+    padding: 0px;
+    }
+    #end{
+     height:50px; 
+    width: 200px;
+    font-size: 16px;
+    padding: 0px;
+    }
+    #h1{
+    padding-top: 200px;
+    }
 
 </style> 
 <script type="text/javascript">
-function search_go() {
-    var selectedOption = document.querySelector('input[name="search"]:checked').value;
-    var searchText = document.getElementById("s_bar").value;
 
-    $.ajax({
-        type: "POST",
-        url: "/bbs_search.do", // 서버 URL을 적절하게 변경하세요.
-        data: { option: selectedOption, searchText: searchText },
-        success: function(response) {
-            // 서버에서 반환된 데이터(response)를 처리합니다.
-        },
-        error: function(err) {
-            // 오류 처리 코드를 여기에 추가할 수 있습니다.
-        }
-    });
-}
 </script>
 </head>
 </head>
 <body onload="InitializeStaticMenu();">
 	<div id="mydiv">
 		<jsp:include page="../Semantic/header.jsp"></jsp:include>
-		<section id="contents">
-			<article>
-						<div id="bbs_top" >					
-					<div id="bbs_sub"><h1>이벤트</h1></div>
-							<fieldset >
-								<label>
-									<input type="radio" name="search" value="제목" id="t_sub" checked />
-									<span>제목</span>					
-								</label>
-								<label>
-									<input type="radio" name="search" value="내용" id="t_con" />
-									<span>내용</span>					
-								</label>
-								<div id="search_bar">
-									<input type="text" id="s_bar" placeholder="검색어입력">
-									<button id="s_btn" onclick="search_go()">검색</button>			
-								</div>				
-							</fieldset>		
-						</div>  <!--  제목및 버튼검색창의 끝 -->		
+		
+		<div style="text-align: center; padding-bottom: 20px;" >
+
+		 <h1 id="result">검색결과</h1> </div>
+	 <div class="custom-search"> <!-- 클래스 추가 -->
+        <!-- 검색 영역 -->
+        <form id="searchForm" method="post">
+            <div class="search-input" >
+                <label for="searchKey">검색어</label>
+	                <select id="searchKey" name="searchKey" title="검색항목선택">
+	                    <option value="제목">제목</option>
+	                    <option value="회원">회원 아이디</option>
+	                    <option value="내용">내용</option>
+	                </select>
+               		 <input type="text" id="fromDate" name="word"  value=""  placeholder="검색어를 입력하세요">
+           	</div>
+		            <div class="date-picker">
+		                <label for="searchDate">날　짜</label>
+		                <input type="date" id="start" name="trip-start"> ~ 
+		                <input type="date" id="end" name="trip-end">
+		            </div>
+		            <div class="button-container">
+		                <input type="button" alt="전체기간" value="전체기간" class="search-button">
+		                <input type="button" alt="일주일" value="일주일" class="search-button">
+		                <input type="button" alt="오늘" value="오늘" class="search-button">
+		                <br>
+		                <input type="button" alt="초기화" value="초기화" class="search-button">
+		                <input type="button" alt="검색" value="검색" class="search-button" onclick="location.href='/'">
+		            </div>
+   				 </form>
+       		</div>
+       </div>
+        
+        
+		<div>
+			<h3>■ (  ) 검색결과</h3>
+		</div>
 					<hr class="hr">
 					<!-- 메인 테이블 -->
 					<table class="m_table">				
@@ -190,8 +274,6 @@ function search_go() {
 								</tr>
 						</tfoot>
 					</table>
-					</article>
-			</section>
 		<jsp:include page="../Semantic/quickmenu.jsp"></jsp:include>
 		<script src="resources/js/quick.js"></script>
 		<jsp:include page="../Semantic/footer.jsp"></jsp:include>

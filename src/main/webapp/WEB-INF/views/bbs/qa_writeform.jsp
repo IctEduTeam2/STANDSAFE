@@ -186,6 +186,7 @@ label {
 					</form>
 			</article>
 		</section>	
+		
 		<script src="resources/js/quick.js"></script>
 		<jsp:include page="../Semantic/footer.jsp"></jsp:include>
 	</div>

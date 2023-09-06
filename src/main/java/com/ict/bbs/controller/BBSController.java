@@ -683,10 +683,28 @@ public class BBSController {
 			//회원닉네임 갖고오기 - 작성자에 자동 뜨고 저장하기위함
 			String nick = (String) request.getSession().getAttribute("c_id");
 			System.out.println("로그인한 닉넴 : " + nick); 
+		
 			
-			//제리똥나온다. vo저장후 맵퍼에 보내자. 저장하라고
+			String maskNick;
 			
+			if(nick.length() <2) {
+				char firstChar = nick.charAt(0);
+				maskNick = firstChar + "**";
+			} else {
+				char firstChar = nick.charAt(0);
+				char lastChar = nick.charAt(nick.length() -1);
+				StringBuilder maskName = new StringBuilder();
+				maskName.append(firstChar);
+				for(int i = 1; i <nick.length() -1; i++) {
+					maskName.append('*');
+				}
+				maskName.append(lastChar);
+				maskNick = maskName.toString();
+			}
+			System.out.println("가려진 닉넴" + maskNick);
 			
+			mv.addObject("maskNick", maskNick);
+
 			//회원client_num 갖고오자. 디비에 넣어야한다. 
 			int num = (int) request.getSession().getAttribute("c_num");
 			System.out.println("닉네임의 번호:" + num);
@@ -706,6 +724,7 @@ public class BBSController {
 			int result = bbsService.getReportWriteOk(repvo);
 			
 			if(result >0) {
+				
 				return mv;
 			}else {
 				return null;
@@ -715,11 +734,7 @@ public class BBSController {
 			return null;
 		}
 	}
-	
-	//신고게시글에서만 
-	private String maskName(String name) {
-		return "*".repeat(name.length());
-	}
+
 	
 	
 	//작성완료 리뷰
@@ -1104,5 +1119,6 @@ public class BBSController {
 		
 	}
 	
+
 	
-}
+}//마지막괄호

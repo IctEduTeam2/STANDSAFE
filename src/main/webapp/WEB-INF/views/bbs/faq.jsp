@@ -28,6 +28,9 @@ fieldset {
     text-align: left;
     padding-left: 400px;
     font-size: 14px;
+    background-color: #1b5ac2;
+    color: white;
+    
   }
 
 .title {
@@ -39,22 +42,22 @@ table tfoot ol.paging {
 }
 table tfoot ol.paging li {
     display: inline-block; /* 가로 정렬을 위해 float 제거하고 inline-block으로 변경 */
-    /* margin-right: 8px; */
+    margin-right: 8px;
 }
 
 
 table tfoot ol.paging li a {
 	display: block;
-	/* padding: 3px 7px; */
+	 padding: 3px 7px; 
 	border: 1px solid #6c98c2;
 	color: #2f313e;
-	/* font-weight: bold; */
+	 font-weight: bold;
 }
 
 table tfoot ol.paging li a:hover {
 	background: #6c98c2;
 	color: white;
-	/* font-weight: bold; */
+	 font-weight: bold;
 }
 
 
@@ -75,7 +78,7 @@ table tfoot ol.paging li a:hover {
 </style> 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <script type="text/javascript">
-/*$(document).ready(function() {
+$(document).ready(function() {
 	 $('.title').click(function() {
 		 
 		 const toggleCell = $(this).closest('tr').next('.content-row').find('.conts');
@@ -91,19 +94,9 @@ table tfoot ol.paging li a:hover {
 		  });
 	 
 	 
-		});*/
-$(document).ready(function() {
-	  $('.title').click(function() {
-	    // 현재 클릭한 제목행의 답변 행 찾기
-	    const toggleCell = $(this).closest('tr').next('.content-row').find('.conts');
-	    
-	    // 모든 답변 숨기기
-	    $('.conts').hide();
+		});
 
-	    // 현재 클릭한 제목행의 답변 행 보이기
-	    toggleCell.show();
-	  });
-	});
+	
 </script>
 <script type="text/javascript">
 	function search_go() {
@@ -141,7 +134,7 @@ $(document).ready(function() {
 					<table class="m_table">				
 						<thead class="mh_table">
 							 <tr>
-							 	<th id="th1">번호</th><th id="th4">분류</th><th id="th2">제목</th><th id="th3">작성자</th><th id="th5">조회수</th><th id="th6">날짜</th>
+							 	<th id="th1">번호</th><th id="th4">분류</th><th id="th2">제목</th><th id="th3">작성자</th><th id="th6">날짜</th>
 							 </tr>
 						</thead>
 						
@@ -152,33 +145,22 @@ $(document).ready(function() {
 										<td colspan="6"><p>자료가 존재하지 않습니다.</p></td>
 									</tr>
 								</c:when>
-								
 								<c:otherwise>
 									<c:forEach var="k" items="${list}" varStatus="vs">
 										<tr>
 											<td>${paging.totalRecord -((paging.nowPage-1)*paging.numPerPage + vs.index) }</td>
 											<td>${k.FA_TYPE}</td>
-											<c:choose>
-												<c:when test="${k.FA_ST ==2 }">
-													<td style="color:gray;">삭제된 게시물입니다.</td>
-												</c:when>
-												<c:otherwise>
-													<td>
-													<a class="title" href="/bbs_faq_onelist.do?FA_NUM=${k.FA_NUM}&cPage=${paging.nowPage}" >
+												<td>
+													<a class="title">
 													${k.FA_SUBJECT}</a>
-													</td>																		 												
-													<!-- <td>
-													<a class="title" >
-													${k.FA_SUBJECT}</a>
-													</td> -->																					 												
-												</c:otherwise>
-											</c:choose>
+													</td>																		 																															 												
 												<td>${k.FA_WRITER}</td>
-												<td>${k.FA_HIT}</td>
 												<td>${k.FA_DATE.substring(0,10)}</td>
 											</tr>
 											<tr class="content-row">
-												<td colspan="6" class="conts">${k.FA_ANSWER}</td>
+												<td colspan="6" class="conts">
+												<p style="margin-left: 50px;">${k.FA_ANSWER}</p>
+												</td>
 											</tr>
 									</c:forEach>
 								</c:otherwise>
