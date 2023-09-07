@@ -1,5 +1,7 @@
 package com.ict.user.model.dao;
 
+import java.util.Map;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -22,17 +24,26 @@ public class UserDAO {
 	}
 
 	//아이디 중복체크
-	public int idCheck(String ID) {
+	public int isIdDuplicate(String ID) {
 		return sqlSessionTemplate.selectOne("member.idCheck", ID);
 	}
 
 	//닉네임 중복체크
-	public int nickCheck(String NICKNAME) {
+	public int isNickDuplicate(String NICKNAME) {
 		return sqlSessionTemplate.selectOne("member.nickCheck", NICKNAME);
 	}
 	//sns 이메일 비교
 	public UserVO getUserByEmail(String MAIL) {
 		return sqlSessionTemplate.selectOne("member.emailCheck", MAIL);
+	}
+	
+	//유저 업데이트
+	public int updateUser(UserVO userVO) {
+		return sqlSessionTemplate.update("member.userUpdate", userVO);
+	}
+	//비밀번호 중복체크
+	public int isPwDuplicate(Map<String, Object> params) {
+		return sqlSessionTemplate.selectOne("member.pwCheck", params);
 	}
 	
 

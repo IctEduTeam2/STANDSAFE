@@ -65,6 +65,7 @@ table tfoot ol.paging li a:hover {
 }
 
 </style> 
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script> -->
 <script type="text/javascript">
 function search_go() {
 	  var searchText = document.getElementById("s_bar").value;
@@ -85,7 +86,7 @@ function search_go() {
         data: { searchText: searchText, searchType: searchType },
         success: function(data) {
         	
-        	console.log(data);
+        	//console.log(data);
             // 서버에서 받은 응답을 처리합니다.
             // 예를 들어, 검색 결과를 화면에 표시하거나 다른 동작을 수행할 수 있습니다.
             // 컨트롤러에서 일처리해서 내용을 갖고왔다. 내용 라디오에 회원이라는 것을 치면 나온다. 

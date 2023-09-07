@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shopping">
+	<!-- 체크된 슬라이드 메인에 띄우는 것 -->
+	<select id="popupList" resultType="popupVO">
+		select * from POPUP_T where
+		popup_chk = 1 AND popup_st = 1
+	</select>
+
+	<!-- 베스트상품 -->
+	<select id="productBestList" resultType="productVO">
+		SELECT * FROM PRODUCT_T
+		ORDER BY prod_amount asc
+		LIMIT 10;
+	</select>
+
+	<!-- 최신상품 -->
+	<select id="productNewList" resultType="productVO">
+		SELECT * FROM PRODUCT_T
+		ORDER BY prod_regdate DESC
+		LIMIT 8;
+	</select>
+
+	<!-- 상품 한개 -->
+	<select id="productOne" resultType="productVO"
+		parameterType="String">
+		SELECT * FROM PRODUCT_T
+		WHERE PROD_NUM = #{PROD_NUM}
+	</select>
+
+	<!-- 장바구니 추가 -->
+	<insert id="basket" parameterType="basketVO">
+		<selectKey keyProperty="cart_num" resultType="String"
+			order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO CART_T(prod_num, cart_amount, cart_price, cart_st,
+		client_num)
+		VALUES(#{prod_num}, #{cart_amount}, #{cart_price},
+		#{cart_st}, #{client_num})
+	</insert>
+
+	<!-- 상품 한개 -->
+	<select id="userinfo" resultType="uVO" parameterType="String">
+		SELECT *
+		FROM MEMBER_T
+		WHERE client_num = #{client_num}
+	</select>
+
+	<!-- 위시리스트 추가 -->
+	<insert id="wishadd" parameterType="wishVO">
+		INSERT INTO
+		WISH_T(client_num, prod_num, wish_st)
+		values(#{client_num},#{prod_num},#{wish_st})
+	</insert>
+
+	<!-- 위시리스트 조회 -->
+	<select id="wishselect" resultType="wishVO"
+		parameterType="wishVO">
+		SELECT * FROM WISH_T
+		WHERE client_num = #{client_num} and
+		prod_num = #{prod_num}
+	</select>
+
+	<!-- 장바구니 상품 조회 -->
+	<select id="basketselect" resultType="basketVO"
+		parameterType="basketVO">
+		SELECT * FROM CART_T
+		WHERE client_num = #{client_num} AND
+		prod_num = #{prod_num} and cart_st = 0
+	</select>
+
+	<!-- 장바구니 수량변경 -->
+	<update id="basketupdate" parameterType="basketVO">
+		UPDATE CART_T SET
+		cart_amount = cart_amount + #{cart_amount}, cart_price = #{cart_price}
+		* cart_amount where prod_num = #{prod_num} and client_num =
+		#{client_num} and cart_st = 0
+	</update>
+
+	<!-- 장바구니 수량변경 -->
+	<update id="basketupdate2" parameterType="basketVO">
+		UPDATE CART_T SET
+		cart_amount = #{cart_amount}, cart_price = #{cart_price} *
+		#{cart_amount} where prod_num = #{prod_num} and client_num =
+		#{client_num} and cart_st = 0
+	</update>
+
+	<!-- 장바구니 리스트 조회 -->
+	<select id="basketlist" resultType="basketVO"
+		parameterType="basketVO">
+		SELECT * FROM CART_T
+		WHERE client_num = #{client_num} and
+		cart_st = 0
+	</select>
+
+	<!-- 장바구니 삭제 -->
+	<update id="basketproductdel" parameterType="basketVO">
+		UPDATE CART_T SET
+		cart_st = 2 where prod_num = #{prod_num} and client_num =
+		#{client_num} and cart_st = 0
+	</update>
+
+	<!-- 포인트 조회 -->
+	<select id="point" resultType="pVO" parameterType="String">
+		SELECT * FROM
+		POINT_T WHERE CLIENT_NUM = #{client_num} ORDER BY POINT_DATE DESC
+		LIMIT 1
+	</select>
+
+</mapper>
+
+
+
+
+
+
+
+
+

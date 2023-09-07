@@ -6,10 +6,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class FormController {
-	@GetMapping("/mainform.do")
-	public ModelAndView getMainForm() {
-		return new ModelAndView("index");
-	}
 	@GetMapping("/loginform.do")
 	public ModelAndView getLoginForm() {
 		return new ModelAndView("user/loginform");
@@ -18,10 +14,6 @@ public class FormController {
 	public ModelAndView getRegisterForm() {
 		return new ModelAndView("user/joinpage");
 	}
-	@GetMapping("/orderform.do")
-	public ModelAndView getOrderForm() {
-		return new ModelAndView("shopping/order");
-	}
 	@GetMapping("/orderlistform.do")
 	public ModelAndView getOrderListForm() {
 		return new ModelAndView("shopping/orderlist");
@@ -29,10 +21,6 @@ public class FormController {
 	@GetMapping("/orderOneListform.do")
 	public ModelAndView getOrderOneListForm() {
 		return new ModelAndView("shopping/order_onelist");
-	}
-	@GetMapping("/basketform.do")
-	public ModelAndView getBasketForm() {
-		return new ModelAndView("shopping/basket");
 	}
 	@GetMapping("/wishlistform.do")
 	public ModelAndView getWishlistForm() {
@@ -46,8 +34,8 @@ public class FormController {
 	public ModelAndView getProductsForm() {
 		return new ModelAndView("shopping/products");
 	}
-	@GetMapping("/productOneListform.do")
-	public ModelAndView getProductOneListForm() {
-		return new ModelAndView("shopping/product_onelist");
+	@GetMapping("/error.do")
+	public ModelAndView getError() {
+		return new ModelAndView("shopping/error");
 	}
 }

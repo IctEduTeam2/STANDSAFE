@@ -12,13 +12,11 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
 <!-- Link Swiper's CSS -->
-
 <link rel="stylesheet" href="resources/css/slide.css" />
 <link rel="stylesheet" href="resources/css/basis.css" />
 <link rel="stylesheet" href="resources/css/userlogin.css" />
-<script type="text/javascript">
-	
-</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
 </head>
 <body onload="InitializeStaticMenu();">
 	<div id="mydiv">
@@ -59,6 +57,7 @@
 				<div class="social-login">
 					<p class=>
 						<c:set var="REST_API_KEY" value="1b5cf56e8cc2a06876bd756e6307c0ad" />
+						<!-- 서버에따라 8080 8090 바꿔주기 -->
 						<c:set var="REDIRECT_URI" value="http://localhost:8080/kakaologin.do" />
 						<!-- &prompt=login : 기존의 로그인 여부와 상관없이 로그인해야하게 해놓음 -->
 						<a href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&prompt=login">

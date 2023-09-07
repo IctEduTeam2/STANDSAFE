@@ -164,6 +164,8 @@
 		<!-- 하단 버튼 -->
 		<div>
 			<span style="float: right; margin-top: 25px; margin-right: 180px;">
+				<button type="button" alt="홈페이지 등록" value="홈페이지 등록"
+				style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;" onclick="location.href='/'">홈페이지 등록</button>
 				<button type="button" alt="등록하기" value="등록하기"
 				style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;" onclick="location.href='/allpopslide.do'">등록하기</button>
 			</span>

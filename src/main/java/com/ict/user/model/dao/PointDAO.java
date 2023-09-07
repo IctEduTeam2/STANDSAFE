@@ -13,11 +13,12 @@ public class PointDAO {
 	private SqlSessionTemplate sqlSessionTemplate;
 
 	//포인트삽입
-	public int insertPoints(PointVO pVO) {
-		return sqlSessionTemplate.insert("point.insert", pVO);
+	public int getJoinpoint(PointVO pVO) {
+		return sqlSessionTemplate.insert("point.joinpoint", pVO);
 	}
 	//포인트조회
-		public PointVO getPointsByUserId(String id) {
-			return sqlSessionTemplate.selectOne("point.userpoint", id);
-		}
+	public int getPointsByUserId(int CLIENT_NUM) {
+		return sqlSessionTemplate.selectOne("point.userpoint", CLIENT_NUM);
+	}
+
 }

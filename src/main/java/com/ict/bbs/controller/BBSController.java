@@ -454,22 +454,21 @@ public class BBSController {
 		mv.addObject("qnavo", qnavo);
 		mv.addObject("cPage", cPage);
 		
-		int c_num = (int) request.getSession().getAttribute("c_num");
-		String num = Integer.toString(c_num);
-		System.out.println("로그인한 아이디의 번호: " + num);
+		String c_num = (String) request.getSession().getAttribute("id");
+		System.out.println("로그인한 아이디의 번호: " + c_num);
 		String dbnum = qnavo.getCLIENT_NUM();
 		System.out.println("게시물번호로 조회하여 갖고온 멤버번호:" + dbnum);
 		String lock = qnavo.getBOARD_LOCK();
 		System.out.println("비밀글여부 확인 1은 비밀, 0은 일반 : " + lock);
 
-			if(lock.equals("1") && !dbnum.equals(num)) {
+			if(lock.equals("1") && !dbnum.equals(c_num)) {
 				session.setAttribute("qaonelist", "not");
 				mv.setViewName("redirect:/bbs_qa_go.do");
 
 		        return mv; 
 			}else {
 				session.setAttribute("qaonelist", "view");
-					if(dbnum.equals(num)) {
+					if(dbnum.equals(c_num)) {
 						session.setAttribute("qaonelist", "update");
 					}
 					mv.setViewName("bbs/qa_onelist");
@@ -496,14 +495,13 @@ public class BBSController {
 		mv.addObject("repvo", repvo);
 		mv.addObject("cPage", cPage);
 
-		int c_num = (int) request.getSession().getAttribute("c_num");
-		String num = Integer.toString(c_num);
-		System.out.println("로그인한 아이디의 아이디: " + num);
+		String c_num = (String) request.getSession().getAttribute("id");
+		System.out.println("로그인한 아이디의 아이디: " + c_num);
 		String dbnum = repvo.getCLIENT_NUM();
 		System.out.println("게시물번호로 조회하여 갖고온 멤버번호:" + dbnum);
 
 
-			if(!dbnum.equals(num)) {
+			if(!dbnum.equals(c_num)) {
 				session.setAttribute("reponelist", "not");
 				mv.setViewName("redirect:/bbs_report_go.do");
 
@@ -532,9 +530,8 @@ public class BBSController {
 		mv.addObject("reviewvo", reviewvo);
 		mv.addObject("cPage", cPage);
 
-		int c_num = (int) request.getSession().getAttribute("c_num");
-		String num = Integer.toString(c_num);
-		System.out.println("로그인한 아이디의 아이디: " + num);
+		String c_num = (String) request.getSession().getAttribute("id");
+		System.out.println("로그인한 아이디의 아이디: " + c_num);
 		String dbnum = reviewvo.getCLIENT_NUM();
 		System.out.println("게시물번호로 조회하여 갖고온 멤버번호:" + dbnum);
 		String lock = reviewvo.getRE_LOCK();
@@ -542,14 +539,14 @@ public class BBSController {
 
 		
 		
-			if(lock.equals("1") && !dbnum.equals(num)) {
+			if(lock.equals("1") && !dbnum.equals(c_num)) {
 				session.setAttribute("revonelist", "not");
 				mv.setViewName("redirect:/bbs_review_go.do");
 
 		        return mv; 
 			}else {
 				session.setAttribute("revonelist", "view");
-					if(dbnum.equals(num)) {
+					if(dbnum.equals(c_num)) {
 						session.setAttribute("revonelist", "update");
 					}
 					mv.setViewName("bbs/review_onelist");
@@ -615,11 +612,10 @@ public class BBSController {
 			qnavo.setBOARD_WRITER(nick);
 			
 			//회원client_num 갖고오자. 디비에 넣어야한다. 
-			int num = (int) request.getSession().getAttribute("c_num");
+			String num = (String) request.getSession().getAttribute("id");
 			System.out.println("닉네임의 번호:" + num);
 			//맞는 17번 나온다, 저장하자, 혜인님이만든 유저 vo의 클라인트넘버는 인트로, 나는 스트링으로 바꿔주는 작업
-			String c_num = Integer.toString(num);
-			qnavo.setCLIENT_NUM(c_num);
+			qnavo.setCLIENT_NUM(num);
 
 			//라디오체크박스 값을 맴퍼에 보내기위해 가지고오기
 			
@@ -707,11 +703,10 @@ public class BBSController {
 			mv.addObject("maskNick", maskNick);
 
 			//회원client_num 갖고오자. 디비에 넣어야한다. 
-			int num = (int) request.getSession().getAttribute("c_num");
+			String num = (String) request.getSession().getAttribute("id");
 			System.out.println("닉네임의 번호:" + num);
 			//맞는 17번 나온다, 저장하자, 혜인님이만든 유저 vo의 클라인트넘버는 인트로, 나는 스트링으로 바꿔주는 작업
-			String c_num = Integer.toString(num);
-			repvo.setCLIENT_NUM(c_num);
+			repvo.setCLIENT_NUM(num);
 
 			//라디오체크박스 값을 맴퍼에 보내기위해 가지고오기
 			
@@ -773,11 +768,10 @@ public class BBSController {
 		reviewvo.setRE_WRITER(nick);
 		
 		//회원client_num 갖고오자. 디비에 넣어야한다. 
-		int num = (int) request.getSession().getAttribute("c_num");
+		String num = (String) request.getSession().getAttribute("id");
 		System.out.println("닉네임의 번호:" + num);
 		//맞는 17번 나온다, 저장하자, 혜인님이만든 유저 vo의 클라인트넘버는 인트로, 나는 스트링으로 바꿔주는 작업
-		String c_num = Integer.toString(num);
-		reviewvo.setCLIENT_NUM(c_num);
+		reviewvo.setCLIENT_NUM(num);
 
 		//라디오체크박스 값을 맴퍼에 보내기위해 가지고오기
 		
@@ -848,14 +842,14 @@ public class BBSController {
 		ModelAndView mv = new ModelAndView();
 		
 		//로그인한 세션에 저장된 client_num 갖고오기.
-		int num = (int) request.getSession().getAttribute("c_num");
+		String num = (String) request.getSession().getAttribute("id");
 		System.out.println("닉네임의 번호:" + num);
 		//로그인정보랑 맞게나온다.. 저장하자, 혜인님이만든 유저 vo의 클라인트넘버는 인트로, 나는 스트링으로 바꿔주는 작업
-		String c_num = Integer.toString(num); //로그인한정보와 맞는 번호임. 
+		//로그인한정보와 맞는 번호임. 
 		
 		
 		//로그인한 회원의 비번갖고오기. 입력한 비번과 비교하기위함 
-		String dbpw = (String) request.getSession().getAttribute("pw");
+		String dbpw = (String) request.getSession().getAttribute("dbpw");
 		System.out.println("디비비번은:" + dbpw);
 		
 		//입력한 번호출력해보기.
@@ -891,15 +885,15 @@ public class BBSController {
 		ModelAndView mv = new ModelAndView();
 		
 		//로그인한 세션에 저장된 client_num 갖고오기.
-		int num = (int) request.getSession().getAttribute("c_num");
+		String num = (String) request.getSession().getAttribute("id");
 		System.out.println("닉네임의 번호:" + num);
 		//로그인정보랑 맞게나온다.. 저장하자, 혜인님이만든 유저 vo의 클라인트넘버는 인트로, 나는 스트링으로 바꿔주는 작업
-		String c_num = Integer.toString(num); //로그인한정보와 맞는 번호임. 
+		//로그인한정보와 맞는 번호임. 
 		
 		
 		//로그인한 회원의 비번갖고오기. 입력한 비번과 비교하기위함 
-		String dbpw = (String) request.getSession().getAttribute("pw");
-		System.out.println("디비비번은:" + dbpw);
+			String dbpw = (String) request.getSession().getAttribute("dbpw");
+			System.out.println("디비비번은:" + dbpw);
 		
 		//입력한 번호출력해보기.
 		System.out.println("입력한번호는:" + pwd);
@@ -983,18 +977,18 @@ public class BBSController {
 			}
 			
 			//회원닉네임 갖고오기 - 작성자에 자동 뜨고 저장하기위함
-			String nick = (String) request.getSession().getAttribute("c_id");
+			String nick = (String) request.getSession().getAttribute("nick");
 			System.out.println("로그인한 닉넴 : " + nick); 
 			
 			//제리똥나온다. vo저장후 맵퍼에 보내자. 저장하라고
 			qnavo.setBOARD_WRITER(nick);
 			
 			//회원client_num 갖고오자. 디비에 넣어야한다. 
-			int num = (int) request.getSession().getAttribute("c_num");
+			String num = (String) request.getSession().getAttribute("id");
 			System.out.println("닉네임의 번호:" + num);
-			//맞는 17번 나온다, 저장하자, 혜인님이만든 유저 vo의 클라인트넘버는 인트로, 나는 스트링으로 바꿔주는 작업
-			String c_num = Integer.toString(num);
-			qnavo.setCLIENT_NUM(c_num);
+			
+		
+			qnavo.setCLIENT_NUM(num);
 		
 			//라디오체크박스 값을 맴퍼에 보내기위해 가지고오기
 			String type= request.getParameter("BOARD_TYPE");
@@ -1066,18 +1060,17 @@ public class BBSController {
 			}
 			
 			//회원닉네임 갖고오기 - 작성자에 자동 뜨고 저장하기위함
-			String nick = (String) request.getSession().getAttribute("c_id");
+			String nick = (String) request.getSession().getAttribute("nick");
 			System.out.println("로그인한 닉넴 : " + nick); 
 			
 			//제리똥나온다. vo저장후 맵퍼에 보내자. 저장하라고
 			riviewvo.setRE_WRITER(nick);
 			
 			//회원client_num 갖고오자. 디비에 넣어야한다. 
-			int num = (int) request.getSession().getAttribute("c_num");
+			String num = (String) request.getSession().getAttribute("id");
 			System.out.println("닉네임의 번호:" + num);
 			//맞는 17번 나온다, 저장하자, 혜인님이만든 유저 vo의 클라인트넘버는 인트로, 나는 스트링으로 바꿔주는 작업
-			String c_num = Integer.toString(num);
-			riviewvo.setCLIENT_NUM(c_num);
+			riviewvo.setCLIENT_NUM(num);
 		
 			//라디오체크박스 값을 맴퍼에 보내기위해 가지고오기
 			String type= request.getParameter("RE_TYPE");
@@ -1125,7 +1118,7 @@ public class BBSController {
 			@RequestParam("searchText")String searchText,
 			@RequestParam("searchType")String searchType) {
 		
-		ModelAndView mv = new ModelAndView("bbs/event_result");
+		ModelAndView mv = new ModelAndView();
 		
 		System.out.println("검색눌러서 불러온 단어: " + searchText);
 		System.out.println("검색눌러서 불러온 검색조건타입 : " + searchType);
@@ -1135,15 +1128,30 @@ public class BBSController {
 			List<EV_BBS_VO> s_result_con = bbsService.EvSearchResultByCon(searchText);
 			
 			System.out.println("맞는내용을 검색하여 갖고배열: " + s_result_con);
+			EV_BBS_VO evo = new EV_BBS_VO();
 			
 			for (EV_BBS_VO k : s_result_con) {
 				System.out.println("갖고온 번호: " + k.getEVENT_NUM());
 				System.out.println("갖고온 제목: "+k.getEVENT_SUBJECT());
+				System.out.println("갖고온 파일: "+k.getEVENT_FILE());
 				System.out.println("갖고온 내용: "+k.getEVENT_CONTENT());
 				System.out.println("갖고온 작성자: "+k.getEVENT_WRITER());
 				System.out.println("갖고온 날짜: "+k.getEVENT_DATE());
+				System.out.println("갖고온 조회수: "+k.getEVENT_HIT());
+				
+				
+				evo.setEVENT_NUM(k.getEVENT_NUM());
+				evo.setEVENT_SUBJECT(k.getEVENT_SUBJECT());
+				evo.setEVENT_CONTENT(k.getEVENT_CONTENT());
+				evo.setEVENT_WRITER(k.getEVENT_WRITER());
+				evo.setEVENT_DATE(k.getEVENT_DATE());
+				evo.setEVENT_HIT(k.getEVENT_HIT());
+				evo.setEVENT_FILE(k.getEVENT_FILE());
+
+				
+				
+				
 			} //결과가 잘나오나 뽑아보았다. 근데 결과가 한개가 아닌 여러개라면? 
-			
 			
 			mv.addObject("s_result_con", s_result_con);
 			return mv;

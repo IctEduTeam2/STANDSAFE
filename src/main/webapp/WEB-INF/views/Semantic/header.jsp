@@ -4,22 +4,30 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="icon" type="image/x-icon" href="resources/images/favicon.png">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-<script type="text/javascript">
+<title>Insert title here</title><script type="text/javascript">
 	$(document).ready(function() {
+		//console.log("loginChk is: ", loginChk);
 		var loginChk = "${loginChk}";
-		if(loginChk == "fail"){
+		
+		if (loginChk === "noUser") {
+	        alert("존재하지 않는 아이디입니다.");
+	        session.removeAttribute("loginChk");
+	        session.abort();
+	        return;
+	        
+		}else if(loginChk == "fail"){
 			alert("비밀번호틀림");
-			return "/user_loginform.do" ;
+			session.removeAttribute("loginChk");
+			session.abort();
+			return;
+			
 		}else if(loginChk == "ok"){
 			$("#loggedOut").css("display","none");    // 감추기
 			$("#loggedIn").css("display","block"); // 나타내기	
 		}
 	});
 </script>
-
 </head>
 <body>
 	<header id="header">
@@ -27,9 +35,9 @@
 			<% if (session.getAttribute("loginChk") != null && session.getAttribute("loginChk").equals("ok")) { %>
   	 		 <!-- 로그인 된 상태 -->
 			<div id="loggedIn">
-			<a class="top_gnb_a">${c_id }님(P:${sessionScope.pvo.POINT_REM })</a> <a class="top_gnb_a" href="/logoutGo.do">로그아웃</a>
-			<a class="top_gnb_a" href="/orderlistform.do">주문조회</a> <a class="top_gnb_a" href="/basketform.do">장바구니</a>
-			<a class="top_gnb_a" href="/mypageform.do">마이페이지</a> <a href="/wishlistform.do"
+			<a class="top_gnb_a">${nick }님(P:${sessionScope.POINT_REM })</a> <a class="top_gnb_a" href="/logoutGo.do">로그아웃</a>
+			<a class="top_gnb_a" href="/orderlistform.do?client_num='${sessionScope.c_num }'">주문조회</a> <a class="top_gnb_a" href="/basketform.do?client_num='${sessionScope.c_num }'">장바구니</a>
+			<a class="top_gnb_a" href="/mypageform.do?client_num='${sessionScope.c_num }'"">마이페이지</a> <a href="/wishlistform.do?client_num='${sessionScope.c_num }'""
 				class="top_gnb_last_a">관심상품</a>
 			</div>
 		<% } else { %>
@@ -42,7 +50,7 @@
 		<% } %>		
 		</div>
 		<div style="background-color: white;">
-			<a href="/mainform.do"><img id="logo" src="resources/images/logo.png"></a>
+			<a href="/"><img id="logo" src="resources/images/logo.png"></a>
 		</div>
 		<div id="nav">
 			<ul class="menu">

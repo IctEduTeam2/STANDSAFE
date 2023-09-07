@@ -146,7 +146,7 @@ fieldset {
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">작성자</td>
 								<!--이건 로그인한 사람이 자동으로 뜨게하기.  -->
-								<td><input type="text" name="name" size="20" autocomplete='off' value="${c_id }"/></td>
+								<td><input type="text" name="name" size="20" autocomplete='off' value="${nick}"/></td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">제목</td>
