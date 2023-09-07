@@ -98,11 +98,6 @@
 								생년월일 출력</a>
 					</tr>
 					<tr>
-						<td>전화번호</td>
-						<td><a type="text" id="phone" style="color: grey;">해당
-								전화번호 출력</a>
-					</tr>
-					<tr>
 						<!-- For email -->
 						<td>이메일<span class="required">*</span></td>
 						<td>

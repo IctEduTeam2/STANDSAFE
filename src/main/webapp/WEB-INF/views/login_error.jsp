@@ -7,10 +7,11 @@
 <title>Insert title here</title>
 </head>
 <body>
-		<footer id="footer">
-			<span>HOME</span>
-			<span>TEAM</span>
-			<span>개인정보처리방법</span>
-		</footer>
+	<script type="text/javascript">
+		onload = function() {
+			alert("로그인 해야만 사용 할 수 있습니다.")
+			location.href = "/";
+		}
+	</script>
 </body>
 </html>

@@ -5,6 +5,20 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		console.log("loginChk is: ", loginChk);
+		var loginChk = "${sessionScope.loginChk}";
+		if(loginChk == "fail"){
+			alert("비밀번호틀림");
+			return ;
+		}else if(loginChk == "ok"){
+			$("#loggedOut").css("display","none");    // 감추기
+			$("#loggedIn").css("display","block"); // 나타내기	
+		}
+	});
+</script>
 <style type="text/css">
 .menu>li:hover .submenu {
 	background-color: rgb(240, 240, 240);
@@ -16,8 +30,16 @@
 <body>
 	<header id="header">
 		<div id="top_gnb">
-			<b style="font-size: 14px;">관리자이름</b>
-			<a href="/mainform.do" style="margin-left: 8px;">로그아웃</a>
+				<% if (session.getAttribute("loginChk") != null && session.getAttribute("loginChk").equals("ok")) { %>
+  	 		 <!-- 로그인 된 상태 -->
+			<div id="loggedIn">
+			<a class="top_gnb_a">${sessionScope.advo.ADMIN_NICK }님</a> <a class="top_gnb_a" href="/logoutGo.do">로그아웃</a>
+			</div>
+		<% } else { %>
+			<div id="loggedOut">
+			<a class="top_gnb_a" href="/adminlogin.do">로그인</a>
+			</div>
+		<% } %>
 		</div>
 		<div id="nav">
 			<a href="/admin_loginok.do" style="margin-left: 8px;"><img id="logo"
