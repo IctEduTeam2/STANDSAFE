@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="notice">
+ 
+ 	<!-- 공지사항  -->
+ 	<!--  페이징을 위한 시작,끝 리스트 출력  -->
+ 	<select id="noticelist" parameterType="Map" resultType="nvo">
+ 		select * from NOTICE_T where NOTICE_ST = 1
+ 		order by NOTICE_NUM desc limit #{limit} offset #{offset}
+ 	</select>
+ 	
+ 	<!--  게시글 개수 구하 -->
+ 	<select id="noticecount" resultType="int">
+ 		select count(*) from NOTICE_T
+ 	</select>
+ 	
+ 	<!-- 상세보기  --> 
+ 	<select id="noticeonelist" parameterType="String" resultType="nvo">
+ 		select * from NOTICE_T where NOTICE_NUM = #{NOTICE_NUM}
+ 	</select>
+ 	
+ 	<select id="">
+ 		SELECT * FROM NOTICE_T WHERE NOTICE_ST = 2;
+ 	</select>
+ 	
+	<!-- 조회수  --> 	
+ 	<update id="noticehitup" parameterType="String">
+ 		update NOTICE_T set NOTICE_HIT = NOTICE_HIT +1 where NOTICE_NUM = #{NOTICE_NUM}
+ 	</update>
+ 	
+ 	
+ </mapper>

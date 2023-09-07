@@ -13,7 +13,9 @@
 <style type="text/css">
 .note-btn-group{width: auto;}
 .note-toolbar{width: auto;}
-
+.note-editable {
+  text-align: left;
+}
 .m_table{width: 80%;}
 
 label {
@@ -87,18 +89,36 @@ fieldset {
 
 
 </style> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <script type="text/javascript">
 	function save_go(f) {
-		f.action="";
+		 if(f.RE_SUBJECT.value.trim().length<=0){
+				alert("제목을 입력하세요")
+				f.RE_SUBJECT.focus();
+				return;
+			}
+		if(f.RE_CONTENT.value.trim().length<=0){
+				alert("내용을 입력하세요")
+				f.RE_CONTEN.focus();
+				return;
+			}
+
+		 var checkbox = document.getElementById("chkbox");
+	        // 체크박스가 체크되었을 때
+	        if (checkbox.checked) {
+	            // 값 1을 hidden 필드에 설정합니다.
+	            document.getElementById("secret_flag").value = "1";
+	        } else {
+	            // 체크가 해제되었을 때
+	            document.getElementById("secret_flag").value = "0";
+	        }
+		f.action="/bbs_review_writeOk.do";
 		f.submit();
 	}
 	function list_go(f) {
 		f.action="/bbs_review_go.do";
 		f.submit();
 	}
-	
-	
-	
 </script>
 </head>
 <body>
@@ -117,20 +137,20 @@ fieldset {
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">리뷰 유형</td>
 									<td id="radio">
-										<input type="radio" name="search" value="subject" checked />
+										<input type="radio" name="RE_TYPE" value="상품리뷰" checked />
 										<span>상품리뷰</span>	
-										<input type="radio" name="search" value="subject" />
+										<input type="radio" name="RE_TYPE" value="칭찬합시다" />
 										<span>칭찬합시다</span>	
 									</td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">작성자</td>
 								<!--이건 로그인한 사람이 자동으로 뜨게하기.  -->
-								<td><input type="text" name="name" size="20" autocomplete='off'/></td>
+								<td><input type="text" name="name" size="20" autocomplete='off' value="${c_id }"/></td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">제목</td>
-								<td><input type="text" name="subject" size="20" autocomplete='off' /></td>
+								<td><input type="text" name="RE_SUBJECT" size="20" autocomplete='off' /></td>
 							</tr>
 							
 							<tr align="center">
@@ -141,7 +161,7 @@ fieldset {
 								<td bgcolor="#1b5ac2" class="w_font">비밀글여부</td>
 								<td>
 									<div id="chkbox_div">
-										<input type="checkbox" id="chkbox" />
+										<input type="checkbox" id="chkbox" name="RE_LOCK" />
 										<label for="chkbox"></label>
 										비밀글여부
 									</div>
@@ -149,13 +169,14 @@ fieldset {
 							<tr align="center">
 							
 								<td colspan="2">
-									<textarea rows="10" cols="60" name="content" id="content"></textarea>
+									<textarea rows="10" cols="60" name="RE_CONTENT" id="content"></textarea>
 								</td>
 							</tr>
 							<tfoot>
 								<tr align="center">
 									<td colspan="2">
 										<input type="button" value="작성" onclick="save_go(this.form)" class="in_btn"/>
+										<input type="hidden" name="secret_flag" id="secret_flag" value="0" />
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										<input type="button" value="목록" onclick="list_go(this.form)" class="in_btn"/>
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -172,7 +193,6 @@ fieldset {
 		<script src="resources/js/quick.js"></script>
 		<jsp:include page="../Semantic/footer.jsp"></jsp:include>
 	</div>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
     	<script src="resources/js/summernote-lite.js"></script>
     	<script src="resources/js/lang/summernote-ko-KR.js"></script>
     	<script type="text/javascript">

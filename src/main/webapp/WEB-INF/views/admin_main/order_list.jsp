@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -106,70 +108,24 @@ function selectAll(selectAll)  {
 					<thead>
 						<tr>
 							<td class="th_column_1"><input type="checkbox" name="th_column_1" onclick='selectAll(this)'></td>
-							<td class="th_column_2">주문번호</td>
-							<td class="th_column_3">아이디</td>
-							<td class="th_column_4">신청날짜</td>
-							<td class="th_column_5">처리날짜</td>
-							<td class="th_column_6">처리 상태</td>
-							<td class="th_column_7">관리자 서명</td>
+							<td class="th_column_2">회원번호</td>
+							<td class="th_column_3">수령인</td>
+							<td class="th_column_4">주소</td>
+							<td class="th_column_5">수령인 핸드폰</td>
+							<td class="th_column_6">배송메모</td>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td><input type="checkbox" name="th_column_1"></td>
-							<td><a href="/order_detail.do">20230828k</a></td>
-							<td>사용자1</td>
-							<td>2023-01-01</td>
-							<td>2023-01-01</td>
-							<td>상품 준비중</td>
-							<td>admin</td>
-                        </tr>
-						<tr>
-							<td><input type="checkbox" name="th_column_1"></td>
-							<td><a href="/order_detail.do">20230828k</a></td>
-							<td>사용자1</td>
-							<td>2023-01-01</td>
-							<td>2023-01-01</td>
-							<td>상품 준비중</td>
-							<td>admin</td>
-                        </tr>
-						<tr>
-							<td><input type="checkbox" name="th_column_1"></td>
-							<td><a href="/order_detail.do">20230828k</a></td>
-							<td>사용자1</td>
-							<td>2023-01-01</td>
-							<td>2023-01-01</td>
-							<td>상품 준비중</td>
-							<td>admin</td>
-                        </tr>
-						<tr>
-							<td><input type="checkbox" name="th_column_1"></td>
-							<td><a href="/order_detail.do">20230828k</a></td>
-							<td>사용자1</td>
-							<td>2023-01-01</td>
-							<td>2023-01-01</td>
-							<td>상품 준비중</td>
-							<td>admin</td>
-                        </tr>
-						<tr>
-							<td><input type="checkbox" name="th_column_1"></td>
-							<td><a href="/order_detail.do">20230828k</a></td>
-							<td>사용자1</td>
-							<td>2023-01-01</td>
-							<td>2023-01-01</td>
-							<td>상품 준비중</td>
-							<td>admin</td>
-                        </tr>
-						<tr>
-							<td><input type="checkbox" name="th_column_1"></td>
-							<td><a href="/order_detail.do">20230828k</a></td>
-							<td>사용자1</td>
-							<td>2023-01-01</td>
-							<td>2023-01-01</td>
-							<td>상품 준비중</td>
-							<td>admin</td>
-                        </tr>
-
+						<c:forEach items="${list}" var="ovo">
+							<tr>
+								<td><input type="checkbox" name="th_column_1"></td>
+								<td><a href="/order_detail.do?client_num=${ovo.CLIENT_NUM}">${ovo.CLIENT_NUM }</a></td>
+								<td>${ovo.TAKE_PEO }</td>
+								<td>${ovo.TAKE_ADDR}</td>
+								<td>${ovo.TAKE_PHONE}</td>	
+								<td>${ovo.TAKE_MEMO}</td>				
+	                        </tr>
+						</c:forEach>
 					</tbody>
 				</table>
 

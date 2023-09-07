@@ -12,10 +12,10 @@ public class FileRename {
 		File dir = new File(path);
 		String[] arr = dir.list();
 		
-		// 諛곗뿴�쓣 list濡� 蹂��솚ㅇㄴㅇㅁ
+		//배열을 리스트로 만듬. 
 
 		List<String> k = Arrays.asList(arr);
-		Boolean result = k.contains(fname);
+		boolean result = k.contains(fname);
 		if(result) {
 			// 00000.xxx
 			String[] names = fname.split("\\.");

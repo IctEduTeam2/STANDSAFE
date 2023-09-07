@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +14,9 @@
 <style type="text/css">
 .note-btn-group{width: auto;}
 .note-toolbar{width: auto;}
-
+.note-editable {
+  text-align: left;
+}
 .m_table{width: 80%;}
 
 label {
@@ -22,6 +25,12 @@ label {
 }
 
 
+#text{
+
+	padding-left:45px;
+	float: none;
+	text-align: left;
+}
 [type="text"]{
 	width: 325px;
 	padding: 7px;
@@ -30,6 +39,7 @@ label {
 	outline: none;
 	float: left;
 }
+
 
 #radio { color: black; text-align: left;}
 
@@ -80,11 +90,29 @@ label {
 
 
 </style> 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
 <script type="text/javascript">
-	function UpdateOk_go(f) {
-		f.action="";
-		f.submit();
-	}
+	function updateOk_go(f) {
+		var checkbox = document.getElementById("chkbox");
+        // 체크박스가 체크되었을 때
+        if (checkbox.checked) {
+            // 값 1을 hidden 필드에 설정합니다.
+            document.getElementById("secret_flag").value = "1";
+        } else {
+            // 체크가 해제되었을 때
+            document.getElementById("secret_flag").value = "0";
+        }	
+        
+      // 변경사항이 있는 경우 폼을 제출합니다.
+	     f.action = "/bbs_qa_updateOk.do"; // 수정완료 컨트롤러 주소로 변경
+	     f.submit();
+	     }
+
+
+</script>
+
+<script type="text/javascript">
+
 	function list_go(f) {
 		f.action="/bbs_qa_go.do";
 		f.submit();
@@ -108,50 +136,65 @@ label {
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">문의유형</td>
 									<td id="radio">
-										<input type="radio" name="search" value="subject" checked />
-										<span>배송문의</span>	
-									
-										<input type="radio" name="search" value="subject" />
-										<span>결제/주문문의</span>	
-									
-										<input type="radio" name="search" value="subject" />
-										<span>기타문의</span>	
+										<input type="radio" name="BOARD_TYPE" value="배송문의" ${qnavo.BOARD_TYPE eq '배송문의' ? 'checked' : ""}  />
+									    <span>배송문의</span>	
+									    
+									    <input type="radio" name="BOARD_TYPE" value="결제/주문문의" ${qnavo.BOARD_TYPE eq '결제/주문문의' ? 'checked' : ""}  />
+									    <span>결제/주문문의</span>	
+									    
+									    <input type="radio" name="BOARD_TYPE" value="기타문의" ${qnavo.BOARD_TYPE eq '기타문의' ? 'checked' : ""}  />
+									    <span>기타문의</span>
+
 									</td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">작성자</td>
 								<!--이건 로그인한 사람이 자동으로 뜨게하기.  -->
-								<td><input type="text" name="name" size="20" autocomplete='off'/></td>
+								<td id="text">${qnavo.BOARD_WRITER}</td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">제목</td>
-								<td><input type="text" name="subject" size="20" autocomplete='off' /></td>
+								<td ><input type="text" name="BOARD_SUBJECT" size="20" autocomplete='off' value="${qnavo.BOARD_SUBJECT}" /></td>
 							</tr>
 							
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font"  width="200px">첨부파일</td>
-								<td><input type="file" name="file" size="20" /></td>
+						
+								  <c:choose>
+									  	<c:when test="${empty qnavo.BOARD_FILE}">
+									  		<td><input type="file" name="file"><br><b>이전 파일 없음</b></td>
+									  		<input type="hidden" name="old_f_name" value="">
+									  	</c:when>
+									  	<c:otherwise>
+									  		<td><input type="file" name="file">이전 파일명(${qnavo.BOARD_FILE })</td>
+									  		<input type="hidden" name="old_f_name" value="${qnavo.BOARD_FILE }">
+									  	</c:otherwise>
+								 </c:choose>
+							
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">비밀글여부</td>
 								<td>
 									<div id="chkbox_div">
-										<input type="checkbox" id="chkbox" checked/>
+										<input type="checkbox" name="BOARD_LOCK" id="chkbox" ${qnavo.BOARD_LOCK eq '1' ? 'checked' : ""}/>
 										<label for="chkbox"></label>
 										비밀글여부
 									</div>
 							</tr>
 							<tr align="center">
 								<td colspan="2">
-									<textarea rows="10" cols="60" name="content" id="content">
-									상품 환불가능한가요?... 찌그러졌는데... 절대 제가 밟은게 아닙니다...
+									<textarea rows="10" cols="60" name="BOARD_CONTENT" id="content">
+									${qnavo.BOARD_CONTENT}
 									</textarea>
 								</td>
 							</tr>
 							<tfoot>
 								<tr align="center">
 									<td colspan="2">
-										<input type="button" value="작성" onclick="UpdateOk_go(this.form)" class="in_btn"/>
+										<input type="button" value="작성" onclick="updateOk_go(this.form)" class="in_btn"/>
+										<input type="hidden" name="secret_flag" id="secret_flag" value="0" />
+										<input type="hidden" name="BOARD_NUM" value="${qnavo.BOARD_NUM}">
+										<input type="hidden" name="cPage" value="${cPage}">
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										<input type="button" value="목록" onclick="list_go(this.form)" class="in_btn"/>
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -167,7 +210,7 @@ label {
 		<script src="resources/js/quick.js"></script>
 		<jsp:include page="../Semantic/footer.jsp"></jsp:include>
 	</div>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+		
     	<script src="resources/js/summernote-lite.js"></script>
     	<script src="resources/js/lang/summernote-ko-KR.js"></script>
     	<script type="text/javascript">
@@ -200,7 +243,6 @@ label {
 				var fname = data.fname;
 				$("#content").summernote("editor.insertImage",path+"/"+fname);
 			});
-			consloe.log("끝");
 		}
     	
     	</script>

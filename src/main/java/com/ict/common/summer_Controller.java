@@ -20,7 +20,7 @@ public class summer_Controller {
 	private FileRename fileRename;
 	
 	//@RequestMapping(value="/saveImg.do", method = RequestMethod.POST) 같은 방식
-	@PostMapping(value="/saveImg.do")
+	@PostMapping(value="/saveImage.do")
 	@ResponseBody
 	public Map<String, String> saveImg(ImgVO vo, HttpServletRequest request){
 		Map<String , String> map = new HashMap<String, String>();

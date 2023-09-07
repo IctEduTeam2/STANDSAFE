@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,12 +29,62 @@ table td:nth-child(4) {
   padding-left: 70px;
 }
 
+/* paging */
 
-/* 나머지 컬럼들을 가운데 정렬 */
-table td:not(:nth-child(4)) {
-  text-align: center;
+table tfoot ol.paging {
+    list-style: none;
+    text-align: center; /* 가운데 정렬을 위한 변경 */
 }
+table tfoot ol.paging li {
+    display: inline-block; /* 가로 정렬을 위해 float 제거하고 inline-block으로 변경 */
+     margin-right: 8px; 
+}
+
+
+table tfoot ol.paging li a {
+	display: block;
+	padding: 3px 7px;
+	border: 1px solid #6c98c2;
+	color: #2f313e;
+	 font-weight: bold; 
+}
+
+table tfoot ol.paging li a:hover {
+	background: #6c98c2;
+	color: white;
+	font-weight: bold;
+}
+
+
+
+.disable {
+	padding: 3px 7px;
+	border: 1px solid silver;
+	color: silver;
+}
+
+.now {
+	padding: 3px 7px;
+	border: 1px solid #1b5ac2;
+	background: #1b5ac2;
+	color: white;
+	font-weight: bold;
+}
+
 </style> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		var revonelist = "${revonelist}";
+		if(revonelist == "not"){
+			alert("다른사람이 작성한 (비밀)글입니다. 조회권한이 없습니다. ");
+			return ;
+		}else if(revonelist=="view") {
+			return;
+		}
+
+	});
+</script>
 <script type="text/javascript">
 
 	function bbs_go_review_writeform() {
@@ -63,6 +114,10 @@ table td:not(:nth-child(4)) {
 									<input type="radio" name="search" value="content" />
 									<span>내용</span>					
 								</label>
+								<label>
+									<input type="radio" name="search" value="writer"  />
+									<span>작성자</span>					
+								</label>
 								<div id="search_bar">
 									<input type="text" id="s_bar" placeholder="검색어입력">
 									<button id="s_btn" onclick="search_go()">검색</button>			
@@ -81,14 +136,93 @@ table td:not(:nth-child(4)) {
 							 </tr>
 						</thead>
 						<tbody class="mb_table">		
-							<tr>
-								<td>2</td><td><img src="resources/images/bbs/fire.PNG" class="f_img"></td><td>상품 리뷰</td><td><a href="/bbs_review_onelist.do">소화기 강추합니다. 꼭 사세요!</a></td><td>일라오이</td><td>23.02.10</td>
-							</tr>	
-							<tr>
-								<td>1</td><td><img src="resources/images/bbs/mask.PNG" class="f_img"></td><td>상품 리뷰</td><td><a href="">마스크사세요. 요즘 많이 필요합니다.</a></td><td>단호박</td><td>22.01.10</td>
-							</tr>	
+							<c:choose>
+								<c:when test="${empty list}">
+									<tr>
+										<td colspan="6"><p>자료가 존재하지 않습니다.</p></td>
+									</tr>
+								</c:when>
 								
+								<c:otherwise>
+									<c:forEach var="k" items="${list}" varStatus="vs">
+										<tr>
+											<td>${paging.totalRecord -((paging.nowPage-1)*paging.numPerPage + vs.index) }</td>
+											<td>
+												<c:choose>
+													<c:when test="${empty k.RE_FILE}">
+														없음
+													</c:when>
+													<c:otherwise>
+														있음
+													</c:otherwise>
+												</c:choose>				
+											</td>
+											<td>${k.RE_TYPE }</td>
+											<c:choose>
+												  <c:when test="${k.RE_ST == 0}">
+												    <td style="color: gray;">삭제된 게시물입니다.</td>
+												  </c:when>
+												  <c:otherwise>
+												    <td>
+												      <a href="/bbs_review_onelist.do?RE_NUM=${k.RE_NUM}&cPage=${paging.nowPage}">
+												        ${k.RE_LOCK == 1 ? '[비밀] ' : ''}${k.RE_SUBJECT}
+												      </a>
+												    </td>
+												  </c:otherwise>
+												</c:choose>
+
+											<td>${k.RE_WRITER}</td>
+											<%-- <td>${k.BOARD_DATE.substring(0,10)}</td> --%>
+											 <c:choose>
+											    <c:when test="${not empty k.RE_UPDATE}">
+											      <!-- BOARD_UPDATE가 값이 있는 경우 -->
+											      <td>${k.RE_UPDATE.substring(0,10)} [수정됨]</td>
+											    </c:when>
+											    <c:otherwise>											  
+											     <td> ${k.RE_DATE.substring(0, 10)}</td>
+											    </c:otherwise>
+											  </c:choose>
+										</tr>
+									</c:forEach>
+								</c:otherwise>
+							</c:choose>					
 						</tbody>
+						<tfoot>
+								<tr>
+									<td colspan="6">
+										<ol class="paging">
+											<!-- 이전버튼 : 첫블럭이면 비활성화-->
+											<c:choose>
+												<c:when test="${paging.beginBlock <= paging.pagePerBlock }">
+													<li class="disable">이전으로</li>
+												</c:when>
+												<c:otherwise>
+													<li><a href="/bbs_review_go.do?cPage=${paging.beginBlock-paging.pagePerBlock }">이전으로</a></li>
+												</c:otherwise>
+											</c:choose>	
+											<c:forEach begin="${paging.beginBlock }" end="${paging.endBlock }" step="1" var="k">
+												<c:if test="${k == paging.nowPage }">
+													<!--현재페이지와 같으면  -->
+													<li class="now">${k }</li>
+												</c:if>
+												<c:if test="${k != paging.nowPage }">
+													<li><a href="/bbs_review_go.do?cPage=${k }"> ${k }</a></li>
+												</c:if>
+											</c:forEach>
+															
+											<!-- 이후버튼  -->	
+											<c:choose>
+												<c:when test="${paging.endBlock >= paging.totalPage }">
+													<li class="disable">다음으로</li>
+												</c:when>
+												<c:otherwise>
+													<li><a href="/bbs_review_go.do?cPage=${paging.beginBlock+paging.pagePerBlock }">다음으로</a></li>
+												</c:otherwise>
+											</c:choose>					
+										</ol>
+									</td>
+								</tr>
+						</tfoot>
 					</table>
 					</article>
 			</section>

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -74,9 +75,21 @@ label {
 
 
 </style> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		var revonelist = "${revonelist}";
+		if(revonelist == "update") {
+			$("#viewno").css("display","none"); 
+			$("#viewok").css("display", "block");
+
+			return ;
+		}
+	});
+</script>	
 <script type="text/javascript">
 	function update_go(f) {
-		f.action="/bbs_review_update.do";
+		f.action="/bbs_review_updateform.do";
 		f.submit();
 	}
 	function list_go(f) {
@@ -84,7 +97,7 @@ label {
 		f.submit();
 	}
 	function delete_go(f) {
-		f.action="/bbs_review_delete.do";
+		f.action="/bbs_review_deleteform.do";
 		f.submit();
 	}
 	
@@ -107,48 +120,74 @@ label {
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">리뷰 유형</td>
 									<td id="type">
-										<span>상품리뷰</span>	
+										<span>${reviewvo.RE_TYPE}</span>	
 									</td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">작성자</td>
 								<!--이건 로그인한 사람이 자동으로 뜨게하기.  -->
-								<td id="type">단호박</td>
+								<td id="type">${reviewvo.RE_WRITER}</td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">제목</td>
-								<td id="type">이 소화기 꼭 사세요!</td>
+								<td id="type">${reviewvo.RE_SUBJECT}</td>
 							</tr>
 							
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font" width="200px;">첨부파일</td>
-								<td id="type"><img src="resources/images/bbs/fire.PNG"  style="width: 200px; height: auto;"></td>
+								<td id="type">
+									<c:choose>
+										<c:when test="${empty reviewvo.RE_FILE}">
+											<b>첨부 파일 없음</b>
+										</c:when>
+										<c:otherwise>
+											<img src="/resources/upload/${reviewvo.RE_FILE }" style="width: 200px; height: auto;" />
+										</c:otherwise>
+									</c:choose>
+								</td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">비밀글여부</td>
 								<td>
 									<div id="chkbox_div">
-										<input type="checkbox" id="chkbox" checked disabled/>
-										<label for="chkbox"></label>
+									<c:choose>
+										<c:when test="${reviewvo.RE_LOCK == 1}">
+											<input type="checkbox" id="chkbox" checked disabled/>
+											<label for="chkbox"></label>
+										</c:when>
+										<c:otherwise>
+											<input type="checkbox" id="chkbox" disabled/>
+											<label for="chkbox"></label>
+										</c:otherwise>
+									</c:choose>
 										비밀글여부
 									</div>
+								</td>
 							</tr>
 							<tr align="center">
 							
 								<td colspan="2" style="height: 800px">
-									 요즘 가정에서도 소화기 필수입니다! 저번에 고기구워먹다가 집태울뻔했는데  , 다행히 소화기로 진압했어요 
-									 소화기 배송도 빠르고, 너무 좋습니다!
+									 ${reviewvo.RE_CONTENT }	
 								</td>
 							</tr>
 							</tbody>
 							<tfoot>
 								<tr align="center">
 									<td colspan="2">
+									 <div id="viewok" style="display: none;">
 										<input type="button" value="수정" onclick="update_go(this.form)" class="in_btn"/>
+										<input type="hidden" value="${reviewvo.RE_NUM}" name="RE_NUM">
+										<input type="hidden" value="${cPage}" name="cPage">
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										<input type="button" value="목록" onclick="list_go(this.form)" class="in_btn"/>
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										<input type="button" value="삭제"  onclick="delete_go(this.form)" class="in_btn"/>
+									</div>			
+									<div id="viewno" >									
+										<input type="hidden" value="${reviewvo.RE_NUM}" name="RE_NUM">
+										<input type="hidden" value="${cPage}" name="cPage">
+										<input type="button" value="목록" onclick="list_go(this.form)" class="in_btn"/>									
+									</div>
 									</td>
 								</tr>
 							</tfoot>

@@ -10,6 +10,12 @@
 	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
 <!-- Link Swiper's CSS -->
 <style type="text/css">
+#warning {
+	color: red;
+	display: none;
+}
+</style>
+<style type="text/css">
 .id_ok {
 	color: #008000;
 	display: none;
@@ -34,245 +40,11 @@
 <link rel="stylesheet" href="resources/css/basis.css" />
 <link rel="stylesheet" href="resources/css/userjoin.css" />
 <script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script>
-	function execDaumPostcode() {
-		new daum.Postcode({
-			oncomplete : function(data) {
-				// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
-				var addr = '';
-				var extraAddr = '';
 
-				// 사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-				if (data.userSelectedType === 'R') { // 도로명 주소 
-					addr = data.roadAddress;
-				} else { // 지번 주소
-					addr = data.jibunAddress;
-				}
 
-				// 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
-				if (data.userSelectedType === 'R') {
-					// 법정동명이 있을 경우 추가한다. (법정리는 제외)
-					// 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
-					if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
-						extraAddr += data.bname;
-					}
-					// 건물명이 있고, 공동주택일 경우 추가한다.
-					if (data.buildingName !== '' && data.apartment === 'Y') {
-						extraAddr += (extraAddr !== '' ? ', '
-								+ data.buildingName : data.buildingName);
-					}
-					// 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
-					if (extraAddr !== '') {
-						extraAddr = ' (' + extraAddr + ')';
-					}
-					// 조합된 참고항목을 해당 필드에 넣는다.
-					document.getElementById("extraAddress").value = extraAddr;
-
-				} else {
-					document.getElementById("extraAddress").value = '';
-				}
-
-				// 우편번호와 주소 정보를 해당 필드에 넣는다.
-				document.getElementById('postcode').value = data.zonecode;
-				document.getElementById("address").value = addr;
-				
-				// 커서를 상세주소 필드로 이동한다.
-				document.getElementById("detailAddress").focus();
-			}
-		}).open();
-	}
-</script>
-<script type="text/javascript">
-	function user_loginform() {
-		location.href = "user_joincancel.do";
-	}
-
-	//약관버튼 작동
-	document.addEventListener("DOMContentLoaded", function() {
-		const agreement = document.getElementById("agreement");
-		const mandatory1 = document
-				.querySelector(".agreement-box input[type='checkbox']");
-		const mandatory2 = document
-				.querySelector(".collect-box input[type='checkbox']");
-		const optional1 = document
-				.querySelector(".alarm-box input[type='checkbox']");
-		const signUpButton = document.getElementById("signUpButton");
-
-		// 초기 설정
-	    email_st.value = optional1.checked ? 1 : 0;
-		
-		agreement.addEventListener("change", function() {
-			if (this.checked) {
-				mandatory1.checked = true;
-				mandatory2.checked = true;
-				optional1.checked = true;
-			} else {
-				mandatory1.checked = false;
-				mandatory2.checked = false;
-				optional1.checked = false;
-			}
-			email_st.value = optional1.checked ? 1 : 0;
-		});
-
-		function checkMandatory() {
-			if (mandatory1.checked && mandatory2.checked) {
-				signUpButton.disabled = false;
-			} else {
-				signUpButton.disabled = true;
-			}
-		}
-		mandatory1.addEventListener("change", checkMandatory);
-		mandatory2.addEventListener("change", checkMandatory);
-		optional1.addEventListener("change", function() {
-			email_st.value = this.checked ? 1 : 0;
-		});
-	});
-
-	//비밀번호 일치 색 확인
-	document.addEventListener("DOMContentLoaded", function() {
-		const password = document.getElementById("password");
-		const password_confirm = document.getElementById("password_confirm");
-		const password_match = document.getElementById("password_match");
-		// 비밀번호 확인 필드에 이벤트 리스너 추가
-		password_confirm.addEventListener("input", function() {
-			if (password.value === password_confirm.value) {
-				password_match.textContent = "비밀번호가 일치합니다.";
-				password_match.style.color = "green";
-			} else {
-				password_match.textContent = "비밀번호가 일치하지 않습니다.";
-				password_match.style.color = "red";
-			}
-		});
-	});
-	
-	//addr 추합
-	function prepareAddr() {
-    var postcode = document.getElementById("postcode").value;
-    var address = document.getElementById("address").value;
-    var extraAddress = document.getElementById("extraAddress").value;
-    var detailAddress = document.getElementById("detailAddress").value;
-
-    var fullAddress = "("+ postcode +")"+ " " + address + "" + extraAddress + " " + detailAddress;
-
-    // 띄어쓰기로 구분하여 저장
-    document.getElementById("ADDR").value = fullAddress.trim();
-}
-	 // 아이디중복(알람안뜸)
-    function checkID() {
-        var id = document.getElementById('ID').value;
-        if (response.data.isDuplicate) {
-             alert('이미 사용된 아이디입니다.');
-             
-         }
-    }
-
-    // 닉중복(알람안뜸)
-    function checkNickname() {
-        var nickname = document.getElementById('NICKNAME').value;
-        if (response.data.isDuplicate) {
-            alert('이미 사용된 별명입니다.');
-        }
-    }
-    
- // Password validation
-    function checkPassword(ID, PW) {
-        if (!checkExistData(PW, "비밀번호를")) return false;
-        var pwRegExp = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+,.\;':"-]).{6,}$/;
-        if (!pwRegExp.test(PW)) {
-            alert("비밀번호는 영문, 숫자, 특수문자를 포함하여 6자리 이상이어야 합니다!");
-            form.PW.value = "";
-            form.PW.focus();
-            return false;
-        }
-        return true;
-    }
-
-    // Check if the passwords match
-    function checkPasswordMatch(PW, PW_confirm) {
-        if (PW !== PW_confirm) {
-            alert("비밀번호와 비밀번호 확인이 일치하지 않습니다!");
-            form.pw_confirm.value = "";
-            form.pw_confirm.focus();
-            return false;
-        }
-        return true;
-    }
-
-    // Name validation
-    function checkName(M_NAME) {
-        if (!checkExistData(M_NAME, "이름을")) return false;
-        return true;
-    }
-
-    // Birth validation
-    function checkBirth(BIRTH) {
-        if (!checkExistData(BIRTH, "생년월일을")) return false;
-        return true;
-    }
-    //전화번호 실시간리밋
-    function limitAndFormatPhoneNumber(input) {
-        var value = input.value.replace(/[^0-9]/g, '');
-
-        // Limit the length to 11 digits
-        if (value.length > 11) {
-            value = value.slice(0, 11);
-        }
-
-        // Format the phone number
-        if (value.length === 11) {
-            value = value.replace(/(\\d{3})(\\d{4})(\\d{4})/, '$1-$2-$3');
-        } else if (value.length === 10) {
-            value = value.replace(/(\\d{3})(\\d{3})(\\d{4})/, '$1-$2-$3');
-        }
-
-        input.value = value;
-    }
-
-    // Phone validation
-    function checkPhone(PHONE) {
-        if (!checkExistData(PHONE, "전화번호를")) return false;
-        var phoneRegExp = /^\d{3}-\d{3,4}-\d{4}$/;
-        if (!phoneRegExp.test(PHONE)) {
-            alert("올바른 전화번호 형식이 아닙니다! (e.g., 010-1234-5678)");
-            form.PHONE.value = "";
-            form.PHONE.focus();
-            return false;
-        }
-        return true;
-    }
-
-    // Modified checkAll function
-    function checkAll() {
-        if (!checkUserId(form.ID.value)) {
-            return false;
-        } else if (!checkPassword(form.ID.value, form.PW.value)) {
-            return false;
-        } else if (!checkPasswordMatch(form.PW.value, form.pw_confirm.value)) {
-            return false;
-        } else if (!checkMail(form.MAIL.value)) {
-            return false;
-        } else if (!checkName(form.M_NAME.value)) {
-            return false;
-        } else if (!checkBirth(form.BIRTH.value)) {
-            return false;
-        } else if (!checkPhone(form.PHONE.value)) {
-            return false;
-        }
-        return true;
-    }
-     else if (!checkPassword(form.ID.value, form.PW.value)) {
-                return false;
-            } else if (!checkMail(form.MAIL.value)) {
-                return false;
-            } else if (!checkName(form.M_NAME.value)) {
-                return false;
-            } else if (!checkBirth(form.BIRTH.value)) {
-                return false;
-            return true;
-        }
-
-</script>
 </head>
 <body onload="InitializeStaticMenu();">
 	<div id="mydiv">
@@ -287,13 +59,17 @@
 					<table style="margin: auto;">
 						<tr>
 							<td>아이디<span class="required">*</span></td>
-							<td><input type="text" name="ID" id="id" maxlength="16"
-								placeholder="영문+숫자4~12자리"></td>
+							<td><input type="text" id="ID" name="ID"
+								placeholder="아이디 입력">
+								<button type="button" onclick="checkIdDuplicate()">중복
+									검사</button> <span id="id_result"></span></td>
 						</tr>
+
 						<tr>
 							<td>비밀번호<span class="required">*</span></td>
-							<td><input type="password" name="PW" id="password"
-								maxlength="20" placeholder="영문,숫자,특수 6글자~"></td>
+							<td><input type="password" id="password" name="PW"
+								placeholder="비밀번호를 입력하세요" onkeyup="validatePassword()" /><span
+								id="password_result"></span></td>
 						</tr>
 						<tr>
 							<td>비밀번호 확인<span class="required">*</span></td>
@@ -305,26 +81,32 @@
 						<tr>
 							<td>닉네임<span class="required">*</span></td>
 							<td><input type="text" id="NICKNAME" name="NICKNAME"
-								placeholder="별명 입력" oninput="checkId()"></td>
+								placeholder="별명 입력">
+								<button type="button" onclick="checkNickDuplicate()">중복
+									검사</button> <span id="nickname_result"></span></td>
 						</tr>
 						<tr>
 							<td>이름<span class="required">*</span></td>
-							<td><input type="text" name="M_NAME" placeholder="이름 입력"></td>
+							<td><input type="text" name="M_NAME" id="M_NAME"
+								placeholder="이름 입력"></td>
 						</tr>
 						<tr>
 							<td>생년월일<span class="required">*</span></td>
-							<td><input type="date" name="BIRTH" placeholder="YYYYMMDD"></td>
+							<td><input type="date" name="BIRTH" id="BIRTH"
+								placeholder="YYYYMMDD"></td>
 						</tr>
 						<tr>
 							<td>전화번호<span class="required">*</span></td>
 							<td><input name="PHONE" id="PHONE"
 								oninput="limitAndFormatPhoneNumber(this)"
-								placeholder="'-'없이 작성하세요" type="text" /></td>
+								placeholder="'-'없이 작성하세요" type="text" onkeyup="validatePhone()" /><span
+								id="phone_result"></span></td>
 						</tr>
 						<tr>
 							<td>이메일<span class="required">*</span></td>
-							<td><input type="text" name="MAIL"
-								placeholder="email@standsafe.com"></td>
+							<td><input type="text" name="MAIL" id="MAIL"
+								placeholder="email@standsafe.com" onkeyup="checkEmail()"><span
+								id="email_result"></span></td>
 						</tr>
 						<tr>
 							<!-- 카카오 주소 -->
@@ -346,25 +128,28 @@
 					<div class="agreebox">
 						<h3 class="align-left">전체동의</h3>
 						<div>
-							<input type="checkbox" id="agreement" checked> 이용약관 및
-							개인정보수집 및 이용, 쇼핑정보 수신(선택)에 동의합니다.
+							<input type="checkbox" id="agreement" onclick="checkAll()"
+								checked> 이용약관 및 개인정보수집 및 이용, 쇼핑정보 수신(선택)에 동의합니다.
 						</div>
+						<div id="warning">필수 항목에 동의해주세요.</div>
 						<div class="agreement-box">
 							[필수] 이용약관 동의
 							<p><%@ include file="text/agreement_text.jsp"%></p>
-							이용약관에 동의하십니까?<input type="checkbox" checked> 동의함
+							이용약관에 동의하십니까?<input type="checkbox" id="agreeMandatory1"
+								onclick="updateAgreements()" checked> 동의함
 						</div>
 						<div class="collect-box">
 							[필수] 개인정보 수집 및 이용 동의
 							<p><%@ include file="text/collect_text.jsp"%></p>
-							개인정보 수집 및 이용에 동의하십니까?<input type="checkbox" checked> 동의함
+							개인정보 수집 및 이용에 동의하십니까?<input type="checkbox" id="agreeMandatory2"
+								onclick="updateAgreements()" checked> 동의함
 						</div>
 						<div class="alarm-box">
 							[선택] 쇼핑정보 수신 동의
 							<p><%@ include file="text/alarm_text.jsp"%></p>
 							이메일 수신에 동의하십니까? <input type="hidden" name="EMAIL_ST"
-								id="email_st" value="0"> <input type="checkbox"
-								id="emailAgreeCheckbox" onchange="updateEmailSt()" checked>
+								id="email_st" value="1"> <input type="checkbox"
+								id="emailAgreeCheckbox" onclick="updateAgreements()" checked>
 							동의함
 						</div>
 						<br>
@@ -382,5 +167,279 @@
 		<script src="resources/js/quick.js"></script>
 		<jsp:include page="../Semantic/footer.jsp"></jsp:include>
 	</div>
+	<script>
+		function execDaumPostcode() {
+			new daum.Postcode(
+					{
+						oncomplete : function(data) {
+							// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
+							var addr = '';
+							var extraAddr = '';
+
+							// 사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+							if (data.userSelectedType === 'R') { // 도로명 주소 
+								addr = data.roadAddress;
+							} else { // 지번 주소
+								addr = data.jibunAddress;
+							}
+
+							// 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+							if (data.userSelectedType === 'R') {
+								// 법정동명이 있을 경우 추가한다. (법정리는 제외)
+								// 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+								if (data.bname !== ''
+										&& /[동|로|가]$/g.test(data.bname)) {
+									extraAddr += data.bname;
+								}
+								// 건물명이 있고, 공동주택일 경우 추가한다.
+								if (data.buildingName !== ''
+										&& data.apartment === 'Y') {
+									extraAddr += (extraAddr !== '' ? ', '
+											+ data.buildingName
+											: data.buildingName);
+								}
+								// 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+								if (extraAddr !== '') {
+									extraAddr = ' (' + extraAddr + ')';
+								}
+								// 조합된 참고항목을 해당 필드에 넣는다.
+								document.getElementById("extraAddress").value = extraAddr;
+
+							} else {
+								document.getElementById("extraAddress").value = '';
+							}
+
+							// 우편번호와 주소 정보를 해당 필드에 넣는다.
+							document.getElementById('postcode').value = data.zonecode;
+							document.getElementById("address").value = addr;
+
+							// 커서를 상세주소 필드로 이동한다.
+							document.getElementById("detailAddress").focus();
+						}
+					}).open();
+		}
+	</script>
+	<script type="text/javascript">
+		function user_loginform() {
+			location.href = "user_joincancel.do";
+		}
+
+		//addr 추합
+		function prepareAddr() {
+			var postcode = document.getElementById("postcode").value;
+			var address = document.getElementById("address").value;
+			var extraAddress = document.getElementById("extraAddress").value;
+			var detailAddress = document.getElementById("detailAddress").value;
+
+			var fullAddress = "(" + postcode + ")" + " " + address + ""
+					+ extraAddress + " " + detailAddress;
+
+			// 띄어쓰기로 구분하여 저장
+			document.getElementById("ADDR").value = fullAddress.trim();
+		}
+	</script>
+	<script>
+	//체크박스
+		function updateAgreements() {
+			const agreement = document.getElementById('agreement');
+			const agreeMandatory1 = document.getElementById('agreeMandatory1');
+			const agreeMandatory2 = document.getElementById('agreeMandatory2');
+			const emailAgreeCheckbox = document
+					.getElementById('emailAgreeCheckbox');
+			const email_st = document.getElementById('email_st');
+
+			agreement.checked = agreeMandatory1.checked
+					&& agreeMandatory2.checked;
+
+			if (!agreeMandatory1.checked || !agreeMandatory2.checked) {
+				document.getElementById('warning').style.display = 'block';
+			} else {
+				document.getElementById('warning').style.display = 'none';
+			}
+
+			emailAgreeCheckbox.checked ? email_st.value = 1
+					: email_st.value = 0;
+		}
+
+		function checkAll() {
+			const agreement = document.getElementById('agreement');
+			const agreeMandatory1 = document.getElementById('agreeMandatory1');
+			const agreeMandatory2 = document.getElementById('agreeMandatory2');
+			const emailAgreeCheckbox = document
+					.getElementById('emailAgreeCheckbox');
+
+			agreeMandatory1.checked = agreement.checked;
+			agreeMandatory2.checked = agreement.checked;
+			emailAgreeCheckbox.checked = agreement.checked;
+
+			updateAgreements();
+		}
+	</script>
+	<script type="text/javascript">
+		//비밀번호 일치 색 확인
+		document.addEventListener("DOMContentLoaded", function() {
+			const password = document.getElementById("password");
+			const password_confirm = document
+					.getElementById("password_confirm");
+			const password_match = document.getElementById("password_match");
+			// 비밀번호 확인 필드에 이벤트 리스너 추가
+			password_confirm.addEventListener("input", function() {
+				if (password.value === password_confirm.value) {
+					password_match.textContent = "비밀번호가 일치합니다.";
+					password_match.style.color = "green";
+				} else {
+					password_match.textContent = "비밀번호가 일치하지 않습니다.";
+					password_match.style.color = "red";
+				}
+			});
+		});
+		//비밀번호 유효성 검사
+		function validatePassword() {
+			const password = document.getElementById("password").value;
+			const resultSpan = document.getElementById("password_result");
+			const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/;
+
+			if (!passwordRegex.test(password)) {
+				resultSpan.textContent = "비밀번호는 최소 8자리, 하나 이상의 문자, 하나 이상의 숫자, 하나 이상의 특수 문자가 필요합니다.";
+				resultSpan.style.color = "red";
+			} else {
+				resultSpan.textContent = "유효한 비밀번호입니다.";
+				resultSpan.style.color = "green";
+			}
+		}
+		//전화번호 유효성 검사
+		function validatePhone() {
+			const phone = document.getElementById("PHONE").value;
+			const resultSpan = document.getElementById("phone_result");
+			const phoneRegex = /^\d{11}$/;
+
+			if (phone.length === 0) {
+				resultSpan.textContent = "전화번호가 누락되었습니다.";
+				resultSpan.style.color = "red";
+			} else if (isNaN(phone)) {
+				resultSpan.textContent = "전화번호는 숫자만 입력 가능합니다.";
+				resultSpan.style.color = "red";
+			} else if (!phoneRegex.test(phone)) {
+				resultSpan.textContent = "전화번호는 11자리의 숫자만 가능합니다.";
+				resultSpan.style.color = "red";
+			} else {
+				resultSpan.textContent = "유효한 전화번호입니다.";
+				resultSpan.style.color = "green";
+			}
+		}
+		//이메일 유효성 검사
+		function checkEmail() {
+			const email = document.getElementById("MAIL").value;
+			const resultSpan = document.getElementById("email_result");
+			const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+			if (email.length === 0) {
+				resultSpan.textContent = "이메일이 누락되었습니다.";
+				resultSpan.style.color = "red";
+			} else if (!emailRegex.test(email)) {
+				resultSpan.textContent = "이메일 형식이 올바르지 않습니다.";
+				resultSpan.style.color = "red";
+			} else {
+				resultSpan.textContent = "유효한 이메일 형식입니다.";
+				resultSpan.style.color = "green";
+			}
+		}
+	</script>
+	<script defer type="text/javascript" >
+		// 별명 유효성 검사
+		function checkNickDuplicate() {
+			//console.log("Before Ajax call"); // Ajax 호출 전 log
+			const nickname = document.getElementById("NICKNAME").value;
+			const resultSpan = document.getElementById("nickname_result");
+
+	        // 별명이 빈 문자열인 경우
+	        if (nickname.trim() === '') {
+	            resultSpan.textContent = "별명을 입력해주세요.";
+	            resultSpan.style.color = "red";
+	            return;  // 여기서 함수를 종료
+	        }
+			//console.log(`NICKNAME to check: ${nickname}`);
+
+			$.ajax({
+				url : "/checkNickDuplicate.do",
+				type : "POST",
+				data : {'NICKNAME' : nickname},
+				
+				success : function(result) {
+					//console.log("After Ajax call"); // Ajax 호출 후 log
+					//console.log(`Server response: ${result}`);
+
+					const resultSpan = document
+							.getElementById("nickname_result");
+
+					if (result === "duplicate") {
+						resultSpan.textContent = "닉네임이 중복됩니다.";
+						resultSpan.style.color = "red";
+					} else {
+						resultSpan.textContent = "사용 가능한 닉네임입니다.";
+						resultSpan.style.color = "green";
+					}
+				},
+				error : function(xhr, status, error) {
+					//console.log("Error block"); // 에러 발생 시 log
+					//console.log(`Error occurred: ${error}`);
+
+					const resultSpan = document.getElementById("nickname_result");
+					resultSpan.textContent = "서버 에러, 다시 시도해 주세요.";
+					resultSpan.style.color = "red";
+				}
+			});
+		}
+	</script>
+
+
+	<script defer type="text/javascript">
+		async function checkIdDuplicate() {
+			const id = document.getElementById("ID").value;
+			const resultSpan = document.getElementById("id_result");
+			// 아이디가 빈 문자열인 경우
+		    if (id.trim() === '') {
+		        resultSpan.textContent = "아이디를 입력해주세요.";
+		        resultSpan.style.color = "red";
+		        return;  // 여기서 함수를 종료
+		    }
+			
+			const formData = new FormData();
+			formData.append('ID', id);
+			//console.log(`ID to check: ${id}, ${ID}`);
+			try {
+				//서버 요청 (fetch API 사용)
+				const response = await
+				fetch("/checkIdDuplicate.do", {
+					method : "POST",
+					body : formData
+				});
+				//console.log("After fetch"); // fetch 호출 후 log
+				//console.log(`HTTP Status Code: ${response.status}`); // HTTP 상태 코드
+
+				//서버 응답 처리
+				const result = await response.text();
+				//내용과 스타일을 변경
+				const resultSpan = document.getElementById("id_result");
+
+				if (result.trim() === 'duplicate') {
+					resultSpan.textContent = "아이디가 중복됩니다.";
+					resultSpan.style.color = "red";
+				} else if (result.trim() === 'not_duplicate') {
+					resultSpan.textContent = "사용 가능한 아이디입니다.";
+					resultSpan.style.color = "green";
+				} else {
+					resultSpan.textContent = "알 수 없는 오류";
+					resultSpan.style.color = "orange";
+				}
+			} catch (error) {
+				//console.log("Error block"); // 에러 발생 시 log
+				//console.log(`Error occurred: ${error}`);
+				const resultSpan = document.getElementById("id_result");
+				resultSpan.textContent = "서버 에러, 다시 시도해 주세요.";
+				resultSpan.style.color = "red";
+			}
+		}
+	</script>
 </body>
 </html>

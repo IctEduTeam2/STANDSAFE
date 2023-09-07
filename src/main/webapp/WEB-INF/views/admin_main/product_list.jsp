@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -89,15 +91,12 @@ body {
 				<table class="order_table">
 					<colgroup>
 						<col width="5%">
+						<col width="20%">
+						<col width="15%">
+						<col width="15%">
+						<col width="15%">
 						<col width="10%">
-						<col width="10%">
-						<col width="10%">
-						<col width="5%">
-						<col width="10%">
-						<col width="10%">
-						<col width="5%">
-						<col width="10%">
-						<col width="10%%">
+						<col width="20%">
 					</colgroup>
 					<thead>
 						<tr>
@@ -105,112 +104,26 @@ body {
 							<td class="th_column_2">상품이미지</td>
 							<td class="th_column_3">상품명</td>
 							<td class="th_column_4">정상가</td>
-							<td class="th_column_5">할인</td>
-							<td class="th_column_6">판매가</td>
-							<td class="th_column_7">판매 수량</td>
-							<td class="th_column_8">재고</td>
-							<td class="th_column_9">등록일</td>
-							<td class="th_column_10">수정일</td>
+							<td class="th_column_5">판매가</td>
+							<td class="th_column_6">재고</td>
+							<td class="th_column_7">등록일</td>
 						</tr>
 					</thead>
 					<tbody>
+						<c:forEach items="${list}" var="pvo">
 						<tr>
-							<td><input type="checkbox" name="th_column_1"></td>
-							<td></td>
-							<td>뚝배기</td>
-							<td>12,000</td>
-							<td>%</td>
-							<td>12,000</td>
-							<td>10</td>
-							<td>20</td>
-							<td>2023-08-01</td>
-							<td>2023-08-26</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name="th_column_1"></td>
-							<td></td>
-							<td>장갑</td>
-							<td>7,000</td>
-							<td>%</td>
-							<td>7,000</td>
-							<td>10</td>
-							<td>20</td>
-							<td>2023-08-01</td>
-							<td>2023-08-26</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name="th_column_1"></td>
-							<td></td>
-							<td>밧줄</td>
-							<td>7,000</td>
-							<td>%</td>
-							<td>7,000</td>
-							<td>10</td>
-							<td>20</td>
-							<td>2023-08-01</td>
-							<td>2023-08-26</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name="th_column_1"></td>
-							<td></td>
-							<td>소화기</td>
-							<td>15,000</td>
-							<td>%</td>
-							<td>15,000</td>
-							<td>3</td>
-							<td>10</td>
-							<td>2023-08-01</td>
-							<td>2023-08-26</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name="th_column_1"></td>
-							<td></td>
-							<td>구명조끼</td>
-							<td>10,000</td>
-							<td>%</td>
-							<td>10,000</td>
-							<td>4</td>
-							<td>15</td>
-							<td>2023-08-01</td>
-							<td>2023-08-26</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name="th_column_1"></td>
-							<td></td>
-							<td>압박붕대</td>
-							<td>3,000</td>
-							<td>%</td>
-							<td>3,000</td>
-							<td>14</td>
-							<td>30</td>
-							<td>2023-08-01</td>
-							<td>2023-08-26</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name="th_column_1"></td>
-							<td></td>
-							<td>안전화</td>
-							<td>19,000</td>
-							<td>%</td>
-							<td>19,000</td>
-							<td>4</td>
-							<td>10</td>
-							<td>2023-08-01</td>
-							<td>2023-08-26</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name="th_column_1"></td>
-							<td></td>
-							<td>심장 제세동기</td>
-							<td>1,500,000</td>
-							<td>%</td>
-							<td>1,500,000</td>
-							<td>2</td>
-							<td>1</td>
-							<td>2023-08-01</td>
-							<td>2023-08-26</td>
-						</tr>
-
+                                <td><input type="checkbox"></td>
+                                <td>${pvo.PROD_IMG}</td>
+                                <td>${pvo.PROD_NAME}</td>
+                                <td>${pvo.PROD_PRICE}</td>
+                                <td>${pvo.PROD_SALE}</td>
+                                <td>${pvo.PROD_AMOUNT}</td>
+                                <td>
+                                <fmt:parseDate value="${pvo.PROD_REGDATE}" var="regdate" pattern="yyyy-MM-dd HH:mm:ss" />
+                                <fmt:formatDate value="${regdate}" pattern="yyyy-MM-dd" />
+                                </td>
+                            </tr>
+                        </c:forEach>
 					</tbody>
 				</table>
 

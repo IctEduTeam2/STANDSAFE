@@ -4,12 +4,22 @@
  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="member">
 	<!-- 회원가입 -->
-	<insert id="insert" parameterType="uVO">
-		insert into MEMBER_T(ID, PW,
+	<insert id="insert" parameterType="uVO" useGeneratedKeys="true"
+		keyProperty="CLIENT_NUM">
+		insert into MEMBER_T(ID,
+		<if test="PW != null and PW != ''">
+			PW,
+		</if>
 		<if test="TEMP_PW != null and TEMP_PW != ''">
 			TEMP_PW,
 		</if>
-		M_NAME, NICKNAME, MAIL, BIRTH, PHONE,
+		<if test="M_NAME != null and M_NAME != ''">
+			M_NAME,
+		</if>
+		NICKNAME, MAIL, BIRTH,
+		<if test="PHONE != null and PHONE != ''">
+			PHONE,
+		</if>
 		<if test="ADDR != null and ADDR != ''">
 			ADDR,
 		</if>
@@ -18,7 +28,7 @@
 			EMAIL_ST,
 		</if>
 		<if test="OUT_TIME != null and OUT_TIME != ''">
-		OUT_TIME,
+			OUT_TIME,
 		</if>
 		OUT_ST
 		)
@@ -36,28 +46,119 @@
 			#{EMAIL_ST},
 		</if>
 		<if test="OUT_TIME != null and OUT_TIME != ''">
-		SYSDATE(),
+			SYSDATE(),
 		</if>
 		1
 		)
 	</insert>
 	<!-- 아이디 중복체크 -->
 	<select id="idCheck" parameterType="String" resultType="int">
-		SELECT COUNT(*) FROM MEMBER_T
+		SELECT
+		COUNT(*) FROM MEMBER_T
 		WHERE ID = #{ID}
 	</select>
-	
+
 	<!-- 닉네임 중복체크 -->
 	<select id="nickCheck" parameterType="String" resultType="int">
-		SELECT COUNT(*) FROM MEMBER_T
+		SELECT
+		COUNT(*) FROM MEMBER_T
 		WHERE NICKNAME = #{NICKNAME}
 	</select>
-		
+	<!-- 비밀번호 중복체크 -->
+	<select id="pwCheck" parameterType="map" resultType="int">
+		SELECT COUNT(*) FROM MEMBER_T
+		WHERE CLIENT_NUM = #{CLIENT_NUM} AND PW = #{PW}
+	</select>
+
 	<!-- 로그인 -->
 	<select id="selectPwd" parameterType="String" resultType="uVO">
 		select
 		* from MEMBER_T where ID = #{ID}
 	</select>
+
+	<!-- sns 로그인 -->
+	<select id="emailCheck" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM MEMBER_T
+		WHERE MAIL = #{MAIL}
+	</select>
+
+	<!-- sns 가입 -->
+	<select id="snslogin" parameterType="uVO">
+		insert into MEMBER_T(ID,
+		<if test="PW != null and PW != ''">
+			PW,
+		</if>
+		<if test="PW == null or PW == ''">
+			PW,
+		</if>
+		<if test="TEMP_PW != null and TEMP_PW != ''">
+			TEMP_PW,
+		</if>
+		M_NAME, NICKNAME, MAIL,
+		<if test="BIRTH != null and BIRTH != ''">
+			BIRTH,
+		</if>
+		<if test="PHONE != null and PHONE != ''">
+			PHONE,
+		</if>
+		<if test="ADDR != null and ADDR != ''">
+			ADDR,
+		</if>
+		IN_TIME,
+		<if test="EMAIL_ST != null and EMAIL_ST != ''">
+			EMAIL_ST,
+		</if>
+		<if test="OUT_TIME != null and OUT_TIME != ''">
+			OUT_TIME,
+		</if>
+		OUT_ST
+		)
+		values(#{ID},
+
+		<if test="PW != null and PW != ''">
+			#{PW},
+		</if>
+		<if test="PW == null or PW == ''">
+			'defaultPassword',
+		</if>
+
+		<if test="TEMP_PW != null and TEMP_PW != ''">
+			#{TEMP_PW},
+		</if>
+
+		#{M_NAME}, #{NICKNAME}, #{MAIL},
+
+		<if test="BIRTH != null and BIRTH != ''">
+			#{BIRTH},
+		</if>
+
+		<if test="PHONE != null and PHONE != ''">
+			#{PHONE},
+		</if>
+
+		<if test="ADDR != null and ADDR != ''">
+			#{ADDR},
+		</if>
+
+		SYSDATE(),
+
+		<if test="EMAIL_ST != null and EMAIL_ST != ''">
+			#{EMAIL_ST},
+		</if>
+
+		<if test="OUT_TIME != null and OUT_TIME != ''">
+			SYSDATE(),
+		</if>
+		1
+		)
+	</select>
+	<!-- 유저업데이트 -->
+	<!-- ID와 비밀번호 모두를 사용한 중복 여부 확인 -->
+	<select id="isPwDuplicate" parameterType="map" resultType="int">
+		SELECT COUNT(*) FROM MEMBER_T
+		WHERE PW = #{PW} AND ID = #{ID}
+	</select>
+
 </mapper>
 
 

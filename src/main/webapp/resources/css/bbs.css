@@ -61,18 +61,20 @@ table td:nth-child(3) {
 }
 
 
-/* 나머지 컬럼들을 가운데 정렬 */
+/*나머지 컬럼들을 가운데 정렬*/
 table td:not(:nth-child(3)) {
   text-align: center;
-}
+}  
 
 /* 테이블 제목컬럼 간격 조절 */
+
+
 #th1{ width: 10px;}
-#th2{ width: 600px; }
+#th2{ width: 500px; }
 #th3{ width: 100px;}
 #th4{ width: 100px;}
-#th5{ width: 10px;}
-#th6{ width: 10px;}
+#th5{ width: 100px;}
+#th6{ width: 100px;} 
 
 /* 게시판리스트 볼때, 보이는 파일첨부되었을때의 작은 이미지 설정 */
 .f_img{

@@ -1,17 +1,68 @@
 package com.ict.admin.controller;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ict.admin.model.service.NoticeService;
+import com.ict.admin.model.vo.NoticeVO;
+import com.ict.common.Paging;
+
 @Controller
 public class Admin_notice {
-	// �Խ���
+	
+	@Autowired
+	private NoticeService notiService;
+	@Autowired
+	private Paging paging;
+	
 	@RequestMapping("/admin_notice.do")
-	public ModelAndView AdminNo() {
+	public ModelAndView AdminNo(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("admin_notice/notice");
+		
+		//페이징 처리 
+		if(paging.getTotalRecord() <= paging.getNumPerPage()) {
+			paging.setTotalPage(1);
+		}else {
+			paging.setTotalPage(paging.getTotalRecord()/paging.getNumPerPage());
+			if(paging.getTotalRecord()%paging.getNumPerPage() != 0) {
+				paging.setTotalPage(paging.getTotalPage() +1);
+			}
+		}
+		
+		String cPage = request.getParameter("cPage");
+		if(cPage==null) {
+			paging.setNowPage(1);
+		}else{
+			paging.setNowPage(Integer.parseInt(cPage));
+		}
+		
+		paging.setOffset(paging.getNumPerPage()*(paging.getNowPage()-1));
+		paging.setBeginBlock((int)((paging.getNowPage()-1)/paging.getPagePerBlock())
+				*paging.getPagePerBlock()+1);
+	
+		paging.setEndBlock(paging.getBeginBlock()+paging.getPagePerBlock()-1);
+		
+		if(paging.getEndBlock() > paging.getTotalPage()) {
+			paging.setEndBlock(paging.getTotalPage());
+		}
+		
+		List<NoticeVO> list = notiService.getadnoticelist(paging.getOffset(),paging.getNumPerPage());
+		
+		String notice_num = request.getParameter("NOTICE_NUM");
+		NoticeVO anvo = notiService.getAdNoticeOneList(notice_num);
+		
+		mv.addObject("list", list);
+		mv.addObject("anvo", anvo);
+		mv.addObject("paging", paging);
 		return mv;
 	}
+	
 	@RequestMapping("/admin_qa.do")
 	public ModelAndView AdminQa() {
 		ModelAndView mv = new ModelAndView("admin_notice/qa");
@@ -43,7 +94,8 @@ public class Admin_notice {
 		return mv;
 	}
 	
-	//��������
+	
+	//공지사항 
 	@RequestMapping("/ad_allnotice.do") //
 	public ModelAndView AdminAllNotice() {
 		ModelAndView mv = new ModelAndView("admin_bbs/ad_notice");
@@ -74,6 +126,13 @@ public class Admin_notice {
 		ModelAndView mv = new ModelAndView("admin_notice/notice");
 		return mv;
 	}
+	//테이블 삭제버튼
+	@RequestMapping("/adnotice_deletetable.do")
+	public ModelAndView AdminTableDelete() {
+		ModelAndView mv = new ModelAndView("admin_notice/notice");
+		return mv;
+	}
+	
 		
 	//Q&A
 	@RequestMapping("/ad_allqa.do") 
@@ -117,7 +176,7 @@ public class Admin_notice {
 	
 	
 	
-	//�̿�ȳ� FAQ
+	//이용안내 FAQ
 	@RequestMapping("/ad_allfaq.do")
 	public ModelAndView AdminAllFaq() {
 		ModelAndView mv = new ModelAndView("admin_bbs/ad_faq");
@@ -136,7 +195,7 @@ public class Admin_notice {
 		return mv;
 	}
 	
-	//event
+	//이벤트
 	@RequestMapping("/ad_eveall_go.do")
 	public ModelAndView AdminAllEvent() {
 		ModelAndView mv = new ModelAndView("admin_bbs/ad_event");
@@ -163,16 +222,13 @@ public class Admin_notice {
 		ModelAndView mv = new ModelAndView("admin_bbs/ad_event_onelist");
 		return mv;
 	}
-	
-	
-	
 	@RequestMapping("/return1.do")
 	public ModelAndView AdminGoEvent() {
 		ModelAndView mv = new ModelAndView("admin_notice/event");
 		return mv;
 	}
 	
-	//review
+	//리뷰
 	@RequestMapping("/ad_allreview.do")
 	public ModelAndView AdminAllRev() {
 		ModelAndView mv = new ModelAndView("admin_bbs/ad_review");
@@ -213,7 +269,7 @@ public class Admin_notice {
 	
 	
 	
-	//�Ű�
+	//신고
 	@RequestMapping("/ad_allreport.do") 
 	public ModelAndView AdminAllRep() {
 		ModelAndView mv = new ModelAndView("admin_bbs/ad_report");
@@ -250,7 +306,7 @@ public class Admin_notice {
 		return mv;
 	}
 	
-	//�˾�/�����̵�
+	//팝업 슬라이드 
 	@RequestMapping("/allpopslide.do")
 	public ModelAndView AdminPopWriteForm() {
 		ModelAndView mv = new ModelAndView("/admin_notice/popslide_writeform");
@@ -262,10 +318,6 @@ public class Admin_notice {
 		ModelAndView mv = new ModelAndView("/admin_notice/popslide");
 		return mv;
 	}
-	
-	
-
-
 }
 	
 
