@@ -67,18 +67,55 @@ table tfoot ol.paging li a:hover {
 </style> 
 <script type="text/javascript">
 function search_go() {
-    var selectedOption = document.querySelector('input[name="search"]:checked').value;
-    var searchText = document.getElementById("s_bar").value;
+	  var searchText = document.getElementById("s_bar").value;
+	  var searchType = "";
 
+	    if (document.getElementById("type_title").checked) {
+	        searchType = "제목";
+	    } else if (document.getElementById("type_content").checked) {
+	        searchType = "내용";
+	    } else if (document.getElementById("type_author").checked) {
+	        searchType = "작성자";
+	    }
+	//alert(searchText+searchType);
+	// AJAX 요청을 보냅니다.
     $.ajax({
-        type: "POST",
-        url: "/bbs_search.do", // 서버 URL을 적절하게 변경하세요.
-        data: { option: selectedOption, searchText: searchText },
-        success: function(response) {
-            // 서버에서 반환된 데이터(response)를 처리합니다.
+        type: "POST", // 또는 "GET"을 사용할 수도 있습니다.
+        url: "/bbs_ev_search.do", // 컨트롤러의 URL을 여기에 입력합니다.
+        data: { searchText: searchText, searchType: searchType },
+        success: function(data) {
+        	
+        	console.log(data);
+            // 서버에서 받은 응답을 처리합니다.
+            // 예를 들어, 검색 결과를 화면에 표시하거나 다른 동작을 수행할 수 있습니다.
+            // 컨트롤러에서 일처리해서 내용을 갖고왔다. 내용 라디오에 회원이라는 것을 치면 나온다. 
+            // 여기서는 테이블에 붙여야한다. 
+         /*  var table = "<table>";
+            
+            table += "<thead class='mh_table'><tr><th id='th1'>번호</th><th id='th4'>파일첨부</th><th id='th2'>제목</th><th id='th3'>작성자</th><th id='th5'>조회수</th><th id='th6'>날짜</th></tr></thead>";
+            table += "<tbody>";
+            
+            //갖고온 배열 리스트 포문으로 돌리면서 있을때까지 뽑아내기
+            for(var i =0, i<data.length; i++) {
+            	var item = data[i];
+            	table += "<tr>";
+            	table += "<td>" + (i+1) + "</td>";
+            	table += "<td>" + item.EVENT_FILE + "</td>";
+            	table += "<td>" + item.EVENT_SUBJECT + "</td>";
+            	table += "<td>" + item.EVENT_WRITER + "</td>";
+            	table += "<td>" + item.EVENT_HIT+ "</td>";
+            	table += "<td>" + item.EVENT_DATE + "</td>";
+            
+            }
+            table += "</tbody>";
+            table += "</table>";
+            
+		
+            $("#result").append(table); */
+        
         },
-        error: function(err) {
-            // 오류 처리 코드를 여기에 추가할 수 있습니다.
+        error: function(error) {
+            alert("검색(설정)이 잘못되어 불러올수없습니다.");
         }
     });
 }
@@ -94,11 +131,11 @@ function search_go() {
 					<div id="bbs_sub"><h1>이벤트</h1></div>
 							<fieldset >
 								<label>
-									<input type="radio" name="search" value="제목" id="t_sub" checked />
+									<input type="radio" name="search" value="제목" id="type_title" checked />
 									<span>제목</span>					
 								</label>
 								<label>
-									<input type="radio" name="search" value="내용" id="t_con" />
+									<input type="radio" name="search" value="내용" id="type_content" />
 									<span>내용</span>					
 								</label>
 								<div id="search_bar">
@@ -153,6 +190,7 @@ function search_go() {
 								</c:otherwise>
 							</c:choose>
 						</tbody>	
+					
 						<tfoot>
 								<tr>
 									<td colspan="6">

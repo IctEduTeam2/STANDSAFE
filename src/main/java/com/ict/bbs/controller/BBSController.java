@@ -14,6 +14,7 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -1116,6 +1117,47 @@ public class BBSController {
 			System.out.println(e);
 			return null;
 		}
+		
+	}
+	
+	@PostMapping("/bbs_ev_search.do")
+	public ModelAndView goQaSearch(HttpServletRequest request,
+			@RequestParam("searchText")String searchText,
+			@RequestParam("searchType")String searchType) {
+		
+		ModelAndView mv = new ModelAndView("bbs/event_result");
+		
+		System.out.println("검색눌러서 불러온 단어: " + searchText);
+		System.out.println("검색눌러서 불러온 검색조건타입 : " + searchType);
+		
+		if(searchType.equals("내용")) {
+			//내용이 체크되어 넘어올떄 검색 일처리
+			List<EV_BBS_VO> s_result_con = bbsService.EvSearchResultByCon(searchText);
+			
+			System.out.println("맞는내용을 검색하여 갖고배열: " + s_result_con);
+			
+			for (EV_BBS_VO k : s_result_con) {
+				System.out.println("갖고온 번호: " + k.getEVENT_NUM());
+				System.out.println("갖고온 제목: "+k.getEVENT_SUBJECT());
+				System.out.println("갖고온 내용: "+k.getEVENT_CONTENT());
+				System.out.println("갖고온 작성자: "+k.getEVENT_WRITER());
+				System.out.println("갖고온 날짜: "+k.getEVENT_DATE());
+			} //결과가 잘나오나 뽑아보았다. 근데 결과가 한개가 아닌 여러개라면? 
+			
+			
+			mv.addObject("s_result_con", s_result_con);
+			return mv;
+			
+			
+		}else if (searchType.equals("제목")) {
+			
+		}else if (searchType.equals("작성자")) {
+			
+		}else {
+			//널값을 입력했을때, 
+		}
+		
+		return null;
 		
 	}
 	

@@ -117,6 +117,8 @@ public interface BBS_Service {
 		
 	int BbsReviewDeleteOk(String RE_NUM);
 	
+	//검색
+	public List<EV_BBS_VO> EvSearchResultByCon(String searchText);
 	
 	
 }

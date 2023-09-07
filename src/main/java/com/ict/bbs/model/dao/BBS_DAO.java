@@ -221,4 +221,9 @@ public class BBS_DAO {
 	}
 	
 	
+	//검색
+	
+	public List<EV_BBS_VO> EvSearchResultByCon(String searchText){
+		return sqlSessionTemplate.selectList("bbs.searchevcon",searchText);
+	}
 }

@@ -197,13 +197,19 @@
 	where RE_NUM=#{RE_NUM}
    </update>
 
-
-
    <update id="reviewdelete" parameterType="String">
    	update REVIEW_T
    	set RE_ST = 0 where RE_NUM = #{RE_NUM}
    	
    </update>
+   
+   
+   <!-- 검색 -->
+   
+   <select id="searchevcon" parameterType="String" resultType="ebbsvo">
+   	select * from EVENT_T where EVENT_CONTENT LIKE CONCAT('%', #{searchText}, '%')
+    </select>
+
    
 </mapper>
 
