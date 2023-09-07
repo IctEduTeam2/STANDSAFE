@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="point">
+	<!-- (로그인과 같이)포인트 부여 -->
+	<insert id="joinpoint" parameterType="pVO">
+    INSERT INTO POINT_T (
+    <if test="POINT_REM != null and POINT_REM != ''">POINT_REM, </if>
+    <if test="POINT_DATE != null and POINT_DATE != ''">POINT_DATE, </if>
+    <if test="POINT_DATE != null and POINT_DATE != ''">POINT_DATE, </if>
+    <if test="POINT_SAVE != null and POINT_SAVE != ''">POINT_SAVE, </if>
+    <if test="POINT_OUT != null and POINT_OUT != ''">POINT_OUT, </if>
+    CLIENT_NUM)
+    VALUES (
+     <if test="POINT_REM != null and POINT_REM != ''">10000, </if>
+     <if test="POINT_DATE != null and POINT_DATE != ''">SYSDATE(),</if>
+    <if test="POINT_DATE != null and POINT_DATE != ''">SYSDATE(),</if>
+    <if test="POINT_SAVE != null and POINT_SAVE != ''">#{POINT_SAVE}, </if>
+    <if test="POINT_OUT != null and POINT_OUT != ''">#{POINT_OUT}, </if>
+    #{CLIENT_NUM})
+	</insert>
+</mapper>
+
+
+
+
+
+
+
+
+
