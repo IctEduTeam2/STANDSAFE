@@ -11,7 +11,14 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
 <!-- Link Swiper's CSS -->
-
+<script type="text/javascript">
+	function addToCart(button) {
+		var prod_num = button.getAttribute('data-prodnum');
+		var client_num = button.getAttribute('data-usernum');
+		location.href = "/basketAdd.do?client_num=" + client_num + "&prod_num="
+				+ prod_num;
+	}
+</script>
 <link rel="stylesheet" href="resources/css/slide.css" />
 <link rel="stylesheet" href="resources/css/basis.css" />
 </head>
@@ -23,7 +30,8 @@
 				<div class="slide slide_wrap">
 					<div class="slide_item item">
 						<c:forEach var="k" items="${popuplist}">
-									<img src="resources/images/slide/${k.popup_img }" class="slide_img">
+							<img src="resources/images/slide/${k.popup_img }"
+								class="slide_img">
 						</c:forEach>
 					</div>
 					<div class="slide_prev_button slide_button">◀</div>
@@ -32,10 +40,12 @@
 				</div>
 				<script src="resources/js/slide.js"></script>
 			</article>
-			<div style="width: 100%; height: 185px; float: left; margin-bottom: 50px; margin-top: 20px;">
-				<c:forEach var="k" items="${productBestList}">
-					<a href="/productOneListform.do?prod_num=${k.prod_num }">
-					<img src="resources/images/products/${k.prod_img }" style="width: 184px; height: 100%; border: 1px solid black;"></a>
+			<div
+				style="width: 100%; height: 185px; float: left; margin-bottom: 50px; margin-top: 20px;">
+				<c:forEach var="a" items="${productBestList}">
+					<a href="/productOneListform.do?prod_num=${a.prod_num }"> <img
+						src="resources/images/products/${a.prod_img }"
+						style="width: 184px; height: 100%; border: 1px solid black;"></a>
 				</c:forEach>
 			</div>
 			<form style="float: right;">
@@ -49,15 +59,38 @@
 				<hr
 					style="margin-bottom: 30px; margin-top: 20px; border: 3px solid #1b5ac2;">
 				<ul class="prod-list">
-				<c:forEach var="k" items="${productNewList}">
-					<li class="product"><img
-						src="resources/images/products/${k.prod_img }" class="product_img">
-						<p class="product_text">${k.prod_name}</p> <br>
-						<p class="product_text">원가 ${k.prod_price } 원 세일: ${k.prod_sale}</p>
-						<div class="caption">
-							<button class="product_btn1">상세보기</button>
-							<button class="product_btn2">장바구니 담기</button>
-						</div></li></c:forEach>
+					<c:forEach var="a" items="${productNewList}">
+						<li class="product"><img
+							src="resources/images/products/${a.prod_img }"
+							class="product_img">
+						<p class="product_text" style="margin-top: 10px;">
+								${a.prod_name }</p> <br> <c:choose>
+								<c:when test="${a.prod_sale == '0'}">
+									<p class="product_text">
+										<fmt:formatNumber value="${a.prod_price}" type="number"
+											pattern="#,### 원" />
+									</p>
+								</c:when>
+								<c:otherwise>
+									<p class="product_text">
+										<del>
+											<fmt:formatNumber value="${a.prod_price}" type="number"
+												pattern="#,### 원" />
+										</del>
+										▶ <b style="color: red; font-size: 14px;"><fmt:formatNumber
+												value="${a.prod_sale}" type="number" pattern="#,### 원" /></b> <b
+											style="font-size: 14px;"> (${((a.prod_price - a.prod_sale) / a.prod_price * 100).intValue()}%↓)</b>
+									</p>
+								</c:otherwise>
+							</c:choose>
+							<p class="product_text">
+							<div class="caption">
+								<button class="product_btn1"
+									onclick="window.location.href='/productOneListform.do?prod_num=${a.prod_num}'">상세보기</button>
+								<button class="product_btn2" onclick="addToCart(this)"
+									data-prodnum="${a.prod_num}" data-usernum="19">장바구니 담기</button>
+							</div></li>
+					</c:forEach>
 				</ul>
 			</div>
 			<div id="event">
@@ -80,5 +113,6 @@
 		<script src="resources/js/quick.js"></script>
 		<jsp:include page="Semantic/footer.jsp"></jsp:include>
 	</div>
+	${msg }
 </body>
 </html>

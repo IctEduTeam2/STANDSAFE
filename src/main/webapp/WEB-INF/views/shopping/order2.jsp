@@ -101,12 +101,13 @@
 	}
 </script>
 <script>
-var addr = '';
-var extraAddr = '';
 	function execDaumPostcode2() {
 		new daum.Postcode({
 			oncomplete : function(data) {
 				// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
+				var addr = '';
+				var extraAddr = '';
+
 				// 사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
 				if (data.userSelectedType === 'R') { // 도로명 주소 
 					addr = data.roadAddress;
@@ -140,23 +141,11 @@ var extraAddr = '';
 				// 우편번호와 주소 정보를 해당 필드에 넣는다.
 				document.getElementById('postcode2').value = data.zonecode;
 				document.getElementById("address2").value = addr;
-				address = addr + "(" + data.zonecode + ")";
+				
 				// 커서를 상세주소 필드로 이동한다.
 				document.getElementById("detailAddress2").focus();
 			}
 		}).open();
-	}
-
-	function point2(f) {
-	    const price = parseFloat('${price}');
-	    const inputValue = parseFloat(f.point.value.trim());
-	    if (inputValue >= price) {
-	        f.action = "/ordercom.do?address=" + address + "&price=" + price;
-	        f.submit();
-	    } else {
-	        alert("포인트가 부족합니다.");
-	        return;
-	    }
 	}
 </script>
 </head>
@@ -221,41 +210,48 @@ $(document).ready(function() {
 						</tr>
 					</thead>
 					<tbody class="order_list_td">
-						<tr>
-							<td><input type="checkbox" name="select" value="제품번호"></td>
-							<td><img src="resources/images/products/${pvo.prod_img }"
-								style="width: 120px; height: 160px"></td>
-							<td><a href="/productOneListform.do?prod_num=${prod_num }"
-								style="font-size: 16px;">${pvo.prod_name }</a></td>
-							<td><c:choose>
-									<c:when test="${pvo.prod_sale == '0'}">
-										<fmt:formatNumber value="${pvo.prod_price}" type="number"
-											pattern="#,###원" />
-									</c:when>
-									<c:otherwise>
-										<p>
-											<del>
-												<fmt:formatNumber value="${pvo.prod_price}" type="number"
-													pattern="#,### 원" />
-											</del>
-											▶ <b style="color: red; font-size: 14px;"><fmt:formatNumber
-													value="${pvo.prod_sale}" type="number" pattern="#,### 원" /></b>
-										</p>
-										<b style="font-size: 14px;"> (${((pvo.prod_price - pvo.prod_sale) / pvo.prod_price * 100).intValue()}%↓)</b>
-									</c:otherwise>
-								</c:choose></td>
-							<td>${bvo.cart_amount }개</td>
-							<td><c:choose>
-									<c:when test="${pvo.prod_sale == '0'}">
-										<fmt:formatNumber value="${pvo.prod_price * bvo.cart_amount}"
-											type="number" pattern="#,###원" />
-									</c:when>
-									<c:otherwise>
-										<fmt:formatNumber value="${pvo.prod_sale * bvo.cart_amount}"
-											type="number" pattern="#,### 원" />
-									</c:otherwise>
-								</c:choose></td>
-						</tr>
+						<c:forEach var="k" items="${pvolist }">
+							<tr>
+								<td><input type="checkbox" name="select" value="제품번호"></td>
+								<td><img src="resources/images/products/${k.prod_img }"
+									style="width: 120px; height: 160px"></td>
+								<td><a
+									href="/productOneListform.do?prod_num=${k.prod_num }"
+									style="font-size: 16px;">${k.prod_name }</a></td>
+								<td><c:choose>
+										<c:when test="${k.prod_sale == '0'}">
+											<fmt:formatNumber value="${k.prod_price}" type="number"
+												pattern="#,###원" />
+										</c:when>
+										<c:otherwise>
+											<p>
+												<del>
+													<fmt:formatNumber value="${k.prod_price}" type="number"
+														pattern="#,### 원" />
+												</del>
+												▶ <b style="color: red; font-size: 14px;"><fmt:formatNumber
+														value="${k.prod_sale}" type="number" pattern="#,### 원" /></b>
+											</p>
+											<b style="font-size: 14px;"> (${((k.prod_price - k.prod_sale) / k.prod_price * 100).intValue()}%↓)</b>
+										</c:otherwise>
+									</c:choose></td>
+								<c:forEach var="a" items="${bvolist}">
+									<c:if test="${a.prod_num eq k.prod_num}">
+										<td>${a.cart_amount }개</td>
+										<td><c:choose>
+												<c:when test="${k.prod_sale == '0'}">
+													<fmt:formatNumber value="${a.cart_price}" type="number"
+														pattern="#,###원" />
+												</c:when>
+												<c:otherwise>
+													<fmt:formatNumber value="${a.cart_price}" type="number"
+														pattern="#,### 원" />
+												</c:otherwise>
+											</c:choose></td>
+									</c:if>
+								</c:forEach>
+							</tr>
+						</c:forEach>
 					</tbody>
 				</table>
 				<h3 style="margin-bottom: 20px; margin-top: 80px;">주문자 정보</h3>
@@ -517,7 +513,6 @@ $(document).ready(function() {
 				</table>
 				<h3 style="margin-bottom: 20px; margin-top: 80px;">배송지 정보</h3>
 
-								<form enctype="multipart/form-data" method="post" >
 				<table
 					style="width: 100%; border-spacing: 0px; border-collapse: collapse; font-weight: 700;"
 					class="user_data">
@@ -530,33 +525,33 @@ $(document).ready(function() {
 					<tr>
 						<td>받으시는분 <b style="color: red">*</b></td>
 						<td><input type="text" style="width: 400px; padding: 10px;"
-							id="deliveryName" name="take_peo"></td>
+							id="deliveryName"></td>
 					</tr>
 					<tr>
 						<td>주소 <b style="color: red">*</b></td>
 						<td><input style="width: 400px; padding: 10px;" type="text"
-							name="postcode2" id="postcode2" placeholder="우편번호"
+							name="postcode" id="postcode2" placeholder="우편번호"
 							disabled="readonly"> <input
 							style="width: 200px; padding: 7px; margin-bottom: 10px;"
 							type="button" onclick="execDaumPostcode2()" value="우편변호 찾기">
 							<br> <input style="width: 400px; padding: 10px;" type="text"
-							name="address2" id="address2" placeholder="주소" disabled="readonly">
+							name="address" id="address2" placeholder="주소" disabled="readonly">
 							<input style="width: 400px; padding: 10px;" type="text"
-							name="extraAddress2" id="extraAddress2" placeholder="참고주소"
+							name="extraAddress" id="extraAddress2" placeholder="참고주소"
 							disabled="readonly"> <span id="guide"
 							style="color: #999; display: none"></span> <input
 							style="width: 400px; padding: 10px;" type="text"
-							name="detailAddress2" id="detailAddress2" placeholder="상세주소">
+							name="detailAddress" id="detailAddress2" placeholder="상세주소">
 							<!-- 히든 필드 --> <input type="hidden" id="ADDR" name="ADDR"></td>
 					</tr>
 					<tr>
 						<td>전화 <b style="color: red">*</b></td>
 						<td><input type="text" style="width: 300px; padding: 10px;"
-							placeholder="'-'없이 입력" id="deliveryPhone" name="phone"></td>
+							placeholder="'-'없이 입력" id="deliveryPhone"></td>
 					</tr>
 					<tr>
 						<td>배송 메모 <b style="color: red">*</b></td>
-						<td><textarea maxlength="200" name="memo"
+						<td><textarea maxlength="200"
 								style="resize: none; padding: 10px; font-size: 16px; width: 400px; height: 100px;"></textarea></td>
 					</tr>
 				</table>
@@ -568,24 +563,17 @@ $(document).ready(function() {
 					class="user_data">
 					<tr>
 						<td style="width: 80%;"><input type="radio" checked
-							name="payment" id="cardPayment"> 카드 결제 <input
-							type="radio" style="margin-left: 50px;" name="payment"
-							id="pointPayment"> 포인트 결제</td>
+							name="payment"> 카드 결제 <input type="radio"
+							style="margin-left: 50px;" name="payment"> 포인트 결제</td>
 						<td
 							style="text-align: right; background-color: rgba(27, 90, 194, 1); color: white; font-size: 20px; font-weight: 700;">총
 							결제금액</td>
 					</tr>
 					<tr>
 						<td style="height: 300px;">
-							<div style="color: gray; font-size: 20px;"
-								id="card">
+							<div style="margin-top: 200px; color: gray; font-size: 20px;">
 								<div id="payment-method"></div>
 								<div id="agreement"></div>
-							</div>
-							<div style="color: gray; font-size: 20px; display: none;"
-								id="point">
-								<h1>보유포인트: <fmt:formatNumber value="${pointvo.POINT_REM}"
-												type="number" pattern="#,###p" /></h1>
 							</div>
 						</td>
 						<td
@@ -593,57 +581,32 @@ $(document).ready(function() {
 								style="margin-top: 150px;">
 								<div
 									style="font-size: 30px; font-weight: 700; margin-bottom: 40px;">
-									<c:choose>
-										<c:when test="${pvo.prod_sale == '0'}">
-											<fmt:formatNumber value="${pvo.prod_price * bvo.cart_amount}"
-												type="number" pattern="#,###원" />
-										</c:when>
-										<c:otherwise>
-											<fmt:formatNumber value="${pvo.prod_sale * bvo.cart_amount}"
-												type="number" pattern="#,### 원" />
-										</c:otherwise>
-									</c:choose>
-									원
+									<fmt:formatNumber value="${price_sum}" type="number"
+										pattern="#,### 원" />
 								</div>
-								
-								<div id="point-button" style="display: none;">
-								<input type="hidden" value="${uvo.CLIENT_NUM}" name="client_num" >
-								<input type="hidden" value="${pointvo.POINT_REM}" name="point" >
-								<input type="hidden" value="${bvo.cart_amount}" name="amount" >
-								<input type="hidden" value="${pvo.prod_num}" name="prod_num" >
-								<input type="hidden" value="${order_num}" name="order_num" >
-								<input type="button"
-									style="font-size: 26px; width: 100%; height: 100px; border-radius: 20px;"
-									class="pay" onclick="point2(this.form)" value="point">
-									</div>
-									
+								<!-- 결제위젯, 이용약관 영역 -->
+
 								<!-- 결제하기 버튼 -->
 								<button id="payment-button"
-									style="font-size: 26px; width: 100%; height: 100px; border-radius: 20px;"
+									style="font-size: 26px; width: 100%; height: 100px; border-radius: 20px"
 									class="pay">결제하기</button>
-								
 								<script>
-    const clientKey = "test_ck_ma60RZblrqJojBKeXmx8wzYWBn14"
-    const customerKey = '${uvo.CLIENT_NUM}' // 내 상점에서 고객을 구분하기 위해 발급한 고객의 고유 ID
-    const button = document.getElementById("payment-button")
+    const clientKey = 'test_ck_ma60RZblrqJojBKeXmx8wzYWBn14';
+    const customerKey = '${client_num}'; // 내 상점에서 고객을 구분하기 위해 발급한 고객의 고유 ID
+    const button = document.getElementById("payment-button");
 
     // ------  결제위젯 초기화 ------ 
     // 비회원 결제에는 customerKey 대신 ANONYMOUS를 사용하세요.
-    const paymentWidget = PaymentWidget(clientKey, customerKey) // 회원 결제
+    const paymentWidget = PaymentWidget(clientKey, customerKey); // 회원 결제
     // const paymentWidget = PaymentWidget(clientKey, PaymentWidget.ANONYMOUS) // 비회원 결제
-   	var pay = 0;
-    if('${pvo.prod_sale}'== "0") {
-    	pay = '${pvo.prod_price * bvo.cart_amount}';
-    } else {
-    	pay = '${pvo.prod_sale * bvo.cart_amount}';
-    }
+
     // ------  결제위젯 렌더링 ------ 
     // 결제수단 UI를 렌더링할 위치를 지정합니다. `#payment-method`와 같은 CSS 선택자와 결제 금액 객체를 추가하세요.
     // DOM이 생성된 이후에 렌더링 메서드를 호출하세요.
     // https://docs.tosspayments.com/reference/widget-sdk#renderpaymentmethods선택자-결제-금액-옵션
     paymentWidget.renderPaymentMethods(
       "#payment-method", 
-      { value: pay },
+      { value: '${price_sum}' },
       { variantKey: "DEFAULT" } // 렌더링하고 싶은 결제 UI의 variantKey
     )
 
@@ -651,55 +614,29 @@ $(document).ready(function() {
     // 이용약관 UI를 렌더링할 위치를 지정합니다. `#agreement`와 같은 CSS 선택자를 추가하세요.
     // https://docs.tosspayments.com/reference/widget-sdk#renderagreement선택자
     paymentWidget.renderAgreement('#agreement')
-	
-   const orderid = '${order_num}';
-    var name = '${uvo.m_NAME}';
-    var email = '${uvo.MAIL}';
-    var ordername = '${pvo.prod_name}';
-    const client_num = '${uvo.CLIENT_NUM}';
+
     // ------ '결제하기' 버튼 누르면 결제창 띄우기 ------
     // 더 많은 결제 정보 파라미터는 결제위젯 SDK에서 확인하세요.
     // https://docs.tosspayments.com/reference/widget-sdk#requestpayment결제-정보
+   const orderid = '${order_num}';
+    const m_name = '${uvo.m_NAME}';
+  	const mail = '${uvo.MAIL}';
+    const client_num = '${client_num}';
+    const ordername = '${ordername}';
     button.addEventListener("click", function () {
       paymentWidget.requestPayment({
         orderId: orderid,            // 주문 ID(직접 만들어주세요)
         orderName: ordername,                 // 주문명
         successUrl: "http://localhost:8090/ordersucces.do?client_num=" + client_num,  // 결제에 성공하면 이동하는 페이지(직접 만들어주세요)
         failUrl: "http://localhost:8090/error.do",        // 결제에 실패하면 이동하는 페이지(직접 만들어주세요)
-        customerEmail: email,
-        customerName: name
+        customerEmail: mail,
+        customerName: m_name
       })
     })
-  </script>	
-<script>
-    const cardPayment = document.getElementById("cardPayment");
-    const pointPayment = document.getElementById("pointPayment");
-    const card = document.getElementById("card");
-    const point = document.getElementById("point");
-    const cardbtn = document.getElementById("payment-button");
-    const pointbtn = document.getElementById("point-button");
-
-    cardPayment.addEventListener("change", function() {
-        if (cardPayment.checked) {
-            card.style.display = "block";
-            cardbtn.style.display = "block";
-            point.style.display = "none";
-            pointbtn.style.display = "none";
-        }
-    });
-
-    pointPayment.addEventListener("change", function() {
-        if (pointPayment.checked) {
-            card.style.display = "none";
-            cardbtn.style.display = "none";
-            point.style.display = "block";
-            pointbtn.style.display = "block";
-        }
-    });
-</script>
+  </script>
 							</div></td>
 					</tr>
-				</table></form>
+				</table>
 			</div>
 		</section>
 		<jsp:include page="../Semantic/quickmenu.jsp"></jsp:include>

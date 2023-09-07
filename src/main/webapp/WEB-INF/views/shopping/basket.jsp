@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -143,49 +145,71 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 }
 </script>
 <script type="text/javascript">
-$(function(){
-	$('.decreaseQuantity').click(function(e){
-	e.preventDefault();
-	var stat = $('.numberUpDown').text();
-	var num = parseInt(stat,10);
-	num--;
-	if(num<=0){
-	alert('더이상 줄일수 없습니다.');
-	num =1;
+	function decreaseQuantity(f) {
+		if(f.amount.value.trim() < 1) {
+			alert("최소 주문수량은 1개 입니다.");
+			f.amount.value = 1;
+			return;
+		} else {
+		f.action = "/updateamount.do?st=-";
+		f.submit();
+		}
 	}
-	$('.numberUpDown').text(num);
-	});
-	$('.increaseQuantity').click(function(e){
-	e.preventDefault();
-	var stat = $('.numberUpDown').text();
-	var num = parseInt(stat,10);
-	num++;
-
-	// 재고량만큼으로 나중에 수정
-	if(num>5){
-	alert('더이상 늘릴수 없습니다.');
-	num=5;
-	}
-	$('.numberUpDown').text(num);
-	});
-	});
-
 </script>
+<script type="text/javascript">
+function increaseQuantity(f) {
+	f.action = "/updateamount.do?st=+";
+	f.submit();
+}</script>
+<script>
+function deleteSelectedProducts() {
+  // 체크된 항목을 배열로 저장
+  const selectedProducts = [];
+  const checkboxes = document.querySelectorAll('.productCheckbox');
+  checkboxes.forEach(checkbox => {
+    if (checkbox.checked) {
+      selectedProducts.push(checkbox.value);
+    }
+  });
+
+  // 배열을 문자열로 변환하여 hidden input에 설정
+  document.getElementById('selectedProducts').value = selectedProducts.join(',');
+
+  // 폼 제출
+  document.getElementById('productForm').submit();
+}
+</script>	
+
 </head>
 <body onload="InitializeStaticMenu();">
+<script type="text/javascript">
+    var alertMessage = "${alertMessage}";
+    if (alertMessage) {
+        alert(alertMessage);
+    }
+</script>
 	<div id="mydiv">
 		<jsp:include page="../Semantic/header.jsp"></jsp:include>
 		<section id="contents" style="border: 0px solid black;">
-			<h3 style="width: 100%; float: left; margin-top: 100px; font-size: 30px;">장바구니</h3>
+			<h3
+				style="width: 100%; float: left; margin-top: 100px; font-size: 30px;">장바구니</h3>
 			<div
 				style="width: 100%; height: 82px; background-color: rgba(27, 90, 194, 1); float: left; margin-top: 10px;">
 				<ul class="snb">
-					<li class="li"><a href="/basketform.do" class="current li_a">장바구니</a></li>
-					<li class="li"><a href="/wishlistform.do" class="li_a" style="color: white;">위시리스트</a></li>
-					<li class="li"><a href="/orderlistform.do" class="li_a" style="color: white;">주문조회 | 배송현황</a></li>
+					<li class="li"><a href="/basketform.do?client_num=19" class="current li_a">장바구니</a></li>
+					<li class="li"><a href="/wishlistform.do?client_num=19" class="li_a"
+						style="color: white;">위시리스트</a></li>
+					<li class="li"><a href="/orderlistform.do?client_num=19" class="li_a"
+						style="color: white;">주문조회 | 배송현황</a></li>
 				</ul>
 			</div>
 
+					<c:choose>
+					<c:when test="${empty bvolist }">
+						<div style="float:left; margin: auto; text-align:center; border: 1px solid black; width: 100%; height: 600px; margin-top: 50px;">
+						<h1 style="text-align: center;">장바구니에 상품이 존재하지 않습니다.</h1>
+						</div>					</c:when>
+					<c:otherwise>
 			<div
 				style="width: 60%; margin: auto; height: auto; margin-top: 60px;">
 				<div
@@ -196,170 +220,85 @@ $(function(){
 						<b style="font-size: 18px;">전체 선택</b>
 					</div>
 					<div style="float: right">
-						<input type="button" value="선택항목 삭제" class="select_del">
+						<!-- 삭제 버튼 -->
+						<input type="button" value="선택항목 삭제" class="select_del"
+							onclick="deleteSelectedProducts();" />
+
 					</div>
 				</div>
 				<div class="baskets">
 					<!-- 제품 한개-->
-					<div class="basket_cont">
-						<img class="basket_img"
-							src="resources/images/products/product1.jpg">
-						<div style="width: 60%; float: left; margin-top: 80px;">
-							<a href=""
-								style="font-size: 18px; margin-left: 10px; font-weight: 600;">가정용
-								/ 캠핑용 액체 소방 스프레이</a> <br> <b
-								style="margin-left: 10px; font-size: 14px;">100,000원</b>
-						</div>
-						<div style="width: 18%; float: left; height: 200px;">
-							<input type="checkbox" name="select" value="제품명"
-								style="width: 20px; height: 20px; float: right; margin-right: 20px; margin-top: 20px;">
-							<div
-								style="width: 100%; margin-top: 100px; font-size: 20px; font-weight: 700;">
-								<form
-									style="border: 0; float: right; margin-right: 20px; margin-bottom: 5px;">
-									<input type="button" value="-"
-										onClick="javascript:this.form.amount.value--;"
-										style="background: white; font-size: 30px; border: 0">
-									<input type="number" name="amount" value="1"
-										style="width: 50px; text-align: center; border: 0; font-size: 20px;">개
-									<input type="button" value="+"
-										onClick="javascript:this.form.amount.value++;"
-										style="background: white; font-size: 23px; border: 0">
+					<c:forEach var="a" items="${prodList }">
+						<div class="basket_cont">
+							<img class="basket_img"
+								src="resources/images/products/${a.prod_img }">
+							<div style="width: 60%; float: left; margin-top: 80px;">
+								<a href="/productOneListform.do?prod_num=${a.prod_num }"
+									style="font-size: 18px; margin-left: 10px; font-weight: 600;">${a.prod_name}</a>
+								<br> <b style="margin-left: 10px; font-size: 14px;"><c:choose>
+										<c:when test="${a.prod_sale == '0'}">
+											<fmt:formatNumber value="${a.prod_price}" type="number"
+												pattern="#,### 원" />
+										</c:when>
+										<c:otherwise>
+											<del>
+												<fmt:formatNumber value="${a.prod_price}" type="number"
+													pattern="#,### 원" />
+											</del>
+										▶ <b style="color: red; font-size: 14px;"><fmt:formatNumber
+													value="${a.prod_sale}" type="number" pattern="#,### 원" /></b>
+											<b style="font-size: 14px;"> (${((a.prod_price - a.prod_sale) / a.prod_price * 100).intValue()}%↓)</b>
+										</c:otherwise>
+									</c:choose></b>
+							</div>
+							<div style="width: 18%; float: left; height: 200px;">
+								<!-- HTML 코드 -->
+								<form id="productForm" method="post"
+									action="/deleteSelectedProducts.do">
+									<!-- 선택된 항목을 담을 hidden input -->
+									<input type="hidden" name="selectedProducts"
+										id="selectedProducts" value="${a.prod_num }" /> <input
+										type="hidden" name="client_num" id="client_num" value="19" />
+								</form>
+								<!-- 선택 항목을 체크박스로 표시 -->
+								<input type="checkbox" name="select" value="${a.prod_num }"
+									style="width: 20px; height: 20px; float: right; margin-right: 20px; margin-top: 20px;"
+									class="productCheckbox">
+
+
+								<form method="post" enctype="multipart/form-data">
+									<div
+										style="width: 100%; margin-top: 100px; font-size: 20px; font-weight: 700;">
+										<div
+											style="border: 0; float: right; margin-right: 20px; margin-bottom: 5px;">
+											<input type="button" class="decreaseQuantity" value="-"
+												onClick="javascript:this.form.amount.value--; decreaseQuantity(this.form);"
+												style="background: white; font-size: 30px; border: 0">
+
+											<c:forEach var="k" items="${bvolist}">
+												<c:if test="${a.prod_num eq k.prod_num}">
+													<input type="hidden" value="19" name="client_num">
+													<input type="hidden" value="${k.prod_num }" name="prod_num">
+													<input type="hidden" value="${k.cart_amount }"
+														name="cart_amount">
+													<input type="number" value="${k.cart_amount}" name="amount"
+														style="width: 50px; text-align: center; border: 0; font-size: 20px;">개
+    </c:if>
+											</c:forEach>
+											<input type="button" class="increaseQuantity" value="+"
+												onClick="javascript:this.form.amount.value++; increaseQuantity(this.form);"
+												style="background: white; font-size: 23px; border: 0">
+										</div>
+									</div>
+									<div style="float: right;">
+										<input type="button" value="바로구매" class="one_order"
+											onclick="just_buy(this.form)">
+									</div>
 								</form>
 							</div>
-							<div style="float: right;">
-								<input type="button" value="바로구매" class="one_order">
-							</div>
 						</div>
-					</div> <!-- 제품한개 끝태그 -->
-					<!-- 제품 한개-->
-					<div class="basket_cont">
-						<img class="basket_img"
-							src="resources/images/products/product1.jpg">
-						<div style="width: 60%; float: left; margin-top: 80px;">
-							<a href=""
-								style="font-size: 18px; margin-left: 10px; font-weight: 600;">가정용
-								/ 캠핑용 액체 소방 스프레이</a> <br> <b
-								style="margin-left: 10px; font-size: 14px;">100,000원</b>
-						</div>
-						<div style="width: 18%; float: left; height: 200px;">
-							<input type="checkbox" name="select" value="제품명"
-								style="width: 20px; height: 20px; float: right; margin-right: 20px; margin-top: 20px;">
-							<div
-								style="width: 100%; margin-top: 100px; font-size: 20px; font-weight: 700;">
-								<form
-									style="border: 0; float: right; margin-right: 20px; margin-bottom: 5px;">
-									<input type="button" value="-"
-										onClick="javascript:this.form.amount.value--;"
-										style="background: white; font-size: 30px; border: 0">
-									<input type="number" name="amount" value="1"
-										style="width: 50px; text-align: center; border: 0; font-size: 20px;">개
-									<input type="button" value="+"
-										onClick="javascript:this.form.amount.value++;"
-										style="background: white; font-size: 23px; border: 0">
-								</form>
-							</div>
-							<div style="float: right;">
-								<input type="button" value="바로구매" class="one_order">
-							</div>
-						</div>
-					</div> <!-- 제품한개 끝태그 -->
-					<!-- 제품 한개-->
-					<div class="basket_cont">
-						<img class="basket_img"
-							src="resources/images/products/product1.jpg">
-						<div style="width: 60%; float: left; margin-top: 80px;">
-							<a href=""
-								style="font-size: 18px; margin-left: 10px; font-weight: 600;">가정용
-								/ 캠핑용 액체 소방 스프레이</a> <br> <b
-								style="margin-left: 10px; font-size: 14px;">100,000원</b>
-						</div>
-						<div style="width: 18%; float: left; height: 200px;">
-							<input type="checkbox" name="select" value="제품명"
-								style="width: 20px; height: 20px; float: right; margin-right: 20px; margin-top: 20px;">
-							<div
-								style="width: 100%; margin-top: 100px; font-size: 20px; font-weight: 700;">
-								<form
-									style="border: 0; float: right; margin-right: 20px; margin-bottom: 5px;">
-									<input type="button" value="-"
-										onClick="javascript:this.form.amount.value--;"
-										style="background: white; font-size: 30px; border: 0">
-									<input type="number" name="amount" value="1"
-										style="width: 50px; text-align: center; border: 0; font-size: 20px;">개
-									<input type="button" value="+"
-										onClick="javascript:this.form.amount.value++;"
-										style="background: white; font-size: 23px; border: 0">
-								</form>
-							</div>
-							<div style="float: right;">
-								<input type="button" value="바로구매" class="one_order">
-							</div>
-						</div>
-					</div> <!-- 제품한개 끝태그 -->
-					<!-- 제품 한개-->
-					<div class="basket_cont">
-						<img class="basket_img"
-							src="resources/images/products/product1.jpg">
-						<div style="width: 60%; float: left; margin-top: 80px;">
-							<a href=""
-								style="font-size: 18px; margin-left: 10px; font-weight: 600;">가정용
-								/ 캠핑용 액체 소방 스프레이</a> <br> <b
-								style="margin-left: 10px; font-size: 14px;">100,000원</b>
-						</div>
-						<div style="width: 18%; float: left; height: 200px;">
-							<input type="checkbox" name="select" value="제품명"
-								style="width: 20px; height: 20px; float: right; margin-right: 20px; margin-top: 20px;">
-							<div
-								style="width: 100%; margin-top: 100px; font-size: 20px; font-weight: 700;">
-								<form
-									style="border: 0; float: right; margin-right: 20px; margin-bottom: 5px;">
-									<input type="button" value="-"
-										onClick="javascript:this.form.amount.value--;"
-										style="background: white; font-size: 30px; border: 0">
-									<input type="number" name="amount" value="1"
-										style="width: 50px; text-align: center; border: 0; font-size: 20px;">개
-									<input type="button" value="+"
-										onClick="javascript:this.form.amount.value++;"
-										style="background: white; font-size: 23px; border: 0">
-								</form>
-							</div>
-							<div style="float: right;">
-								<input type="button" value="바로구매" class="one_order">
-							</div>
-						</div>
-					</div> <!-- 제품한개 끝태그 -->
-					<!-- 제품 한개-->
-					<div class="basket_cont">
-						<img class="basket_img"
-							src="resources/images/products/product1.jpg">
-						<div style="width: 60%; float: left; margin-top: 80px;">
-							<a href=""
-								style="font-size: 18px; margin-left: 10px; font-weight: 600;">가정용
-								/ 캠핑용 액체 소방 스프레이</a> <br> <b
-								style="margin-left: 10px; font-size: 14px;">100,000원</b>
-						</div>
-						<div style="width: 18%; float: left; height: 200px;">
-							<input type="checkbox" name="select" value="제품명"
-								style="width: 20px; height: 20px; float: right; margin-right: 20px; margin-top: 20px;">
-							<div
-								style="width: 100%; margin-top: 100px; font-size: 20px; font-weight: 700;">
-								<form
-									style="border: 0; float: right; margin-right: 20px; margin-bottom: 5px;">
-									<input type="button" value="-"
-										onClick="javascript:this.form.amount.value--;"
-										style="background: white; font-size: 30px; border: 0">
-									<input type="number" name="amount" value="1"
-										style="width: 50px; text-align: center; border: 0; font-size: 20px;">개
-									<input type="button" value="+"
-										onClick="javascript:this.form.amount.value++;"
-										style="background: white; font-size: 23px; border: 0">
-								</form>
-							</div>
-							<div style="float: right;">
-								<input type="button" value="바로구매" class="one_order">
-							</div>
-						</div>
-					</div> <!-- 제품한개 끝태그 -->
+						<!-- 제품한개 끝태그 -->
+					</c:forEach>
 				</div>
 			</div>
 			<div style="width: 100%; margin: auto; float: left;">
@@ -376,17 +315,23 @@ $(function(){
 					</thead>
 					<tbody style="text-align: center; border-bottom: 2px solid black;">
 						<tr>
-							<td>1,000,000원</td>
-							<td>3,000원</td>
-							<td>-30,000원</td>
-							<td style="background-color: rgba(27, 90, 194, 1); color: white;">973,000원</td>
+							<td><fmt:formatNumber value="${sum}" type="number"
+									pattern="#,### 원" /></td>
+							<td>+ 3,000원</td>
+							<td><fmt:formatNumber value="${sale}" type="number"
+									pattern="- #,### 원" /></td>
+							<td style="background-color: rgba(27, 90, 194, 1); color: white;"><fmt:formatNumber
+									value="${sum-sale+3000}" type="number" pattern="#,### 원" /></td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
 			<div style="width: 80%; margin: auto;">
-			<input type="submit" value="주문하기" class="order" onclick="location.href='/orderform.do'">
+				<input type="submit" value="주문하기" class="order"
+					onclick="location.href='/orderform.do?client_num=19'">
 			</div>
+					</c:otherwise>
+					</c:choose>
 		</section>
 		<jsp:include page="../Semantic/quickmenu.jsp"></jsp:include>
 		<script src="resources/js/quick.js"></script>

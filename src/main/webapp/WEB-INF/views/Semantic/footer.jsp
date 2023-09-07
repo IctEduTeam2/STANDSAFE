@@ -56,7 +56,7 @@ height: 250px;
 	<footer id="footer">
 		<div class="footer-container">
 			<div class="footer-left">
-				<div class="l-top"><a href="/user_logo.do">HOME</a>/ <a href="/team.do">TEAM</a> / <a href="/privacypolicy.do">개인정보처리방침</a></div>
+				<div class="l-top"><a href="/">HOME</a>/ <a href="/team.do">TEAM</a> / <a href="/privacypolicy.do">개인정보처리방침</a></div>
 				<div class="l-middle">
 					상호: (주)STANDSAFE / 대표 : 김OO / 대표전화 : 02-123-4567 / 관리자 메일 : standsafe@gmail.com 
 					<br> 주소: 마포구 백범로 3층 케이터틀 3층 / 2호선 신촌역 6번출구 도보 150m 

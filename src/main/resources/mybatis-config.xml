@@ -20,6 +20,8 @@
 		<typeAlias type="com.ict.user.model.vo.PointVO" alias="pVO" /><!-- pointT -->
 		<typeAlias type="com.ict.shopping.model.vo.PopUpVO" alias="popupVO" /><!-- 슬라이드/팝업 -->
 		<typeAlias type="com.ict.shopping.model.vo.ProductVO" alias="productVO" /><!-- 상품 -->
+		<typeAlias type="com.ict.shopping.model.vo.BasketVO" alias="basketVO" /><!-- 장바구니 -->
+		<typeAlias type="com.ict.shopping.model.vo.WishVO" alias="wishVO" /><!-- 장바구니 -->
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/member-mapper.xml" /><!-- memberT -->
