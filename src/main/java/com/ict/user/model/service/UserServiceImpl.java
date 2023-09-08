@@ -69,12 +69,8 @@ public class UserServiceImpl implements UserService{
 	
 	//회원정보 업데이트
 	@Override
-	public boolean updateUser(UserVO userVO) {
-	    int cnt = userDAO.updateUser(userVO);
-	    if (cnt <= 0) {
-	        throw new RuntimeException("Failed to update user");
-	    }
-	    return true;
+	public int updateUser(UserVO userVO) {
+	    return userDAO.updateUser(userVO);
 	}
 	
 	
@@ -83,7 +79,6 @@ public class UserServiceImpl implements UserService{
 	public UserVO getUserByEmail(String MAIL) {
 		return userDAO.getUserByEmail(MAIL);
 	}
-	
 
 
 	

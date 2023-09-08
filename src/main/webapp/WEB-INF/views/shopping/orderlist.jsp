@@ -158,11 +158,10 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 			<div
 				style="width: 100%; height: 82px; background-color: rgba(27, 90, 194, 1); float: left; margin-top: 10px;">
 				<ul class="snb">
-					<li class="li"><a href="/basketform.do" class="li_a"
-						style="color: white;">장바구니</a></li>
-					<li class="li"><a href="/wishlistform.do" class="li_a"
+					<li class="li"><a href="/basketform.do?client_num='${id}'" class="li_a" style="color: white;">장바구니</a></li>
+					<li class="li"><a href="/wishlistform.do?client_num='${id}'" class="li_a" 
 						style="color: white;">위시리스트</a></li>
-					<li class="li"><a href="/orderlistform.do" class="current li_a"
+					<li class="li"><a href="/orderlistform.do?client_num='${id}'" class="li_a current"
 						style="color: white;">주문조회 | 배송현황</a></li>
 				</ul>
 			</div>

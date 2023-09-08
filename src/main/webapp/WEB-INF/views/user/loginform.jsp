@@ -58,7 +58,7 @@
 					<p class=>
 						<c:set var="REST_API_KEY" value="1b5cf56e8cc2a06876bd756e6307c0ad" />
 						<!-- 서버에따라 8080 8090 바꿔주기 -->
-						<c:set var="REDIRECT_URI" value="http://localhost:8080/kakaologin.do" />
+						<c:set var="REDIRECT_URI" value="http://localhost:8090/kakaologin.do" />
 						<!-- &prompt=login : 기존의 로그인 여부와 상관없이 로그인해야하게 해놓음 -->
 						<a href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&prompt=login">
 							<img src="/resources/images/kakao_login.png">

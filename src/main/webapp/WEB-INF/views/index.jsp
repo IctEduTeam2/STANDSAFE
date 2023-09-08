@@ -88,11 +88,13 @@
 								<button class="product_btn1"
 									onclick="window.location.href='/productOneListform.do?prod_num=${a.prod_num}'">상세보기</button>
 								<button class="product_btn2" onclick="addToCart(this)"
-									data-prodnum="${a.prod_num}" data-usernum="19">장바구니 담기</button>
+									data-prodnum="${a.prod_num}" data-usernum="${id }">장바구니 담기</button>
 							</div></li>
 					</c:forEach>
 				</ul>
 			</div>
+			<script type="text/javascript">
+			</script>
 			<div id="event">
 				<h3 style="color: red;">필수품</h3>
 				<hr

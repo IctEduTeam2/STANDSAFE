@@ -196,10 +196,10 @@ function deleteSelectedProducts() {
 			<div
 				style="width: 100%; height: 82px; background-color: rgba(27, 90, 194, 1); float: left; margin-top: 10px;">
 				<ul class="snb">
-					<li class="li"><a href="/basketform.do?client_num=19" class="current li_a">장바구니</a></li>
-					<li class="li"><a href="/wishlistform.do?client_num=19" class="li_a"
+					<li class="li"><a href="/basketform.do?client_num='${id}'" class="current li_a">장바구니</a></li>
+					<li class="li"><a href="/wishlistform.do?client_num='${id}'" class="li_a"
 						style="color: white;">위시리스트</a></li>
-					<li class="li"><a href="/orderlistform.do?client_num=19" class="li_a"
+					<li class="li"><a href="/orderlistform.do?client_num='${id}'" class="li_a"
 						style="color: white;">주문조회 | 배송현황</a></li>
 				</ul>
 			</div>
@@ -258,7 +258,7 @@ function deleteSelectedProducts() {
 									<!-- 선택된 항목을 담을 hidden input -->
 									<input type="hidden" name="selectedProducts"
 										id="selectedProducts" value="${a.prod_num }" /> <input
-										type="hidden" name="client_num" id="client_num" value="19" />
+										type="hidden" name="client_num" id="client_num" value="${id}" />
 								</form>
 								<!-- 선택 항목을 체크박스로 표시 -->
 								<input type="checkbox" name="select" value="${a.prod_num }"
@@ -277,7 +277,7 @@ function deleteSelectedProducts() {
 
 											<c:forEach var="k" items="${bvolist}">
 												<c:if test="${a.prod_num eq k.prod_num}">
-													<input type="hidden" value="19" name="client_num">
+													<input type="hidden" value="${id}" name="client_num">
 													<input type="hidden" value="${k.prod_num }" name="prod_num">
 													<input type="hidden" value="${k.cart_amount }"
 														name="cart_amount">
@@ -328,7 +328,7 @@ function deleteSelectedProducts() {
 			</div>
 			<div style="width: 80%; margin: auto;">
 				<input type="submit" value="주문하기" class="order"
-					onclick="location.href='/orderform.do?client_num=19'">
+					onclick="location.href='/orderform.do?client_num=${id}'">
 			</div>
 					</c:otherwise>
 					</c:choose>

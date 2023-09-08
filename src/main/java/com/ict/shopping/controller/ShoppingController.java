@@ -3,6 +3,9 @@ package com.ict.shopping.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.checkerframework.checker.units.qual.g;
 import org.checkerframework.framework.qual.RequiresQualifier;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +34,6 @@ public class ShoppingController {
 	@GetMapping("/")
 	public ModelAndView getMain() {
 		ModelAndView mv = new ModelAndView("index");
-
 		// 슬라이드
 		List<PopUpVO> popupList = shoppingService.getPopupList();
 		mv.addObject("popuplist", popupList);

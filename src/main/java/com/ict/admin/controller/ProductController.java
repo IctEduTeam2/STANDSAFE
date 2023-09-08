@@ -106,7 +106,7 @@ public class ProductController {
 			}
 			@RequestMapping("/inventory_update.do")
 			public ModelAndView getInventory_Update() {
-				ModelAndView mv = new ModelAndView("admin_main/product_list");
+				ModelAndView mv = new ModelAndView("admin_main/inventory_update");
 				return mv;
 			}
 			

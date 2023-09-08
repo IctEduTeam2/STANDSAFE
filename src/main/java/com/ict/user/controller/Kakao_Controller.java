@@ -47,8 +47,8 @@ public class Kakao_Controller {
 			sb.append("grant_type=authorization_code");
 			sb.append("&client_id=1b5cf56e8cc2a06876bd756e6307c0ad");
 			//서버 확인하고 바꿔줘야함
-			sb.append("&redirect_uri=http://localhost:8080/kakaologin.do");
-			//sb.append("&redirect_uri=http://localhost:8090/kakaologin.do");
+			//sb.append("&redirect_uri=http://localhost:8080/kakaologin.do");
+			sb.append("&redirect_uri=http://localhost:8090/kakaologin.do");
 			sb.append("&code="+code);
 			bw.write(sb.toString());
 			bw.flush();

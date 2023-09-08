@@ -34,9 +34,9 @@
 			<% if (session.getAttribute("loginChk") != null && session.getAttribute("loginChk").equals("ok")) { %>
   	 		 <!-- 로그인 된 상태 -->
 			<div id="loggedIn">
-			<a class="top_gnb_a">${sessionScope.uvo.NICKNAME }님(P:${sessionScope.POINT_REM })</a> <a class="top_gnb_a" href="/logoutGo.do">로그아웃</a>
-			<a class="top_gnb_a" href="/orderlistform.do?client_num='${sessionScope.c_num }'"">주문조회</a> <a class="top_gnb_a" href="/basketform.do?client_num='${sessionScope.c_num }'">장바구니</a>
-			<a class="top_gnb_a" href="/mypageform.do?client_num='${sessionScope.c_num }'"">마이페이지</a> <a href="/wishlistform.do?client_num='${sessionScope.c_num }'""
+			<a class="top_gnb_a">${nick }님(P:${sessionScope.POINT_REM })</a> <a class="top_gnb_a" href="/logoutGo.do">로그아웃</a>
+			<a class="top_gnb_a" href="/orderlistform.do?client_num=${id}">주문조회</a> <a class="top_gnb_a" href="/basketform.do?client_num=${id}">장바구니</a>
+			<a class="top_gnb_a" href="/mypageform.do?client_num=${id }">마이페이지</a> <a href="/wishlistform.do?client_num=${id }"
 				class="top_gnb_last_a">관심상품</a>
 			</div>
 		<% } else { %>
@@ -70,7 +70,7 @@
 						<li><a href="#">위생장갑</a></li>
 						<li><a href="#">통조림|비상식량</a></li>
 					</ul></li>
-				<li><a href="#">공지사항</a>
+				<li><a href="#">게시판</a>
                     <ul class="submenu">
                         <li><a href="/bbs_notice_go.do">공지사항</a></li>
                         <li><a href="/bbs_event_go.do">이벤트</a></li>
