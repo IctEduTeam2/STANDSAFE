@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- 
+	MyBatis에서 쿼리에 매핑되는 파라미터에 Null 값이 있는 경우
+	에러 발생 => 해결 방안 :name="jdbcTypeForNull" value="NULL" 
+	 -->
+	<!-- 
+	 MyBatis cache 사용 여부 : name="cacheEnabled" value="false"
+	 -->
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL"/>
+		<setting name="cacheEnabled" value="false"/>
+	</settings>
+	<!-- Alias : 별칭 -->
+	<typeAliases>
+		<typeAlias type="com.ict.user.model.vo.UserVO" alias="uVO" /><!-- memberT -->
+		<typeAlias type="com.ict.user.model.vo.PointVO" alias="pVO" /><!-- pointT -->
+		<typeAlias type="com.ict.admin.model.vo.AdminVO" alias="adVO"/><!--  adminT  -->
+		
+		<typeAlias type="com.ict.admin.model.vo.NoticeVO" alias="nvo"/>
+		
+		<typeAlias type="com.ict.bbs.model.vo.NO_BBS_VO" alias="nbbsvo"/>
+		<typeAlias type="com.ict.bbs.model.vo.EV_BBS_VO" alias="ebbsvo"/>
+		<typeAlias type="com.ict.bbs.model.vo.FA_BBS_VO" alias="faqbbsvo"/>
+		<typeAlias type="com.ict.bbs.model.vo.QA_BBS_VO" alias="qnabbsvo"/>
+		<typeAlias type="com.ict.bbs.model.vo.REP_BBS_VO" alias="repbbsvo"/>
+		<typeAlias type="com.ict.bbs.model.vo.RE_BBS_VO" alias="reviewbbsvo"/>
+		
+		<typeAlias type="com.ict.shopping.model.vo.PopUpVO" alias="popupVO" /><!-- 슬라이드/팝업 -->
+		<typeAlias type="com.ict.shopping.model.vo.ProductVO" alias="productVO" /><!-- 상품 -->
+		<typeAlias type="com.ict.shopping.model.vo.BasketVO" alias="basketVO" /><!-- 장바구니 -->
+		<typeAlias type="com.ict.shopping.model.vo.WishVO" alias="wishVO" /><!-- 장바구니 -->
+		<typeAlias type="com.ict.admin.model.vo.ProductVO" alias="provo"/>
+		<typeAlias type="com.ict.admin.model.vo.ExchangeVO" alias="evo"/>
+		<typeAlias type="com.ict.admin.model.vo.InventoryVO" alias="invo"/>
+		<typeAlias type="com.ict.admin.model.vo.OrderVO" alias="ovo"/>
+		<typeAlias type="com.ict.admin.model.vo.ReturnVO" alias="rvo"/>
+	</typeAliases>
+	<mappers>
+		<mapper resource="mappers/member-mapper.xml" /><!-- memberT -->
+		<mapper resource="mappers/point-mapper.xml" /><!-- memberT -->
+		<mapper resource="mappers/admin-mapper.xml"/><!--  adminT  -->
+		<mapper resource="mappers/shopping-mapper.xml" /><!-- memberT -->
+		<mapper resource="mappers/bbs-mapper.xml" />
+		<mapper resource="mappers/notice-mapper.xml" />
+		<mapper resource="mappers/product-mapper.xml" />
+	</mappers>
+</configuration>

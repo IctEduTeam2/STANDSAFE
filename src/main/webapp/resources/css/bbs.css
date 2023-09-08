@@ -1,0 +1,213 @@
+@charset "UTF-8";
+
+
+/* 제목 */
+#bbs_sub{
+	text-align: center;		
+	width: 100%;
+	margin-bottom: 20px;
+	margin-top: 50px;
+}
+
+#bbs_top{
+	display: flex;
+  	flex-direction: column;
+  	align-items: flex-end; 
+  	width: 100%;
+  	background-color: white; 	
+}
+
+/* 기본게시판 css */
+.hr{
+	width: 100%;
+	border:0px;
+	height: 4px;
+	background: black;
+	margin-top: 50px;
+
+} 
+.m_table{
+	text-align : center;
+	width: 100%;
+	height:auto;
+	border-top: 1px solid #444;
+	border-collapse: collpas;
+	margin-left: auto;
+    margin-right: auto;
+
+}
+.mh_table th{
+	border-bottom: 1px solid #444;
+	padding : 10px;
+}
+.mb_table td{
+	border-bottom: 1px dashed #444;
+	padding : 10px;
+	height: 30px;
+}
+
+.m_table td{
+	border-bottom: 1px dashed #444;
+	padding : 10px;
+	height: 30px;
+}
+
+
+/* 위는 기본 게시판의 테이블 형식css */
+
+table td:nth-child(3) {
+  text-align: left;
+  padding-left: 70px;
+}
+
+
+/*나머지 컬럼들을 가운데 정렬*/
+table td:not(:nth-child(3)) {
+  text-align: center;
+}  
+
+/* 테이블 제목컬럼 간격 조절 */
+
+
+#th1{ width: 10px;}
+#th2{ width: 500px; }
+#th3{ width: 100px;}
+#th4{ width: 100px;}
+#th5{ width: 100px;}
+#th6{ width: 100px;} 
+
+/* 게시판리스트 볼때, 보이는 파일첨부되었을때의 작은 이미지 설정 */
+.f_img{
+	width: 80px;
+	padding: 10px;
+	heigh: 80px;
+}
+
+
+
+/* 검색창css  */
+#search_bar{
+	height: 40px;
+	width: 400px;
+	border: 1px solid #1b5ac2;
+	background: #ffffff;
+	justify-content: flex-end; 
+	display: flex;
+	align-items: center;
+	margin-left: 10px;
+}
+#s_bar{
+	font-size: 16px;
+	width: 325px;
+	padding: 10px;
+	border: 0px;
+	outline: none;
+	float: left;
+}
+#s_btn{
+	width: 50px;
+	height: 100%;
+	border: 0px;
+	background: #1b5ac2;
+	outline: none;
+	float: right;
+	color: #ffffff;
+}
+
+
+ 
+[type="radio"], span{
+	vertical-align: middle;
+}
+[type="radio"] {
+	appearance: none;
+	border: max(2px, 0.1em) solid gray;
+	border-radius: 50%;
+	width: 1.25em;
+	height: 1.25em;
+	transition: border 0.1s ease-in-out;
+	margin-left: 30px;
+}
+[type="radio"]:checked{
+	border:0.4em solid #1b5ac2;
+}
+[type="radio"]:focus-visible{
+	outline-offset: max(2px, 0.1em);
+	outline: max(2px, 0.1em) dotted #1b5ac2;
+}
+[type="radio"]:hover{
+	box-shadow: 0 0 0 max(4px, 0.2em) lightgray;
+	cursor: pointer;
+}
+[type="radio"]:hover + span {
+  cursor: pointer;
+}
+
+[type="radio"]:disabled {
+  background-color: lightgray;
+  box-shadow: none;
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+[type="radio"]:disabled + span {
+  opacity: 0.7;
+  cursor: not-allowed;
+} 
+ 
+ 
+ /* 글쓰기 버튼 */
+ .btn{
+	display: inline-block;
+ 	padding: 10px 20px; /* 버튼의 패딩 설정 */
+ 	background-color: #1b5ac2; /* 버튼 배경색 */
+ 	color: #ffffff; /* 버튼 텍스트 색상 */
+  	border: none;
+  	cursor: pointer;
+  	width: 120px;
+  	height: 50px;
+  	text-align: center;
+}	
+
+
+
+/* 게시글 안의 사진 */
+.in_img{
+	display: inline-block;
+	width: 80%;
+	height: 80%;
+}
+
+.in_div_img{
+	text-align: center;
+
+}
+
+/* 원리스트안의 게시글 밑의 목록버튼 */
+.in_btn{  
+	display: inline-block;
+ 	padding: 10px 20px; /* 버튼의 패딩 설정 */
+ 	background-color: #1b5ac2; /* 버튼 배경색 */
+ 	color: #ffffff; /* 버튼 텍스트 색상 */
+  	border: none;
+  	cursor: pointer;
+  	width: 120px;
+  	height: 50px;
+}	
+.in_btn_div{
+	margin-top:50px;
+	text-align: center;
+	
+}
+
+[type="file"]{
+	margin-left : 30px;
+	outline: none;
+	float: left;
+	color: black;
+	
+}
+
+.w_font{
+	color: white;
+}
