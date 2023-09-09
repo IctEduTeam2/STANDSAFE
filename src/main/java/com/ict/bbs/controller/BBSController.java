@@ -605,7 +605,7 @@ public class BBSController {
 			}
 			
 			//회원닉네임 갖고오기 - 작성자에 자동 뜨고 저장하기위함
-			String nick = (String) request.getSession().getAttribute("c_id");
+			String nick = (String) request.getSession().getAttribute("nick");
 			System.out.println("로그인한 닉넴 : " + nick); 
 			
 			//제리똥나온다. vo저장후 맵퍼에 보내자. 저장하라고
@@ -678,7 +678,7 @@ public class BBSController {
 			}
 			
 			//회원닉네임 갖고오기 - 작성자에 자동 뜨고 저장하기위함
-			String nick = (String) request.getSession().getAttribute("c_id");
+			String nick = (String) request.getSession().getAttribute("nick");
 			System.out.println("로그인한 닉넴 : " + nick); 
 		
 			
@@ -761,7 +761,7 @@ public class BBSController {
 		}
 		
 		//회원닉네임 갖고오기 - 작성자에 자동 뜨고 저장하기위함
-		String nick = (String) request.getSession().getAttribute("c_id");
+		String nick = (String) request.getSession().getAttribute("nick");
 		System.out.println("로그인한 닉넴 : " + nick); 
 		
 		//제리똥나온다. vo저장후 맵퍼에 보내자. 저장하라고
