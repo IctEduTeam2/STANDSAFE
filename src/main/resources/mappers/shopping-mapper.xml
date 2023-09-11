@@ -110,6 +110,29 @@
 		LIMIT 1
 	</select>
 
+	<!-- 결제 -->
+	<insert id="payinsert" parameterType="payVO">
+		INSERT INTO PAY_T
+		(take_peo, take_addr, take_phone, take_memo, pay_type, pay_oknum, cart_num,
+		client_num
+		<if test="paymentKey != null">
+			, paymentKey
+		</if>
+		)
+		VALUES
+		(#{take_peo}, #{take_addr}, #{take_phone}, #{take_memo}, #{pay_type}, #{pay_oknum},
+		#{cart_num}, #{client_num}
+		<if test="paymentKey != null">
+			, #{paymentKey}
+		</if>
+		)
+	</insert>
+
+	<!-- 포인트 차감 -->
+	<insert id="pointsub" parameterType="pVO">
+		INSERT INTO POINT_T (POINT_USE, POINT_REM, CLIENT_NUM)
+		VALUES (#{POINT_USE}, #{POINT_REM}, #{CLIENT_NUM})
+	</insert>
 </mapper>
 
 

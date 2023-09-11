@@ -1,7 +1,13 @@
 package com.ict.shopping.controller;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -308,26 +314,65 @@ public class ShoppingController {
 	// 포인트
 	@PostMapping("/ordercom.do")
 	// String take_peo, String address, String extraAddress, String detailAddress, String phone, String memo, String order_num, String prod_num, String client_num
-	public ModelAndView getOrderCom(String point, String take_peo, @RequestParam("address")String address, 
+	public ModelAndView getOrderPoint(int point, String take_peo, @RequestParam("address")String address, @RequestParam("paytype")String paytype,
 			String detailAddress2, String phone, String memo, String order_num, 
-			String client_num, String prod_num, @RequestParam("price")String price, String amount) {
+			String client_num, String prod_num, @RequestParam("price")int price, String amount) {
 		BasketVO bvo2 = new BasketVO();
-		bvo2.setCart_price(price);
+		bvo2.setCart_price(Integer.toString(price));
 		bvo2.setProd_num(prod_num);
 		bvo2.setClient_num(client_num);
 		bvo2.setCart_amount(amount);
 		bvo2.setCart_st("1");
-		String key = shoppingService.getBasket(bvo2);
 		
+		// 카트키 가져오기
+		String key = shoppingService.getBasket(bvo2);
+
 		PayVO pvo = new PayVO();
-		pvo.setCart_num(key);
 		pvo.setTake_peo(take_peo);
 		pvo.setTake_addr(address);
 		pvo.setTake_phone(phone);
 		pvo.setTake_memo(memo);
-		pvo.setPay_type("1");
+		pvo.setPay_type(paytype);
 		pvo.setPay_oknum(order_num);
-		System.out.println(key);
+		pvo.setCart_num(key);
+		pvo.setClient_num(client_num);
+		shoppingService.getPayInsert(pvo); 
+		PointVO pointVO = new PointVO();
+		pointVO.setPOINT_USE(price);
+		pointVO.setPOINT_REM(point-price);
+		pointVO.setCLIENT_NUM(Integer.parseInt(client_num));
+		shoppingService.getPointSub(pointVO);
 		return null;
 	}
+	
+	// 온라인결제
+		@GetMapping("/ordercom2.do")
+		// String take_peo, String address, String extraAddress, String detailAddress, String phone, String memo, String order_num, String prod_num, String client_num
+		public ModelAndView getOrderCard(@RequestParam Map<String, Object> map) {
+			BasketVO bvo2 = new BasketVO();
+			bvo2.setCart_price((String)(map.get("cart_price")));
+			bvo2.setProd_num((String)(map.get("prod_num")));
+			bvo2.setClient_num((String)(map.get("client_num")));
+			bvo2.setCart_amount((String)(map.get("cart_amount")));
+			bvo2.setCart_st("1");
+			
+			// 카트키 가져오기
+			String key = shoppingService.getBasket(bvo2);
+			
+			System.out.println(key);
+			
+			PayVO pvo = new PayVO();
+			pvo.setTake_peo((String)(map.get("take_peo")));
+			pvo.setTake_addr((String)(map.get("take_addr")));
+			pvo.setTake_phone((String)(map.get("take_phone")));
+			pvo.setTake_memo((String)(map.get("take_memo")));
+			pvo.setPay_type((String)(map.get("pay_type")));
+			pvo.setPay_oknum((String)(map.get("pay_oknum")));
+			pvo.setPaymentKey((String)(map.get("paymentKey")));
+			pvo.setCart_num(key);
+			pvo.setClient_num((String)(map.get("client_num")));
+			shoppingService.getPayInsert(pvo); 
+			// 카트키 가져오기
+			return null;
+		}
 }

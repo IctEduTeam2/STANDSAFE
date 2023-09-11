@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ict.shopping.model.dao.ShoppingDAO;
 import com.ict.shopping.model.vo.BasketVO;
+import com.ict.shopping.model.vo.PayVO;
 import com.ict.shopping.model.vo.PopUpVO;
 import com.ict.shopping.model.vo.ProductVO;
 import com.ict.shopping.model.vo.WishVO;
@@ -86,5 +87,15 @@ public class ShoppingService {
 	//포인트 조회
 	public PointVO getPoint(String client_num) {
 		return shoppingDAO.getPoint(client_num);
+	}
+	
+	// 결제
+	public void getPayInsert(PayVO payvo) {
+		shoppingDAO.getPayInsert(payvo);
+	}
+	
+	//결제 후 포인트 차감
+	public void getPointSub(PointVO pointvo) {
+		shoppingDAO.getPointSub(pointvo);
 	}
 }
