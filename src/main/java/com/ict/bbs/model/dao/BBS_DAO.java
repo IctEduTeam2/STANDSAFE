@@ -223,7 +223,16 @@ public class BBS_DAO {
 	
 	//검색
 	
+
 	public List<EV_BBS_VO> EvSearchResultByCon(String searchText){
-		return sqlSessionTemplate.selectList("bbs.searchevcon",searchText);
+		return sqlSessionTemplate.selectList("bbs.searchevscon", searchText);
 	}
+	
+	public List<EV_BBS_VO> EvSearchResultBySub(String searchText){
+		return sqlSessionTemplate.selectList("bbs.searchevsub", searchText);
+	}
+	
+
+	
+	
 }

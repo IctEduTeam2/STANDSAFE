@@ -21,7 +21,7 @@ public interface UserService {
 	boolean isNickDuplicate(String NICKNAME);
 	
 	//유저정보 수정
-	boolean updateUser(UserVO userVO);
+	int updateUser(UserVO userVO);
 
 	
 	

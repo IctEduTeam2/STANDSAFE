@@ -119,6 +119,7 @@ public interface BBS_Service {
 	
 	//검색
 	public List<EV_BBS_VO> EvSearchResultByCon(String searchText);
-	
+	public List<EV_BBS_VO> EvSearchResultBySub(String searchText);
+
 	
 }

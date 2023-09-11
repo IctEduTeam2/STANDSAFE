@@ -267,27 +267,65 @@ public class UserController {
 	
 //==========================================================================================완료
 	
-	// 유저정보 수정
 	@Transactional
 	@RequestMapping("/user_userfixok.do")
 	public ModelAndView getUserFixOk(UserVO userVO) {
-		ModelAndView mv = new ModelAndView();
-		try {
-			boolean isUpdated = userService.updateUser(userVO);
-
-			if (isUpdated) {
-				mv.addObject("message", "사용자 업데이트를 성공했습니다.");
-				mv.setViewName("redirect:/userinfoform.do"); // 같은페이지 ㄱㄱ
-			} else {
-				// If update is not successful
-				throw new Exception("사용자 업데이트 실패");
-			}
-		} catch (Exception e) {
-			// 예외를 기록하고 트랜잭션 롤백
-			mv.addObject("error", "사용자를 업데이트하는 동안 오류가 발생했습니다.");
-			//mv.setViewName("redirect:/userinfoform.do"); /// 같은페이지 ㄱㄱ
-		}
-		return mv;
+	    ModelAndView mv = new ModelAndView();
+	    try {
+	    	System.out.println("넘어온 아이디"+userVO.getID());
+	    	System.out.println("넘어온 비번"+userVO.getPW());
+	    	System.out.println("넘어온 닉넴"+userVO.getNICKNAME());
+	    	System.out.println("넘어온 폰"+userVO.getPHONE());
+	    	System.out.println("넘어온 메일"+userVO.getMAIL());
+	    	System.out.println("넘어온 주소"+userVO.getADDR());
+	    	
+	        // 먼저 현재 사용자 정보를 가져옵니다.
+	        UserVO currentUser = userService.getUserPw(userVO.getID());
+	        System.out.println("디비 회원비번"+currentUser.getPW());
+	        // 각 필드에 대해 값이 없는 경우 현재 값으로 채웁니다.
+	        if (userVO.getPW() == null || userVO.getPW().trim().isEmpty()) {
+	            userVO.setPW(currentUser.getPW());
+	            System.out.println("DB비번"+currentUser.getPW());
+	        }
+	        
+	        if (userVO.getNICKNAME() == null || userVO.getNICKNAME().trim().isEmpty()) {
+	            userVO.setNICKNAME(currentUser.getNICKNAME());
+	            System.out.println("DB닉"+currentUser.getNICKNAME());
+	        }
+	        if (userVO.getPHONE() == null || userVO.getPHONE().trim().isEmpty()) {
+	            userVO.setPHONE(currentUser.getPHONE());
+	            System.out.println("DB폰"+currentUser.getPHONE());
+	        }
+	        if (userVO.getMAIL() == null || userVO.getMAIL().trim().isEmpty()) {
+	            userVO.setMAIL(currentUser.getMAIL());
+	            System.out.println("DB메일"+currentUser.getMAIL());
+	        }
+	        if (userVO.getADDR() == null || userVO.getADDR().trim().isEmpty()) {
+	            userVO.setADDR(currentUser.getADDR());
+	            System.out.println("DB주소"+currentUser.getADDR());
+	        }
+	        System.out.println("여긴오나");
+	        
+	        int updatedRows = userService.updateUser(userVO);
+	        System.out.println("updatedRows"+updatedRows);
+	        if (updatedRows > 0) {
+	            mv.addObject("message", "사용자 업데이트를 성공했습니다.");
+	            mv.setViewName("redirect:/userinfoform.do");
+	            System.out.println("업데이트를 성공");
+	        } else {
+	            throw new Exception("사용자 업데이트 실패");
+	        }
+	        System.out.println("여긴여기도 오나?");
+	    } catch (Exception e) {
+	        // 예외 메시지와 스택 트레이스 출력
+	        e.printStackTrace();
+	        
+	        mv.addObject("error", "사용자를 업데이트하는 동안 오류가 발생했습니다.");
+	        mv.setViewName("redirect:/userinfoform.do");
+	        System.out.println("업데이트하는 동안 오류");
+	   
+	    }
+	    return mv;
 	}
 
 	// 가입취소->로그인폼

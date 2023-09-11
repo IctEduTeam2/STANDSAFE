@@ -137,7 +137,7 @@ body {
 				<button type="button" alt="등록" value="등록"
 				style="width: 250px; height: 60px; font-size: 25px; background-color: #505BBD; color: white; border: none;" onclick="location.href='/product_insertform.do'">등록</button>
 			</span> <span style="float: right; margin-top: 80px; margin-right: 100px;">
-				<button type="button" alt="홈페이지등록" value="홈페이지등록"
+				 <button type="button" alt="홈페이지등록" value="홈페이지등록"
 				style="width: 250px; height: 60px; font-size: 25px; background-color: #505BBD; color: white; border: none;">홈페이지등록</button>
 			</span>
 		</div>

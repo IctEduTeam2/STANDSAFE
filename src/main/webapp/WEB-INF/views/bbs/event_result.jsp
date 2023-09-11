@@ -59,6 +59,8 @@ table tfoot ol.paging li a:hover {
 	color: white;
 	font-weight: bold;
 }
+
+
     .custom-search {
         width: 800px;
         margin: 20px auto;
@@ -146,9 +148,6 @@ table tfoot ol.paging li a:hover {
     }
 
 </style> 
-<script type="text/javascript">
-
-</script>
 </head>
 </head>
 <body onload="InitializeStaticMenu();">
@@ -201,13 +200,13 @@ table tfoot ol.paging li a:hover {
 						</thead>
 						<tbody class="mb_table">	
 							<c:choose>
-								<c:when test="${empty list}">
+								<c:when test="${empty s_result}">
 									<tr>
 										<td colspan="6"><p>자료가 존재하지 않습니다.</p></td>
 									</tr>
 								</c:when>
 								<c:otherwise>
-									<c:forEach var="k" items="${list}" varStatus="vs">
+									<c:forEach var="k" items="${s_result}" varStatus="vs">
 										<tr>
 											<td>${paging.totalRecord -((paging.nowPage-1)*paging.numPerPage + vs.index) }</td>
 											<td>
@@ -247,7 +246,7 @@ table tfoot ol.paging li a:hover {
 													<li class="disable">이전으로</li>
 												</c:when>
 												<c:otherwise>
-													<li><a href="/bbs_event_go.do?cPage=${paging.beginBlock-paging.pagePerBlock }">이전으로</a></li>
+													<li><a href="/bbs_ev_search.do?cPage=${paging.beginBlock-paging.pagePerBlock }">이전으로</a></li>
 												</c:otherwise>
 											</c:choose>	
 											<c:forEach begin="${paging.beginBlock }" end="${paging.endBlock }" step="1" var="k">
@@ -256,7 +255,7 @@ table tfoot ol.paging li a:hover {
 													<li class="now">${k }</li>
 												</c:if>
 												<c:if test="${k != paging.nowPage }">
-													<li><a href="/bbs_event_go.do?cPage=${k }"> ${k }</a></li>
+													<li><a href="/bbs_ev_search.do?cPage=${k }"> ${k }</a></li>
 												</c:if>
 											</c:forEach>
 															
@@ -266,7 +265,7 @@ table tfoot ol.paging li a:hover {
 													<li class="disable">다음으로</li>
 												</c:when>
 												<c:otherwise>
-													<li><a href="/bbs_event_go.do?cPage=${paging.beginBlock+paging.pagePerBlock }">다음으로</a></li>
+													<li><a href="/bbs_ev_search.do?cPage=${paging.beginBlock+paging.pagePerBlock }">다음으로</a></li>
 												</c:otherwise>
 											</c:choose>					
 										</ol>

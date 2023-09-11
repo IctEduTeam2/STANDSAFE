@@ -1,6 +1,7 @@
 package com.ict.bbs.controller;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -260,7 +261,7 @@ public class BBSController {
 	
 	@RequestMapping("/bbs_report_go.do")
 	public ModelAndView goBbsReport(HttpServletRequest request,HttpSession session) {
-	
+		
         session.removeAttribute("qaonelist");
         session.removeAttribute("revonelist");
 		ModelAndView mv = new ModelAndView("bbs/report");
@@ -464,7 +465,7 @@ public class BBSController {
 			if(lock.equals("1") && !dbnum.equals(c_num)) {
 				session.setAttribute("qaonelist", "not");
 				mv.setViewName("redirect:/bbs_qa_go.do");
-
+			
 		        return mv; 
 			}else {
 				session.setAttribute("qaonelist", "view");
@@ -1114,7 +1115,7 @@ public class BBSController {
 	}
 	
 	@PostMapping("/bbs_ev_search.do")
-	public ModelAndView goQaSearch(HttpServletRequest request,
+	public ModelAndView goEventSearch(HttpServletRequest request,
 			@RequestParam("searchText")String searchText,
 			@RequestParam("searchType")String searchType) {
 		
@@ -1123,48 +1124,86 @@ public class BBSController {
 		System.out.println("검색눌러서 불러온 단어: " + searchText);
 		System.out.println("검색눌러서 불러온 검색조건타입 : " + searchType);
 		
+		List<EV_BBS_VO> s_result = new ArrayList<>();
+		
+		
+		
 		if(searchType.equals("내용")) {
-			//내용이 체크되어 넘어올떄 검색 일처리
-			List<EV_BBS_VO> s_result_con = bbsService.EvSearchResultByCon(searchText);
 			
-			System.out.println("맞는내용을 검색하여 갖고배열: " + s_result_con);
+	
+			//내용이 체크되어 넘어올떄 검색 일처리
+	
+			s_result = bbsService.EvSearchResultByCon(searchText);
+			
+			System.out.println("맞는내용을 검색하여 갖고배열: " + s_result);
 			EV_BBS_VO evo = new EV_BBS_VO();
 			
-			for (EV_BBS_VO k : s_result_con) {
-				System.out.println("갖고온 번호: " + k.getEVENT_NUM());
-				System.out.println("갖고온 제목: "+k.getEVENT_SUBJECT());
-				System.out.println("갖고온 파일: "+k.getEVENT_FILE());
-				System.out.println("갖고온 내용: "+k.getEVENT_CONTENT());
-				System.out.println("갖고온 작성자: "+k.getEVENT_WRITER());
-				System.out.println("갖고온 날짜: "+k.getEVENT_DATE());
-				System.out.println("갖고온 조회수: "+k.getEVENT_HIT());
+			if(! s_result.isEmpty()) {
 				
-				
-				evo.setEVENT_NUM(k.getEVENT_NUM());
-				evo.setEVENT_SUBJECT(k.getEVENT_SUBJECT());
-				evo.setEVENT_CONTENT(k.getEVENT_CONTENT());
-				evo.setEVENT_WRITER(k.getEVENT_WRITER());
-				evo.setEVENT_DATE(k.getEVENT_DATE());
-				evo.setEVENT_HIT(k.getEVENT_HIT());
-				evo.setEVENT_FILE(k.getEVENT_FILE());
+				for (EV_BBS_VO k : s_result) {
+					System.out.println("갖고온 번호: " + k.getEVENT_NUM());
+					System.out.println("갖고온 제목: "+k.getEVENT_SUBJECT());
+					System.out.println("갖고온 파일: "+k.getEVENT_FILE());
+					System.out.println("갖고온 내용: "+k.getEVENT_CONTENT());
+					System.out.println("갖고온 작성자: "+k.getEVENT_WRITER());
+					System.out.println("갖고온 날짜: "+k.getEVENT_DATE());
+					System.out.println("갖고온 조회수: "+k.getEVENT_HIT());
+					
+					
+					evo.setEVENT_NUM(k.getEVENT_NUM());
+					evo.setEVENT_SUBJECT(k.getEVENT_SUBJECT());
+					evo.setEVENT_CONTENT(k.getEVENT_CONTENT());
+					evo.setEVENT_WRITER(k.getEVENT_WRITER());
+					evo.setEVENT_DATE(k.getEVENT_DATE());
+					evo.setEVENT_HIT(k.getEVENT_HIT());
+					evo.setEVENT_FILE(k.getEVENT_FILE());
 
+				} //결과가 잘나오나 뽑아보았다. 근데 결과가 한개가 아닌 여러개라면? 
+				mv.addObject("evo", evo);
+				mv.addObject("s_result", s_result);
 				
+				mv.setViewName("bbs/event_result");
+				return mv;	
 				
-				
-			} //결과가 잘나오나 뽑아보았다. 근데 결과가 한개가 아닌 여러개라면? 
-			
-			mv.addObject("s_result_con", s_result_con);
-			return mv;
-			
-			
+			}
+
 		}else if (searchType.equals("제목")) {
+			s_result = bbsService.EvSearchResultBySub(searchText);
 			
-		}else if (searchType.equals("작성자")) {
+			System.out.println("맞는내용을 검색하여 갖고배열: " + s_result);
+			EV_BBS_VO evo = new EV_BBS_VO();
 			
-		}else {
-			//널값을 입력했을때, 
+			
+			if(! s_result.isEmpty()) {
+				
+				for (EV_BBS_VO k : s_result) {
+					System.out.println("갖고온 번호: " + k.getEVENT_NUM());
+					System.out.println("갖고온 제목: "+k.getEVENT_SUBJECT());
+					System.out.println("갖고온 파일: "+k.getEVENT_FILE());
+					System.out.println("갖고온 내용: "+k.getEVENT_CONTENT());
+					System.out.println("갖고온 작성자: "+k.getEVENT_WRITER());
+					System.out.println("갖고온 날짜: "+k.getEVENT_DATE());
+					System.out.println("갖고온 조회수: "+k.getEVENT_HIT());
+					
+					
+					evo.setEVENT_NUM(k.getEVENT_NUM());
+					evo.setEVENT_SUBJECT(k.getEVENT_SUBJECT());
+					evo.setEVENT_CONTENT(k.getEVENT_CONTENT());
+					evo.setEVENT_WRITER(k.getEVENT_WRITER());
+					evo.setEVENT_DATE(k.getEVENT_DATE());
+					evo.setEVENT_HIT(k.getEVENT_HIT());
+					evo.setEVENT_FILE(k.getEVENT_FILE());
+					
+					mv.addObject("evo", evo);
+					mv.addObject("s_result", s_result);
+					mv.setViewName("bbs/event_result");
+					return mv;
+				}
+			}
+			
+			
+			
 		}
-		
 		return null;
 		
 	}

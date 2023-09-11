@@ -220,6 +220,12 @@ public class BBS_ServiceImpl implements BBS_Service{
 		return bbsDAO.EvSearchResultByCon(searchText);
 	}
 	
+
+	@Override
+	public List<EV_BBS_VO> EvSearchResultBySub(String searchText) {
+		return bbsDAO.EvSearchResultBySub(searchText);
+	}
+
 	
 	
 }

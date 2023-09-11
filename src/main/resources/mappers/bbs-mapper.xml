@@ -206,10 +206,17 @@
    
    <!-- 검색 -->
    
-   <select id="searchevcon" parameterType="String" resultType="ebbsvo">
-   	select * from EVENT_T where EVENT_CONTENT LIKE CONCAT('%', #{searchText}, '%')
+   <select id="searchevcon" parameterType="Map" resultType="ebbsvo">
+   	select * from EVENT_T where EVENT_CONTENT LIKE CONCAT('%', #{searchText}, '%') 
     </select>
-
+    
+   
+    <select id="searchevsub" parameterType="String" resultType="ebbsvo">
+   	select * from EVENT_T where EVENT_SUBJECT LIKE CONCAT('%', #{searchText}, '%')
+    </select>
+    
+  
+	
    
 </mapper>
 

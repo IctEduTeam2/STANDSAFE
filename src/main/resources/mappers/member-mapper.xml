@@ -152,7 +152,21 @@
 		1
 		)
 	</select>
+	
 	<!-- 유저업데이트 -->
+	<update id="userUpdate" parameterType="UVO">
+    UPDATE MEMBER_T
+    <set>
+        <if test="PW != null">PW = #{PW},</if>
+        <if test="NICKNAME != null">NICKNAME = #{NICKNAME},</if>
+        <if test="PHONE != null">PHONE = #{PHONE},</if>
+        <if test="MAIL != null">MAIL = #{MAIL},</if>
+        <if test="ADDR != null">ADDR = #{ADDR},</if>
+    </set>
+   	 WHERE ID = #{ID}
+	</update>
+	
+	
 	<!-- ID와 비밀번호 모두를 사용한 중복 여부 확인 -->
 	<select id="isPwDuplicate" parameterType="map" resultType="int">
 		SELECT COUNT(*) FROM MEMBER_T

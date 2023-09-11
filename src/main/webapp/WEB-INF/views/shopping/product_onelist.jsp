@@ -194,7 +194,7 @@ tr td:nth-child(2) {
 	}
 	function just_buy(f) {
 		var quantity = parseInt(document.getElementById('quantityInput').value);
-		f.action = "/justbuy.do?quantity=" + quantity + "&client_num=19"
+		f.action = "/justbuy.do?quantity=" + quantity + "&client_num=" + ${id}
 				+ "&prod_num=" + ${pvo.prod_num};
 		f.submit();
 	}
@@ -202,7 +202,7 @@ tr td:nth-child(2) {
 		openModal(); // 장바구니 추가 후 모달 열기
 	}
 	function wish_add(f) {
-		f.action = "/wishadd.do?client_num=19" + "&prod_num=" + ${pvo.prod_num};
+		f.action = "/wishadd.do?client_num=" + ${id} + "&prod_num=" + ${pvo.prod_num};
 		f.submit();
 	}
 
@@ -219,7 +219,7 @@ tr td:nth-child(2) {
 	// "쇼핑 계속하기" 버튼 클릭 시 이벤트 처리
 	function continueShopping(f) {
 		var quantity = parseInt(document.getElementById('quantityInput').value);
-		f.action = "/cartadd.do?quantity=" + quantity + "&client_num=19"
+		f.action = "/cartadd.do?quantity=" + quantity + "&client_num=" + ${id} 
 				+ "&prod_num=" + ${pvo.prod_num} + "&st=0";
 		f.submit();
 		closeModal();
@@ -228,7 +228,7 @@ tr td:nth-child(2) {
 	// "장바구니 보기" 버튼 클릭 시 이벤트 처리
 	function viewCart(f) {
 		var quantity = parseInt(document.getElementById('quantityInput').value);
-		f.action = "/cartadd.do?quantity=" + quantity + "&client_num=19"
+		f.action = "/cartadd.do?quantity=" + quantity + "&client_num=" + ${id}
 				+ "&prod_num=" + ${pvo.prod_num} + "&st=1";
 		f.submit();
 		closeModal();

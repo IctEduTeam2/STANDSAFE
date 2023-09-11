@@ -147,15 +147,44 @@ var extraAddr = '';
 		}).open();
 	}
 
+    var addr1 = $('#postcode').val();
+    var addr2 = $('#address').val();
+    var addr3 = $('#extraAddress').val();
+    var addr4 = $('#detailAddress').val();
 	function point2(f) {
 	    const price = parseFloat('${price}');
-	    const inputValue = parseFloat(f.point.value.trim());
-	    if (inputValue >= price) {
-	        f.action = "/ordercom.do?address=" + address + "&price=" + price;
-	        f.submit();
-	    } else {
+	    const inputValue = parseFloat(f.point.value.trim());  
+	    var agreeRadio = document.getElementById("agreeRadio");
+	    var disagreeRadio = document.getElementById("disagreeRadio");
+	    if (!agreeRadio.checked) {
+            alert("약관에 동의해야 합니다.");
+            return;
+        } 
+	    /* else if(f.take_peo.value.trim()== null || f.take_peo.value.trim() == "") {
+	    	alert("받는분 성함을 입력해주세요.");
+	    	return;
+	    } else if(f.postcode2.value.trim()== null || f.postcode2.value.trim() == "") {
+	    	alert("배송지를 입력해주세요.");
+	    	return;
+	    } else if(f.address2.value.trim()== null || f.address2.value.trim() == "") {
+	    	alert("배송지를 입력해주세요.");
+	    	return;
+	    } else if(f.extraAddress2.value.trim()== null || f.extraAddress2.value.trim() == "") {
+	    	alert("배송지를 입력해주세요.");
+	    	return;
+	    } else if(f.phone.value.trim()== null || f.phone.value.trim() == "") {
+	    	alert("받는분 핸드폰 번호를 입력해주세요.");
+	    	return;
+	    } else if(f.phone.value.trim().length < 11) {
+	    	alert("핸드폰 번호는 11글자로 입력해주세요.");
+	    	return;
+	    } else if (inputValue < price) {
 	        alert("포인트가 부족합니다.");
 	        return;
+	    }  */
+	    else {
+	        f.action = "/ordercom.do?address=" + address + "&price=" + price;
+	        f.submit();
 	    }
 	}
 </script>
@@ -507,8 +536,8 @@ $(document).ready(function() {
 
 ② "쇼핑몰"과 이용자간에 제기된 전자거래 소송에는 한국법을 적용합니다.</textarea>
 							<div style="float: right;">
-								<input type="radio" name="terms" value="동의"><b> 동의함</b>
-								<input type="radio" name="terms" value="비동의"
+								<input type="radio" name="terms" value="동의" id="agreeRadio"><b> 동의함</b>
+								<input type="radio" name="terms" value="비동의" id="disagreeRadio"
 									style="margin-left: 30px; margin-top: 10px;" checked> <b>동의하지
 									않음</b>
 							</div></td>
@@ -555,7 +584,7 @@ $(document).ready(function() {
 							placeholder="'-'없이 입력" id="deliveryPhone" name="phone"></td>
 					</tr>
 					<tr>
-						<td>배송 메모 <b style="color: red">*</b></td>
+						<td>배송 메모 <b style="color: red"></b></td>
 						<td><textarea maxlength="200" name="memo"
 								style="resize: none; padding: 10px; font-size: 16px; width: 400px; height: 100px;"></textarea></td>
 					</tr>
@@ -596,18 +625,17 @@ $(document).ready(function() {
 									<c:choose>
 										<c:when test="${pvo.prod_sale == '0'}">
 											<fmt:formatNumber value="${pvo.prod_price * bvo.cart_amount}"
-												type="number" pattern="#,###원" />
+												type="number" pattern="#,### 원" />
 										</c:when>
 										<c:otherwise>
 											<fmt:formatNumber value="${pvo.prod_sale * bvo.cart_amount}"
 												type="number" pattern="#,### 원" />
 										</c:otherwise>
 									</c:choose>
-									원
 								</div>
 								
 								<div id="point-button" style="display: none;">
-								<input type="hidden" value="${uvo.CLIENT_NUM}" name="client_num" >
+								<input type="hidden" value="${id}" name="client_num" >
 								<input type="hidden" value="${pointvo.POINT_REM}" name="point" >
 								<input type="hidden" value="${bvo.cart_amount}" name="amount" >
 								<input type="hidden" value="${pvo.prod_num}" name="prod_num" >
@@ -624,7 +652,7 @@ $(document).ready(function() {
 								
 								<script>
     const clientKey = "test_ck_ma60RZblrqJojBKeXmx8wzYWBn14"
-    const customerKey = '${uvo.CLIENT_NUM}' // 내 상점에서 고객을 구분하기 위해 발급한 고객의 고유 ID
+    const customerKey = '${id}' // 내 상점에서 고객을 구분하기 위해 발급한 고객의 고유 ID
     const button = document.getElementById("payment-button")
 
     // ------  결제위젯 초기화 ------ 
@@ -656,7 +684,7 @@ $(document).ready(function() {
     var name = '${uvo.m_NAME}';
     var email = '${uvo.MAIL}';
     var ordername = '${pvo.prod_name}';
-    const client_num = '${uvo.CLIENT_NUM}';
+    const client_num = '${id}';
     // ------ '결제하기' 버튼 누르면 결제창 띄우기 ------
     // 더 많은 결제 정보 파라미터는 결제위젯 SDK에서 확인하세요.
     // https://docs.tosspayments.com/reference/widget-sdk#requestpayment결제-정보

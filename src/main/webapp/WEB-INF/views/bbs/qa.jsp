@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>STANDSAFE</title>
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
 <link rel="stylesheet" href="resources/css/basis.css" />
@@ -80,6 +80,7 @@ table tfoot ol.paging li a:hover {
 		var qaonelist = "${qaonelist}";
 		if(qaonelist == "not"){
 			alert("다른사람이 작성한 (비밀)글입니다. 조회권한이 없습니다. ");
+			
 			return ;
 		}else if(qaonelist=="view") {
 			return;
