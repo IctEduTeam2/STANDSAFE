@@ -1201,9 +1201,42 @@ public class BBSController {
 				}
 			}
 			
+		}else if (searchType.equals("작성자") ) {
+			s_result = bbsService.EvSearchResultBySub(searchText);
 			
+			System.out.println("맞는내용을 검색하여 갖고배열: " + s_result);
+			EV_BBS_VO evo = new EV_BBS_VO();
+			
+			if(! s_result.isEmpty()) {
+				
+				for (EV_BBS_VO k : s_result) {
+					System.out.println("갖고온 번호: " + k.getEVENT_NUM());
+					System.out.println("갖고온 제목: "+k.getEVENT_SUBJECT());
+					System.out.println("갖고온 파일: "+k.getEVENT_FILE());
+					System.out.println("갖고온 내용: "+k.getEVENT_CONTENT());
+					System.out.println("갖고온 작성자: "+k.getEVENT_WRITER());
+					System.out.println("갖고온 날짜: "+k.getEVENT_DATE());
+					System.out.println("갖고온 조회수: "+k.getEVENT_HIT());
+					
+					
+					evo.setEVENT_NUM(k.getEVENT_NUM());
+					evo.setEVENT_SUBJECT(k.getEVENT_SUBJECT());
+					evo.setEVENT_CONTENT(k.getEVENT_CONTENT());
+					evo.setEVENT_WRITER(k.getEVENT_WRITER());
+					evo.setEVENT_DATE(k.getEVENT_DATE());
+					evo.setEVENT_HIT(k.getEVENT_HIT());
+					evo.setEVENT_FILE(k.getEVENT_FILE());
+
+				} //결과가 잘나오나 뽑아보았다. 근데 결과가 한개가 아닌 여러개라면? 
+				mv.addObject("evo", evo);
+				mv.addObject("s_result", s_result);
+				
+				mv.setViewName("bbs/event_result");
+				return mv;	
+			}
 			
 		}
+		//아무것도아닐때는 null
 		return null;
 		
 	}
