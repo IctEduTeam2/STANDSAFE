@@ -1116,8 +1116,8 @@ public class BBSController {
 	
 	@PostMapping("/bbs_ev_search.do")
 	public ModelAndView goEventSearch(HttpServletRequest request,
-			@RequestParam("searchText")String searchText,
-			@RequestParam("searchType")String searchType) {
+			@ModelAttribute("searchText")String searchText,
+			@ModelAttribute("searchType")String searchType) {
 		
 		ModelAndView mv = new ModelAndView();
 		
@@ -1136,11 +1136,11 @@ public class BBSController {
 			s_result = bbsService.EvSearchResultByCon(searchText);
 			
 			System.out.println("맞는내용을 검색하여 갖고배열: " + s_result);
-			EV_BBS_VO evo = new EV_BBS_VO();
 			
-			if(! s_result.isEmpty()) {
+			
+			if(! s_result.isEmpty()) {//갖고온 리스트가 비어있지않다면 출력해보자. 
 				
-				for (EV_BBS_VO k : s_result) {
+				for (EV_BBS_VO k : s_result) { //잘갖고왔는지 뽑아내어 보기위함
 					System.out.println("갖고온 번호: " + k.getEVENT_NUM());
 					System.out.println("갖고온 제목: "+k.getEVENT_SUBJECT());
 					System.out.println("갖고온 파일: "+k.getEVENT_FILE());
@@ -1148,22 +1148,9 @@ public class BBSController {
 					System.out.println("갖고온 작성자: "+k.getEVENT_WRITER());
 					System.out.println("갖고온 날짜: "+k.getEVENT_DATE());
 					System.out.println("갖고온 조회수: "+k.getEVENT_HIT());
-					
-					
-					evo.setEVENT_NUM(k.getEVENT_NUM());
-					evo.setEVENT_SUBJECT(k.getEVENT_SUBJECT());
-					evo.setEVENT_CONTENT(k.getEVENT_CONTENT());
-					evo.setEVENT_WRITER(k.getEVENT_WRITER());
-					evo.setEVENT_DATE(k.getEVENT_DATE());
-					evo.setEVENT_HIT(k.getEVENT_HIT());
-					evo.setEVENT_FILE(k.getEVENT_FILE());
 
-				} //결과가 잘나오나 뽑아보았다. 근데 결과가 한개가 아닌 여러개라면? 
-				mv.addObject("evo", evo);
-				mv.addObject("s_result", s_result);
-				
-				mv.setViewName("bbs/event_result");
-				return mv;	
+
+				} //결과가 잘나오나 뽑아보았다.
 				
 			}
 
@@ -1171,12 +1158,12 @@ public class BBSController {
 			s_result = bbsService.EvSearchResultBySub(searchText);
 			
 			System.out.println("맞는내용을 검색하여 갖고배열: " + s_result);
-			EV_BBS_VO evo = new EV_BBS_VO();
+		
 			
 			
-			if(! s_result.isEmpty()) {
+			if(! s_result.isEmpty()) { //갖고온 리스트가 비어있지않다면 출력해보자. 
 				
-				for (EV_BBS_VO k : s_result) {
+				for (EV_BBS_VO k : s_result) {//잘갖고왔는지 뽑아내어 보기위함
 					System.out.println("갖고온 번호: " + k.getEVENT_NUM());
 					System.out.println("갖고온 제목: "+k.getEVENT_SUBJECT());
 					System.out.println("갖고온 파일: "+k.getEVENT_FILE());
@@ -1184,63 +1171,65 @@ public class BBSController {
 					System.out.println("갖고온 작성자: "+k.getEVENT_WRITER());
 					System.out.println("갖고온 날짜: "+k.getEVENT_DATE());
 					System.out.println("갖고온 조회수: "+k.getEVENT_HIT());
-					
-					
-					evo.setEVENT_NUM(k.getEVENT_NUM());
-					evo.setEVENT_SUBJECT(k.getEVENT_SUBJECT());
-					evo.setEVENT_CONTENT(k.getEVENT_CONTENT());
-					evo.setEVENT_WRITER(k.getEVENT_WRITER());
-					evo.setEVENT_DATE(k.getEVENT_DATE());
-					evo.setEVENT_HIT(k.getEVENT_HIT());
-					evo.setEVENT_FILE(k.getEVENT_FILE());
-					
-					mv.addObject("evo", evo);
-					mv.addObject("s_result", s_result);
-					mv.setViewName("bbs/event_result");
-					return mv;
 				}
 			}
 			
-		}else if (searchType.equals("작성자") ) {
-			s_result = bbsService.EvSearchResultBySub(searchText);
-			
-			System.out.println("맞는내용을 검색하여 갖고배열: " + s_result);
-			EV_BBS_VO evo = new EV_BBS_VO();
-			
-			if(! s_result.isEmpty()) {
-				
-				for (EV_BBS_VO k : s_result) {
-					System.out.println("갖고온 번호: " + k.getEVENT_NUM());
-					System.out.println("갖고온 제목: "+k.getEVENT_SUBJECT());
-					System.out.println("갖고온 파일: "+k.getEVENT_FILE());
-					System.out.println("갖고온 내용: "+k.getEVENT_CONTENT());
-					System.out.println("갖고온 작성자: "+k.getEVENT_WRITER());
-					System.out.println("갖고온 날짜: "+k.getEVENT_DATE());
-					System.out.println("갖고온 조회수: "+k.getEVENT_HIT());
-					
-					
-					evo.setEVENT_NUM(k.getEVENT_NUM());
-					evo.setEVENT_SUBJECT(k.getEVENT_SUBJECT());
-					evo.setEVENT_CONTENT(k.getEVENT_CONTENT());
-					evo.setEVENT_WRITER(k.getEVENT_WRITER());
-					evo.setEVENT_DATE(k.getEVENT_DATE());
-					evo.setEVENT_HIT(k.getEVENT_HIT());
-					evo.setEVENT_FILE(k.getEVENT_FILE());
-
-				} //결과가 잘나오나 뽑아보았다. 근데 결과가 한개가 아닌 여러개라면? 
-				mv.addObject("evo", evo);
-				mv.addObject("s_result", s_result);
-				
-				mv.setViewName("bbs/event_result");
-				return mv;	
-			}
-			
+			mv.addObject("s_result", s_result);
+			mv.setViewName("bbs/event_result");
+			return mv;
 		}
 		//아무것도아닐때는 null
 		return null;
 		
 	}
 	
-
+	@PostMapping("/search.do")
+	public ModelAndView Search(
+			@ModelAttribute("bbs_type")String bbs_type,
+			@ModelAttribute("s_type")String s_type,
+			@ModelAttribute("start")String start,
+			@ModelAttribute("word")String word,
+			@ModelAttribute("end")String end
+			) {
+		ModelAndView mv = new ModelAndView();
+		
+		System.out.println("게시판종류:" + bbs_type);
+		System.out.println("항목종류:" + s_type);
+		System.out.println("검색단어:" + word);
+		System.out.println("시작날짜:" + start);
+		System.out.println("종료날짜:" + end);
+		
+		
+		switch (bbs_type) {
+		
+		case "공지사항":
+			
+			break;
+		case "이벤트":
+			
+			break;
+		case "이용안내":
+	
+			break;
+		case "상품Q&A":
+	
+			break;
+		case "리뷰":
+			
+			break;
+		case "신고하기":
+			
+			break;
+		default :
+			//전체
+			break;
+	
+		
+		}//스위치 괄호
+		
+		
+		
+	return mv;
+	}
 	
 }//마지막괄호

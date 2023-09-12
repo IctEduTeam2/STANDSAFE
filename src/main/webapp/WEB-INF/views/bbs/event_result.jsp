@@ -12,57 +12,17 @@
 <link rel="stylesheet" href="resources/css/bbs.css" />
 <style type="text/css">
 
-fieldset {
-  display: flex;
-  justify-content: center;
-  border: none;
-  margin: 0;
-  padding: 40px 20px;
-}
-/* paging */
-table tfoot ol.paging {
-    list-style: none;
-    text-align: center; /* 가운데 정렬을 위한 변경 */
-}
-table tfoot ol.paging li {
-    display: inline-block; /* 가로 정렬을 위해 float 제거하고 inline-block으로 변경 */
-    margin-right: 8px;
-}
-
-
-table tfoot ol.paging li a {
-	display: block;
-	padding: 3px 7px;
-	border: 1px solid #6c98c2;
-	color: #2f313e;
-	font-weight: bold;
-}
-
-table tfoot ol.paging li a:hover {
-	background: #6c98c2;
-	color: white;
-	font-weight: bold;
-}
-
-
-
-.disable {
-	padding: 3px 7px;
-	border: 1px solid silver;
-	color: silver;
-}
-
-.now {
-	padding: 3px 7px;
-	border: 1px solid #1b5ac2;
-	background: #1b5ac2;
-	color: white;
-	font-weight: bold;
-}
+	fieldset {
+	  display: flex;
+	  justify-content: center;
+	  border: none;
+	  margin: 0;
+	  padding: 40px 20px;
+	}
 
 
     .custom-search {
-        width: 800px;
+        width: 700px;
         margin: 20px auto;
         background-color: white;
         padding: 50px;
@@ -71,6 +31,7 @@ table tfoot ol.paging li a:hover {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+        height:250px;
     }
 
     label {
@@ -117,18 +78,22 @@ table tfoot ol.paging li a:hover {
     .date-picker {
         margin-top: 10px;
     }
-    #searchKey{
+    .searchKey{
     margin-left: 50px; 
+    margin-right: 20px;
     height:50px; 
     width: 200px;
     font-size: 16px;
     padding: 0px;
     }
     #fromDate{
-    height:50px; 
+    height:45px; 
     width: 400px;
     font-size: 16px;
     padding: 0px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 50px; 
     }
     #start{
     margin-left: 50px;
@@ -153,34 +118,46 @@ table tfoot ol.paging li a:hover {
 <body onload="InitializeStaticMenu();">
 	<div id="mydiv">
 		<jsp:include page="../Semantic/header.jsp"></jsp:include>
-		
 		<div style="text-align: center; padding-bottom: 20px;" >
-
-		 <h1 id="result">검색결과</h1> </div>
-	 <div class="custom-search"> <!-- 클래스 추가 -->
+		<h1 id="result">검색결과</h1> 
+		</div>
+	 <div class="custom-search"> 
         <!-- 검색 영역 -->
-        <form id="searchForm" method="post">
+        <form  method="post" action="/search.do">
             <div class="search-input" >
-                <label for="searchKey">검색어</label>
-	                <select id="searchKey" name="searchKey" title="검색항목선택">
+            	<label for="searchKey">게시판</label>
+	                <select class="searchKey" name="bbs_type" title="게시판선택">
+	                    <option value="전체">전체게시판</option>
+	                    <option value="공지사항">공지사항</option>
+	                    <option value="이벤트">이벤트</option>
+	                    <option value="이용안내">이용안내FAQ</option>
+	                    <option value="상품Q&A">공지사항</option>
+	                    <option value="리뷰">리뷰</option>
+	                    <option value="신고하기">신고하기</option>
+	                </select>
+              <label for="searchKey" style="padding-left: 30px;">항목</label>
+	                <select class="searchKey" name="s_type" title="검색항목선택">
 	                    <option value="제목">제목</option>
-	                    <option value="회원">회원 아이디</option>
+	                    <option value="회원">작성자</option>
 	                    <option value="내용">내용</option>
 	                </select>
-               		 <input type="text" id="fromDate" name="word"  value=""  placeholder="검색어를 입력하세요">
-           	</div>
+	          </div>   
+            <div class="input-wrapper">
+               		
+            	<label>검색어</label>
+               		 <input type="text" id="fromDate" name="word"  value="${searchText}"  placeholder="검색어를 입력하세요">	
+           		</div>
+     
 		            <div class="date-picker">
 		                <label for="searchDate">날　짜</label>
-		                <input type="date" id="start" name="trip-start"> ~ 
-		                <input type="date" id="end" name="trip-end">
+		                <input type="date" id="start" name="start"> ~ 
+		                <input type="date" id="end" name="end">
 		            </div>
 		            <div class="button-container">
-		                <input type="button" alt="전체기간" value="전체기간" class="search-button">
-		                <input type="button" alt="일주일" value="일주일" class="search-button">
-		                <input type="button" alt="오늘" value="오늘" class="search-button">
+               		 <input type="button" alt="초기화" value="초기화" class="search-button">
+		              <button class="search-button" type="submit">검색</button>
 		                <br>
-		                <input type="button" alt="초기화" value="초기화" class="search-button">
-		                <input type="button" alt="검색" value="검색" class="search-button" onclick="location.href='/'">
+		                 
 		            </div>
    				 </form>
        		</div>
@@ -208,7 +185,7 @@ table tfoot ol.paging li a:hover {
 								<c:otherwise>
 									<c:forEach var="k" items="${s_result}" varStatus="vs">
 										<tr>
-											<td>${paging.totalRecord -((paging.nowPage-1)*paging.numPerPage + vs.index) }</td>
+											<td>${vs.index}</td>
 											<td>
 												<c:choose>
 													<c:when test="${empty k.EVENT_FILE}">
@@ -236,42 +213,6 @@ table tfoot ol.paging li a:hover {
 								</c:otherwise>
 							</c:choose>
 						</tbody>	
-						<tfoot>
-								<tr>
-									<td colspan="6">
-										<ol class="paging">
-											<!-- 이전버튼 : 첫블럭이면 비활성화-->
-											<c:choose>
-												<c:when test="${paging.beginBlock <= paging.pagePerBlock }">
-													<li class="disable">이전으로</li>
-												</c:when>
-												<c:otherwise>
-													<li><a href="/bbs_ev_search.do?cPage=${paging.beginBlock-paging.pagePerBlock }">이전으로</a></li>
-												</c:otherwise>
-											</c:choose>	
-											<c:forEach begin="${paging.beginBlock }" end="${paging.endBlock }" step="1" var="k">
-												<c:if test="${k == paging.nowPage }">
-													<!--현재페이지와 같으면  -->
-													<li class="now">${k }</li>
-												</c:if>
-												<c:if test="${k != paging.nowPage }">
-													<li><a href="/bbs_ev_search.do?cPage=${k }"> ${k }</a></li>
-												</c:if>
-											</c:forEach>
-															
-											<!-- 이후버튼  -->	
-											<c:choose>
-												<c:when test="${paging.endBlock >= paging.totalPage }">
-													<li class="disable">다음으로</li>
-												</c:when>
-												<c:otherwise>
-													<li><a href="/bbs_ev_search.do?cPage=${paging.beginBlock+paging.pagePerBlock }">다음으로</a></li>
-												</c:otherwise>
-											</c:choose>					
-										</ol>
-									</td>
-								</tr>
-						</tfoot>
 					</table>
 		<jsp:include page="../Semantic/quickmenu.jsp"></jsp:include>
 		<script src="resources/js/quick.js"></script>
