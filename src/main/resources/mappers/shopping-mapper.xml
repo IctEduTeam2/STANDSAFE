@@ -9,16 +9,21 @@
 		popup_chk = 1 AND popup_st = 1
 	</select>
 
+	<!-- 분야별 상품리스트 -->
+	<select id="productlist" resultType="productVO">
+		SELECT * FROM PRODUCT_T WHERE prod_st = 0 and prod_high = #{prod_high} and prod_low = #{prod_low} and prod_amount > 0
+	</select>
+	
 	<!-- 베스트상품 -->
 	<select id="productBestList" resultType="productVO">
-		SELECT * FROM PRODUCT_T
+		SELECT * FROM PRODUCT_T WHERE prod_st = 0 and prod_amount > 0 
 		ORDER BY prod_amount asc
 		LIMIT 10;
 	</select>
 
 	<!-- 최신상품 -->
 	<select id="productNewList" resultType="productVO">
-		SELECT * FROM PRODUCT_T
+		SELECT * FROM PRODUCT_T WHERE prod_st = 0 and prod_amount > 0 
 		ORDER BY prod_regdate DESC
 		LIMIT 8;
 	</select>

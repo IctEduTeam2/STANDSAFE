@@ -98,4 +98,9 @@ public class ShoppingService {
 	public void getPointSub(PointVO pointvo) {
 		shoppingDAO.getPointSub(pointvo);
 	}
+	
+	// 상품리스트
+	public List<ProductVO> getProductList(ProductVO pvo) {
+		return shoppingDAO.getProductList(pvo);
+	}
 }

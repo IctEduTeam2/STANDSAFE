@@ -1,5 +1,7 @@
 package com.ict.form.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -7,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.ict.shopping.model.vo.ProductVO;
 
 @Controller
 public class FormController {
@@ -36,10 +40,6 @@ public class FormController {
 		System.out.println(client_num);
 		session.setAttribute("client_num", client_num);
 		return mv;
-	}
-	@GetMapping("/productsform.do")
-	public ModelAndView getProductsForm() {
-		return new ModelAndView("shopping/products");
 	}
 	@GetMapping("/error.do")
 	public ModelAndView getError() {

@@ -98,4 +98,9 @@ public class ShoppingDAO {
 	public void getPointSub(PointVO pointvo) {
 		sqlSessionTemplate.insert("shopping.pointsub", pointvo);
 	}
+	
+	// 상품리스트
+	public List<ProductVO> getProductList(ProductVO pvo) {
+		return sqlSessionTemplate.selectList("shopping.productlist", pvo);
+	}
 }

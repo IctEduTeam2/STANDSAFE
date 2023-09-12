@@ -1,7 +1,15 @@
 package com.ict.shopping.model.vo;
 
 public class ProductVO {
-	private String prod_num, prod_name, prod_img, prod_detail, prod_amount, prod_price, prod_sale, prod_high, prod_low, prod_regdate, prod_st;
+	private String prod_num, prod_name, prod_img, prod_detail, prod_amount, prod_price, prod_sale, prod_high, prod_low, prod_regdate, prod_st, prod_p;
+
+	public String getProd_p() {
+		return prod_p;
+	}
+
+	public void setProd_p(String prod_p) {
+		this.prod_p = prod_p;
+	}
 
 	public String getProd_num() {
 		return prod_num;
