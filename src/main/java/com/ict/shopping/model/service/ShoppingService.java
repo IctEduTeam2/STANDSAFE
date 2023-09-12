@@ -53,6 +53,12 @@ public class ShoppingService {
 	public void getWishAdd(WishVO wvo) {
 		shoppingDAO.getWishAdd(wvo);
 	}
+	
+	// 위시리스트 추가
+	public void getWishAdd2(WishVO wvo) {
+		shoppingDAO.getWishAdd2(wvo);
+	}
+
 
 	// 위시리스트 조회
 	public WishVO getWishSelect(WishVO wvo) {
@@ -102,5 +108,10 @@ public class ShoppingService {
 	// 상품리스트
 	public List<ProductVO> getProductList(ProductVO pvo) {
 		return shoppingDAO.getProductList(pvo);
+	}
+	
+	// 위시리스트
+	public List<WishVO> getWishList(String client_num) {
+		return shoppingDAO.getWishList(client_num);
 	}
 }

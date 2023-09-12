@@ -41,10 +41,7 @@
 			</div>
 		<% } else { %>
 			<div id="loggedOut">
-			<a class="top_gnb_a" href="/loginform.do">로그인</a> <a class="top_gnb_a" href="/registerform.do">회원가입</a>
-			<a class="top_gnb_a" href="/orderlistform.do">주문조회</a> <a class="top_gnb_a" href="/basketform.do">장바구니</a>
-			<a class="top_gnb_a" href="/mypageform.do">마이페이지</a> <a href="/wishlistform.do"
-				class="top_gnb_last_a">관심상품</a>
+			<a class="top_gnb_a" href="/loginform.do">로그인</a> <a class="top_gnb_last_a" href="/registerform.do">회원가입</a>
 			</div>
 		<% } %>		
 		</div>

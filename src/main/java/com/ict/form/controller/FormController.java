@@ -30,10 +30,6 @@ public class FormController {
 	public ModelAndView getOrderOneListForm() {
 		return new ModelAndView("shopping/order_onelist");
 	}
-	@GetMapping("/wishlistform.do")
-	public ModelAndView getWishlistForm() {
-		return new ModelAndView("shopping/wishlist");
-	}
 	@GetMapping("/mypageform.do")
 	public ModelAndView getMypageForm(@RequestParam("client_num")String client_num, HttpSession session, HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("user/mypage");

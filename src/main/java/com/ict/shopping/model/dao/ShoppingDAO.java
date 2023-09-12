@@ -53,6 +53,11 @@ public class ShoppingDAO {
 	public void getWishAdd(WishVO wvo) {
 		sqlSessionTemplate.insert("shopping.wishadd", wvo);
 	}
+	
+	// 위시추가
+	public void getWishAdd2(WishVO wvo) {
+		sqlSessionTemplate.update("shopping.wishadd2", wvo);
+	}
 
 	// 위시리스트 조회
 	public WishVO getWishSelect(WishVO wvo) {
@@ -88,19 +93,24 @@ public class ShoppingDAO {
 	public PointVO getPoint(String client_num) {
 		return sqlSessionTemplate.selectOne("shopping.point", client_num);
 	}
-	
+
 	// 결제
 	public void getPayInsert(PayVO payvo) {
 		sqlSessionTemplate.insert("shopping.payinsert", payvo);
 	}
-	
-	//결제 후 포인트 차감
+
+	// 결제 후 포인트 차감
 	public void getPointSub(PointVO pointvo) {
 		sqlSessionTemplate.insert("shopping.pointsub", pointvo);
 	}
-	
+
 	// 상품리스트
 	public List<ProductVO> getProductList(ProductVO pvo) {
 		return sqlSessionTemplate.selectList("shopping.productlist", pvo);
+	}
+
+	// 위시리스트
+	public List<WishVO> getWishList(String client_num) {
+		return sqlSessionTemplate.selectList("shopping.wishlist", client_num);
 	}
 }

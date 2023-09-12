@@ -175,11 +175,17 @@ public class ShoppingController {
 			mv.addObject("pvo", pvo);
 
 			if (wvochk == null) {
+				// 처음 담는경우
 				shoppingService.getWishAdd(wvo);
 				alertMessage = "위시리스트에 담았습니다.";
-			} else if (client_num != null) {
+			} else if(wvochk.getWish_st().equals("1")) {
+				shoppingService.getWishAdd2(wvo);
+				alertMessage = "위시리스트에 담았습니다.";
+			} else if (wvochk.getWish_st().equals("0")) {
+				// 다음상태
 				alertMessage = "이미 위시리스트에 존재합니다.";
 			} else {
+				// 로그인하지 않았을경우
 				alertMessage = "로그인이 필요한 기능입니다.";
 			}
 		} catch (Exception e) {
@@ -378,6 +384,7 @@ public class ShoppingController {
 		return null;
 	}
 
+	// 품목별 상품 리스트
 	@GetMapping("/productsform.do")
 	public ModelAndView getProductsForm(@RequestParam("prod_high") String prod_high,
 			@RequestParam("prod_low") String prod_low, @RequestParam("sort") String sort) {
@@ -408,6 +415,15 @@ public class ShoppingController {
 		mv.addObject("prod_high", prodlist.get(0).getProd_high());
 		mv.addObject("prod_low", prodlist.get(0).getProd_low());
 		System.out.println(sort);
+		return mv;
+	}
+	
+	// 위시리스트
+	@GetMapping("/wishlistform.do")
+	public ModelAndView getWishlistForm(@RequestParam("client_num")String client_num) {
+		ModelAndView mv = new ModelAndView("shopping/wishlist");
+		List<WishVO> wishlist = shoppingService.getWishList(client_num);
+		mv.addObject("wishlist", wishlist);
 		return mv;
 	}
 }

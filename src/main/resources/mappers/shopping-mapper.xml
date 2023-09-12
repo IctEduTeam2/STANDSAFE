@@ -60,13 +60,27 @@
 		WISH_T(client_num, prod_num, wish_st)
 		values(#{client_num},#{prod_num},#{wish_st})
 	</insert>
+	
+	<!-- 위시리스트 추가 -->
+	<update id="wishadd2" parameterType="wishVO">
+		UPDATE WISH_T
+		SET wish_st = #{wish_st}
+		WHERE client_num = #{client_num} AND prod_num = #{prod_num}
+	</update>
 
-	<!-- 위시리스트 조회 -->
+	<!-- 위시리스트 추가 시 조건 확인을 위한 조회 -->
 	<select id="wishselect" resultType="wishVO"
 		parameterType="wishVO">
 		SELECT * FROM WISH_T
 		WHERE client_num = #{client_num} and
 		prod_num = #{prod_num}
+	</select>
+	
+	<!-- 위시리스트 조회 -->
+	<select id="wishlist" resultType="wishVO"
+		parameterType="String">
+		SELECT * FROM WISH_T
+		WHERE client_num = #{client_num} and wish_st = 0 order by wish_in desc
 	</select>
 
 	<!-- 장바구니 상품 조회 -->
