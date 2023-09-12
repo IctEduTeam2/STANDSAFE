@@ -172,23 +172,24 @@
 					<table class="m_table">				
 						<thead class="mh_table">
 							 <tr>
-							 	<th id="th1">번호</th><th id="th4">파일첨부</th><th id="th2">제목</th><th id="th3">작성자</th><th id="th5">조회수</th><th id="th6">날짜</th>
+							 	<th id="th1">번호</th><th id="th4">유형</th><th id="th2">제목</th><th id="th3">작성자</th><th id="th6">날짜</th>
 							 </tr>
 						</thead>
 						<tbody class="mb_table">	
 							<c:choose>
-								<c:when test="${empty s_result2}">
+								<c:when test="${empty s_result4}">
 									<tr>
 										<td colspan="6"><p>검색결과가 존재하지 않습니다.</p></td>
 									</tr>
 								</c:when>
 								<c:otherwise>
-									<c:forEach var="k" items="${s_result2}" varStatus="vs">
+									<c:forEach var="k" items="${s_result4}" varStatus="vs">
 										<tr>
 											<td>${vs.index}</td>
+											<td>${k.BOARD_TYPE}</td>
 											<td>
 												<c:choose>
-													<c:when test="${empty k.EVENT_FILE}">
+													<c:when test="${empty k.BOARD_FILE}">
 														없음
 													</c:when>
 													<c:otherwise>
@@ -197,14 +198,13 @@
 												</c:choose>				
 											</td>
 											<c:choose>
-												<c:when test="${k.EVENT_ST ==1 }">
-													<td><a href="/bbs_event_onelist.do?EVENT_NUM=${k.EVENT_NUM}&cPage=${paging.nowPage}">${k.EVENT_SUBJECT}</a></td>				
+												<c:when test="${k.BOARD_ST ==1 }">
+													<td><a href="/bbs_qa_onelist.do?BOARD_NUM=${k.BOARD_NUM}&cPage=${paging.nowPage}">${k.BOARD_SUBJECT}</a></td>				
 												</c:when>
 											</c:choose>
 											<!--onelist 갈때 cPage 필요하다. 같이보내자. -->
-											<td>${k.EVENT_WRITER}</td>
-											<td>${k.EVENT_HIT}</td>
-											<td>${k.EVENT_DATE.substring(0,10)}</td>
+											<td>${k.BOARD_WRITER}</td>
+											<td>${k.BOARD_DATE.substring(0,10)}</td>
 										</tr>
 									</c:forEach>
 								</c:otherwise>

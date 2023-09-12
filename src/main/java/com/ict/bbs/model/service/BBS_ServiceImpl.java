@@ -185,18 +185,95 @@ public class BBS_ServiceImpl implements BBS_Service{
 	
 	
 	
-	//검색
+	//검색 : 이벤트- 검색
 	@Override
 	public List<EV_BBS_VO> EvSearchResultByCon(String searchText) {
 		return bbsDAO.EvSearchResultByCon(searchText);
 	}
-	
-
 	@Override
 	public List<EV_BBS_VO> EvSearchResultBySub(String searchText) {
 		return bbsDAO.EvSearchResultBySub(searchText);
 	}
+	//검색 : faq- 검색
+	@Override
+	public List<FA_BBS_VO> FaSearchResultByCon(String searchText) {
+		return bbsDAO.FaSearchResultByCon(searchText);
+	}
+	@Override
+	public List<FA_BBS_VO> FaSearchResultBySub(String searchText) {
+		return bbsDAO.FaSearchResultBySub(searchText);
+	}
+	//검색 : 공지사항- 검색
+	@Override
+	public List<NO_BBS_VO> NoticeSearchResultByCon(String searchText) {
+		return bbsDAO.NoticeSearchResultByCon(searchText);
+	}
+	@Override
+	public List<NO_BBS_VO> NoticeSearchResultBySub(String searchText) {
+		return bbsDAO.NoticeSearchResultBySub(searchText);
+	}
+	//검색 : 상품Q&A- 검색
+	@Override
+	public List<QA_BBS_VO> QaSearchResultByCon(String searchText) {
+		return bbsDAO.QaSearchResultByCon(searchText);
+	}
+	@Override
+	public List<QA_BBS_VO> QaSearchResultBySub(String searchText) {
+		return bbsDAO.QaSearchResultBySub(searchText);
+	}
+	//검색 : 리뷰- 검색
+	@Override
+	public List<RE_BBS_VO> RevSearchResultByCon(String searchText) {
+		return bbsDAO.RevSearchResultByCon(searchText);
+	}
+	@Override
+	public List<RE_BBS_VO> RevSearchResultBySub(String searchText) {
+		return bbsDAO.RevSearchResultBySub(searchText);
+	}
+	@Override
+	public List<RE_BBS_VO> RevSearchResultByWriter(String searchText){
+		return bbsDAO.RevSearchResultByWriter(searchText);
+	}
+	
+	//검색 : 신고- 검색
+	@Override
+	public List<REP_BBS_VO> RepSearchResultByCon(String searchText) {
+		return bbsDAO.RepSearchResultByCon(searchText);
+	}
+	@Override
+	public List<REP_BBS_VO> RepSearchResultBySub(String searchText) {
+		return bbsDAO.RepSearchResultBysub(searchText);
+	}
+	
+	
+	
 
+	//검색2 : 검색페이지에서 검색
+	@Override
+	public List<NO_BBS_VO> searchNotice(String s_type, String word, String start, String end) {
+		return bbsDAO.searchNotice(s_type,word,start,end);
+	}
+	@Override
+	public List<FA_BBS_VO> searchFaq(String s_type, String word, String start, String end) {
+		return bbsDAO.searchFaq(s_type,word,start,end);
+	}
+	@Override
+	public List<EV_BBS_VO> searchEvent(String s_type, String word, String start, String end) {
+		return bbsDAO.searchEvent(s_type,word,start,end);
+	}
+	@Override
+	public List<QA_BBS_VO> searchQa(String s_type, String word, String start, String end) {
+		return bbsDAO.searchQa(s_type,word,start,end);
+	}
+	@Override
+	public List<REP_BBS_VO> searchReport(String s_type, String word, String start, String end) {
+		return bbsDAO.searchReport(s_type,word,start,end);
+	}
+	@Override
+	public List<RE_BBS_VO> searchReview(String s_type, String word, String start, String end) {
+		return bbsDAO.searchReview(s_type,word,start,end);
+	}
+	
 	
 	
 }

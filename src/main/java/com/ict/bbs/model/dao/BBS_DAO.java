@@ -221,17 +221,133 @@ public class BBS_DAO {
 	}
 	
 	
-	//검색
-	
-
+	//검색  : 이벤트 - 검색
 	public List<EV_BBS_VO> EvSearchResultByCon(String searchText){
 		return sqlSessionTemplate.selectList("bbs.searchevscon", searchText);
 	}
-	
 	public List<EV_BBS_VO> EvSearchResultBySub(String searchText){
 		return sqlSessionTemplate.selectList("bbs.searchevsub", searchText);
 	}
 	
+	//검색 : faq - 검색
+	public List<FA_BBS_VO> FaSearchResultByCon(String searchText) {
+		return sqlSessionTemplate.selectList("bbs.searchfaqcon", searchText);
+	}
+
+	public List<FA_BBS_VO> FaSearchResultBySub(String searchText) {
+		return sqlSessionTemplate.selectList("bbs.searchfaqsub", searchText);
+	}
+	
+	//검색 : 공지사항 - 검색
+	public List<NO_BBS_VO> NoticeSearchResultByCon(String searchText) {
+		return sqlSessionTemplate.selectList("bbs.searchnoticecon",searchText );
+	}
+	public List<NO_BBS_VO> NoticeSearchResultBySub(String searchText) {
+		return sqlSessionTemplate.selectList("bbs.searchnoticesub",searchText );
+	}
+	
+	//검색 : 상품Q&A- 검색
+	public List<QA_BBS_VO> QaSearchResultByCon(String searchText) {
+		return sqlSessionTemplate.selectList("bbs.searchqacon",searchText );
+	}
+	public List<QA_BBS_VO> QaSearchResultBySub(String searchText) {
+		return sqlSessionTemplate.selectList("bbs.searchqasub",searchText );
+
+	}
+	//검색 : 리뷰- 검색
+	public List<RE_BBS_VO> RevSearchResultByCon(String searchText) {
+		return sqlSessionTemplate.selectList("bbs.searchreviewcon",searchText );
+	}
+	public List<RE_BBS_VO> RevSearchResultBySub(String searchText) {
+		return sqlSessionTemplate.selectList("bbs.searchreviewsub",searchText );
+
+	}
+	public List<RE_BBS_VO> RevSearchResultByWriter(String searchText){
+		return sqlSessionTemplate.selectList("bbs.searchreviewwriter",searchText );
+	}
+	//검색 : 신고- 검색
+	public List<REP_BBS_VO> RepSearchResultByCon(String searchText) {
+		return sqlSessionTemplate.selectList("bbs.searchreportcon",searchText );
+	}
+
+	public List<REP_BBS_VO> RepSearchResultBysub(String searchText) {
+		return sqlSessionTemplate.selectList("bbs.searchreportsub",searchText );
+	}
+	
+	
+	
+	
+	
+	
+	//검색2  : 검색페이지에서 검색
+	//공지사항
+	public List<NO_BBS_VO> searchNotice( String s_type, String word, String start, String end) {
+		Map<String, Object> params = new HashMap<>();
+		
+		params.put("s_type", s_type);
+		params.put("word", word);
+		params.put("start", start);
+		params.put("end", end);
+		
+		return sqlSessionTemplate.selectList("bbs.searchNotice", params);
+	}
+	//faq
+	public List<FA_BBS_VO> searchFaq( String s_type, String word, String start, String end) {
+		Map<String, Object> params = new HashMap<>();
+		
+		params.put("s_type", s_type);
+		params.put("word", word);
+		params.put("start", start);
+		params.put("end", end);
+		
+		return sqlSessionTemplate.selectList("bbs.searchFaq", params);
+	}
+	//event
+	public List<EV_BBS_VO> searchEvent(String s_type, String word, String start, String end) {
+		Map<String, Object> params = new HashMap<>();
+		
+		params.put("s_type", s_type);
+		params.put("word", word);
+		params.put("start", start);
+		params.put("end", end);
+		
+		return sqlSessionTemplate.selectList("bbs.searchEvent", params);
+	}
+	//상품qa
+	public List<QA_BBS_VO> searchQa(String s_type, String word, String start, String end) {
+		Map<String, Object> params = new HashMap<>();
+		
+		params.put("s_type", s_type);
+		params.put("word", word);
+		params.put("start", start);
+		params.put("end", end);
+		
+		return sqlSessionTemplate.selectList("bbs.searchQa", params);
+	}
+	//리뷰
+	public List<RE_BBS_VO> searchReview(String s_type, String word, String start, String end) {
+		Map<String, Object> params = new HashMap<>();
+			
+		params.put("s_type", s_type);
+		params.put("word", word);
+		params.put("start", start);
+		params.put("end", end);
+			
+		return sqlSessionTemplate.selectList("bbs.searchReview", params);
+		
+	}
+	//신고하기
+	public List<REP_BBS_VO> searchReport(String s_type, String word, String start, String end) {
+		Map<String, Object> params = new HashMap<>();
+			
+		params.put("s_type", s_type);
+		params.put("word", word);
+		params.put("start", start);
+		params.put("end", end);
+			
+		return sqlSessionTemplate.selectList("bbs.searchReport", params);
+		
+	}
 
 	
 	

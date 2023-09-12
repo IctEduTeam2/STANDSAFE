@@ -175,19 +175,272 @@
 	   </update>
    
    
-   <!-- 검색 -->
-   
+   <!-- 검색 이벤트 - 검색-->
    <select id="searchevscon" parameterType="String" resultType="ebbsvo">
    	select * from EVENT_T where EVENT_CONTENT LIKE CONCAT('%', #{searchText}, '%') 
-    </select>
-   
+    </select>  
     <select id="searchevsub" parameterType="String" resultType="ebbsvo">
    	select * from EVENT_T where EVENT_SUBJECT LIKE CONCAT('%', #{searchText}, '%')
     </select>
     
+    
+     <!-- 검색 faq - 검색-->
+   <select id="searchfaqcon" parameterType="String" resultType="faqbbsvo">
+   	select * from FAQ_T where FA_ANSWER LIKE CONCAT('%', #{searchText}, '%') 
+    </select>  
+    <select id="searchfaqsub" parameterType="String" resultType="faqbbsvo">
+   	select * from FAQ_T where FA_SUBJECT LIKE CONCAT('%', #{searchText}, '%')
+    </select>
+    
+    
+     <!-- 검색 공지사항 - 검색-->
+   <select id="searchnoticecon" parameterType="String" resultType="nbbsvo">
+   	select * from NOTICE_T where NOTICE_CONTENT LIKE CONCAT('%', #{searchText}, '%') 
+    </select>  
+    <select id="searchnoticesub" parameterType="String" resultType="nbbsvo">
+   	select * from NOTICE_T where NOTICE_SUBJECT LIKE CONCAT('%', #{searchText}, '%')
+    </select>
+    
+    <!-- 검색 q&a - 검색-->
+   <select id="searchqacon" parameterType="String" resultType="qnabbsvo">
+   	select * from QA_T where BOARD_CONTENT LIKE CONCAT('%', #{searchText}, '%') 
+    </select>  
+    <select id="searchqasub" parameterType="String" resultType="qnabbsvo">
+   	select * from QA_T where BOARD_SUBJECT LIKE CONCAT('%', #{searchText}, '%')
+    </select>
+    
+    <!-- 검색 리뷰 - 검색-->
+   <select id="searchreviewcon" parameterType="String" resultType="reviewbbsvo">
+   	select * from REVIEW_T where 
+   	RE_ST =1 AND
+   	RE_CONTENT LIKE CONCAT('%', #{searchText}, '%') 
+    </select>  
+    <select id="searchreviewsub" parameterType="String" resultType="reviewbbsvo">
+   	select * from REVIEW_T where 
+   	RE_ST =1 AND 
+   	RE_SUBJECT LIKE CONCAT('%', #{searchText}, '%')
+    </select>
+    <select id="searchreviewwriter" parameterType="String" resultType="reviewbbsvo">
+   	select * from REVIEW_T where 
+   	RE_ST =1 AND 
+   	RE_WRITER LIKE CONCAT('%', #{searchText}, '%')
+    </select>
+    
+    
+    <!-- 검색 신고 - 검색-->
+   <select id="searchreportcon" parameterType="String" resultType="repbbsvo">
+   	select * from REPORT_T where REPORT_CONTENT LIKE CONCAT('%', #{searchText}, '%') 
+    </select>  
+    <select id="searchreportsub" parameterType="String" resultType="repbbsvo">
+   	select * from REPORT_T where REPORT_SUBJECT LIKE CONCAT('%', #{searchText}, '%')
+    </select>
+    
+    
+    
   
+  <!--검색2 : 검색페이지 - 검색 -->
+  <!--공지사항  -->
+  <select id="searchNotice" resultType="nbbsvo">
+  	select * 
+  	from NOTICE_T
+  	where NOTICE_ST = 1  
+  	
+	  
+        <!-- 항목 종류 검색 조건 -->
+        <if test="s_type != null and s_type != ''">
+            <choose>
+                <when test="s_type == '제목'">
+                    AND NOTICE_SUBJECT LIKE  CONCAT('%', #{word}, '%') 
+                </when>
+                <when test="s_type == '작성자'">
+                    AND NOTICE_WRITER LIKE CONCAT('%', #{word}, '%') 
+                </when>
+                <when test="s_type == '내용'">
+                    AND NOTICE_CONTENT LIKE CONCAT('%', #{word}, '%') 
+                </when>
+            </choose>
+        </if>
+
+        <!-- 시작 날짜 검색 조건 -->
+        <if test="start != null and start != ''">
+            AND NOTICE_DATE &gt;= #{start}
+        </if>
+
+        <!-- 종료 날짜 검색 조건 -->
+        <if test="end != null and end != ''">
+            AND NOTICE_DATE &lt;= #{end}
+        </if> 
+      
+        
+    </select>
+    
+    <!-- 이용안내 -->
+    <select id="searchFaq" resultType="faqbbsvo">
+  	select * 
+  	from FAQ_T
+  	where FA_ST = 1  
+  	
+	  
+        <!-- 항목 종류 검색 조건 -->
+        <if test="s_type != null and s_type != ''">
+            <choose>
+                <when test="s_type == '제목'">
+                    AND FA_SUBJECT LIKE  CONCAT('%', #{word}, '%') 
+                </when>
+                <when test="s_type == '작성자'">
+                    AND FA_WRITER LIKE CONCAT('%', #{word}, '%') 
+                </when>
+                <when test="s_type == '내용'">
+                    AND FA_ANSWER LIKE CONCAT('%', #{word}, '%') 
+                </when>
+            </choose>
+        </if>
+
+        <!-- 시작 날짜 검색 조건 -->
+        <if test="start != null and start != ''">
+            AND FA_DATE &gt;= #{start}
+        </if>
+
+        <!-- 종료 날짜 검색 조건 -->
+        <if test="end != null and end != ''">
+            AND FA_DATE &lt;= #{end}
+        </if> 
+      
+        
+    </select>
 	
-   
+   <!--이벤트  -->
+   <select id="searchEvent" resultType="ebbsvo">
+  	select * 
+  	from EVENT_T
+  	where EVENT_ST = 1  
+  	
+	  
+        <!-- 항목 종류 검색 조건 -->
+        <if test="s_type != null and s_type != ''">
+            <choose>
+                <when test="s_type == '제목'">
+                    AND EVENT_SUBJECT LIKE  CONCAT('%', #{word}, '%') 
+                </when>
+                <when test="s_type == '작성자'">
+                    AND EVENT_WRITER LIKE CONCAT('%', #{word}, '%') 
+                </when>
+                <when test="s_type == '내용'">
+                    AND EVENT_CONTENT LIKE CONCAT('%', #{word}, '%') 
+                </when>
+            </choose>
+        </if>
+
+        <!-- 시작 날짜 검색 조건 -->
+        <if test="start != null and start != ''">
+            AND EVENT_DATE &gt;= #{start}
+        </if>
+
+        <!-- 종료 날짜 검색 조건 -->
+        <if test="end != null and end != ''">
+            AND EVENT_DATE &lt;= #{end}
+        </if> 
+      
+    </select>
+    
+   <!--상품qa  -->
+   <select id="searchQa" resultType="qnabbsvo">
+  	select * 
+  	from QA_T
+  	where BOARD_ST = 1  
+  	
+	  
+        <!-- 항목 종류 검색 조건 -->
+        <if test="s_type != null and s_type != ''">
+            <choose>
+                <when test="s_type == '제목'">
+                    AND BOARD_SUBJECT LIKE  CONCAT('%', #{word}, '%') 
+                </when>
+                <when test="s_type == '작성자'">
+                    AND BOARD_WRITER LIKE CONCAT('%', #{word}, '%') 
+                </when>
+                <when test="s_type == '내용'">
+                    AND BOARD_CONTENT LIKE CONCAT('%', #{word}, '%') 
+                </when>
+            </choose>
+        </if>
+
+        <!-- 시작 날짜 검색 조건 -->
+        <if test="start != null and start != ''">
+            AND BOARD_DATE &gt;= #{start}
+        </if>
+
+        <!-- 종료 날짜 검색 조건 -->
+        <if test="end != null and end != ''">
+            AND BOARD_DATE &lt;= #{end}
+        </if> 
+    </select>
+    
+   <!--리뷰 -->
+   <select id="searchReview" resultType="reviewbbsvo">
+  	select * 
+  	from REVIEW_T
+  	where RE_ST = 1  
+  	
+	  
+        <!-- 항목 종류 검색 조건 -->
+        <if test="s_type != null and s_type != ''">
+            <choose>
+                <when test="s_type == '제목'">
+                    AND RE_SUBJECT LIKE  CONCAT('%', #{word}, '%') 
+                </when>
+                <when test="s_type == '작성자'">
+                    AND RE_WRITER LIKE CONCAT('%', #{word}, '%') 
+                </when>
+                <when test="s_type == '내용'">
+                    AND RE_CONTENT LIKE CONCAT('%', #{word}, '%') 
+                </when>
+            </choose>
+        </if>
+
+        <!-- 시작 날짜 검색 조건 -->
+        <if test="start != null and start != ''">
+            AND RE_DATE &gt;= #{start}
+        </if>
+
+        <!-- 종료 날짜 검색 조건 -->
+        <if test="end != null and end != ''">
+            AND RE_DATE &lt;= #{end}
+        </if> 
+    </select>    
+
+   <!--신고 -->
+   <select id="searchReport" resultType="repbbsvo">
+  	select * 
+  	from REPORT_T
+  	where REPORT_ST = 1  
+  	
+	  
+        <!-- 항목 종류 검색 조건 -->
+        <if test="s_type != null and s_type != ''">
+            <choose>
+                <when test="s_type == '제목'">
+                    AND REPORT_SUBJECT LIKE  CONCAT('%', #{word}, '%') 
+                </when>
+                <when test="s_type == '작성자'">
+                    AND REPORT_WRITER LIKE CONCAT('%', #{word}, '%') 
+                </when>
+                <when test="s_type == '내용'">
+                    AND REPORT_CONTENT LIKE CONCAT('%', #{word}, '%') 
+                </when>
+            </choose>
+        </if>
+        <!-- 시작 날짜 검색 조건 -->
+        <if test="start != null and start != ''">
+            AND REPORT_DATE &gt;= #{start}
+        </if>
+
+        <!-- 종료 날짜 검색 조건 -->
+        <if test="end != null and end != ''">
+            AND REPORT_DATE &lt;= #{end}
+        </if> 
+    </select>    
+
 </mapper>
 
 

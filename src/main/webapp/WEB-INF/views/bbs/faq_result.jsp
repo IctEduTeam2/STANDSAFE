@@ -111,9 +111,43 @@
     #h1{
     padding-top: 200px;
     }
+    .content-row .conts {
+    display: none;
+    text-align: left;
+    padding-left: 400px;
+    font-size: 14px;
+    background-color: #1b5ac2;
+    color: white;
+    
+  }
+
+.title {
+  cursor: pointer; /* 링크인 제목에 마우스 커서를 손 모양으로 변경 */
+}
 
 </style> 
-</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	 $('.title').click(function() {
+		 
+		 const toggleCell = $(this).closest('tr').next('.content-row').find('.conts');
+		    
+		    // 클릭한 행의 답변 상태 확인 후 처리
+		    if (toggleCell.is(':visible')) {
+		      toggleCell.hide(); // 이미 열려있는 경우 닫기
+		    } else {
+		      // 모든 답변 숨기기
+		      $('.conts').hide();
+		      toggleCell.show(); // 클릭한 행의 답변 열기
+		    }
+		  });
+	 
+	 
+		});
+
+	
+</script>
 </head>
 <body onload="InitializeStaticMenu();">
 	<div id="mydiv">
@@ -131,7 +165,7 @@
 	                    <option value="공지사항">공지사항</option>
 	                    <option value="이벤트">이벤트</option>
 	                    <option value="이용안내">이용안내FAQ</option>
-	                    <option value="상품Q&A">상품Q&A</option>
+	                    <option value="상품Q&A">공지사항</option>
 	                    <option value="리뷰">리뷰</option>
 	                    <option value="신고하기">신고하기</option>
 	                </select>
@@ -172,39 +206,33 @@
 					<table class="m_table">				
 						<thead class="mh_table">
 							 <tr>
-							 	<th id="th1">번호</th><th id="th4">파일첨부</th><th id="th2">제목</th><th id="th3">작성자</th><th id="th5">조회수</th><th id="th6">날짜</th>
+							 	<th id="th1">번호</th><th id="th4">유형</th><th id="th2">제목</th><th id="th3">작성자</th><th id="th6">날짜</th>
 							 </tr>
 						</thead>
 						<tbody class="mb_table">	
 							<c:choose>
-								<c:when test="${empty s_result2}">
+								<c:when test="${empty s_result1}">
 									<tr>
 										<td colspan="6"><p>검색결과가 존재하지 않습니다.</p></td>
 									</tr>
 								</c:when>
 								<c:otherwise>
-									<c:forEach var="k" items="${s_result2}" varStatus="vs">
+									<c:forEach var="k" items="${s_result1}" varStatus="vs">
 										<tr>
 											<td>${vs.index}</td>
+											<td>${k.FA_TYPE}</td>
 											<td>
-												<c:choose>
-													<c:when test="${empty k.EVENT_FILE}">
-														없음
-													</c:when>
-													<c:otherwise>
-														있음
-													</c:otherwise>
-												</c:choose>				
-											</td>
-											<c:choose>
-												<c:when test="${k.EVENT_ST ==1 }">
-													<td><a href="/bbs_event_onelist.do?EVENT_NUM=${k.EVENT_NUM}&cPage=${paging.nowPage}">${k.EVENT_SUBJECT}</a></td>				
-												</c:when>
-											</c:choose>
-											<!--onelist 갈때 cPage 필요하다. 같이보내자. -->
-											<td>${k.EVENT_WRITER}</td>
-											<td>${k.EVENT_HIT}</td>
-											<td>${k.EVENT_DATE.substring(0,10)}</td>
+													<a class="title">
+													${k.FA_SUBJECT}</a>
+												</td>																		 																															 												
+												<td>${k.FA_WRITER}</td>
+												<td>${k.FA_DATE.substring(0,10)}</td>
+											<!--onelist 갈때 cPage 필요하다. 같이보내자. -->	
+										</tr>
+										<tr class="content-row">
+												<td colspan="6" class="conts">
+												<p style="margin-left: 50px;">${k.FA_ANSWER}</p>
+												</td>
 										</tr>
 									</c:forEach>
 								</c:otherwise>

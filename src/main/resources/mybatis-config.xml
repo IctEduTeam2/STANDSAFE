@@ -29,6 +29,7 @@
 		<typeAlias type="com.ict.bbs.model.vo.REP_BBS_VO" alias="repbbsvo"/>
 		<typeAlias type="com.ict.bbs.model.vo.RE_BBS_VO" alias="reviewbbsvo"/>
 		
+		
 		<typeAlias type="com.ict.shopping.model.vo.PopUpVO" alias="popupVO" /><!-- 슬라이드/팝업 -->
 		<typeAlias type="com.ict.shopping.model.vo.ProductVO" alias="productVO" /><!-- 상품 -->
 		<typeAlias type="com.ict.shopping.model.vo.BasketVO" alias="basketVO" /><!-- 장바구니 -->

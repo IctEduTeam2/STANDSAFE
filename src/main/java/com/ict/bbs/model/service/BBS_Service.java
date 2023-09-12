@@ -9,6 +9,7 @@ import com.ict.bbs.model.vo.QA_BBS_VO;
 import com.ict.bbs.model.vo.REP_BBS_VO;
 import com.ict.bbs.model.vo.RE_BBS_VO;
 
+
 public interface BBS_Service {
 
 	//공지사항 
@@ -102,9 +103,40 @@ public interface BBS_Service {
 	
 	
 	
-	//검색
+	//검색 이벤트 -검색
 	public List<EV_BBS_VO> EvSearchResultByCon(String searchText);
 	public List<EV_BBS_VO> EvSearchResultBySub(String searchText);
+	
+	//검색 faq -검색
+	public List<FA_BBS_VO> FaSearchResultByCon(String searchText);
+	public List<FA_BBS_VO> FaSearchResultBySub(String searchText);
+	
+	//검색 공지사항 -검색
+	public List<NO_BBS_VO> NoticeSearchResultByCon(String searchText);
+	public List<NO_BBS_VO> NoticeSearchResultBySub(String searchText);
 
+	//검색 qa -검색
+	public List<QA_BBS_VO> QaSearchResultByCon(String searchText);
+	public List<QA_BBS_VO> QaSearchResultBySub(String searchText);
+	
+	//검색 reivew -검색
+	public List<RE_BBS_VO> RevSearchResultByCon(String searchText);
+	public List<RE_BBS_VO> RevSearchResultBySub(String searchText);
+	public List<RE_BBS_VO> RevSearchResultByWriter(String searchText);
+	
+	//검색 신고 -검색
+	public List<REP_BBS_VO> RepSearchResultByCon(String searchText);
+	public List<REP_BBS_VO> RepSearchResultBySub(String searchText);
+	
+	
+	
+	
+	//검색2 : 검색페이지에서 검색
+	public List<NO_BBS_VO> searchNotice(String s_type,String word,String start,String end);
+	public List<FA_BBS_VO> searchFaq(String s_type,String word,String start,String end);
+	public List<EV_BBS_VO> searchEvent(String s_type,String word,String start,String end);
+	public List<QA_BBS_VO> searchQa(String s_type,String word,String start,String end);
+	public List<RE_BBS_VO> searchReview(String s_type,String word,String start,String end);
+	public List<REP_BBS_VO> searchReport(String s_type,String word,String start,String end);
 	
 }

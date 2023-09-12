@@ -6,46 +6,10 @@ import org.springframework.web.multipart.MultipartFile;
 	private String EVENT_NUM, EVENT_SUBJECT, EVENT_WRITER, EVENT_CONTENT, EVENT_FILE,
 	EVENT_HIT, EVENT_DATE, EVENT_UPDATE, EVENT_ST, ADMIN_NUM, EVENT_TYPE;
 	
-	private String type_title, type_content, type_writer, type;
+
 	
 	private MultipartFile file;
 	
-	
-
-	
-	
-	
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public String getType_title() {
-		return type_title;
-	}
-
-	public void setType_title(String type_title) {
-		this.type_title = type_title;
-	}
-
-	public String getType_content() {
-		return type_content;
-	}
-
-	public void setType_content(String type_content) {
-		this.type_content = type_content;
-	}
-
-	public String getType_writer() {
-		return type_writer;
-	}
-
-	public void setType_writer(String type_writer) {
-		this.type_writer = type_writer;
-	}
 
 	public String getEVENT_NUM() {
 		return EVENT_NUM;

@@ -28,6 +28,7 @@ import com.ict.bbs.model.vo.NO_BBS_VO;
 import com.ict.bbs.model.vo.QA_BBS_VO;
 import com.ict.bbs.model.vo.REP_BBS_VO;
 import com.ict.bbs.model.vo.RE_BBS_VO;
+
 import com.ict.common.Paging;
 import com.ict.user.model.vo.UserVO;
 
@@ -1114,6 +1115,9 @@ public class BBSController {
 		
 	}
 	
+	
+	
+	//검색: 이벤트-검색
 	@PostMapping("/bbs_ev_search.do")
 	public ModelAndView goEventSearch(HttpServletRequest request,
 			@ModelAttribute("searchText")String searchText,
@@ -1124,7 +1128,7 @@ public class BBSController {
 		System.out.println("검색눌러서 불러온 단어: " + searchText);
 		System.out.println("검색눌러서 불러온 검색조건타입 : " + searchType);
 		
-		List<EV_BBS_VO> s_result = new ArrayList<>();
+		List<EV_BBS_VO> s_result2 = new ArrayList<>();
 		
 		
 		
@@ -1133,14 +1137,14 @@ public class BBSController {
 	
 			//내용이 체크되어 넘어올떄 검색 일처리
 	
-			s_result = bbsService.EvSearchResultByCon(searchText);
+			s_result2 = bbsService.EvSearchResultByCon(searchText);
 			
-			System.out.println("맞는내용을 검색하여 갖고배열: " + s_result);
+			System.out.println("맞는내용을 검색하여 갖고배열: " + s_result2);
 			
 			
-			if(! s_result.isEmpty()) {//갖고온 리스트가 비어있지않다면 출력해보자. 
+			if(! s_result2.isEmpty()) {//갖고온 리스트가 비어있지않다면 출력해보자. 
 				
-				for (EV_BBS_VO k : s_result) { //잘갖고왔는지 뽑아내어 보기위함
+				for (EV_BBS_VO k : s_result2) { //잘갖고왔는지 뽑아내어 보기위함
 					System.out.println("갖고온 번호: " + k.getEVENT_NUM());
 					System.out.println("갖고온 제목: "+k.getEVENT_SUBJECT());
 					System.out.println("갖고온 파일: "+k.getEVENT_FILE());
@@ -1151,19 +1155,25 @@ public class BBSController {
 
 
 				} //결과가 잘나오나 뽑아보았다.
+				mv.addObject("s_result2", s_result2);
+				mv.setViewName("bbs/event_result");
+				return mv;
+				
+			}else {
+				//검색결과가 null이면
 				
 			}
 
 		}else if (searchType.equals("제목")) {
-			s_result = bbsService.EvSearchResultBySub(searchText);
+			s_result2 = bbsService.EvSearchResultBySub(searchText);
 			
-			System.out.println("맞는내용을 검색하여 갖고배열: " + s_result);
+			System.out.println("맞는내용을 검색하여 갖고배열: " + s_result2);
 		
 			
 			
-			if(! s_result.isEmpty()) { //갖고온 리스트가 비어있지않다면 출력해보자. 
+			if(! s_result2.isEmpty()) { //갖고온 리스트가 비어있지않다면 출력해보자. 
 				
-				for (EV_BBS_VO k : s_result) {//잘갖고왔는지 뽑아내어 보기위함
+				for (EV_BBS_VO k : s_result2) {//잘갖고왔는지 뽑아내어 보기위함
 					System.out.println("갖고온 번호: " + k.getEVENT_NUM());
 					System.out.println("갖고온 제목: "+k.getEVENT_SUBJECT());
 					System.out.println("갖고온 파일: "+k.getEVENT_FILE());
@@ -1172,18 +1182,420 @@ public class BBSController {
 					System.out.println("갖고온 날짜: "+k.getEVENT_DATE());
 					System.out.println("갖고온 조회수: "+k.getEVENT_HIT());
 				}
+				mv.addObject("s_result2", s_result2);
+				mv.setViewName("bbs/event_result");
+				return mv;
 			}
 			
-			mv.addObject("s_result", s_result);
-			mv.setViewName("bbs/event_result");
-			return mv;
 		}
 		//아무것도아닐때는 null
 		return null;
 		
 	}
 	
-	@PostMapping("/search.do")
+	//검색: faq-검색
+		@PostMapping("/bbs_faq_search.do")
+		public ModelAndView goFaqSearch(HttpServletRequest request,
+				@ModelAttribute("searchText")String searchText,
+				@ModelAttribute("searchType")String searchType) {
+			
+			ModelAndView mv = new ModelAndView();
+			
+			System.out.println("검색눌러서 불러온 단어: " + searchText);
+			System.out.println("검색눌러서 불러온 검색조건타입 : " + searchType);
+			
+			List<FA_BBS_VO> s_result1 = new ArrayList<>();
+			
+			
+			
+			if(searchType.equals("내용")) {
+				
+		
+				//내용이 체크되어 넘어올떄 검색 일처리
+		
+				s_result1 = bbsService.FaSearchResultByCon(searchText);
+				
+				System.out.println("맞는내용을 검색하여 갖고배열: " + s_result1);
+				
+				
+				if(! s_result1.isEmpty()) {//갖고온 리스트가 비어있지않다면 출력해보자. 
+					
+					for (FA_BBS_VO k : s_result1) { //잘갖고왔는지 뽑아내어 보기위함
+						System.out.println("갖고온 번호: " + k.getFA_NUM());
+						System.out.println("갖고온 제목: "+k.getFA_SUBJECT());
+						System.out.println("갖고온 타입: "+k.getFA_TYPE());
+						System.out.println("갖고온 답변: "+k.getFA_ANSWER());
+						System.out.println("갖고온 작성자: "+k.getFA_WRITER());
+						System.out.println("갖고온 날짜: "+k.getFA_DATE());
+
+
+					} //결과가 잘나오나 뽑아보았다.
+					mv.addObject("s_result1", s_result1);
+					mv.setViewName("bbs/faq_result");
+					return mv;
+					
+				}else {
+					//검색결과가 null이면
+					
+				}
+
+			}else if (searchType.equals("제목")) {
+				s_result1 = bbsService.FaSearchResultBySub(searchText);
+				
+				System.out.println("맞는내용을 검색하여 갖고배열: " + s_result1);
+			
+				
+				
+				if(! s_result1.isEmpty()) { //갖고온 리스트가 비어있지않다면 출력해보자. 
+					
+					for (FA_BBS_VO k : s_result1) {//잘갖고왔는지 뽑아내어 보기위함
+						System.out.println("갖고온 번호: " + k.getFA_NUM());
+						System.out.println("갖고온 제목: "+k.getFA_SUBJECT());
+						System.out.println("갖고온 타입: "+k.getFA_TYPE());
+						System.out.println("갖고온 답변: "+k.getFA_ANSWER());
+						System.out.println("갖고온 작성자: "+k.getFA_WRITER());
+						System.out.println("갖고온 날짜: "+k.getFA_DATE());
+					}
+					mv.addObject("s_result1", s_result1);
+					mv.setViewName("bbs/faq_result");
+					return mv;
+				}
+				
+			}
+			//아무것도아닐때는 null
+			return null;
+			
+		}
+	
+	
+	
+		//검색: 공지사항-검색
+		@PostMapping("/bbs_notice_search.do")
+		public ModelAndView goNoticeSearch(HttpServletRequest request,
+				@ModelAttribute("searchText")String searchText,
+				@ModelAttribute("searchType")String searchType) {
+			
+			ModelAndView mv = new ModelAndView();
+			
+			System.out.println("검색눌러서 불러온 단어: " + searchText);
+			System.out.println("검색눌러서 불러온 검색조건타입 : " + searchType);
+			
+			List<NO_BBS_VO> s_result3 = new ArrayList<>();
+			
+			
+			
+			if(searchType.equals("내용")) {
+				
+		
+				//내용이 체크되어 넘어올떄 검색 일처리
+		
+				s_result3 = bbsService.NoticeSearchResultByCon(searchText);
+				
+				System.out.println("맞는내용을 검색하여 갖고배열: " + s_result3);
+				
+				
+				if(! s_result3.isEmpty()) {//갖고온 리스트가 비어있지않다면 출력해보자. 
+					
+					for (NO_BBS_VO k : s_result3) { //잘갖고왔는지 뽑아내어 보기위함
+						System.out.println("갖고온 번호: " + k.getNOTICE_NUM());
+						System.out.println("갖고온 제목: "+k.getNOTICE_SUBJECT());
+						System.out.println("갖고온 파일: "+k.getNOTICE_FILE());
+						System.out.println("갖고온 내용: "+k.getNOTICE_CONTENT());
+						System.out.println("갖고온 작성자: "+k.getNOTICE_WRITER());
+						System.out.println("갖고온 날짜: "+k.getNOTICE_DATE());
+						System.out.println("갖고온 조회수: "+k.getNOTICE_HIT());
+
+
+					} //결과가 잘나오나 뽑아보았다.
+					mv.addObject("s_result3", s_result3);
+					mv.setViewName("bbs/notice_result");
+					return mv;
+					
+				}else {
+					//검색결과가 null이면
+					
+				}
+
+			}else if (searchType.equals("제목")) {
+				s_result3 = bbsService.NoticeSearchResultBySub(searchText);
+				
+				System.out.println("맞는내용을 검색하여 갖고배열: " + s_result3);
+			
+				
+				
+				if(! s_result3.isEmpty()) { //갖고온 리스트가 비어있지않다면 출력해보자. 
+					
+					for (NO_BBS_VO k : s_result3) {//잘갖고왔는지 뽑아내어 보기위함
+						System.out.println("갖고온 번호: " + k.getNOTICE_NUM());
+						System.out.println("갖고온 제목: "+k.getNOTICE_SUBJECT());
+						System.out.println("갖고온 파일: "+k.getNOTICE_FILE());
+						System.out.println("갖고온 내용: "+k.getNOTICE_CONTENT());
+						System.out.println("갖고온 작성자: "+k.getNOTICE_WRITER());
+						System.out.println("갖고온 날짜: "+k.getNOTICE_DATE());
+						System.out.println("갖고온 조회수: "+k.getNOTICE_HIT());
+					}
+					mv.addObject("s_result3", s_result3);
+					mv.setViewName("bbs/notice_result");
+					return mv;
+				}
+				
+			}
+			//아무것도아닐때는 null
+			return null;
+			
+		}
+		
+		
+		
+		//검색: 상품qa-검색
+		@PostMapping("/bbs_qa_search.do")
+		public ModelAndView goQaSearch(HttpServletRequest request,
+				@ModelAttribute("searchText")String searchText,
+				@ModelAttribute("searchType")String searchType) {
+			
+			ModelAndView mv = new ModelAndView();
+			
+			System.out.println("검색눌러서 불러온 단어: " + searchText);
+			System.out.println("검색눌러서 불러온 검색조건타입 : " + searchType);
+			
+			List<QA_BBS_VO> s_result4 = new ArrayList<>();
+			
+			
+			
+			if(searchType.equals("내용")) {
+				
+		
+				//내용이 체크되어 넘어올떄 검색 일처리
+		
+				s_result4 = bbsService.QaSearchResultByCon(searchText);
+				
+				System.out.println("맞는내용을 검색하여 갖고배열: " + s_result4);
+				
+				
+				if(! s_result4.isEmpty()) {//갖고온 리스트가 비어있지않다면 출력해보자. 
+					
+					for (QA_BBS_VO k : s_result4) { //잘갖고왔는지 뽑아내어 보기위함
+						System.out.println("갖고온 번호: " + k.getBOARD_NUM());
+						System.out.println("갖고온 제목: "+k.getBOARD_SUBJECT());
+						System.out.println("갖고온 파일: "+k.getBOARD_FILE());
+						System.out.println("갖고온 내용: "+k.getBOARD_CONTENT());
+						System.out.println("갖고온 작성자: "+k.getBOARD_WRITER());
+						System.out.println("갖고온 날짜: "+k.getBOARD_DATE());
+						System.out.println("갖고온 조회수: "+k.getBOARD_TYPE());
+
+
+					} //결과가 잘나오나 뽑아보았다.
+					mv.addObject("s_result4", s_result4);
+					mv.setViewName("bbs/qa_result");
+					return mv;
+					
+				}else {
+					//검색결과가 null이면
+					
+				}
+
+			}else if (searchType.equals("제목")) {
+				s_result4 = bbsService.QaSearchResultBySub(searchText);
+				
+				System.out.println("맞는내용을 검색하여 갖고배열: " + s_result4);
+			
+				
+				
+				if(! s_result4.isEmpty()) { //갖고온 리스트가 비어있지않다면 출력해보자. 
+					
+					for (QA_BBS_VO k : s_result4) {//잘갖고왔는지 뽑아내어 보기위함
+						System.out.println("갖고온 번호: " + k.getBOARD_NUM());
+						System.out.println("갖고온 제목: "+k.getBOARD_SUBJECT());
+						System.out.println("갖고온 파일: "+k.getBOARD_FILE());
+						System.out.println("갖고온 내용: "+k.getBOARD_CONTENT());
+						System.out.println("갖고온 작성자: "+k.getBOARD_WRITER());
+						System.out.println("갖고온 날짜: "+k.getBOARD_DATE());
+						System.out.println("갖고온 조회수: "+k.getBOARD_TYPE());
+					}
+					mv.addObject("s_result4", s_result4);
+					mv.setViewName("bbs/qa_result");
+					return mv;
+				}
+				
+			}
+			//아무것도아닐때는 null
+			return null;
+			
+		}
+		//검색: 리뷰-검색
+		@PostMapping("/bbs_review_search.do")
+		public ModelAndView goRevSearch(HttpServletRequest request,
+				@ModelAttribute("searchText")String searchText,
+				@ModelAttribute("searchType")String searchType) {
+			
+			ModelAndView mv = new ModelAndView();
+			
+			System.out.println("검색눌러서 불러온 단어: " + searchText);
+			System.out.println("검색눌러서 불러온 검색조건타입 : " + searchType);
+			
+			List<RE_BBS_VO> s_result5 = new ArrayList<>();
+			
+			
+			
+			if(searchType.equals("내용")) {
+				
+		
+				//내용이 체크되어 넘어올떄 검색 일처리
+		
+				s_result5 = bbsService.RevSearchResultByCon(searchText);
+				
+				System.out.println("맞는내용을 검색하여 갖고배열: " + s_result5);
+				
+				
+				if(! s_result5.isEmpty()) {//갖고온 리스트가 비어있지않다면 출력해보자. 
+					
+					for (RE_BBS_VO k : s_result5) { //잘갖고왔는지 뽑아내어 보기위함
+						System.out.println("갖고온 번호: " + k.getRE_NUM());
+						System.out.println("갖고온 제목: "+k.getRE_SUBJECT());
+						System.out.println("갖고온 파일: "+k.getRE_FILE());
+						System.out.println("갖고온 내용: "+k.getRE_CONTENT());
+						System.out.println("갖고온 작성자: "+k.getRE_WRITER());
+						System.out.println("갖고온 날짜: "+k.getRE_DATE());
+						System.out.println("갖고온 조회수: "+k.getRE_HIT());
+
+
+					} //결과가 잘나오나 뽑아보았다.
+					mv.addObject("s_result5", s_result5);
+					mv.setViewName("bbs/reivew_result");
+					return mv;
+					
+				}else {
+					//검색결과가 null이면
+					
+				}
+
+			}else if (searchType.equals("제목")) {
+				s_result5 = bbsService.RevSearchResultBySub(searchText);
+				
+				System.out.println("맞는내용을 검색하여 갖고배열: " + s_result5);
+			
+				
+				
+				if(! s_result5.isEmpty()) { //갖고온 리스트가 비어있지않다면 출력해보자. 
+					
+					for (RE_BBS_VO k : s_result5) {//잘갖고왔는지 뽑아내어 보기위함
+						System.out.println("갖고온 번호: " + k.getRE_NUM());
+						System.out.println("갖고온 제목: "+k.getRE_SUBJECT());
+						System.out.println("갖고온 파일: "+k.getRE_FILE());
+						System.out.println("갖고온 내용: "+k.getRE_CONTENT());
+						System.out.println("갖고온 작성자: "+k.getRE_WRITER());
+						System.out.println("갖고온 날짜: "+k.getRE_DATE());
+						System.out.println("갖고온 조회수: "+k.getRE_HIT());
+					}
+					mv.addObject("s_result5", s_result5);
+					mv.setViewName("bbs/review_result");
+					return mv;
+				}
+				
+			}else if(searchType.equals("작성자")) {
+				s_result5 = bbsService.RevSearchResultByWriter(searchText);
+				System.out.println("맞는내용을 검색하여 갖고배열: " + s_result5);
+				
+				if(! s_result5.isEmpty()) { //갖고온 리스트가 비어있지않다면 출력해보자. 
+					
+					for (RE_BBS_VO k : s_result5) {//잘갖고왔는지 뽑아내어 보기위함
+						System.out.println("갖고온 번호: " + k.getRE_NUM());
+						System.out.println("갖고온 제목: "+k.getRE_SUBJECT());
+						System.out.println("갖고온 파일: "+k.getRE_FILE());
+						System.out.println("갖고온 내용: "+k.getRE_CONTENT());
+						System.out.println("갖고온 작성자: "+k.getRE_WRITER());
+						System.out.println("갖고온 날짜: "+k.getRE_DATE());
+						System.out.println("갖고온 조회수: "+k.getRE_HIT());
+					}
+					mv.addObject("s_result5", s_result5);
+					mv.setViewName("bbs/review_result");
+					return mv;
+				}
+				
+			}
+			//아무것도아닐때는 null
+			return null;
+			
+		}
+		//검색: 신고-검색
+		@PostMapping("/bbs_report_search.do")
+		public ModelAndView goRepSearch(HttpServletRequest request,
+				@ModelAttribute("searchText")String searchText,
+				@ModelAttribute("searchType")String searchType) {
+			
+			ModelAndView mv = new ModelAndView();
+			
+			System.out.println("검색눌러서 불러온 단어: " + searchText);
+			System.out.println("검색눌러서 불러온 검색조건타입 : " + searchType);
+			
+			List<REP_BBS_VO> s_result6 = new ArrayList<>();
+			
+			
+			
+			if(searchType.equals("내용")) {
+				
+		
+				//내용이 체크되어 넘어올떄 검색 일처리
+		
+				s_result6 = bbsService.RepSearchResultByCon(searchText);
+				
+				System.out.println("맞는내용을 검색하여 갖고배열: " + s_result6);
+				
+				
+				if(! s_result6.isEmpty()) {//갖고온 리스트가 비어있지않다면 출력해보자. 
+					
+					for (REP_BBS_VO k : s_result6) { //잘갖고왔는지 뽑아내어 보기위함
+						System.out.println("갖고온 번호: " + k.getREPORT_NUM());
+						System.out.println("갖고온 제목: "+k.getREPORT_SUBJECT());
+						System.out.println("갖고온 파일: "+k.getREPORT_FILE());
+						System.out.println("갖고온 내용: "+k.getREPORT_CONTENT());
+						System.out.println("갖고온 작성자: "+k.getREPORT_WRITER());
+						System.out.println("갖고온 날짜: "+k.getREPORT_DATE());
+						System.out.println("갖고온 조회수: "+k.getREPORT_TYPE());
+
+
+					} //결과가 잘나오나 뽑아보았다.
+					mv.addObject("s_result6", s_result6);
+					mv.setViewName("bbs/reort_result");
+					return mv;
+					
+				}else {
+					//검색결과가 null이면
+					
+				}
+
+			}else if (searchType.equals("제목")) {
+				s_result6 = bbsService.RepSearchResultBySub(searchText);
+				
+				System.out.println("맞는내용을 검색하여 갖고배열: " + s_result6);
+			
+				
+				
+				if(! s_result6.isEmpty()) { //갖고온 리스트가 비어있지않다면 출력해보자. 
+					
+					for (REP_BBS_VO k : s_result6) {//잘갖고왔는지 뽑아내어 보기위함
+						System.out.println("갖고온 번호: " + k.getREPORT_NUM());
+						System.out.println("갖고온 제목: "+k.getREPORT_SUBJECT());
+						System.out.println("갖고온 파일: "+k.getREPORT_FILE());
+						System.out.println("갖고온 내용: "+k.getREPORT_CONTENT());
+						System.out.println("갖고온 작성자: "+k.getREPORT_WRITER());
+						System.out.println("갖고온 날짜: "+k.getREPORT_DATE());
+						System.out.println("갖고온 조회수: "+k.getREPORT_TYPE());
+					}
+					mv.addObject("s_result6", s_result6);
+					mv.setViewName("bbs/report_result");
+					return mv;
+				}
+				
+			}
+			//아무것도아닐때는 null
+			return null;
+			
+		}
+	
+
+	//검색 - 검색페이지에서 검색
+	@RequestMapping("/search.do")
 	public ModelAndView Search(
 			@ModelAttribute("bbs_type")String bbs_type,
 			@ModelAttribute("s_type")String s_type,
@@ -1200,35 +1612,47 @@ public class BBSController {
 		System.out.println("종료날짜:" + end);
 		
 		
+		
+		
 		switch (bbs_type) {
 		
-		case "공지사항":
-			
-			break;
+		case "공지사항":			
+			List<NO_BBS_VO> s_result3 = bbsService.searchNotice(s_type,word,start,end);
+			mv.addObject("s_result3", s_result3);
+			mv.setViewName("bbs/notice_result");
+			break;		
 		case "이벤트":
-			
+			List<EV_BBS_VO> s_result2 = bbsService.searchEvent(s_type,word,start,end);		
+			mv.addObject("s_result2", s_result2);
+			mv.setViewName("bbs/event_result");
 			break;
-		case "이용안내":
-	
+		case "이용안내":		
+			List<FA_BBS_VO> s_result1 = bbsService.searchFaq(s_type,word,start,end);
+			mv.addObject("s_result1", s_result1);
+			mv.setViewName("bbs/faq_result");
 			break;
 		case "상품Q&A":
-	
+			List<QA_BBS_VO> s_result4 = bbsService.searchQa(s_type,word,start,end);
+			mv.addObject("s_result4", s_result4);
+			mv.setViewName("bbs/qa_result");
 			break;
 		case "리뷰":
-			
+			List<RE_BBS_VO> s_result5 = bbsService.searchReview(s_type,word,start,end);
+			mv.addObject("s_result5", s_result5);
+			mv.setViewName("bbs/review_result");
 			break;
 		case "신고하기":
-			
+			List<REP_BBS_VO> s_result6 = bbsService.searchReport(s_type,word,start,end);
+			mv.addObject("s_result6", s_result6);
+			mv.setViewName("bbs/report_result");
 			break;
 		default :
 			//전체
 			break;
 	
-		
 		}//스위치 괄호
 		
-		
-		
+	
 	return mv;
 	}
 	
