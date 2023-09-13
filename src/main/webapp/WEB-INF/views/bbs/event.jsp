@@ -65,95 +65,40 @@ table tfoot ol.paging li a:hover {
 }
 
 </style> 
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script> -->
-<script type="text/javascript">
-function search_go() {
-	  var searchText = document.getElementById("s_bar").value;
-	  var searchType = "";
-
-	    if (document.getElementById("type_title").checked) {
-	        searchType = "제목";
-	    } else if (document.getElementById("type_content").checked) {
-	        searchType = "내용";
-	    } else if (document.getElementById("type_author").checked) {
-	        searchType = "작성자";
-	    }
-	//alert(searchText+searchType);
-	// AJAX 요청을 보냅니다.
-    $.ajax({
-        type: "POST", // 또는 "GET"을 사용할 수도 있습니다.
-        url: "/bbs_ev_search.do", // 컨트롤러의 URL을 여기에 입력합니다.
-        data: { searchText: searchText, searchType: searchType },
-        success: function(data) {
-        	
-        	//console.log(data);
-            // 서버에서 받은 응답을 처리합니다.
-            // 예를 들어, 검색 결과를 화면에 표시하거나 다른 동작을 수행할 수 있습니다.
-            // 컨트롤러에서 일처리해서 내용을 갖고왔다. 내용 라디오에 회원이라는 것을 치면 나온다. 
-            // 여기서는 테이블에 붙여야한다. 
-         /*  var table = "<table>";
-            
-            table += "<thead class='mh_table'><tr><th id='th1'>번호</th><th id='th4'>파일첨부</th><th id='th2'>제목</th><th id='th3'>작성자</th><th id='th5'>조회수</th><th id='th6'>날짜</th></tr></thead>";
-            table += "<tbody>";
-            
-            //갖고온 배열 리스트 포문으로 돌리면서 있을때까지 뽑아내기
-            for(var i =0, i<data.length; i++) {
-            	var item = data[i];
-            	table += "<tr>";
-            	table += "<td>" + (i+1) + "</td>";
-            	table += "<td>" + item.EVENT_FILE + "</td>";
-            	table += "<td>" + item.EVENT_SUBJECT + "</td>";
-            	table += "<td>" + item.EVENT_WRITER + "</td>";
-            	table += "<td>" + item.EVENT_HIT+ "</td>";
-            	table += "<td>" + item.EVENT_DATE + "</td>";
-            
-            }
-            table += "</tbody>";
-            table += "</table>";
-            
-		
-            $("#result").append(table); */
-        
-        },
-        error: function(error) {
-            alert("검색(설정)이 잘못되어 불러올수없습니다.");
-        }
-    });
-}
-</script>
-</head>
 </head>
 <body onload="InitializeStaticMenu();">
 	<div id="mydiv">
 		<jsp:include page="../Semantic/header.jsp"></jsp:include>
 		<section id="contents">
 			<article>
-						<div id="bbs_top" >					
+				<div id="bbs_top" >					
 					<div id="bbs_sub"><h1>이벤트</h1></div>
-							<fieldset >
-								<label>
-									<input type="radio" name="search" value="제목" id="type_title" checked />
-									<span>제목</span>					
-								</label>
-								<label>
-									<input type="radio" name="search" value="내용" id="type_content" />
-									<span>내용</span>					
-								</label>
-								<div id="search_bar">
-									<input type="text" id="s_bar" placeholder="검색어입력">
-									<button id="s_btn" onclick="search_go()">검색</button>			
-								</div>				
-							</fieldset>		
+							<form action="/bbs_ev_search.do" method="post">
+							    <fieldset>
+							        <label>
+							            <input type="radio" name="searchType" value="제목" id="type_title" checked />
+							            <span>제목</span>
+							        </label>
+							        <label>
+							            <input type="radio" name="searchType" value="내용" id="type_content" />
+							            <span>내용</span>
+							        </label>
+							        <div id="search_bar">
+							            <input type="text" id="s_bar" name="searchText" placeholder="검색어입력">
+							            <button id="s_btn" type="submit">검색</button>
+							        </div>
+							    </fieldset>
+							</form>
 						</div>  <!--  제목및 버튼검색창의 끝 -->		
 					<hr class="hr">
 					<!-- 메인 테이블 -->
-					<table class="m_table">				
+					<table id="s_table" class="m_table">				
 						<thead class="mh_table">
 							 <tr>
 							 	<th id="th1">번호</th><th id="th4">파일첨부</th><th id="th2">제목</th><th id="th3">작성자</th><th id="th5">조회수</th><th id="th6">날짜</th>
 							 </tr>
 						</thead>
-						<tbody class="mb_table">	
+						<tbody id="s_table" class="mb_table">	
 							<c:choose>
 								<c:when test="${empty list}">
 									<tr>
@@ -191,7 +136,6 @@ function search_go() {
 								</c:otherwise>
 							</c:choose>
 						</tbody>	
-					
 						<tfoot>
 								<tr>
 									<td colspan="6">
