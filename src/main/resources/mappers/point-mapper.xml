@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="point">
+	<!-- 가입포인트 부여 -->
+	<insert id="joinpoint" parameterType="pVO">
+    INSERT INTO POINT_T (POINT_REM,
+        <if test="POINT_USE != null and POINT_USE != ''">POINT_USE, </if>
+        POINT_DATE,
+        <if test="POINT_SAVE != null and POINT_SAVE != ''">POINT_SAVE, </if>
+        <if test="POINT_OUT != null and POINT_OUT != ''">POINT_OUT, </if>
+        CLIENT_NUM)
+   		 VALUES (10000,
+        <if test="POINT_USE != null and POINT_USE != ''">#{POINT_USE}, </if>
+        SYSDATE(),
+        <if test="POINT_SAVE != null and POINT_SAVE != ''">#{POINT_SAVE}, </if>
+        <if test="POINT_OUT != null and POINT_OUT != ''">#{POINT_OUT}, </if>
+        #{CLIENT_NUM})
+</insert>
+
+	<!--  (로그인과 같이) 현재 포인트조회  -->
+	<select id="userpoint" resultType="int"> 
+    SELECT pt.POINT_REM
+    FROM POINT_T pt
+    JOIN MEMBER_T mt ON pt.CLIENT_NUM = mt.CLIENT_NUM
+    WHERE mt.CLIENT_NUM = #{CLIENT_NUM}
+    ORDER BY POINT_DATE DESC
+	LIMIT 1;
+	</select>
+	
+	<!-- 해당멤버의 포인트 전체조회 -->
+	<select id="selectPointByClientNum" parameterType="int" resultType="pVO">
+    SELECT * FROM POINT_T WHERE CLIENT_NUM = #{CLIENT_NUM}
+    ORDER BY POINT_DATE DESC, POINT_OUT DESC
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+

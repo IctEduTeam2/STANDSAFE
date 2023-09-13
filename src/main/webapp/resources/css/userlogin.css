@@ -1,0 +1,130 @@
+@charset "UTF-8";
+/* 전체적용 */
+#contents {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 이렇게 하면 버튼이 수평으로 중앙 정렬됩니다 */
+    min-height: 62vh;       /* 전체 뷰 포트 높이 차지 */
+    float: none;/*화면 조정 안되면 이거도 써보기*/
+}
+/* 로그인 */
+.login-header {
+	margin-bottom: 20px;
+	margin-top: 120px;
+}
+
+.login-header h1 {
+	margin-top : 20px; 
+	font-size: 30px;
+	text-align: center;
+}
+
+.login-form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 20px;
+}
+
+.login-input-field {
+	width: 300px;
+	padding: 10px;
+	margin: 5px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+}
+.login-button {
+	background-color: blue;
+	color: white;
+	padding: 15px 50px;
+	border: none;
+	border-radius: 5px;
+	margin-top: 20px;
+	cursor: pointer;
+}
+
+
+.login-links {
+	display: flex;
+	flex-direction: row; 
+	align-items: center;
+	justify-content: center;
+}
+
+.login-links p {
+	margin: 0 15px; 
+	cursor: pointer;
+}
+
+.login-links p:hover {
+	color: blue;
+	cursor: pointer;
+}
+.social-login img {
+    height: 40px;
+    width: auto;
+    cursor: pointer;
+    margin: 10px;
+}
+.social-login {
+    display: flex;
+    justify-content: space-between;
+    width: auto; 
+    margin-top: 10px;
+}
+/* 아이디찾기 */
+input[type="text"] {
+	width: 280px; /* 원하는 너비로 조절 */
+	height: 20px;
+	border-radius: 2px; /* 모서리 둥글게 */
+}
+.find-header {
+	margin-bottom: 20px;
+}
+
+.find-header h1 {
+	font-size: 40px;
+	text-align: center;
+}
+.find-box{
+	margin-top: 30px;
+	margin-bottom: 20px;
+	text-align: center;
+	background-color: #fff; /* 박스 배경색 */
+	padding: 20px; /* 안쪽 간격 */
+	border-radius: 5px; /* 모서리 둥글게 */
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+	width: 400px; /* 박스 너비 */
+	height: 200px; /* 박스 너비 */
+	box-sizing: border-box; /* 패딩과 보더를 포함한 너비/높이 계산 */
+
+}
+
+.find-button {
+	background-color: blue;
+	color: white;
+	padding: 15px 50px;
+	border: none;
+	border-radius: 5px;
+	margin-top: 20px;
+	cursor: pointer;
+}
+
+.centered-content {
+	margin-top: 20px;
+    display: flex;
+    justify-content: center;  
+    align-items: center;
+}
+
+
+.find-links p {
+	margin-top : 5px;
+	margin: auto;
+	cursor: pointer;
+}
+
+.find-links p:hover {
+	color: blue;
+	cursor: pointer;
+}
