@@ -72,10 +72,11 @@
     width: auto; 
     margin-top: 10px;
 }
-
 /* 아이디찾기 */
 input[type="text"] {
-	width: 260px; /* 원하는 너비로 조절 */
+	width: 280px; /* 원하는 너비로 조절 */
+	height: 20px;
+	border-radius: 2px; /* 모서리 둥글게 */
 }
 .find-header {
 	margin-bottom: 20px;
@@ -102,11 +103,18 @@ input[type="text"] {
 .find-button {
 	background-color: blue;
 	color: white;
-	padding: 5px 10px;
+	padding: 15px 50px;
 	border: none;
 	border-radius: 5px;
 	margin-top: 20px;
 	cursor: pointer;
+}
+
+.centered-content {
+	margin-top: 20px;
+    display: flex;
+    justify-content: center;  
+    align-items: center;
 }
 
 

@@ -22,11 +22,23 @@ public interface UserService {
 	
 	//유저정보 수정
 	int updateUser(UserVO userVO);
+	
+	//탈퇴
+	int userOut(UserVO uVO);
+	
+	//아이디 찾기
+	UserVO findMemberId(UserVO uVO);
+	
+	//이메일찾아서 비번교체
+	UserVO findMemberMail(UserVO uVO);
+	
+	//임시 비번 넣기
+	UserVO upsertTempPW(UserVO uVO);
+	
+	//TEMP_PW 비우기
+	int resetTempPW(String ID);
 
 	
-	
-	
-	// 아이디 찾기
 	
 	// 비번 찾기
 }

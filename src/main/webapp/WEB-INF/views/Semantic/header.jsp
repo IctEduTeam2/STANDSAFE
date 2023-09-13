@@ -4,28 +4,39 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title><script type="text/javascript">
+<title>Insert title here</title>
+<script type="text/javascript">
 	$(document).ready(function() {
-		console.log("loginChk is: ", loginChk);
 		var loginChk = "${loginChk}";
+		console.log("loginChk is: ", loginChk);
 		
 		if (loginChk === "noUser") {
-	        alert("존재하지 않는 아이디입니다.");
-	        session.removeAttribute("loginChk");
-	        session.abort();
+			alert("존재하지 않는 아이디입니다.");
 	        return;
-	        
-		}else if(loginChk == "fail"){
-			alert("비밀번호틀림");
-			session.removeAttribute("loginChk");
-			session.abort();
+		} else if (loginChk == "fail") {
+			alert("비밀번호가 틀렸습니다.");
 			return;
-			
-		}else if(loginChk == "ok"){
-			$("#loggedOut").css("display","none");    // 감추기
-			$("#loggedIn").css("display","block"); // 나타내기	
+		} else if (loginChk == "withdraw") {
+			alert("탈퇴한 회원입니다. 관리자에게 문의해주세요.");
+			return;	
+		} else if (loginChk == "ok") {
+			$("#loggedOut").css("display", "none");    // 감추기
+			$("#loggedIn").css("display", "block"); // 나타내기	
 		}
 	});
+</script>
+<% if (!"ok".equals(session.getAttribute("loginChk"))) {
+       session.removeAttribute("loginChk");
+   }
+%>
+<script type="text/javascript">
+$(document).ready(function() {
+    const withdrawalChk = '<%= session.getAttribute("withdrawalChk") %>';
+    if (withdrawalChk === 'success') {
+        alert('탈퇴에 성공했습니다.');
+        <% session.removeAttribute("withdrawalChk"); %>
+    }
+});
 </script>
 </head>
 <body>
