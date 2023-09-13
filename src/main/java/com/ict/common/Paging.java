@@ -24,6 +24,34 @@ public class Paging {
 	
 	private int offset =0;
 	
+	//삭제된 게시물 보
+	public void calculatePaging() {
+        // 전체 페이지 수 계산
+        totalPage = (int) Math.ceil((double) totalRecord / numPerPage);
+
+        // 전체 블럭 수 계산
+        totalBlock = (int) Math.ceil((double) totalPage / pagePerBlock);
+
+        // 현재 블럭 번호 계산
+        nowBlock = (int) Math.ceil((double) nowPage / pagePerBlock);
+
+        // 현재 블럭의 시작 페이지와 끝 페이지 계산
+        beginBlock = (nowBlock - 1) * pagePerBlock + 1;
+        endBlock = nowBlock * pagePerBlock;
+
+        // 마지막 블럭에서 끝 페이지 조정
+        if (nowBlock == totalBlock) {
+            endBlock = totalPage;
+        }
+
+        // 시작 번호와 끝 번호 계산
+        begin = (nowPage - 1) * numPerPage + 1;
+        end = nowPage * numPerPage;
+
+        // 오프셋(offset) 계산
+        offset = (nowPage - 1) * numPerPage;
+    }
+	
 	public int getNowPage() {
 		return nowPage;
 	}
