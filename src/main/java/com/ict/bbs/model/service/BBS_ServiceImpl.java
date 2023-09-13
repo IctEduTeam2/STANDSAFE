@@ -221,6 +221,10 @@ public class BBS_ServiceImpl implements BBS_Service{
 	public List<QA_BBS_VO> QaSearchResultBySub(String searchText) {
 		return bbsDAO.QaSearchResultBySub(searchText);
 	}
+	@Override
+	public List<QA_BBS_VO> QaSearchResultByWriter(String searchText) {
+		return bbsDAO.QaSearchResultByWriter(searchText);
+	}
 	//검색 : 리뷰- 검색
 	@Override
 	public List<RE_BBS_VO> RevSearchResultByCon(String searchText) {

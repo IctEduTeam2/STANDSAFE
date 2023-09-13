@@ -118,6 +118,7 @@ public interface BBS_Service {
 	//검색 qa -검색
 	public List<QA_BBS_VO> QaSearchResultByCon(String searchText);
 	public List<QA_BBS_VO> QaSearchResultBySub(String searchText);
+	public List<QA_BBS_VO> QaSearchResultByWriter(String searchText);
 	
 	//검색 reivew -검색
 	public List<RE_BBS_VO> RevSearchResultByCon(String searchText);

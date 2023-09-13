@@ -165,7 +165,7 @@ $(document).ready(function() {
 	                    <option value="공지사항">공지사항</option>
 	                    <option value="이벤트">이벤트</option>
 	                    <option value="이용안내">이용안내FAQ</option>
-	                    <option value="상품Q&A">공지사항</option>
+	                    <option value="상품Q&A">상품Q&A</option>
 	                    <option value="리뷰">리뷰</option>
 	                    <option value="신고하기">신고하기</option>
 	                </select>

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -1188,8 +1189,9 @@ public class BBSController {
 			}
 			
 		}
-		//아무것도아닐때는 null
-		return null;
+		//아무것도아닐때는 null 그냥 페이지 보내서, 결과없다고 띄우기.
+		mv.setViewName("bbs/event_result");
+		return mv;
 		
 	}
 	
@@ -1345,8 +1347,6 @@ public class BBSController {
 			
 		}
 		
-		
-		
 		//검색: 상품qa-검색
 		@PostMapping("/bbs_qa_search.do")
 		public ModelAndView goQaSearch(HttpServletRequest request,
@@ -1416,12 +1416,34 @@ public class BBSController {
 					mv.setViewName("bbs/qa_result");
 					return mv;
 				}
+			
+				
+			}else if(searchType.equals("작성자")) {
+				s_result4 = bbsService.QaSearchResultByWriter(searchText);
+				System.out.println("맞는내용을 검색하여 갖고배열: " + s_result4);
+				
+				if(! s_result4.isEmpty()) { //갖고온 리스트가 비어있지않다면 출력해보자. 
+					
+					for (QA_BBS_VO k : s_result4) {//잘갖고왔는지 뽑아내어 보기위함
+						System.out.println("갖고온 번호: " + k.getBOARD_NUM());
+						System.out.println("갖고온 제목: "+k.getBOARD_SUBJECT());
+						System.out.println("갖고온 파일: "+k.getBOARD_FILE());
+						System.out.println("갖고온 내용: "+k.getBOARD_CONTENT());
+						System.out.println("갖고온 작성자: "+k.getBOARD_WRITER());
+						System.out.println("갖고온 날짜: "+k.getBOARD_DATE());
+						System.out.println("갖고온 조회수: "+k.getBOARD_TYPE());
+					}
+					mv.addObject("s_result4", s_result4);
+					mv.setViewName("bbs/qa_result");
+					return mv;
+				}
 				
 			}
 			//아무것도아닐때는 null
 			return null;
 			
 		}
+
 		//검색: 리뷰-검색
 		@PostMapping("/bbs_review_search.do")
 		public ModelAndView goRevSearch(HttpServletRequest request,
@@ -1461,7 +1483,7 @@ public class BBSController {
 
 					} //결과가 잘나오나 뽑아보았다.
 					mv.addObject("s_result5", s_result5);
-					mv.setViewName("bbs/reivew_result");
+					mv.setViewName("bbs/review_result");
 					return mv;
 					
 				}else {
@@ -1597,6 +1619,8 @@ public class BBSController {
 	//검색 - 검색페이지에서 검색
 	@RequestMapping("/search.do")
 	public ModelAndView Search(
+			HttpServletRequest request,
+			HttpSession session,
 			@ModelAttribute("bbs_type")String bbs_type,
 			@ModelAttribute("s_type")String s_type,
 			@ModelAttribute("start")String start,
@@ -1622,7 +1646,7 @@ public class BBSController {
 			mv.setViewName("bbs/notice_result");
 			break;		
 		case "이벤트":
-			List<EV_BBS_VO> s_result2 = bbsService.searchEvent(s_type,word,start,end);		
+			List<EV_BBS_VO> s_result2 = bbsService.searchEvent(s_type,word,start,end);	
 			mv.addObject("s_result2", s_result2);
 			mv.setViewName("bbs/event_result");
 			break;

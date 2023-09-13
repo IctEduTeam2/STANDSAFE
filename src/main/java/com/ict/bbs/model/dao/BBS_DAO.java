@@ -254,6 +254,9 @@ public class BBS_DAO {
 		return sqlSessionTemplate.selectList("bbs.searchqasub",searchText );
 
 	}
+	public List<QA_BBS_VO> QaSearchResultByWriter(String searchText) {
+		return sqlSessionTemplate.selectList("bbs.searchqawriter",searchText);
+	}
 	//검색 : 리뷰- 검색
 	public List<RE_BBS_VO> RevSearchResultByCon(String searchText) {
 		return sqlSessionTemplate.selectList("bbs.searchreviewcon",searchText );

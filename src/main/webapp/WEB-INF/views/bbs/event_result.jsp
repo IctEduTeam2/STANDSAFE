@@ -114,7 +114,6 @@
 
 </style> 
 </head>
-</head>
 <body onload="InitializeStaticMenu();">
 	<div id="mydiv">
 		<jsp:include page="../Semantic/header.jsp"></jsp:include>

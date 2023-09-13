@@ -114,7 +114,6 @@
 
 </style> 
 </head>
-</head>
 <body onload="InitializeStaticMenu();">
 	<div id="mydiv">
 		<jsp:include page="../Semantic/header.jsp"></jsp:include>
@@ -187,7 +186,11 @@
 										<tr>
 											<td>${vs.index}</td>
 											<td>${k.REPORT_TYPE}</td>
-											<td><a href="/bbs_report_onelist.do?REPORT_NUM=${k.REPORT_NUM}&cPage=${paging.nowPage}">${k.REPORT_SUBJECT}</a></td>				
+											<td>
+												      <a href="/bbs_report_onelist.do?REPORT_NUM=${k.REPORT_NUM}&cPage=${paging.nowPage}">
+												       [비밀]${k.REPORT_SUBJECT}
+												      </a>
+												    </td>			
 											<!--onelist 갈때 cPage 필요하다. 같이보내자. -->
 											<td>${k.REPORT_WRITER}</td>
 											<td>${k.REPORT_DATE.substring(0,10)}</td>

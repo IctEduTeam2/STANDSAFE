@@ -109,7 +109,7 @@ table tfoot ol.paging li a:hover {
 			<article>
 						<div id="bbs_top" >		
 						<div id="bbs_sub"><h1>상품 Q&A</h1></div>			
-							<form action="/bbs_qa_search.do" method="post">
+							<form action="/bbs_qa_search.do?cPage=${paging.nowPage}" method="post">
 							    <fieldset>
 							        <label>
 							            <input type="radio" name="searchType" value="제목" id="type_title" checked />
@@ -124,8 +124,9 @@ table tfoot ol.paging li a:hover {
 							            <span>작성자</span>
 							        </label>
 							        <div id="search_bar">
-							            <input type="text" id="s_bar" name="searchText" placeholder="검색어입력">
+							            <input type="text" id="s_bar" name="searchText" placeholder="검색어입력">  
 							            <button id="s_btn" type="submit">검색</button>
+							            
 							        </div>
 							    </fieldset>
 							</form>

@@ -114,7 +114,6 @@
 
 </style> 
 </head>
-</head>
 <body onload="InitializeStaticMenu();">
 	<div id="mydiv">
 		<jsp:include page="../Semantic/header.jsp"></jsp:include>
@@ -123,7 +122,7 @@
 		</div>
 	 <div class="custom-search"> 
         <!-- 검색 영역 -->
-        <form  method="post" action="/search.do">
+        <form  method="post" action="/search.do?BOARD_NUM=${k.BOARD_NUM }&cPage=${paging.nowPage}">
             <div class="search-input" >
             	<label for="searchKey">게시판</label>
 	                <select class="searchKey" name="bbs_type" title="게시판선택">
@@ -187,24 +186,25 @@
 										<tr>
 											<td>${vs.index}</td>
 											<td>${k.BOARD_TYPE}</td>
-											<td>
-												<c:choose>
-													<c:when test="${empty k.BOARD_FILE}">
-														없음
-													</c:when>
-													<c:otherwise>
-														있음
-													</c:otherwise>
-												</c:choose>				
-											</td>
-											<c:choose>
-												<c:when test="${k.BOARD_ST ==1 }">
-													<td><a href="/bbs_qa_onelist.do?BOARD_NUM=${k.BOARD_NUM}&cPage=${paging.nowPage}">${k.BOARD_SUBJECT}</a></td>				
-												</c:when>
-											</c:choose>
+											
+												    <td>
+												      <a href="/bbs_qa_onelist.do?BOARD_NUM=${k.BOARD_NUM}&cPage=${paging.nowPage}">
+												        ${k.BOARD_LOCK == 1 ? '[비밀] ' : ''}${k.BOARD_SUBJECT}
+												      </a></td>
+											
 											<!--onelist 갈때 cPage 필요하다. 같이보내자. -->
 											<td>${k.BOARD_WRITER}</td>
-											<td>${k.BOARD_DATE.substring(0,10)}</td>
+											<%-- <td>${k.BOARD_DATE.substring(0,10)}</td> --%>
+											<c:choose>
+											    <c:when test="${not empty k.BOARD_UPDATE}">
+											      <!-- BOARD_UPDATE가 값이 있는 경우 -->
+											      <td>${k.BOARD_UPDATE.substring(0,10)} [수정됨]				      
+											      </td>
+											    </c:when>
+											    <c:otherwise>											  
+											     <td> ${k.BOARD_DATE.substring(0, 10)}</td>
+											    </c:otherwise>
+											  </c:choose>
 										</tr>
 									</c:forEach>
 								</c:otherwise>
