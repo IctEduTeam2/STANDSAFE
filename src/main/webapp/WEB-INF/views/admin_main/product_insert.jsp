@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,6 +58,36 @@ button {
 	border: none;
 }
 </style>
+<script type="text/javascript">
+	function save_go(f) {
+		f.action = "/product_insertform.do";
+		f.submit();
+	}
+</script>
+<script>
+	function updateSubCategory() {
+		var prodhighSelect = document.getElementsByName("prodhigh")[0];
+		var prodlowSelect = document.getElementsByName("prodlow")[0];
+		var selectedCategory = prodhighSelect.value;
+
+		// 먼저 중분류 드롭다운을 초기화합니다.
+		prodlowSelect.innerHTML = '<option value="">중분류 선택</option>';
+
+		// 선택한 대분류에 따라 중분류 옵션을 추가합니다.
+		if (selectedCategory === "소방/안전") {
+			prodlowSelect.innerHTML += '<option value="소화기">소화기</option>';
+			prodlowSelect.innerHTML += '<option value="화재감지/대피">화재감지/대피</option>';
+		} else if (selectedCategory === "재난/응급/긴급") {
+			prodlowSelect.innerHTML += '<option value="구급함/제세동기">구급함/제세동기</option>';
+			prodlowSelect.innerHTML += '<option value="재난안전용품">재난안전용품</option>';
+			prodlowSelect.innerHTML += '<option value="방역안전용품">방역안전용품</option>';
+		} else if (selectedCategory === "일상/기타") {
+			prodlowSelect.innerHTML += '<option value="마스크">마스크</option>';
+			prodlowSelect.innerHTML += '<option value="위생장갑">위생장갑</option>';
+			prodlowSelect.innerHTML += '<option value="통조림/비상식량">통조림/비상식량</option>';
+		}
+	}
+</script>
 </head>
 <body>
 	<div id="mydiv">
@@ -69,17 +101,29 @@ button {
 			</div>
 		</article>
 	</section>
-	<form action="">
+	<form action="/product_list.do" method="post" enctype="multipart/form-data">
 		<table style="margin: auto; border: 1px solid;">
 			<tr>
 				<th>판매 상태</th>
 				<td colspan="5"><span><input type="radio" name="ing"
 						style="border: 0; height: 15px; width: 50px;">판매중</span> <span><input
-						type="radio" name="end"
+						type="radio" name="ing"
 						style="border: 0; height: 15px; width: 50px;">미판매중</span></td>
-			 
+
 			</tr>
 			<tr>
+				<th>카테고리</th>
+				<td colspan="5"><select name="prodhigh"
+					style="width: 150px; height: 50px;" onchange="updateSubCategory()">
+						<option value="">대분류 선택</option>
+						<option value="소방/안전">소방/안전</option>
+						<option value="재난/응급/긴급">재난/응급/긴급</option>
+						<option value="일상/기타">일상/기타</option>
+				</select> <select name="prodlow" style="width: 150px; height: 50px;">
+						<option value="">중분류 선택</option>
+				</select></td>
+			</tr>
+			<!-- <tr>
 				<th>카테고리</th>
 				<td colspan="5">				
 				<select name="prodhigh" style="width:150px;height:50px;">
@@ -98,7 +142,7 @@ button {
 						<option value="">통조림/비상식량</option>
 				</select>
 				</td>
-			</tr>
+			</tr> -->
 			<tr>
 				<th>상품명</th>
 				<td colspan="5"><input type="text" name="name"></td>
@@ -120,11 +164,11 @@ button {
 			</tr>
 			<tr>
 				<th>썸네일 이미지</th>
-				<td colspan="5"><input type="file" id="file_upload"></td>
+				<td colspan="5"><input type="file" id="file_upload" name="file"></td>
 			</tr>
 			<tr>
 				<th>상세 이미지</th>
-				<td colspan="5"><input type="file" id="file_upload"></td>
+				<td colspan="5"><input type="file" id="file_upload" name="file_detail"></td>
 			</tr>
 
 
@@ -137,16 +181,17 @@ button {
 		<!-- 하단 버튼 -->
 		<div style="margin-bottom: 20%; margin-left: 40%;">
 			<span style="float: left; margin-top: 80px; margin-right: 100px;">
-				<button type="button" value="등록">등록</button>
+				<button type="submit" value="등록" onclick="save_go(this.form)">등록</button>
 			</span> <span style="float: left; margin-top: 80px; margin-right: 100px;">
-				<button type="button" value="다시"
+				<button type="button" value="목록"
 					onclick="location.href='/product_list.do'">목록</button>
 			</span> <span style="float: left; margin-top: 80px; margin-right: 100px;">
-				<button type="button" value="취소" style="background-color: #B5B5B5;">취소</button>
+				<button type="button" value="취소"
+					onclick="location.href='/product_list.do'">취소</button>
 			</span>
 		</div>
 	</form>
-	</div>
+
 
 
 

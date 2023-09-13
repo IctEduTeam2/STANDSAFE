@@ -39,36 +39,49 @@ public class ProductController {
 				return mv;
 			}
 			// 상품등록
-			@RequestMapping("/product_insert.do")
-			public ModelAndView getProductInsert(ProductVO pvo, HttpServletRequest request) {
-				ModelAndView mv = new ModelAndView("redirect:/admin_main/product_list");
-				try {
-					String path = request.getSession().getServletContext().getRealPath("/resources/images/product");
-					
-					MultipartFile f_param = pvo.getFile();
-					if(f_param.isEmpty()) {
-						pvo.setPROD_IMG("");
-					}else {
-						UUID uuid = UUID.randomUUID();
-						String prod_img = uuid.toString()+"_"+pvo.getFile().getOriginalFilename();
-						pvo.setPROD_IMG(prod_img);
-						
-						byte[] in = pvo.getFile().getBytes();
-						File out = new File(path, prod_img);
-						FileCopyUtils.copy(in, out);
-					}
-					int res =productService.getProductInsert(pvo);
-					if(res>0) {
-						return mv;
-					}else {
-						return null;
-					}
-				} catch (Exception e) {
-					System.out.println(e);
-					return null;
-				}
+			
+
+			    @RequestMapping("/product_insert.do")
+			    public ModelAndView getProductInsert(ProductVO provo, HttpServletRequest request) {
+			        ModelAndView mv = new ModelAndView();
+			        String path = request.getSession().getServletContext().getRealPath("/resources/images/product");
+			        try {
+			            MultipartFile f_param = provo.getFile();
+			            if (!f_param.isEmpty()) {
+			                UUID uuid = UUID.randomUUID();
+			                String prod_img = uuid.toString() + "_" + provo.getFile().getOriginalFilename();
+			                provo.setPROD_IMG(prod_img);
+
+			                byte[] in = provo.getFile().getBytes();
+			                File out = new File(path, prod_img);
+			                FileCopyUtils.copy(in, out);
+			            } else {
+			            	provo.setPROD_IMG("");
+			            }
+
+			            int res = productService.getProductInsert(provo);
+			            if (res > 0) {
+			                mv.setViewName("redirect:/admin_main/product_list");
+			                return mv;
+			            } else {
+			                // 추가: 실패 응답 처리
+			                mv.setViewName("error/error_page"); // 여기서 "error_page"는 실제 에러 페이지의 뷰 이름이어야 합니다.
+			                mv.addObject("message", "Product insertion failed.");
+			                return mv;
+			            }
+
+			        } catch (Exception e) {
+			            // 로그 출력
+			            System.err.println("Error during product insertion: " + e.getMessage());
+
+			            mv.setViewName("error/error_page"); // 여기서 "error_page"는 실제 에러 페이지의 뷰 이름이어야 합니다.
+			            mv.addObject("message", "Unexpected error occurred during product insertion.");
+			            return mv;
+			        }
+			    }
+			
 				
-			}
+			
 			// 상품상세보기 미처리
 			@RequestMapping("/product_detail.do")
 			public ModelAndView getProductDetail() {

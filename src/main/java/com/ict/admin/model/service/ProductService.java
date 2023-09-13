@@ -26,7 +26,7 @@ public interface ProductService {
 	// 주문 상세페이지
 	public List<OrderVO> getOrderDetaileList(String client_num);
 	// 상품 등록
-	int getProductInsert(ProductVO pvo);
+	int getProductInsert(ProductVO provo);
 		
 	
 	

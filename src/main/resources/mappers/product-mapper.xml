@@ -13,10 +13,10 @@
  		select * from PAYBACK_T order by PAY_NUM desc
  	</select>
  	<select id="orderlist" resultType="ovo">
- 		select * from PAY_T order by CLIENT_NUM desc
+ 		select * from PAY_T order by PAY_OKNUM desc
  	</select>
  	<select id="orderonelist" parameterType="String" resultType="ovo">
- 		select * from PAY_T where CLIENT_NUM = #{client_num}
+ 		select * from PAY_T where PAY_OKNUM = #{pay_oknum} order by PAY_OKNUM desc LIMIT 1
  	</select>
  	<select id="inventorylist" resultType="invo">
  		select * from PRODUCT_T where PROD_AMOUNT > 0 order by PROD_NUM desc 
@@ -27,4 +27,11 @@
  	<select id="returnonelist" parameterType="String" resultType="rvo">
  		select * from PAYBACK_T where PB_NUM = #{pb_num}
  	</select>
+ 	  <!-- 상품 등록 -->
+    <insert id="insertproduct" parameterType="provo">
+        INSERT INTO products (prod_name, prod_img, prod_price, prod_sale, prod_amount,
+        prod_regdate, prod_img, prod_detail, prod_high, prod_low)
+        VALUES (#{prod_name}, #{prod_price}, #{prod_sale}, #{prod_amount}, 
+        #{prod_regdate}, #{prod_img}, #{prod_detail}, #{prod_high}, #{prod_low})
+    </insert>
  </mapper>
