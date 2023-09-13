@@ -479,7 +479,7 @@ public class BBSController {
 			}
 
 		}
-			
+	
 
 	
 	@RequestMapping("/bbs_report_onelist.do")
@@ -1121,11 +1121,14 @@ public class BBSController {
 	//검색: 이벤트-검색
 	@PostMapping("/bbs_ev_search.do")
 	public ModelAndView goEventSearch(HttpServletRequest request,
+			HttpSession session,
 			@ModelAttribute("searchText")String searchText,
 			@ModelAttribute("searchType")String searchType) {
 		
-		ModelAndView mv = new ModelAndView();
-		
+		ModelAndView mv = new ModelAndView("redirect:/bbs_search.do");
+		session.removeAttribute("reponelist");
+        session.removeAttribute("qaonelist");
+        session.removeAttribute("revonelist");
 		System.out.println("검색눌러서 불러온 단어: " + searchText);
 		System.out.println("검색눌러서 불러온 검색조건타입 : " + searchType);
 		
@@ -1137,7 +1140,6 @@ public class BBSController {
 			
 	
 			//내용이 체크되어 넘어올떄 검색 일처리
-	
 			s_result2 = bbsService.EvSearchResultByCon(searchText);
 			
 			System.out.println("맞는내용을 검색하여 갖고배열: " + s_result2);
@@ -1190,7 +1192,7 @@ public class BBSController {
 			
 		}
 		//아무것도아닐때는 null 그냥 페이지 보내서, 결과없다고 띄우기.
-		mv.setViewName("bbs/event_result");
+		//mv.setViewName("redirect:/bbs_search.do");
 		return mv;
 		
 	}
@@ -1198,11 +1200,14 @@ public class BBSController {
 	//검색: faq-검색
 		@PostMapping("/bbs_faq_search.do")
 		public ModelAndView goFaqSearch(HttpServletRequest request,
+				HttpSession session,
 				@ModelAttribute("searchText")String searchText,
 				@ModelAttribute("searchType")String searchType) {
 			
 			ModelAndView mv = new ModelAndView();
-			
+			session.removeAttribute("reponelist");
+	        session.removeAttribute("qaonelist");
+	        session.removeAttribute("revonelist");
 			System.out.println("검색눌러서 불러온 단어: " + searchText);
 			System.out.println("검색눌러서 불러온 검색조건타입 : " + searchType);
 			
@@ -1274,11 +1279,15 @@ public class BBSController {
 		//검색: 공지사항-검색
 		@PostMapping("/bbs_notice_search.do")
 		public ModelAndView goNoticeSearch(HttpServletRequest request,
+				HttpSession session,
 				@ModelAttribute("searchText")String searchText,
 				@ModelAttribute("searchType")String searchType) {
 			
 			ModelAndView mv = new ModelAndView();
-			
+			session.removeAttribute("reponelist");
+	        session.removeAttribute("qaonelist");
+	        session.removeAttribute("revonelist");
+	        
 			System.out.println("검색눌러서 불러온 단어: " + searchText);
 			System.out.println("검색눌러서 불러온 검색조건타입 : " + searchType);
 			
@@ -1348,13 +1357,16 @@ public class BBSController {
 		}
 		
 		//검색: 상품qa-검색
-		@PostMapping("/bbs_qa_search.do")
+		@RequestMapping("/bbs_qa_search.do")
 		public ModelAndView goQaSearch(HttpServletRequest request,
+				HttpSession session,
 				@ModelAttribute("searchText")String searchText,
 				@ModelAttribute("searchType")String searchType) {
 			
 			ModelAndView mv = new ModelAndView();
-			
+			session.removeAttribute("reponelist");
+	        session.removeAttribute("qaonelist");
+	        session.removeAttribute("revonelist");
 			System.out.println("검색눌러서 불러온 단어: " + searchText);
 			System.out.println("검색눌러서 불러온 검색조건타입 : " + searchType);
 			
@@ -1447,11 +1459,14 @@ public class BBSController {
 		//검색: 리뷰-검색
 		@PostMapping("/bbs_review_search.do")
 		public ModelAndView goRevSearch(HttpServletRequest request,
+				HttpSession session,
 				@ModelAttribute("searchText")String searchText,
 				@ModelAttribute("searchType")String searchType) {
 			
 			ModelAndView mv = new ModelAndView();
-			
+			session.removeAttribute("reponelist");
+	        session.removeAttribute("qaonelist");
+	        session.removeAttribute("revonelist");
 			System.out.println("검색눌러서 불러온 단어: " + searchText);
 			System.out.println("검색눌러서 불러온 검색조건타입 : " + searchType);
 			
@@ -1539,85 +1554,11 @@ public class BBSController {
 			return null;
 			
 		}
-		//검색: 신고-검색
-		@PostMapping("/bbs_report_search.do")
-		public ModelAndView goRepSearch(HttpServletRequest request,
-				@ModelAttribute("searchText")String searchText,
-				@ModelAttribute("searchType")String searchType) {
-			
-			ModelAndView mv = new ModelAndView();
-			
-			System.out.println("검색눌러서 불러온 단어: " + searchText);
-			System.out.println("검색눌러서 불러온 검색조건타입 : " + searchType);
-			
-			List<REP_BBS_VO> s_result6 = new ArrayList<>();
-			
-			
-			
-			if(searchType.equals("내용")) {
-				
 		
-				//내용이 체크되어 넘어올떄 검색 일처리
-		
-				s_result6 = bbsService.RepSearchResultByCon(searchText);
-				
-				System.out.println("맞는내용을 검색하여 갖고배열: " + s_result6);
-				
-				
-				if(! s_result6.isEmpty()) {//갖고온 리스트가 비어있지않다면 출력해보자. 
-					
-					for (REP_BBS_VO k : s_result6) { //잘갖고왔는지 뽑아내어 보기위함
-						System.out.println("갖고온 번호: " + k.getREPORT_NUM());
-						System.out.println("갖고온 제목: "+k.getREPORT_SUBJECT());
-						System.out.println("갖고온 파일: "+k.getREPORT_FILE());
-						System.out.println("갖고온 내용: "+k.getREPORT_CONTENT());
-						System.out.println("갖고온 작성자: "+k.getREPORT_WRITER());
-						System.out.println("갖고온 날짜: "+k.getREPORT_DATE());
-						System.out.println("갖고온 조회수: "+k.getREPORT_TYPE());
-
-
-					} //결과가 잘나오나 뽑아보았다.
-					mv.addObject("s_result6", s_result6);
-					mv.setViewName("bbs/reort_result");
-					return mv;
-					
-				}else {
-					//검색결과가 null이면
-					
-				}
-
-			}else if (searchType.equals("제목")) {
-				s_result6 = bbsService.RepSearchResultBySub(searchText);
-				
-				System.out.println("맞는내용을 검색하여 갖고배열: " + s_result6);
-			
-				
-				
-				if(! s_result6.isEmpty()) { //갖고온 리스트가 비어있지않다면 출력해보자. 
-					
-					for (REP_BBS_VO k : s_result6) {//잘갖고왔는지 뽑아내어 보기위함
-						System.out.println("갖고온 번호: " + k.getREPORT_NUM());
-						System.out.println("갖고온 제목: "+k.getREPORT_SUBJECT());
-						System.out.println("갖고온 파일: "+k.getREPORT_FILE());
-						System.out.println("갖고온 내용: "+k.getREPORT_CONTENT());
-						System.out.println("갖고온 작성자: "+k.getREPORT_WRITER());
-						System.out.println("갖고온 날짜: "+k.getREPORT_DATE());
-						System.out.println("갖고온 조회수: "+k.getREPORT_TYPE());
-					}
-					mv.addObject("s_result6", s_result6);
-					mv.setViewName("bbs/report_result");
-					return mv;
-				}
-				
-			}
-			//아무것도아닐때는 null
-			return null;
-			
-		}
 	
 
 	//검색 - 검색페이지에서 검색
-	@RequestMapping("/search.do")
+	@RequestMapping("/bbs_search.do")
 	public ModelAndView Search(
 			HttpServletRequest request,
 			HttpSession session,
@@ -1628,6 +1569,10 @@ public class BBSController {
 			@ModelAttribute("end")String end
 			) {
 		ModelAndView mv = new ModelAndView();
+		
+		session.removeAttribute("reponelist");
+        session.removeAttribute("qaonelist");
+        session.removeAttribute("revonelist");
 		
 		System.out.println("게시판종류:" + bbs_type);
 		System.out.println("항목종류:" + s_type);
@@ -1665,11 +1610,7 @@ public class BBSController {
 			mv.addObject("s_result5", s_result5);
 			mv.setViewName("bbs/review_result");
 			break;
-		case "신고하기":
-			List<REP_BBS_VO> s_result6 = bbsService.searchReport(s_type,word,start,end);
-			mv.addObject("s_result6", s_result6);
-			mv.setViewName("bbs/report_result");
-			break;
+		
 		default :
 			//전체
 			break;

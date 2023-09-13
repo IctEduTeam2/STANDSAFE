@@ -157,7 +157,7 @@ $(document).ready(function() {
 		</div>
 	 <div class="custom-search"> 
         <!-- 검색 영역 -->
-        <form  method="post" action="/search.do">
+        <form  method="post" action="/bbs_search.do">
             <div class="search-input" >
             	<label for="searchKey">게시판</label>
 	                <select class="searchKey" name="bbs_type" title="게시판선택">
@@ -167,7 +167,7 @@ $(document).ready(function() {
 	                    <option value="이용안내">이용안내FAQ</option>
 	                    <option value="상품Q&A">상품Q&A</option>
 	                    <option value="리뷰">리뷰</option>
-	                    <option value="신고하기">신고하기</option>
+	              
 	                </select>
               <label for="searchKey" style="padding-left: 30px;">항목</label>
 	                <select class="searchKey" name="s_type" title="검색항목선택">
@@ -188,7 +188,6 @@ $(document).ready(function() {
 		                <input type="date" id="end" name="end">
 		            </div>
 		            <div class="button-container">
-               		 <input type="button" alt="초기화" value="초기화" class="search-button">
 		              <button class="search-button" type="submit">검색</button>
 		                <br>
 		                 
@@ -196,12 +195,7 @@ $(document).ready(function() {
    				 </form>
        		</div>
        </div>
-        
-        
-		<div>
-			<h3>■ (  ) 검색결과</h3>
-		</div>
-					<hr class="hr">
+		<hr class="hr">
 					<!-- 메인 테이블 -->
 					<table class="m_table">				
 						<thead class="mh_table">
@@ -217,9 +211,10 @@ $(document).ready(function() {
 									</tr>
 								</c:when>
 								<c:otherwise>
+								<c:set var="index" value="${s_result1.size()}" />
 									<c:forEach var="k" items="${s_result1}" varStatus="vs">
 										<tr>
-											<td>${vs.index}</td>
+											<td>${index}</td>
 											<td>${k.FA_TYPE}</td>
 											<td>
 													<a class="title">
@@ -234,6 +229,7 @@ $(document).ready(function() {
 												<p style="margin-left: 50px;">${k.FA_ANSWER}</p>
 												</td>
 										</tr>
+										<c:set var="index" value="${index - 1}" />
 									</c:forEach>
 								</c:otherwise>
 							</c:choose>

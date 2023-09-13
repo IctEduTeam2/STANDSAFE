@@ -221,6 +221,9 @@ public class BBS_DAO {
 	}
 	
 	
+	
+	
+	//===============================================================
 	//검색  : 이벤트 - 검색
 	public List<EV_BBS_VO> EvSearchResultByCon(String searchText){
 		return sqlSessionTemplate.selectList("bbs.searchevscon", searchText);
@@ -268,17 +271,8 @@ public class BBS_DAO {
 	public List<RE_BBS_VO> RevSearchResultByWriter(String searchText){
 		return sqlSessionTemplate.selectList("bbs.searchreviewwriter",searchText );
 	}
-	//검색 : 신고- 검색
-	public List<REP_BBS_VO> RepSearchResultByCon(String searchText) {
-		return sqlSessionTemplate.selectList("bbs.searchreportcon",searchText );
-	}
 
-	public List<REP_BBS_VO> RepSearchResultBysub(String searchText) {
-		return sqlSessionTemplate.selectList("bbs.searchreportsub",searchText );
-	}
-	
-	
-	
+
 	
 	
 	
@@ -337,18 +331,6 @@ public class BBS_DAO {
 		params.put("end", end);
 			
 		return sqlSessionTemplate.selectList("bbs.searchReview", params);
-		
-	}
-	//신고하기
-	public List<REP_BBS_VO> searchReport(String s_type, String word, String start, String end) {
-		Map<String, Object> params = new HashMap<>();
-			
-		params.put("s_type", s_type);
-		params.put("word", word);
-		params.put("start", start);
-		params.put("end", end);
-			
-		return sqlSessionTemplate.selectList("bbs.searchReport", params);
 		
 	}
 

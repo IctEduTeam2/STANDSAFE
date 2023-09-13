@@ -184,7 +184,7 @@ public class BBS_ServiceImpl implements BBS_Service{
 	}
 	
 	
-	
+	//====================================================================
 	//검색 : 이벤트- 검색
 	@Override
 	public List<EV_BBS_VO> EvSearchResultByCon(String searchText) {
@@ -239,18 +239,8 @@ public class BBS_ServiceImpl implements BBS_Service{
 		return bbsDAO.RevSearchResultByWriter(searchText);
 	}
 	
-	//검색 : 신고- 검색
-	@Override
-	public List<REP_BBS_VO> RepSearchResultByCon(String searchText) {
-		return bbsDAO.RepSearchResultByCon(searchText);
-	}
-	@Override
-	public List<REP_BBS_VO> RepSearchResultBySub(String searchText) {
-		return bbsDAO.RepSearchResultBysub(searchText);
-	}
-	
-	
-	
+	//============================================================================================
+
 
 	//검색2 : 검색페이지에서 검색
 	@Override
@@ -269,10 +259,7 @@ public class BBS_ServiceImpl implements BBS_Service{
 	public List<QA_BBS_VO> searchQa(String s_type, String word, String start, String end) {
 		return bbsDAO.searchQa(s_type,word,start,end);
 	}
-	@Override
-	public List<REP_BBS_VO> searchReport(String s_type, String word, String start, String end) {
-		return bbsDAO.searchReport(s_type,word,start,end);
-	}
+
 	@Override
 	public List<RE_BBS_VO> searchReview(String s_type, String word, String start, String end) {
 		return bbsDAO.searchReview(s_type,word,start,end);

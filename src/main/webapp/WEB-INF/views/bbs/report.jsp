@@ -97,27 +97,11 @@ table td:nth-child(4) {
 		<jsp:include page="../Semantic/header.jsp"></jsp:include>
 		<section id="contents">
 			<article>
-						<div id="bbs_top" >		
+						
 						<div id="bbs_sub"><h1>신고합니다</h1>
 						<p id="noti">신고게시물은 작성자 이름이 보호되며, 무분별한 욕설과 타인을향한 비판은 관리자에 의해 삭제됩니다</p>
 						</div>			
-							<form action="/bbs_report_search.do" method="post">
-							    <fieldset>
-							        <label>
-							            <input type="radio" name="searchType" value="제목" id="type_title" checked />
-							            <span>제목</span>
-							        </label>
-							        <label>
-							            <input type="radio" name="searchType" value="내용" id="type_content" />
-							            <span>내용</span>
-							        </label>
-							        <div id="search_bar">
-							            <input type="text" id="s_bar" name="searchText" placeholder="검색어입력">
-							            <button id="s_btn" type="submit">검색</button>
-							        </div>
-							    </fieldset>
-							</form>
-						</div>  <!--  제목및 버튼검색창의 끝 -->
+					
 					<div>
 					<button class="btn" onclick="bbs_go_report_writeform()">글쓰기</button>		
 					</div>		

@@ -93,12 +93,7 @@ table tfoot ol.paging li a:hover {
 	function bbs_go_qa_writeform() {
 		location.href="/bbs_qa_writeform.do";
 	}
-	function search_go() {
-		var searchText = document.getElementById("s_bar").value;
-		alert(searchText);
-		/* 이부분은 나중에 일처리해서 검색창화면으로 가게하기.  */
-		
-	}
+
 </script>
 
 </head>
