@@ -13,16 +13,10 @@
 <!-- Link Swiper's CSS -->
 <script type="text/javascript">
 	function addToCart(button) {
-		if("${id}" == "" || "${id}" == null) {
-			alert("로그인 후 이용 가능합니다.");
-			return;
-		} else {
-		alert("상품을 장바구니에 담았습니다.");
 		var prod_num = button.getAttribute('data-prodnum');
 		var client_num = button.getAttribute('data-usernum');
 		location.href = "/basketAdd.do?client_num=" + client_num + "&prod_num="
 				+ prod_num;
-		}
 	}
 </script>
 <link rel="stylesheet" href="resources/css/slide.css" />
@@ -70,8 +64,7 @@
 							src="resources/images/products/${a.prod_img }"
 							class="product_img">
 						<p class="product_text" style="margin-top: 10px;">
-								${a.prod_name }</p> <br> 
-								<c:choose>
+								${a.prod_name }</p> <br> <c:choose>
 								<c:when test="${a.prod_sale == '0'}">
 									<p class="product_text">
 										<fmt:formatNumber value="${a.prod_price}" type="number"
@@ -122,5 +115,6 @@
 		<script src="resources/js/quick.js"></script>
 		<jsp:include page="Semantic/footer.jsp"></jsp:include>
 	</div>
+	${msg }
 </body>
 </html>

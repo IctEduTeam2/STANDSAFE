@@ -45,27 +45,6 @@ public class UserDAO {
 	public int isPwDuplicate(Map<String, Object> params) {
 		return sqlSessionTemplate.selectOne("member.pwCheck", params);
 	}
-	//탈퇴
-	public int userOut(UserVO uVO) {
-		return sqlSessionTemplate.update("member.userOut", uVO);
-	}
-	//아이디찾기
-	public UserVO findMemberId(UserVO uVO) {
-	    return sqlSessionTemplate.selectOne("member.getIdByNameAndMail", uVO);
-	}
-	//메일 찾아서 비번쏘기
-	public UserVO findMemberMail(UserVO uVO) {
-		return sqlSessionTemplate.selectOne("member.getMailByIdAndName", uVO);
-	}
-	//비번교체용 업서트
-	public UserVO upsertTempPW(UserVO uVO) {
-		return sqlSessionTemplate.selectOne("member.upsertTempPW", uVO);
-	}
-	//TEMP_PW 비우기
-	public int resetTempPW(String ID) {
-		return sqlSessionTemplate.update("member.resetTempPW", ID);
-	}
-
 	
 
 }

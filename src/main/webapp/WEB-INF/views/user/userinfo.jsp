@@ -14,12 +14,7 @@
 
 <script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script type="text/javascript">
-    if ('${sessionScope.message}' !== '') {
-        alert('${sessionScope.message}');
-        <% session.removeAttribute("message"); %>
-    }
-</script>
+
 <link rel="stylesheet" href="resources/css/slide.css" />
 <link rel="stylesheet" href="resources/css/basis.css" />
 <link rel="stylesheet" href="resources/css/userinfo.css" />
@@ -44,9 +39,9 @@
 						</tr>
 						<tr>
 							<td>비밀번호<span class="required">*</span></td>
-							<td><input type="password" id="password" name="PW" placeholder="새 비밀번호" 
-							maxlength="18" onkeyup="validatePassword()" 
-							autocomplete="current-password">
+							<td><input type="password" id="password" name="PW"
+								placeholder="새 비밀번호" maxlength="18"
+								onkeyup="handlePasswordInput(event); validatePassword()">
 								<span id="password_result"></span></td>
 						</tr>
 						<tr>
@@ -110,15 +105,14 @@
 									<p><%@ include file="text/alarm_text.jsp"%></p>
 									<input type="hidden" name="EMAIL_ST" id="email_st" value="0">
 								</div> 이메일 수신에 동의하십니까? <input type="checkbox" id="emailAgreeCheckbox"
-								checked> 동의함<input type="hidden" name="CLIENT_NUM" value="${sessionScope.uvo.CLIENT_NUM}">
-								
+								checked> 동의함
 							</td>
 						</tr>
 					</table>
 					<div style="width: 100%; text-align: center;">
 						<button type="submit" class="save-button"
-							onclick="return prepareAndSubmit()">수정</button>
-						<button class="cancel-button" onclick="user_infoFixCancel(event)">나가기</button>
+							onclick="return prepareAndSubmit()">수정완료</button>
+						<button class="cancel-button" onclick="user_infoFixCancel()">취소</button>
 					</div>
 				</form>
 
@@ -129,7 +123,7 @@
 		<script src="resources/js/quick.js"></script>
 		<jsp:include page="../Semantic/footer.jsp"></jsp:include>
 	</div>
-<script defer type="text/javascript">
+	<script defer type="text/javascript">
 	//비밀번호 유효성 검사
 		function validatePassword() {
 			const password = document.getElementById("password").value;
@@ -252,6 +246,28 @@
 	}
 </script>
 	<script type="text/javascript">
+	// 주소 분할 및 할당 코드
+	window.onload = function() {
+	    var fullAddress = "${sessionScope.uvo.ADDR}";
+	    var addressParts = fullAddress.split(", ");
+
+	    if (addressParts.length >= 1) {
+	        // 괄호만 제거합니다.
+	        var postcode = addressParts[0].replace(/[()]/g, '').trim();
+	        document.getElementById("postcode").value = postcode;
+	    }
+	    if (addressParts.length >= 2) {
+	        document.getElementById("address").value = addressParts[1].trim();
+	    }
+	    if (addressParts.length >= 3) {
+	        document.getElementById("extraAddress").value = addressParts[2].trim();
+	    }
+	    if (addressParts.length >= 4) {
+	        document.getElementById("detailAddress").value = addressParts[3].trim();
+	    }
+	}
+</script>
+	<script type="text/javascript">
 	//다음 주소
 	function execDaumPostcode() {
 		new daum.Postcode({
@@ -300,61 +316,20 @@
 		}).open();
 	}
 	//addr 추합
-	// 주소를 적절하게 조합하는 함수
-function prepareAddr() {
-    var postcode = document.getElementById("postcode").value;
-    var address = document.getElementById("address").value;
-    var extraAddress = document.getElementById("extraAddress").value;
-    var detailAddress = document.getElementById("detailAddress").value;
+	function prepareAddr() {
+		var postcode = document.getElementById("postcode").value;
+		var address = document.getElementById("address").value;
+		var extraAddress = document.getElementById("extraAddress").value;
+		var detailAddress = document.getElementById("detailAddress").value;
 
-    var fullAddressParts = [];
-
-    if (postcode && postcode.trim() !== "") {
-        fullAddressParts.push("(" + postcode.trim() + ")");
-    }
-    if (address && address.trim() !== "") {
-        fullAddressParts.push(address.trim());
-    }
-    if (extraAddress && extraAddress.trim() !== "") {
-        fullAddressParts.push(extraAddress.trim());
-    }
-    if (detailAddress && detailAddress.trim() !== "") {
-        fullAddressParts.push(detailAddress.trim());
-    }
-
-    // 배열의 요소들을 쉼표로 연결하여 문자열로 변환
-    var fullAddress = fullAddressParts.join(", ");
-
-    console.log("Full Address:", fullAddress);
-    document.getElementById("ADDR").value = fullAddress.trim();
-    console.log("ADDR value:", document.getElementById("ADDR").value);
-}
+		var fullAddress = "(" + postcode + ")" + "," + address + ","
+				+ extraAddress + "," + detailAddress;
+		// 띄어쓰기로 구분하여 저장
+		document.getElementById("ADDR").value = fullAddress.trim();
+	}
 </script>
-<script type="text/javascript">
-//페이지 로드 시 주소 분할 및 할당 코드
-document.addEventListener("DOMContentLoaded", function() {
-    var fullAddress = "${sessionScope.uvo.ADDR}";
-    var addressParts = fullAddress.split(", ");
-
-    if (addressParts[0] && addressParts[0].trim() !== "") {
-        // 괄호만 제거합니다.
-        var postcode = addressParts[0].replace(/[()]/g, '').trim();
-        document.getElementById("postcode").value = postcode;
-    }
-    if (addressParts[1] && addressParts[1].trim() !== "") {
-        document.getElementById("address").value = addressParts[1].trim();
-    }
-    if (addressParts[2] && addressParts[2].trim() !== "") {
-        document.getElementById("extraAddress").value = addressParts[2].trim();
-    }
-    if (addressParts[3] && addressParts[3].trim() !== "") {
-        document.getElementById("detailAddress").value = addressParts[3].trim();
-    }
-});
-</script>
-<script type="text/javascript">
-	function user_infoFixCancel(event) {
-		event.preventDefault();
+	<script type="text/javascript">
+	function user_infoFixCancel() {
 		location.href = "userInfoFixCancel.do";
 	}
 	</script>
@@ -398,9 +373,7 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 	<script type="text/javascript">
 function prepareAndSubmit() {
-	prepareAddr(); 
-	
-    const fields = ["password", "birth" ,"nickname", "phone", "email", "addr"]; // 여기에 모든 필드 이름을 추가하세요.
+    const fields = ["password", "nickname", "phone", "email", "addr"]; // 여기에 모든 필드 이름을 추가하세요.
 
 	
     fields.forEach(field => {

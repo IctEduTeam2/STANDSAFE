@@ -9,7 +9,6 @@
 		<!-- 환경 설정 정보 -->
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-        	/WEB-INF/spring/mail-context.xml
 			/WEB-INF/spring/root-context.xml
 			/WEB-INF/spring/spring-security.xml
 		</param-value>

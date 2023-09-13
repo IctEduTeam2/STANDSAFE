@@ -11,7 +11,7 @@ public interface NoticeService {
 	List<NoticeVO> getadnoticelist();
 	
 	//페이징을 위한 전체게시물 구하기
-	public int getTotalAdNoticeCount();
+	public int getTotalRecord();
 	
 	//시작과 끝 블럭 구하기
 	public List<NoticeVO> getadnoticelist(int offset, int limit);
@@ -21,6 +21,13 @@ public interface NoticeService {
 	
 	//onelist
 	public NoticeVO getAdNoticeOneList(String notice_num);
+	
+	//검색 
+	
+	//삭제된 게시물 보기 
+	List<NoticeVO> getDeletedNotices();
 
-	//테이블 삭제버튼
+	
+	
+	
 }

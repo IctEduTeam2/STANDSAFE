@@ -175,18 +175,19 @@ function deleteSelectedProducts() {
   // 배열을 문자열로 변환하여 hidden input에 설정
   document.getElementById('selectedProducts').value = selectedProducts.join(',');
 
-  if (selectedProducts.length === 0) {
-	    alert('삭제할 상품이 선택해주세요');
-	  } else {
-	    document.getElementById('productForm').submit();
-	    alert('선택한 상품을 삭제하였습니다.');
-	  }
-  
+  // 폼 제출
+  document.getElementById('productForm').submit();
 }
 </script>	
 
 </head>
 <body onload="InitializeStaticMenu();">
+<script type="text/javascript">
+    var alertMessage = "${alertMessage}";
+    if (alertMessage) {
+        alert(alertMessage);
+    }
+</script>
 	<div id="mydiv">
 		<jsp:include page="../Semantic/header.jsp"></jsp:include>
 		<section id="contents" style="border: 0px solid black;">
@@ -195,10 +196,10 @@ function deleteSelectedProducts() {
 			<div
 				style="width: 100%; height: 82px; background-color: rgba(27, 90, 194, 1); float: left; margin-top: 10px;">
 				<ul class="snb">
-					<li class="li"><a href="/basketform.do?client_num=${id}" class="current li_a">장바구니</a></li>
-					<li class="li"><a href="/wishlistform.do?client_num=${id}" class="li_a"
+					<li class="li"><a href="/basketform.do?client_num='${id}'" class="current li_a">장바구니</a></li>
+					<li class="li"><a href="/wishlistform.do?client_num='${id}'" class="li_a"
 						style="color: white;">위시리스트</a></li>
-					<li class="li"><a href="/orderlistform.do?client_num=${id}" class="li_a"
+					<li class="li"><a href="/orderlistform.do?client_num='${id}'" class="li_a"
 						style="color: white;">주문조회 | 배송현황</a></li>
 				</ul>
 			</div>

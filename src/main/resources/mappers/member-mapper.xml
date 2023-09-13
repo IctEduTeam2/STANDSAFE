@@ -46,7 +46,7 @@
 			#{EMAIL_ST},
 		</if>
 		<if test="OUT_TIME != null and OUT_TIME != ''">
-			#{OUT_TIME},
+			SYSDATE(),
 		</if>
 		1
 		)
@@ -66,8 +66,7 @@
 	</select>
 	<!-- 비밀번호 중복체크 -->
 	<select id="pwCheck" parameterType="map" resultType="int">
-		SELECT
-		COUNT(*) FROM MEMBER_T
+		SELECT COUNT(*) FROM MEMBER_T
 		WHERE CLIENT_NUM = #{CLIENT_NUM} AND PW = #{PW}
 	</select>
 
@@ -153,49 +152,27 @@
 		1
 		)
 	</select>
-
+	
 	<!-- 유저업데이트 -->
-	<update id="userUpdate" parameterType="uVO">
-		UPDATE MEMBER_T
-		<set>
-			<if test="PW != null">PW = #{PW},</if>
-			<if test="NICKNAME != null">NICKNAME = #{NICKNAME},</if>
-			<if test="PHONE != null">PHONE = #{PHONE},</if>
-			<if test="BIRTH != null">BIRTH = #{BIRTH},</if>
-			<if test="MAIL != null">MAIL = #{MAIL},</if>
-			<if test="ADDR != null">ADDR = #{ADDR},</if>
-			<if test="EMAIL_ST != null">EMAIL_ST = #{EMAIL_ST},</if>
-		</set>
-		WHERE ID = #{ID}
+	<update id="userUpdate" parameterType="UVO">
+    UPDATE MEMBER_T
+    <set>
+        <if test="PW != null">PW = #{PW},</if>
+        <if test="NICKNAME != null">NICKNAME = #{NICKNAME},</if>
+        <if test="PHONE != null">PHONE = #{PHONE},</if>
+        <if test="MAIL != null">MAIL = #{MAIL},</if>
+        <if test="ADDR != null">ADDR = #{ADDR},</if>
+    </set>
+   	 WHERE ID = #{ID}
 	</update>
-
+	
+	
 	<!-- ID와 비밀번호 모두를 사용한 중복 여부 확인 -->
 	<select id="isPwDuplicate" parameterType="map" resultType="int">
 		SELECT COUNT(*) FROM MEMBER_T
 		WHERE PW = #{PW} AND ID = #{ID}
 	</select>
-	<!-- 탈퇴용 업뎃 -->
-	<update id="userOut">
-		UPDATE MEMBER_T
-		SET OUT_ST = 0, OUT_TIME = SYSDATE()
-		WHERE ID = #{ID}
-	</update>
-	<!-- 이름과 이메일로 아이디만 찾기 -->
-	<select id="getIdByNameAndMail" resultType="uVO">
-		SELECT ID FROM MEMBER_T WHERE MAIL = #{MAIL} AND M_NAME = #{M_NAME}
-	</select>
-	<!-- 이름과 아이디로 유저이메일만 찾기 -->
-	<select id="getMailByIdAndName" resultType="uVO">
-		SELECT MAIL FROM MEMBER_T WHERE ID = #{ID} AND MAIL = #{MAIL}
-	</select>
-	<!-- 유저의 TEMP_PW 필드 update! -->
-	<insert id="upsertTempPW">
-		UPDATE MEMBER_T SET TEMP_PW = #{TEMP_PW} WHERE ID = #{ID};
-	</insert>
-	<!-- 유저의 TEMP_PW 필드 비우기 -->
-	<update id="resetTempPW">
-		UPDATE MEMBER_T SET TEMP_PW = NULL WHERE ID = #{ID};
-	</update>
+
 </mapper>
 
 

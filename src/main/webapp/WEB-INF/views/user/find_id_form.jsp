@@ -24,37 +24,28 @@
 	<div id="mydiv">
 		<jsp:include page="../Semantic/header.jsp"></jsp:include>
 		<section id="contents">
-			<article>
+		<article>
 				<div class="find-header">
-					<h1
-						style="text-align: center; font-size: 30px; margin-bottom: 20px; margin-top: 100px;">아이디
-						찾기</h1>
+					<h1 style="text-align: center; font-size: 30px; margin-bottom: 20px; margin-top: 100px;">아이디 찾기</h1>
 				</div>
 				<h3>아이디를 모르시나요?</h3>
-				<p>이름과 이메일로 아이디 찾기</p>
+				<p>내 정보에 등록된 이메일로 찾기</p>
 				<div class="find-box">
-					<div class="centered-content">
-						<form action="/find_id_result" method="post">
-							<tr>
-								<td><input type="text" name="M_NAME"
-									placeholder="이름을 입력해주세요."></td>
-							</tr>
-							<tr>
-								<td><input type="text" name="MAIL"
-									placeholder="이메일을 전부 입력해주세요."></td>
-							</tr>
-							<tr>
-								<td><button type="submit" class="find-button">아이디
-										찾기</button></td>
-							</tr>
-						</form>
-
-					</div>
-				</div>
+					<table>
+						<tr>
+							<td><input type="text" name="name" placeholder="이름을 입력해주세요."></td>
+						</tr>
+						<tr>
+							<td><input type="text" name="email"
+								placeholder="이메일 주소 전체를 입력해주세요."></td>
+						</tr>
+						<tr>
+							<td><button  onclick=""class="find-button">다음단계</button></td>
+						</tr>
+					</table>
+				</div> 
 				<div>
-					비밀번호를 찾으시나요? <a href="find_pw_form.do" class="find-links">
-						<p>비밀번호 찾기</p>
-					</a>
+					비밀번호를 찾으시나요? <a href="find_pw_form.do" class="find-links"><p>비밀번호 찾기</p></a>
 				</div>
 				<br>
 			</article>

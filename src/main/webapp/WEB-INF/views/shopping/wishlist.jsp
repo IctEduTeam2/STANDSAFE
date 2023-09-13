@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -156,56 +154,6 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
     checkbox.checked = selectAll.checked;
   });
 }
-function addToCart(id, prodNum) {
-	location.href = "/cartadd.do?client_num=" + id + "&prod_num=" + prodNum + "&quantity=1&st=2";
-	alert("상품을 장바구니에 담았습니다.");
-}
-
-function deleteItem(id, prodNum) {
-	location.href = "/deleteWish.do?client_num=" + id + "&prod_num=" + prodNum;
-    alert("상품을 위시리스트에서 삭제하였습니다.");
-}
-
-function deleteSelectedProducts() {
-	  // 체크된 항목을 배열로 저장
-	  const selectedProducts = [];
-	  const checkboxes = document.querySelectorAll('.productCheckbox');
-	  checkboxes.forEach(checkbox => {
-	    if (checkbox.checked) {
-	      selectedProducts.push(checkbox.value);
-	    }
-	  });
-
-	  // 배열을 문자열로 변환하여 hidden input에 설정
-	  document.getElementById('selectedProducts').value = selectedProducts.join(',');
-
-	  if (selectedProducts.length === 0) {
-		    alert('삭제할 상품이 선택해주세요');
-		  } else {
-		    document.getElementById('productWishDelForm').submit();
-		    alert('선택한 상품을 삭제하였습니다.');
-		  }
-	}
-function basketSelectedProducts() {
-	  // 체크된 항목을 배열로 저장
-	  const selectedProducts = [];
-	  const checkboxes = document.querySelectorAll('.productCheckbox');
-	  checkboxes.forEach(checkbox => {
-	    if (checkbox.checked) {
-	      selectedProducts.push(checkbox.value);
-	    }
-	  });
-
-	  // 배열을 문자열로 변환하여 hidden input에 설정
-	  document.getElementById('selectedProducts2').value = selectedProducts.join(',');
-
-	  if (selectedProducts.length === 0) {
-		    alert('장바구니에 추가할 상품을 선택해주세요');
-		  } else {
-		    document.getElementById('productWishBasketForm').submit();
-		    alert('선택한 상품을 장바구니에 담았습니다.');
-		  }
-	}
 </script>
 </head>
 <body onload="InitializeStaticMenu();">
@@ -217,12 +165,11 @@ function basketSelectedProducts() {
 			<div
 				style="width: 100%; height: 82px; background-color: rgba(27, 90, 194, 1); float: left; margin-top: 10px;">
 				<ul class="snb">
-					<li class="li"><a href="/basketform.do?client_num=${id}"
-						class="li_a" style="color: white;">장바구니</a></li>
-					<li class="li"><a href="/wishlistform.do?client_num=${id}"
-						class="li_a current" style="color: white;">위시리스트</a></li>
-					<li class="li"><a href="/orderlistform.do?client_num=${id}"
-						class="li_a" style="color: white;">주문조회 | 배송현황</a></li>
+					<li class="li"><a href="/basketform.do?client_num=${id}" class="li_a" style="color: white;">장바구니</a></li>
+					<li class="li"><a href="/wishlistform.do?client_num=${id}" class="li_a current" 
+						style="color: white;">위시리스트</a></li>
+					<li class="li"><a href="/orderlistform.do?client_num=${id}" class="li_a"
+						style="color: white;">주문조회 | 배송현황</a></li>
 				</ul>
 			</div>
 
@@ -236,79 +183,103 @@ function basketSelectedProducts() {
 						<b style="font-size: 18px;">전체 선택</b>
 					</div>
 					<div style="float: right">
-						<input type="button" value="선택항목 담기" class="select_del"
-							onclick="basketSelectedProducts()"> <input type="button"
-							value="선택항목 삭제" class="select_del"
-							onclick="deleteSelectedProducts()">
+						<input type="button" value="선택항목 담기" class="select_del"> <input
+							type="button" value="선택항목 삭제" class="select_del">
 					</div>
 				</div>
 				<div class="baskets">
-					<c:choose>
-						<c:when test="${empty wishlist }">
+					<!-- 제품 한개-->
+					<div class="basket_cont">
+						<img class="basket_img"
+							src="resources/images/products/product1.jpg">
+						<div style="width: 60%; float: left; margin-top: 80px;">
+							<a href=""
+								style="font-size: 18px; margin-left: 10px; font-weight: 600;">가정용
+								/ 캠핑용 액체 소방 스프레이</a> <br> <b
+								style="margin-left: 10px; font-size: 14px;">100,000원</b>
+						</div>
+						<div style="width: 18%; float: left; height: 200px;">
+							<input type="checkbox" name="select" value="제품명"
+								style="width: 20px; height: 20px; float: right; margin-right: 20px; margin-top: 20px;">
 							<div
-								style="float: left; margin: auto; text-align: center; border: 1px solid black; width: 100%; height: 600px; margin-top: 50px;">
-								<h1 style="text-align: center;">찜한 상품이 존재하지 않습니다.</h1>
+								style="width: 100%; margin-top: 100px; font-size: 20px; font-weight: 700;">
 							</div>
-						</c:when>
-						<c:otherwise>
-							<!-- 제품 한개-->
-							<c:forEach var="a" items="${prodlist }">
-								<form id="productWishDelForm" method="post"
-									action="/deleteSelectedWish.do">
-									<!-- 선택된 항목을 담을 hidden input -->
-									<input type="hidden" name="selectedProducts"
-										id="selectedProducts" value="${a.prod_num }" /> <input
-										type="hidden" name="client_num" id="client_num" value="${id}" />
-								</form>
-								<form id="productWishBasketForm" method="post"
-									action="/bsketSelectedWish.do">
-									<!-- 선택된 항목을 담을 hidden input -->
-									<input type="hidden" name="selectedProducts"
-										id="selectedProducts2" value="${a.prod_num }" /> <input
-										type="hidden" name="client_num" id="client_num" value="${id}" />
-								</form>
-								<div class="basket_cont">
-									<img class="basket_img"
-										src="resources/images/products/${a.prod_img }">
-									<div style="width: 60%; float: left; margin-top: 80px;">
-										<a href="/productOneListform.do?prod_num=${a.prod_num }"
-											style="font-size: 18px; margin-left: 10px; font-weight: 600;">${a.prod_name}</a>
-										<br> <b style="margin-left: 10px; font-size: 14px;"><c:choose>
-												<c:when test="${a.prod_sale == '0'}">
-													<fmt:formatNumber value="${a.prod_price}" type="number"
-														pattern="#,### 원" />
-												</c:when>
-												<c:otherwise>
-													<del>
-														<fmt:formatNumber value="${a.prod_price}" type="number"
-															pattern="#,### 원" />
-													</del>
-										▶ <b style="color: red; font-size: 14px;"><fmt:formatNumber
-															value="${a.prod_sale}" type="number" pattern="#,### 원" /></b>
-													<b style="font-size: 14px;"> (${((a.prod_price - a.prod_sale) / a.prod_price * 100).intValue()}%↓)</b>
-												</c:otherwise>
-											</c:choose></b>
-									</div>
-									<div style="width: 18%; float: left; height: 200px;">
-										<input type="checkbox" name="select" value="${a.prod_num }"
-											class="productCheckbox"
-											style="width: 20px; height: 20px; float: right; margin-right: 20px; margin-top: 20px;">
-										<div
-											style="width: 100%; margin-top: 100px; font-size: 20px; font-weight: 700;">
-										</div>
-									</div>
-									<div style="float: right;">
-										<input type="button" value="장바구니 담기" class="one_basket"
-											onclick="addToCart('${id}', '${a.prod_num}')"> <input
-											type="button" value="삭제하기" class="one_del"
-											onclick="deleteItem('${id}', '${a.prod_num}')">
-
-									</div>
-								</div>
-							</c:forEach>
-							<!-- 제품한개 끝태그 -->
-						</c:otherwise>
-					</c:choose>
+						</div>
+						<div style="float: right;">
+							<input type="button" value="장바구니 담기" class="one_basket">
+							<input type="button" value="삭제하기" class="one_del">
+						</div>
+					</div>
+					<!-- 제품한개 끝태그 -->
+					<!-- 제품 한개-->
+					<div class="basket_cont">
+						<img class="basket_img"
+							src="resources/images/products/product1.jpg">
+						<div style="width: 60%; float: left; margin-top: 80px;">
+							<a href=""
+								style="font-size: 18px; margin-left: 10px; font-weight: 600;">가정용
+								/ 캠핑용 액체 소방 스프레이</a> <br> <b
+								style="margin-left: 10px; font-size: 14px;">100,000원</b>
+						</div>
+						<div style="width: 18%; float: left; height: 200px;">
+							<input type="checkbox" name="select" value="제품명"
+								style="width: 20px; height: 20px; float: right; margin-right: 20px; margin-top: 20px;">
+							<div
+								style="width: 100%; margin-top: 100px; font-size: 20px; font-weight: 700;">
+							</div>
+						</div>
+						<div style="float: right;">
+							<input type="button" value="장바구니 담기" class="one_basket">
+							<input type="button" value="삭제하기" class="one_del">
+						</div>
+					</div>
+					<!-- 제품한개 끝태그 -->
+					<!-- 제품 한개-->
+					<div class="basket_cont">
+						<img class="basket_img"
+							src="resources/images/products/product1.jpg">
+						<div style="width: 60%; float: left; margin-top: 80px;">
+							<a href=""
+								style="font-size: 18px; margin-left: 10px; font-weight: 600;">가정용
+								/ 캠핑용 액체 소방 스프레이</a> <br> <b
+								style="margin-left: 10px; font-size: 14px;">100,000원</b>
+						</div>
+						<div style="width: 18%; float: left; height: 200px;">
+							<input type="checkbox" name="select" value="제품명"
+								style="width: 20px; height: 20px; float: right; margin-right: 20px; margin-top: 20px;">
+							<div
+								style="width: 100%; margin-top: 100px; font-size: 20px; font-weight: 700;">
+							</div>
+						</div>
+						<div style="float: right;">
+							<input type="button" value="장바구니 담기" class="one_basket">
+							<input type="button" value="삭제하기" class="one_del">
+						</div>
+					</div>
+					<!-- 제품한개 끝태그 -->
+					<!-- 제품 한개-->
+					<div class="basket_cont">
+						<img class="basket_img"
+							src="resources/images/products/product1.jpg">
+						<div style="width: 60%; float: left; margin-top: 80px;">
+							<a href=""
+								style="font-size: 18px; margin-left: 10px; font-weight: 600;">가정용
+								/ 캠핑용 액체 소방 스프레이</a> <br> <b
+								style="margin-left: 10px; font-size: 14px;">100,000원</b>
+						</div>
+						<div style="width: 18%; float: left; height: 200px;">
+							<input type="checkbox" name="select" value="제품명"
+								style="width: 20px; height: 20px; float: right; margin-right: 20px; margin-top: 20px;">
+							<div
+								style="width: 100%; margin-top: 100px; font-size: 20px; font-weight: 700;">
+							</div>
+						</div>
+						<div style="float: right;">
+							<input type="button" value="장바구니 담기" class="one_basket">
+							<input type="button" value="삭제하기" class="one_del">
+						</div>
+					</div>
+					<!-- 제품한개 끝태그 -->
 				</div>
 			</div>
 		</section>

@@ -1,7 +1,5 @@
 package com.ict.user.model.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,15 +17,10 @@ public class PointServiceImpl implements PointService{
 	public int getPointsByUserId(int CLIENT_NUM) {
 		return pointDAO.getPointsByUserId(CLIENT_NUM);
 	}
-	//회원가입 포인트
+	
 	@Override
 	public int getJoinpoint(PointVO pVO) {
 		return pointDAO.getJoinpoint(pVO);
-	}
-	//리스트보여주기
-	@Override
-	public List<PointVO> getPointRecordsForUser(int CLIENT_NUM) {
-		return pointDAO.getPointRecordsForUser(CLIENT_NUM);
 	}
 	
 
