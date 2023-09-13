@@ -1,5 +1,7 @@
 package com.ict.user.model.dao;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -19,6 +21,10 @@ public class PointDAO {
 	//포인트조회
 	public int getPointsByUserId(int CLIENT_NUM) {
 		return sqlSessionTemplate.selectOne("point.userpoint", CLIENT_NUM);
+	}
+	//포인트 전체조회
+	public List<PointVO> getPointRecordsForUser(int CLIENT_NUM) {
+		return sqlSessionTemplate.selectList("point.selectPointByClientNum", CLIENT_NUM);
 	}
 
 }

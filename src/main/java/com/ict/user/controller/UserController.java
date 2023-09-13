@@ -422,44 +422,45 @@ public class UserController {
 		return new ModelAndView("user/find_pw_form");
 	}
 
-//	// 비밀번호 찾아서 메일보내기
-//	// 아이디찾기->아이디 결과폼
-//	//@Transactional
-//	@RequestMapping("/find_pw_result")
-//	public ModelAndView searchPw(HttpServletRequest request, UserVO uVO, HttpSession session, @RequestParam String ID, @RequestParam String MAIL) {
-//	    ModelAndView mv = new ModelAndView("user/find_pw_result");
-//	    try {
-//	        uVO.setID(ID);
-//	        uVO.setMAIL(MAIL);
-//
-//	        UserVO userResult = userService.findMemberMail(uVO);
-//
-//	        if (userResult != null && userResult.getMAIL() != null) {
-//	            //내부 이메일 뽑기
-//	        	String resultMAIL = userResult.getMAIL();
-//	            //임시비번 null만들기
-//	            userService.resetTempPW(ID);
-//	            //임시비번 만들어넣기
-//	            String TEMP_PWtxt = UUID.randomUUID().toString().substring(0, 6);
-//	            //암호화해야함.
-//	            uVO.setTEMP_PW(passwordEncoder.encode(TEMP_PWtxt));
-//	            userService.upsertTempPW(uVO);
-//	            
-//	            // Use MailService to send the email
-//	            mailService.sendEmail(TEMP_PWtxt, resultMAIL);
-//	            
-//	            session.setAttribute("mailChk", "success");
-//	            mv.addObject("MAIL", resultMAIL);
-//	        }
-//
-//	    } catch (Exception e) {
-//	        mv.addObject("msg", "오류가 발생되었습니다.");
-//	        session.setAttribute("mailChk", "success");
-//	        mv.setViewName("find_pw_form");
-//	        e.printStackTrace();
-//	    }
-//	    return mv;
-//	}
+
+	// 비밀번호 찾아서 메일보내기
+	// 아이디찾기->아이디 결과폼
+	//@Transactional
+	@RequestMapping("/find_pw_result")
+	public ModelAndView searchPw(HttpServletRequest request, UserVO uVO, HttpSession session, @RequestParam String ID, @RequestParam String MAIL) {
+	    ModelAndView mv = new ModelAndView("user/find_pw_result");
+	    try {
+	        uVO.setID(ID);
+	        uVO.setMAIL(MAIL);
+
+	        UserVO userResult = userService.findMemberMail(uVO);
+
+	        if (userResult != null && userResult.getMAIL() != null) {
+	            //내부 이메일 뽑기
+	        	String resultMAIL = userResult.getMAIL();
+	            //임시비번 null만들기
+	            userService.resetTempPW(ID);
+	            //임시비번 만들어넣기
+	            String TEMP_PWtxt = UUID.randomUUID().toString().substring(0, 6);
+	            //암호화해야함.
+	            uVO.setTEMP_PW(passwordEncoder.encode(TEMP_PWtxt));
+	            userService.upsertTempPW(uVO);
+	            
+	            // Use MailService to send the email
+	            mailService.sendEmail(TEMP_PWtxt, resultMAIL);
+	            
+	            session.setAttribute("mailChk", "success");
+	            mv.addObject("MAIL", resultMAIL);
+	        }
+
+	    } catch (Exception e) {
+	        mv.addObject("msg", "오류가 발생되었습니다.");
+	        session.setAttribute("mailChk", "success");
+	        mv.setViewName("find_pw_form");
+	        e.printStackTrace();
+	    }
+	    return mv;
+	}
 	
 	//내 포인트
 		@RequestMapping("/pointRecords.do")

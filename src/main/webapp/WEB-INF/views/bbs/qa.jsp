@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>STANDSAFE</title>
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
 <link rel="stylesheet" href="resources/css/basis.css" />
@@ -80,6 +80,7 @@ table tfoot ol.paging li a:hover {
 		var qaonelist = "${qaonelist}";
 		if(qaonelist == "not"){
 			alert("다른사람이 작성한 (비밀)글입니다. 조회권한이 없습니다. ");
+			
 			return ;
 		}else if(qaonelist=="view") {
 			return;
@@ -108,24 +109,27 @@ table tfoot ol.paging li a:hover {
 			<article>
 						<div id="bbs_top" >		
 						<div id="bbs_sub"><h1>상품 Q&A</h1></div>			
-							<fieldset class="radio_c">
-								<label>
-									<input type="radio" name="search" value="subject" checked />
-									<span>제목</span>					
-								</label>
-								<label>
-									<input type="radio" name="search" value="content"  />
-									<span>내용</span>					
-								</label>
-								<label>
-									<input type="radio" name="search" value="writer"  />
-									<span>작성자</span>					
-								</label>
-								<div id="search_bar">
-									<input type="text" id="s_bar" placeholder="검색어입력">
-									<button id="s_btn" onclick="search_go()">검색</button>			
-								</div>				
-							</fieldset>		
+							<form action="/bbs_qa_search.do?cPage=${paging.nowPage}" method="post">
+							    <fieldset>
+							        <label>
+							            <input type="radio" name="searchType" value="제목" id="type_title" checked />
+							            <span>제목</span>
+							        </label>
+							        <label>
+							            <input type="radio" name="searchType" value="내용" id="type_content" />
+							            <span>내용</span>
+							        </label>
+							        <label>
+							            <input type="radio" name="searchType" value="작성자" id="type_writer" />
+							            <span>작성자</span>
+							        </label>
+							        <div id="search_bar">
+							            <input type="text" id="s_bar" name="searchText" placeholder="검색어입력">  
+							            <button id="s_btn" type="submit">검색</button>
+							            
+							        </div>
+							    </fieldset>
+							</form>
 						</div>  <!--  제목및 버튼검색창의 끝 -->
 					<div>
 					<button class="btn" onclick="bbs_go_qa_writeform()">글쓰기</button>		
