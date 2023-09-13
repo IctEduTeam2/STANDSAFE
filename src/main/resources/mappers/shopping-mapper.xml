@@ -9,17 +9,9 @@
 		popup_chk = 1 AND popup_st = 1
 	</select>
 
-	<!-- 분야별 상품리스트 -->
-	<select id="productlist" resultType="productVO">
-		SELECT * FROM PRODUCT_T
-		WHERE prod_st = 0 and prod_high = #{prod_high} and prod_low =
-		#{prod_low} and prod_amount > 0
-	</select>
-
 	<!-- 베스트상품 -->
 	<select id="productBestList" resultType="productVO">
 		SELECT * FROM PRODUCT_T
-		WHERE prod_st = 0 and prod_amount > 0
 		ORDER BY prod_amount asc
 		LIMIT 10;
 	</select>
@@ -27,7 +19,6 @@
 	<!-- 최신상품 -->
 	<select id="productNewList" resultType="productVO">
 		SELECT * FROM PRODUCT_T
-		WHERE prod_st = 0 and prod_amount > 0
 		ORDER BY prod_regdate DESC
 		LIMIT 8;
 	</select>
@@ -38,7 +29,7 @@
 		SELECT * FROM PRODUCT_T
 		WHERE PROD_NUM = #{PROD_NUM}
 	</select>
-	
+
 	<!-- 장바구니 추가 -->
 	<insert id="basket" parameterType="basketVO">
 		<selectKey keyProperty="cart_num" resultType="String"
@@ -51,7 +42,7 @@
 		#{cart_st}, #{client_num})
 	</insert>
 
-	<!-- 유저 정보 -->
+	<!-- 상품 한개 -->
 	<select id="userinfo" resultType="uVO" parameterType="String">
 		SELECT *
 		FROM MEMBER_T
@@ -65,36 +56,12 @@
 		values(#{client_num},#{prod_num},#{wish_st})
 	</insert>
 
-	<!-- 위시리스트 추가했다가 삭제후 재추가시 -->
-	<update id="wishadd2" parameterType="wishVO">
-		UPDATE WISH_T
-		SET wish_st =
-		#{wish_st}
-		WHERE client_num = #{client_num} AND prod_num = #{prod_num}
-	</update>
-	
-	<!-- 위시리스트 삭제 -->
-	<update id="wishdelete" parameterType="wishVO">
-		UPDATE WISH_T
-		SET wish_st =
-		#{wish_st}
-		WHERE client_num = #{client_num} AND prod_num = #{prod_num}
-	</update>
-
-	<!-- 위시리스트 추가 시 조건 확인을 위한 조회 -->
+	<!-- 위시리스트 조회 -->
 	<select id="wishselect" resultType="wishVO"
 		parameterType="wishVO">
 		SELECT * FROM WISH_T
 		WHERE client_num = #{client_num} and
 		prod_num = #{prod_num}
-	</select>
-
-	<!-- 위시리스트 조회 -->
-	<select id="wishlist" resultType="wishVO" parameterType="String">
-		SELECT *
-		FROM WISH_T
-		WHERE client_num = #{client_num} and wish_st = 0 order by
-		wish_in desc
 	</select>
 
 	<!-- 장바구니 상품 조회 -->
@@ -143,33 +110,6 @@
 		LIMIT 1
 	</select>
 
-	<!-- 결제 -->
-	<insert id="payinsert" parameterType="payVO">
-		INSERT INTO PAY_T
-		(take_peo, take_addr, take_phone, take_memo,
-		pay_type, pay_oknum, cart_num,
-		client_num
-		<if test="paymentKey != null">
-			, paymentKey
-		</if>
-		)
-		VALUES
-		(#{take_peo}, #{take_addr}, #{take_phone}, #{take_memo},
-		#{pay_type}, #{pay_oknum},
-		#{cart_num}, #{client_num}
-		<if test="paymentKey != null">
-			, #{paymentKey}
-		</if>
-		)
-	</insert>
-
-	<!-- 포인트 차감 -->
-	<insert id="pointsub" parameterType="pVO">
-		INSERT INTO POINT_T
-		(POINT_USE, POINT_REM, CLIENT_NUM)
-		VALUES (#{POINT_USE}, #{POINT_REM},
-		#{CLIENT_NUM})
-	</insert>
 </mapper>
 
 

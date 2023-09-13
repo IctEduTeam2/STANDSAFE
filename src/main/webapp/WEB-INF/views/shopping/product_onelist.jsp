@@ -174,7 +174,6 @@ tr td:nth-child(2) {
 		var sale = parseInt('${pvo.prod_sale}'); // 세일상품인지 체크
 		var total = quantity * price; // 총 상품금액 계산
 		var saletotal = quantity * sale;
-		var prodquantity = parseInt('${pvo.prod_amount}'); // 상품의 재고량
 
 		// 최소 수량 확인
 		if (quantity <= 0) {
@@ -182,11 +181,6 @@ tr td:nth-child(2) {
 			document.getElementById('quantityInput').value = 1;
 			var totalPriceText = price.toLocaleString() + quantityText;
 			document.getElementById('totalPrice').textContent = totalPriceText;
-		} else if(quantity > prodquantity) {
-			alert("재고량을 초과구매 불가능합니다.");
-		document.getElementById('quantityInput').value = prodquantity;
-		var totalPriceText = price.toLocaleString() + quantityText;
-		document.getElementById('totalPrice').textContent = totalPriceText;
 		} else if (sale == 0) {
 			document.getElementById('totalPrice').textContent = total
 					.toLocaleString()
@@ -199,32 +193,17 @@ tr td:nth-child(2) {
 		}
 	}
 	function just_buy(f) {
-		if("${id}" == "" || "${id}" == null) {
-			alert("로그인 후 이용 가능합니다.");
-			return;
-		} else {
 		var quantity = parseInt(document.getElementById('quantityInput').value);
 		f.action = "/justbuy.do?quantity=" + quantity + "&client_num=" + ${id}
 				+ "&prod_num=" + ${pvo.prod_num};
 		f.submit();
-		}
 	}
 	function cart_add(f) {
-		if("${id}" == "" || "${id}" == null) {
-			alert("로그인 후 이용 가능합니다.");
-			return;
-		} else {
 		openModal(); // 장바구니 추가 후 모달 열기
-		}
 	}
 	function wish_add(f) {
-		if("${id}" == "" || "${id}" == null) {
-			alert("로그인 후 이용 가능합니다.");
-			return;
-		} else {
 		f.action = "/wishadd.do?client_num=" + ${id} + "&prod_num=" + ${pvo.prod_num};
 		f.submit();
-		}
 	}
 
 	//모달 열기
@@ -259,7 +238,7 @@ tr td:nth-child(2) {
 </head>
 
 <body onload="InitializeStaticMenu();">
-	<script type="text/javascript">
+<script type="text/javascript">
     var alertMessage = "${alertMessage}";
     if (alertMessage) {
         alert(alertMessage);
@@ -338,13 +317,12 @@ tr td:nth-child(2) {
 						</table>
 						<div id="myModal" class="modal">
 
-							<div class="modal-content">
-								<span class="close" onclick="closeModal()">&times;</span>
-								<h2>장바구니에 상품이 추가되었습니다</h2>
-								<button onclick="continueShopping(this.form)">쇼핑 계속하기</button>
-								<button onclick="viewCart(this.form)">장바구니 보기</button>
-							</div>
-						</div>
+						<div class="modal-content">
+							<span class="close" onclick="closeModal()">&times;</span>
+							<h2>장바구니에 상품이 추가되었습니다</h2>
+							<button onclick="continueShopping(this.form)">쇼핑 계속하기</button>
+							<button onclick="viewCart(this.form)">장바구니 보기</button>
+						</div></div>
 					</form>
 				</div>
 			</div>

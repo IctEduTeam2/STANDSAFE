@@ -29,11 +29,6 @@
 	LIMIT 1;
 	</select>
 	
-	<!-- 해당멤버의 포인트 전체조회 -->
-	<select id="selectPointByClientNum" parameterType="int" resultType="pVO">
-    SELECT * FROM POINT_T WHERE CLIENT_NUM = #{CLIENT_NUM}
-    ORDER BY POINT_DATE DESC, POINT_OUT DESC
-	</select>
 </mapper>
 
 

@@ -9,14 +9,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
 <!-- Link Swiper's CSS -->
-<script type="text/javascript">
-$(document).ready(function() {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('success') === 'true') {
-        alert('사용자 업데이트를 성공했습니다.');
-    }
-});
-</script>
+
 <link rel="stylesheet" href="resources/css/slide.css" />
 <link rel="stylesheet" href="resources/css/basis.css" />
 <link rel="stylesheet" href="resources/css/userinfo.css" />
@@ -38,17 +31,12 @@ $(document).ready(function() {
 		location.href = "/basket.do";
 	}
 
-	function PointGo() {
-		location.href = "/pointRecords.do";
-	}
 	function MyBoardGo() {
 		location.href = "/myboard.do";
 	}
 
 	function UserWithdrawal() {
-	    if(confirm("정말로 탈퇴하시겠습니까?")) {
-	        location.href = "/userWithdrawal.do";
-	    }
+		location.href = "/userWithdrawal.do";
 	}
 </script>
 </head>
@@ -74,9 +62,6 @@ $(document).ready(function() {
 				</button>
 				<button class="mypage-box" onclick="BasketGo()">
 					<span class="mypage-text">장바구니</span> <span class="mypage-arrow">>></span>
-				</button>
-				<button class="mypage-box" onclick="PointGo()">
-					<span class="mypage-text">내 포인트</span> <span class="mypage-arrow">>></span>
 				</button>
 				<button class="mypage-box" onclick="MyBoardGo()">
 					<span class="mypage-text">내 게시글 보기</span> <span

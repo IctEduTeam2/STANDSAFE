@@ -45,8 +45,6 @@ table tfoot ol.paging li a:hover {
     /* font-weight: bold; */
 }
 
-
-
 .disable {
     padding: 3px 7px;
     border: 1px solid silver;
@@ -112,12 +110,7 @@ function setAllDates() {
     document.getElementById('startDate').value = ""; // 'start' 필드 초기화
     document.getElementById('close').value = ""; // 'close' 필드 초기화
 }
-    //삭제게시물 
-    function deleteRow(button) {
-    var row = button.parentNode.parentNode; // 현재 버튼이 속한 행을 가져옵니다.
-    row.style.display = 'none'; // 행을 숨기거나
-    // row.remove(); // 행을 완전히 제거할 수도 있습니다.
-}
+    
     //초기화 
 function resetFields() {
     document.getElementById('searchKey').value = ""; // 검색어 필드 초기화 
@@ -130,10 +123,15 @@ function setStartField() {
     document.getElementById('start').value = startDate;
     return true; // 폼 제출을 진행하도록 true 반환
 }
-    //검색 
+    
+	// 검색 버튼 
+	
 
-    //테이블 안 삭제 버튼
- 
+
+    //삭제된게시물 보기 
+	
+
+
 
 
 
@@ -167,7 +165,7 @@ function setStartField() {
 
 		<!-- 검색 영역 -->
 
-		<form id="searchForm" action="/admin/orderList" method="get" onsubmit="setStartField()">
+		<form id="searchForm" action="/adnotice_search.do" method="post" onsubmit="setStartField()">
 			<div
 				style="float: left; margin-top: 5%; border: 1px solid black; width: 60%; height: 400px;">
 				<div>
@@ -185,8 +183,9 @@ function setStartField() {
 										<option value="title2">작성자</option>
 										
 								</select>
+								<!-- 검색어 입력창  -->
 								</span> <span style="margin-left: 10px;"> <input type="text"
-									id="fromDate" name="condition.fromDate" title="검색어 입력" value=""
+									id="fromDate" name="searchText" title="검색어 입력" value=""
 									maxlength="10" style="width: 240px; height: 50px;">
 								</span>&nbsp&nbsp&nbsp&nbsp
 							</p>
@@ -205,10 +204,12 @@ function setStartField() {
     								<option value="dateCreated2">수정일</option>
 								</select>
 
-								</span> <span style="margin-left: 10px;"> <!-- 달력 --> <input
+								</span> <span style="margin-left: 10px;">
+								 <!-- 달력 --> 
+								 <input
 									type="date" id="start" name="trip-start"
 									style="height: 40px; width: 300px;" />
-								</span> <span> <input type="date" id="close" name="trip-start"
+								</span> <span> <input type="date" id="close" name="trip-close"
 									style="height: 40px; width: 300px;" />
 								</span>
 							</p>
@@ -220,7 +221,8 @@ function setStartField() {
 							style="float: right; margin-top: 50px; margin-left: 15px; margin-right: 30px;">
 							<input type="button" alt="삭제게시물" value="삭제게시물"
 							style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
-							onclick="deleteRow(this)"></span> 
+							onclick="showDeletedNotices()"></span> 
+							
 						<span style="float: right; margin-top: 50px; margin-left: 15px;">
 							<input type="button" alt="전체기간" value="전체기간"
 							style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
@@ -245,7 +247,7 @@ function setStartField() {
 								 <span style="float: right; margin-top: 130px; margin-right: -494px;">
 									<input type="button" alt="검색" value="검색"
 									style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
-									onclick="location.href='/'">
+									onclick="searchAll()">
 								</span>
 							</div>
 						</dt>
@@ -273,6 +275,7 @@ function setStartField() {
 				<col width="5%">
 				<col width="10%">
 				<col width="10%">
+				<col width="10%">
 			</colgroup>
 			<thead>
 				<tr>
@@ -286,6 +289,7 @@ function setStartField() {
 					<td class="column_8">작성일</td>
 					<td class="column_9">수정일</td>
 					<td class="column_10">작성자</td>
+					<td class="column_11">등록상태</td>
 				</tr>
 			</thead>
 
@@ -294,7 +298,7 @@ function setStartField() {
 				<c:choose>
 					<c:when test="${empty list}">
 						<tr>
-							<td colspan="10"><p>자료가 존재하지 않습니다.</p></td>
+							<td colspan="11"><p>자료가 존재하지 않습니다.</p></td>
 						</tr>
 					</c:when>
 
@@ -314,6 +318,7 @@ function setStartField() {
                 <td class="column_8">작성일</td>
                 <td class="column_9">수정일</td>
                 <td class="column_10">작성자</td>
+                <td class="column_11">등록상태</td>
             </tr>
         </c:when>
         <c:otherwise>
@@ -321,7 +326,7 @@ function setStartField() {
                 <td><input type="checkbox" name="chk" id="chkbox" />
                 <label for="chkbox"></label>
                 </td>
-                <td>${(paging.nowPage - 1) * paging.numPerPage + vs.index + 1}</td>
+                <td>${paging.totalRecord -((paging.nowPage-1)*paging.numPerPage + vs.index)}</td>
                 <td>${k.NOTICE_SUBJECT}</td>
                 <td>${k.NOTICE_CONTENT}</td>
                 <td>
@@ -340,6 +345,7 @@ function setStartField() {
                 <td>${k.NOTICE_DATE.substring(0,10)}</td>
                 <td>${k.NOTICE_UPDATE.substring(0,10)}</td>
                 <td>${k.NOTICE_WRITER}</td>
+                <td>${k.NOTICE_ST}</td>
             </tr>
         </c:otherwise>
     </c:choose>
@@ -348,45 +354,43 @@ function setStartField() {
 					</c:otherwise>
 				</c:choose>
 			</tbody>
-			<tfoot>
-				<tr>
-					<td colspan="10">
-						<ol class="paging">
-							<!--  이전버튼 : 첫 블럭이면 비활성화  -->
-							<c:choose>
-								<c:when test="${paging.beginBlock <= paging.pagePerBlock}">
-									<li class="disable">이전으로</li>
-								</c:when>
-								<c:otherwise>
-									<li><a
-										href="/admin_notice.do?cPage=${paging.beginBlock-paging.pagePerBlock}">이전으로</a></li>
-								</c:otherwise>
-							</c:choose>
-							<c:forEach begin="${paging.beginBlock }"
-								end="${paging.endBlock }" step="1" var="k">
-								<c:if test="${k == paging.nowPage }">
-									<!--현재페이지와 같으면  -->
-									<li class="now">${k }</li>
-								</c:if>
-								<c:if test="${k != paging.nowPage }">
-									<li><a href="/admin_notice.do?cPage=${k }"> ${k }</a></li>
-								</c:if>
-							</c:forEach>
-
-							<!-- 이후버튼  -->
-							<c:choose>
-								<c:when test="${paging.endBlock >= paging.totalPage }">
-									<li class="disable">다음으로</li>
-								</c:when>
-								<c:otherwise>
-									<li><a
-										href="/admin_notice.do?cPage=${paging.beginBlock+paging.pagePerBlock }">다음으로</a></li>
-								</c:otherwise>
-							</c:choose>
-
-						</ol>
-				</tr>
-			</tfoot>
+	<!-- 페이지 번호 출력 부분 -->
+<tfoot>
+    <tr>
+        <td colspan="10">
+            <ol class="paging">
+                <!-- 이전 버튼 -->
+                <c:if test="${paging.beginBlock > paging.pagePerBlock}">
+                    <li><a href="/admin_notice.do?cPage=${paging.beginBlock-paging.pagePerBlock}">이전으로</a></li>
+                </c:if>
+                <c:if test="${paging.beginBlock <= paging.pagePerBlock}">
+                    <li class="disable">이전으로</li>
+                </c:if>
+                
+                <!-- 페이지 번호 출력 -->
+                <c:forEach begin="${paging.beginBlock }" end="${paging.endBlock }" step="1" var="k">
+                    <c:choose>
+                        <c:when test="${k == paging.nowPage }">
+                            <li class="now">${k }</li>
+                        </c:when>
+                        <c:otherwise>
+                            <li><a href="/admin_notice.do?cPage=${k }"> ${k }</a></li>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+                
+                <!-- 다음 버튼 -->
+                <c:if test="${paging.endBlock < paging.totalPage}">
+                    <li><a href="/admin_notice.do?cPage=${paging.beginBlock+paging.pagePerBlock }">다음으로</a></li>
+                </c:if>
+                <c:if test="${paging.endBlock >= paging.totalPage }">
+                    <li class="disable">다음으로</li>
+                </c:if>
+            </ol>
+        </td>
+    </tr>
+</tfoot>
+	
 		</table>
 	</div>
 	<!-- 하단 버튼 -->

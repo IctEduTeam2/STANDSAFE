@@ -4,39 +4,28 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<script type="text/javascript">
+<title>Insert title here</title><script type="text/javascript">
 	$(document).ready(function() {
-		var loginChk = "${loginChk}";
 		console.log("loginChk is: ", loginChk);
+		var loginChk = "${loginChk}";
 		
 		if (loginChk === "noUser") {
-			alert("존재하지 않는 아이디입니다.");
+	        alert("존재하지 않는 아이디입니다.");
+	        session.removeAttribute("loginChk");
+	        session.abort();
 	        return;
-		} else if (loginChk == "fail") {
-			alert("비밀번호가 틀렸습니다.");
+	        
+		}else if(loginChk == "fail"){
+			alert("비밀번호틀림");
+			session.removeAttribute("loginChk");
+			session.abort();
 			return;
-		} else if (loginChk == "withdraw") {
-			alert("탈퇴한 회원입니다. 관리자에게 문의해주세요.");
-			return;	
-		} else if (loginChk == "ok") {
-			$("#loggedOut").css("display", "none");    // 감추기
-			$("#loggedIn").css("display", "block"); // 나타내기	
+			
+		}else if(loginChk == "ok"){
+			$("#loggedOut").css("display","none");    // 감추기
+			$("#loggedIn").css("display","block"); // 나타내기	
 		}
 	});
-</script>
-<% if (!"ok".equals(session.getAttribute("loginChk"))) {
-       session.removeAttribute("loginChk");
-   }
-%>
-<script type="text/javascript">
-$(document).ready(function() {
-    const withdrawalChk = '<%= session.getAttribute("withdrawalChk") %>';
-    if (withdrawalChk === 'success') {
-        alert('탈퇴에 성공했습니다.');
-        <% session.removeAttribute("withdrawalChk"); %>
-    }
-});
 </script>
 </head>
 <body>
@@ -45,14 +34,17 @@ $(document).ready(function() {
 			<% if (session.getAttribute("loginChk") != null && session.getAttribute("loginChk").equals("ok")) { %>
   	 		 <!-- 로그인 된 상태 -->
 			<div id="loggedIn">
-			<a class="top_gnb_a">${nick }님(P:${POINT_REM })</a> <a class="top_gnb_a" href="/logoutGo.do">로그아웃</a>
+			<a class="top_gnb_a">${nick }님(P:${sessionScope.POINT_REM })</a> <a class="top_gnb_a" href="/logoutGo.do">로그아웃</a>
 			<a class="top_gnb_a" href="/orderlistform.do?client_num=${id}">주문조회</a> <a class="top_gnb_a" href="/basketform.do?client_num=${id}">장바구니</a>
 			<a class="top_gnb_a" href="/mypageform.do?client_num=${id }">마이페이지</a> <a href="/wishlistform.do?client_num=${id }"
 				class="top_gnb_last_a">관심상품</a>
 			</div>
 		<% } else { %>
 			<div id="loggedOut">
-			<a class="top_gnb_a" href="/loginform.do">로그인</a> <a class="top_gnb_last_a" href="/registerform.do">회원가입</a>
+			<a class="top_gnb_a" href="/loginform.do">로그인</a> <a class="top_gnb_a" href="/registerform.do">회원가입</a>
+			<a class="top_gnb_a" href="/orderlistform.do">주문조회</a> <a class="top_gnb_a" href="/basketform.do">장바구니</a>
+			<a class="top_gnb_a" href="/mypageform.do">마이페이지</a> <a href="/wishlistform.do"
+				class="top_gnb_last_a">관심상품</a>
 			</div>
 		<% } %>		
 		</div>
@@ -61,22 +53,22 @@ $(document).ready(function() {
 		</div>
 		<div id="nav">
 			<ul class="menu">
-				<li><a href="/productsform.do?prod_high=1&prod_low=1&sort=1">소방/안전</a>
+				<li><a href="#">소방/안전</a>
 					<ul class="submenu">
-						<li><a href="/productsform.do?prod_high=1&prod_low=1&sort=1">소화기</a></li>
-						<li><a href="/productsform.do?prod_high=1&prod_low=2&sort=1">화재감지|대피</a></li>
+						<li><a href="/productsform.do">소화기</a></li>
+						<li><a href="#">화재감지|대피</a></li>
 					</ul></li>
-				<li><a href="/productsform.do?prod_high=2&prod_low=1&sort=1">재난/응급/긴급</a>
+				<li><a href="#">재난/응급/긴급</a>
 					<ul class="submenu">
-						<li><a href="/productsform.do?prod_high=2&prod_low=1&sort=1">구급함|제세동기</a></li>
-						<li><a href="/productsform.do?prod_high=2&prod_low=2&sort=1">재난 안전용품</a></li>
-						<li><a href="/productsform.do?prod_high=2&prod_low=3&sort=1">방역 안점용품</a></li>
+						<li><a href="#">구급함|제세동기</a></li>
+						<li><a href="#">재난 안전용품</a></li>
+						<li><a href="#">방역 안점용품</a></li>
 					</ul></li>
-				<li><a href="/productsform.do?prod_high=3&prod_low=1&sort=1">일상/기타</a>
+				<li><a href="#">일상/기타</a>
 					<ul class="submenu">
-						<li><a href="/productsform.do?prod_high=3&prod_low=1&sort=1">마스크</a></li>
-						<li><a href="/productsform.do?prod_high=3&prod_low=2&sort=1">위생장갑</a></li>
-						<li><a href="/productsform.do?prod_high=3&prod_low=3&sort=1">통조림|비상식량</a></li>
+						<li><a href="#">마스크</a></li>
+						<li><a href="#">위생장갑</a></li>
+						<li><a href="#">통조림|비상식량</a></li>
 					</ul></li>
 				<li><a href="#">게시판</a>
                     <ul class="submenu">

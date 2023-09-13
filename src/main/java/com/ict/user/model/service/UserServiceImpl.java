@@ -1,9 +1,14 @@
 package com.ict.user.model.service;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ict.user.model.dao.PointDAO;
 import com.ict.user.model.dao.UserDAO;
@@ -73,31 +78,6 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public UserVO getUserByEmail(String MAIL) {
 		return userDAO.getUserByEmail(MAIL);
-	}
-	//탈퇴
-	@Override
-	public int userOut(UserVO uVO) {
-		return userDAO.userOut(uVO);
-	}
-	//아이디찾기
-	@Override
-	public UserVO findMemberId(UserVO uVO) {
-		return userDAO.findMemberId(uVO);
-	}
-	//아이디 찾아서 비번교체
-	@Override
-	public UserVO findMemberMail(UserVO uVO) {
-		return userDAO.findMemberMail(uVO);
-	}
-	//비번교체용 인서트(업서트는 유니크키 문제로 안함)
-	@Override
-	public UserVO upsertTempPW(UserVO uVO) {
-		return userDAO.upsertTempPW(uVO);
-	}
-	//TEMP_PW 비우기
-	@Override
-	public int resetTempPW(String ID) {
-		return userDAO.resetTempPW(ID);
 	}
 
 

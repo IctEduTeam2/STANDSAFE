@@ -21,8 +21,8 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 	
 	@Override
-	public int getTotalAdNoticeCount() {
-		return noticeDAO.getTotalAdNoticeCount();
+	public int getTotalRecord() {
+		return noticeDAO.getTotalRecord();
 	}
 	
 	@Override
@@ -39,6 +39,14 @@ public class NoticeServiceImpl implements NoticeService{
 	public NoticeVO getAdNoticeOneList(String notice_num) {
 		return noticeDAO.getAdNoticeOneList(notice_num);
 	}
-	//테이블 삭제버튼  
+	
+	//검색 
+	
+	
+	//삭제된 게시물보기   
+	public List<NoticeVO> getDeletedNotices(){
+		return noticeDAO.getDeletedNotices();
+	}
+	
 	
 }
