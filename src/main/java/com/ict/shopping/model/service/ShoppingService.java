@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ict.shopping.model.dao.ShoppingDAO;
 import com.ict.shopping.model.vo.BasketVO;
+import com.ict.shopping.model.vo.PayVO;
 import com.ict.shopping.model.vo.PopUpVO;
 import com.ict.shopping.model.vo.ProductVO;
 import com.ict.shopping.model.vo.WishVO;
@@ -52,6 +53,16 @@ public class ShoppingService {
 	public void getWishAdd(WishVO wvo) {
 		shoppingDAO.getWishAdd(wvo);
 	}
+	
+	// 위시리스트 추가
+	public void getWishAdd2(WishVO wvo) {
+		shoppingDAO.getWishAdd2(wvo);
+	}
+	
+	// 위시리스트 삭제
+	public void getWishDelete(WishVO wvo) {
+		shoppingDAO.getWishDelete(wvo);
+	}
 
 	// 위시리스트 조회
 	public WishVO getWishSelect(WishVO wvo) {
@@ -86,5 +97,25 @@ public class ShoppingService {
 	//포인트 조회
 	public PointVO getPoint(String client_num) {
 		return shoppingDAO.getPoint(client_num);
+	}
+	
+	// 결제
+	public void getPayInsert(PayVO payvo) {
+		shoppingDAO.getPayInsert(payvo);
+	}
+	
+	//결제 후 포인트 차감
+	public void getPointSub(PointVO pointvo) {
+		shoppingDAO.getPointSub(pointvo);
+	}
+	
+	// 상품리스트
+	public List<ProductVO> getProductList(ProductVO pvo) {
+		return shoppingDAO.getProductList(pvo);
+	}
+	
+	// 위시리스트
+	public List<WishVO> getWishList(String client_num) {
+		return shoppingDAO.getWishList(client_num);
 	}
 }

@@ -1,10 +1,18 @@
 package com.ict.shopping.model.vo;
 
 public class PayVO {
-	private String pay_num, take_peo, take_addr, take_phone, take_memo, pay_type, pay_card, pay_ok, pay_oknum, pay_st, cart_num, client_num;
+	private String pay_num, take_peo, take_addr, take_phone, take_memo, pay_type, pay_card, pay_ok, pay_oknum, pay_st, cart_num, client_num, paymentKey;
 
 	public String getPay_num() {
 		return pay_num;
+	}
+
+	public String getPaymentKey() {
+		return paymentKey;
+	}
+
+	public void setPaymentKey(String paymentKey) {
+		this.paymentKey = paymentKey;
 	}
 
 	public void setPay_num(String pay_num) {
