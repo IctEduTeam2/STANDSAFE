@@ -111,8 +111,13 @@
     #h1{
     padding-top: 200px;
     }
+table td:nth-child(4) {
+  text-align: left;
+  padding-left: 70px;
+}
 
 </style> 
+
 </head>
 <body onload="InitializeStaticMenu();">
 	<div id="mydiv">
@@ -171,23 +176,23 @@
 					<table class="m_table">				
 						<thead class="mh_table">
 							 <tr>
-							 	<th id="th1">번호</th><th id="th4">파일첨부</th><th id="th2">제목</th><th id="th3">작성자</th><th id="th5">조회수</th><th id="th6">날짜</th>
+							 	<th id="th1">번호</th><th id="th4">파일첨부</th><th id="th3">유형</th><th id="th2">제목</th><th id="th5">작성자</th><th id="th6">날짜</th>
 							 </tr>
 						</thead>
 						<tbody class="mb_table">	
 							<c:choose>
-								<c:when test="${empty s_result2}">
+								<c:when test="${empty s_result5}">
 									<tr>
 										<td colspan="6"><p>검색결과가 존재하지 않습니다.</p></td>
 									</tr>
 								</c:when>
 								<c:otherwise>
-									<c:forEach var="k" items="${s_result2}" varStatus="vs">
+									<c:forEach var="k" items="${s_result5}" varStatus="vs">
 										<tr>
 											<td>${vs.index}</td>
 											<td>
 												<c:choose>
-													<c:when test="${empty k.EVENT_FILE}">
+													<c:when test="${empty k.RE_FILE}">
 														없음
 													</c:when>
 													<c:otherwise>
@@ -195,15 +200,22 @@
 													</c:otherwise>
 												</c:choose>				
 											</td>
+											<td>${k.RE_TYPE }</td>
 											<c:choose>
-												<c:when test="${k.EVENT_ST ==1 }">
-													<td><a href="/bbs_event_onelist.do?EVENT_NUM=${k.EVENT_NUM}&cPage=${paging.nowPage}">${k.EVENT_SUBJECT}</a></td>				
-												</c:when>
-											</c:choose>
+												  <c:when test="${k.RE_ST == 0}">
+												    <td style="color: gray;">삭제된 게시물입니다.</td>
+												  </c:when>
+												  <c:otherwise>
+												    <td>
+												      <a href="/bbs_review_onelist.do?RE_NUM=${k.RE_NUM}&cPage=${paging.nowPage}">
+												        ${k.RE_LOCK == 1 ? '[비밀] ' : ''}${k.RE_SUBJECT}
+												      </a>
+												    </td>
+												  </c:otherwise>
+												</c:choose>
 											<!--onelist 갈때 cPage 필요하다. 같이보내자. -->
-											<td>${k.EVENT_WRITER}</td>
-											<td>${k.EVENT_HIT}</td>
-											<td>${k.EVENT_DATE.substring(0,10)}</td>
+											<td>${k.RE_WRITER}</td>	
+											<td>${k.RE_DATE.substring(0,10)}</td>
 										</tr>
 									</c:forEach>
 								</c:otherwise>
