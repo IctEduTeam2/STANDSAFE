@@ -26,7 +26,7 @@ public class NoticeDAO {
 		return list;
 	}
 	//전체게시글 수
-	public int getTotalAdNoticeCount() {
+	public int getTotalRecord() {
 		return sqlSessionTemplate.selectOne("notice.noticecount");
 	}
 	
@@ -44,6 +44,14 @@ public class NoticeDAO {
 	public NoticeVO getAdNoticeOneList(String notice_num) {
 		return sqlSessionTemplate.selectOne("notice.noticeonelist", notice_num);
 	}
-	//테이블 삭제버튼 
+	
+	//검색 
+	
+	
+	//삭제된 게시물 보기 
+	public List<NoticeVO> getDeletedNotices(){
+		return sqlSessionTemplate.selectList("notice.noticetable");
+	}
+	
 	
 }
