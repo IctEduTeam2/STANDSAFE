@@ -53,10 +53,15 @@ public class ShoppingDAO {
 	public void getWishAdd(WishVO wvo) {
 		sqlSessionTemplate.insert("shopping.wishadd", wvo);
 	}
-	
+
 	// 위시추가
 	public void getWishAdd2(WishVO wvo) {
 		sqlSessionTemplate.update("shopping.wishadd2", wvo);
+	}
+
+	// 위시리스트 삭제
+	public void getWishDelete(WishVO wvo) {
+		sqlSessionTemplate.update("shopping.wishdelete", wvo);
 	}
 
 	// 위시리스트 조회

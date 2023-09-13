@@ -58,7 +58,11 @@ public class ShoppingService {
 	public void getWishAdd2(WishVO wvo) {
 		shoppingDAO.getWishAdd2(wvo);
 	}
-
+	
+	// 위시리스트 삭제
+	public void getWishDelete(WishVO wvo) {
+		shoppingDAO.getWishDelete(wvo);
+	}
 
 	// 위시리스트 조회
 	public WishVO getWishSelect(WishVO wvo) {

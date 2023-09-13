@@ -175,19 +175,18 @@ function deleteSelectedProducts() {
   // 배열을 문자열로 변환하여 hidden input에 설정
   document.getElementById('selectedProducts').value = selectedProducts.join(',');
 
-  // 폼 제출
-  document.getElementById('productForm').submit();
+  if (selectedProducts.length === 0) {
+	    alert('삭제할 상품이 선택해주세요');
+	  } else {
+	    document.getElementById('productForm').submit();
+	    alert('선택한 상품을 삭제하였습니다.');
+	  }
+  
 }
 </script>	
 
 </head>
 <body onload="InitializeStaticMenu();">
-<script type="text/javascript">
-    var alertMessage = "${alertMessage}";
-    if (alertMessage) {
-        alert(alertMessage);
-    }
-</script>
 	<div id="mydiv">
 		<jsp:include page="../Semantic/header.jsp"></jsp:include>
 		<section id="contents" style="border: 0px solid black;">

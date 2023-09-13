@@ -17,7 +17,7 @@
 			alert("로그인 후 이용 가능합니다.");
 			return;
 		} else {
-		alert("장바구니에 담았습니다.");
+		alert("상품을 장바구니에 담았습니다.");
 		var prod_num = button.getAttribute('data-prodnum');
 		var client_num = button.getAttribute('data-usernum');
 		location.href = "/basketAdd.do?client_num=" + client_num + "&prod_num="

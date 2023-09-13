@@ -34,7 +34,7 @@
 			<% if (session.getAttribute("loginChk") != null && session.getAttribute("loginChk").equals("ok")) { %>
   	 		 <!-- 로그인 된 상태 -->
 			<div id="loggedIn">
-			<a class="top_gnb_a">${nick }님(P:${sessionScope.POINT_REM })</a> <a class="top_gnb_a" href="/logoutGo.do">로그아웃</a>
+			<a class="top_gnb_a">${nick }님(P:${POINT_REM })</a> <a class="top_gnb_a" href="/logoutGo.do">로그아웃</a>
 			<a class="top_gnb_a" href="/orderlistform.do?client_num=${id}">주문조회</a> <a class="top_gnb_a" href="/basketform.do?client_num=${id}">장바구니</a>
 			<a class="top_gnb_a" href="/mypageform.do?client_num=${id }">마이페이지</a> <a href="/wishlistform.do?client_num=${id }"
 				class="top_gnb_last_a">관심상품</a>

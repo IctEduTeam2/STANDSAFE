@@ -127,7 +127,7 @@ public class ShoppingController {
 	}
 
 	// 상품상세 장바구니 담기
-	@PostMapping("/cartadd.do")
+	@RequestMapping("/cartadd.do")
 	public ModelAndView getCartAdd(@RequestParam("prod_num") String prod_num,
 			@RequestParam("client_num") String client_num, @RequestParam("quantity") String quantity,
 			@RequestParam("st") String st) {
@@ -151,11 +151,14 @@ public class ShoppingController {
 		} catch (Exception e) { // 장바구니에 상품이 존재하지 않을때
 			shoppingService.getBasket(bvo);
 		}
-		System.out.println(st);
 		if (st.equals("0")) {
 			return new ModelAndView("redirect:/productOneListform.do?prod_num=" + prod_num);
-		} else {
+		} else if (st.equals("1")) {
 			return new ModelAndView("redirect:/basketform.do?client_num=" + client_num);
+		} else if (st.equals("2")) {
+			return new ModelAndView("redirect:/wishlistform.do?client_num=" + client_num);
+		} else {
+			return new ModelAndView("shopping/error");
 		}
 	}
 
@@ -178,7 +181,7 @@ public class ShoppingController {
 				// 처음 담는경우
 				shoppingService.getWishAdd(wvo);
 				alertMessage = "위시리스트에 담았습니다.";
-			} else if(wvochk.getWish_st().equals("1")) {
+			} else if (wvochk.getWish_st().equals("1")) {
 				shoppingService.getWishAdd2(wvo);
 				alertMessage = "위시리스트에 담았습니다.";
 			} else if (wvochk.getWish_st().equals("0")) {
@@ -195,47 +198,90 @@ public class ShoppingController {
 		return mv;
 	}
 
-	@PostMapping("/deleteSelectedProducts.do")
-	@ResponseBody
-	public ModelAndView deleteSelectedProducts(@RequestParam("selectedProducts") String selectedProducts,
-			@RequestParam("client_num") String client_num) {
-		ModelAndView mv = new ModelAndView("shopping/basket");
-		System.out.println(selectedProducts);
-		String alertMessage = null;
-		if (selectedProducts == null || selectedProducts.equals("")) {
-			alertMessage = "삭제할 상품을 선택해주세요.";
-			mv.addObject("alertMessage", alertMessage);
-		} else {
-			String[] valuesArray = selectedProducts.split(",");
-			BasketVO bvo = new BasketVO();
-			for (int i = 0; i < valuesArray.length; i++) {
-				bvo.setProd_num(valuesArray[i]);
-				bvo.setClient_num(client_num);
-				shoppingService.getBasketProductDel(bvo);
-			}
-			alertMessage = "상품을 삭제 하였습니다.";
-			mv.addObject("alertMessage", alertMessage);
+	// 위시리스트
+	@GetMapping("/wishlistform.do")
+	public ModelAndView getWishlistForm(@RequestParam("client_num") String client_num) {
+		ModelAndView mv = new ModelAndView("shopping/wishlist");
+		List<WishVO> wishlist = shoppingService.getWishList(client_num);
+		List<ProductVO> prodlist = new ArrayList<>();
+
+		for (WishVO wishItem : wishlist) {
+			prodlist.add(shoppingService.getProductOne(wishItem.getProd_num()));
 		}
-		List<BasketVO> bvolist = shoppingService.getBasketList(client_num);
-		List<ProductVO> productList = new ArrayList();
-		int sum = 0;
-		int sale = 0;
-		for (BasketVO basket : bvolist) {
-			ProductVO product = shoppingService.getProductOne(basket.getProd_num());
-			productList.add(product);
-			sum += Integer.parseInt(product.getProd_price()) * Integer.parseInt(basket.getCart_amount());
-			if (!product.getProd_sale().equals("0")) {
-				sale += (Integer.parseInt(product.getProd_price()) - Integer.parseInt(product.getProd_sale()))
-						* Integer.parseInt(basket.getCart_amount());
-			}
-		}
-		mv.addObject("sale", sale);
-		mv.addObject("sum", sum);
-		mv.addObject("prodList", productList);
-		mv.addObject("bvolist", bvolist);
+
+		mv.addObject("prodlist", prodlist);
+		mv.addObject("wishlist", wishlist);
 		return mv;
 	}
 
+	// 위시리스트 삭제
+	@GetMapping("/deleteWish.do")
+	public ModelAndView getWishDelete(@RequestParam("client_num") String client_num,
+			@RequestParam("prod_num") String prod_num) {
+		WishVO wvo = new WishVO();
+		wvo.setClient_num(client_num);
+		wvo.setProd_num(prod_num);
+		wvo.setWish_st("1");
+		shoppingService.getWishDelete(wvo);
+		return new ModelAndView("redirect:/wishlistform.do?client_num=" + client_num);
+	}
+
+	// 위시리스트 선택목록 삭제
+	@PostMapping("/deleteSelectedWish.do")
+	@ResponseBody
+	public ModelAndView deleteSelectedWish(@RequestParam("selectedProducts") String selectedProducts,
+			@RequestParam("client_num") String client_num) {
+		ModelAndView mv = new ModelAndView("redirect:/wishlistform.do?client_num=" + client_num);
+		if (selectedProducts == null || selectedProducts.equals("")) {
+		} else {
+			String[] valuesArray = selectedProducts.split(",");
+			WishVO wvo = new WishVO();
+			for (int i = 0; i < valuesArray.length; i++) {
+				wvo.setProd_num(valuesArray[i]);
+				wvo.setClient_num(client_num);
+				wvo.setWish_st("1");
+				shoppingService.getWishDelete(wvo);
+			}
+		}
+		return mv;
+	}
+
+	// 위시리스트 선택목록 장바구니 담기
+	@PostMapping("/bsketSelectedWish.do")
+	@ResponseBody
+	public ModelAndView basketSelectedWish(@RequestParam("selectedProducts") String selectedProducts,
+			@RequestParam("client_num") String client_num) {
+		ModelAndView mv = new ModelAndView("redirect:/wishlistform.do?client_num=" + client_num);
+		String[] valuesArray = selectedProducts.split(",");
+		for (int i = 0; i < valuesArray.length; i++) {
+			System.out.println(valuesArray[i]);
+			BasketVO bvo = new BasketVO();
+			bvo.setProd_num(valuesArray[i]);
+
+			ProductVO pvo = shoppingService.getProductOne(valuesArray[i]); // 세일이 아닐때
+			if (pvo.getProd_sale().equals("0")) {
+				bvo.setCart_price(pvo.getProd_price());
+			} else {
+				bvo.setCart_price(pvo.getProd_sale());
+			}
+
+			bvo.setClient_num(client_num);
+			bvo.setCart_amount("1");
+			bvo.setCart_st("0");
+
+			try {
+				BasketVO bvo2 = shoppingService.getBasketSelect(bvo);
+				if (bvo2.getCart_num() != null) { // 장바구니에 상품이 존재 할 때
+					shoppingService.getBasketUpdate(bvo);
+				}
+			} catch (Exception e) { // 장바구니에 상품이 존재하지 않을때
+				shoppingService.getBasket(bvo);
+			}
+		}
+		return mv;
+	}
+
+	// 장바구니로 이동
 	@RequestMapping("/basketform.do")
 	public ModelAndView getBasketList(@RequestParam("client_num") String client_num) {
 		ModelAndView mv = new ModelAndView("shopping/basket");
@@ -259,6 +305,44 @@ public class ShoppingController {
 		return mv;
 	}
 
+	// 장바구니 선택목록 삭제
+	@PostMapping("/deleteSelectedProducts.do")
+	@ResponseBody
+	public ModelAndView deleteSelectedProducts(@RequestParam("selectedProducts") String selectedProducts,
+			@RequestParam("client_num") String client_num) {
+		ModelAndView mv = new ModelAndView("shopping/basket");
+		System.out.println(selectedProducts);
+		if (selectedProducts == null || selectedProducts.equals("")) {
+		} else {
+			String[] valuesArray = selectedProducts.split(",");
+			BasketVO bvo = new BasketVO();
+			for (int i = 0; i < valuesArray.length; i++) {
+				bvo.setProd_num(valuesArray[i]);
+				bvo.setClient_num(client_num);
+				shoppingService.getBasketProductDel(bvo);
+			}
+		}
+		List<BasketVO> bvolist = shoppingService.getBasketList(client_num);
+		List<ProductVO> productList = new ArrayList();
+		int sum = 0;
+		int sale = 0;
+		for (BasketVO basket : bvolist) {
+			ProductVO product = shoppingService.getProductOne(basket.getProd_num());
+			productList.add(product);
+			sum += Integer.parseInt(product.getProd_price()) * Integer.parseInt(basket.getCart_amount());
+			if (!product.getProd_sale().equals("0")) {
+				sale += (Integer.parseInt(product.getProd_price()) - Integer.parseInt(product.getProd_sale()))
+						* Integer.parseInt(basket.getCart_amount());
+			}
+		}
+		mv.addObject("sale", sale);
+		mv.addObject("sum", sum);
+		mv.addObject("prodList", productList);
+		mv.addObject("bvolist", bvolist);
+		return mv;
+	}
+
+	// 수량증가
 	@PostMapping("/updateamount.do")
 	public ModelAndView getUpdateAmount(BasketVO bvo, String st) {
 		System.out.println(st);
@@ -279,6 +363,7 @@ public class ShoppingController {
 		return new ModelAndView("redirect:/basketform.do?client_num=" + bvo.getClient_num());
 	}
 
+	// 주문페이지로 이동
 	@GetMapping("/orderform.do")
 	public ModelAndView getOrderForm(@RequestParam("client_num") String client_num) {
 		ModelAndView mv = new ModelAndView("shopping/order2");
@@ -315,7 +400,7 @@ public class ShoppingController {
 		return mv;
 	}
 
-	// 포인트
+	// 포인트 구매시
 	@PostMapping("/ordercom.do")
 	// String take_peo, String address, String extraAddress, String detailAddress,
 	// String phone, String memo, String order_num, String prod_num, String
@@ -351,7 +436,7 @@ public class ShoppingController {
 		return null;
 	}
 
-	// 온라인결제
+	// 온라인결제시
 	@GetMapping("/ordercom2.do")
 	// String take_peo, String address, String extraAddress, String detailAddress,
 	// String phone, String memo, String order_num, String prod_num, String
@@ -394,19 +479,19 @@ public class ShoppingController {
 		pvo.setProd_low(prod_low);
 		List<ProductVO> prodlist = shoppingService.getProductList(pvo);
 		List<ProductVO> sortedList = new ArrayList<>(prodlist);
-		
+
 		if ("1".equals(sort)) { // 최신순
-		    sortedList.sort(Comparator.comparing(ProductVO::getProd_regdate).reversed());
+			sortedList.sort(Comparator.comparing(ProductVO::getProd_regdate).reversed());
 		} else if ("2".equals(sort)) { // 가나다순
-		    sortedList.sort(Comparator.comparing(ProductVO::getProd_name));
+			sortedList.sort(Comparator.comparing(ProductVO::getProd_name));
 		} else if ("3".equals(sort)) { // 낮은 가격순
-		    sortedList.sort((p1, p2) -> {
-		        int price1 = Integer.parseInt(p1.getProd_sale().equals("0") ? p1.getProd_price() : p1.getProd_sale());
-		        int price2 = Integer.parseInt(p2.getProd_sale().equals("0") ? p2.getProd_price() : p2.getProd_sale());
-		        return Integer.compare(price1, price2);
-		    });
+			sortedList.sort((p1, p2) -> {
+				int price1 = Integer.parseInt(p1.getProd_sale().equals("0") ? p1.getProd_price() : p1.getProd_sale());
+				int price2 = Integer.parseInt(p2.getProd_sale().equals("0") ? p2.getProd_price() : p2.getProd_sale());
+				return Integer.compare(price1, price2);
+			});
 		} else if ("4".equals(sort)) { // 인기순
-		    sortedList.sort(Comparator.comparing(ProductVO::getProd_amount));
+			sortedList.sort(Comparator.comparing(ProductVO::getProd_amount));
 		}
 
 		// sortedList를 화면에 전달
@@ -418,12 +503,4 @@ public class ShoppingController {
 		return mv;
 	}
 	
-	// 위시리스트
-	@GetMapping("/wishlistform.do")
-	public ModelAndView getWishlistForm(@RequestParam("client_num")String client_num) {
-		ModelAndView mv = new ModelAndView("shopping/wishlist");
-		List<WishVO> wishlist = shoppingService.getWishList(client_num);
-		mv.addObject("wishlist", wishlist);
-		return mv;
-	}
 }
