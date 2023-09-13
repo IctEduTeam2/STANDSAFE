@@ -98,14 +98,6 @@ $(document).ready(function() {
 
 	
 </script>
-<script type="text/javascript">
-	function search_go() {
-		var searchText = document.getElementById("s_bar").value;
-		alert(searchText);
-		/* 이부분은 나중에 일처리해서 검색창화면으로 가게하기.  */
-		
-	}
-</script>
 </head>
 <body onload="InitializeStaticMenu();">
 	<div id="mydiv">
@@ -114,20 +106,22 @@ $(document).ready(function() {
 			<article>
 						<div id="bbs_top" >		
 						<div id="bbs_sub"><h1>자주 묻는 질문 FAQ</h1></div>			
-							<fieldset >
-								<label>
-									<input type="radio" name="search" value="subject"  checked />
-									<span>제목</span>					
-								</label>
-								<label>
-									<input type="radio" name="search" value="content" />
-									<span>내용</span>					
-								</label>
-								<div id="search_bar">
-									<input type="text" id="s_bar" placeholder="검색어입력">
-									<button id="s_btn" onclick="search_go()">검색</button>			
-								</div>				
-							</fieldset>		
+						<form action="/bbs_faq_search.do" method="post">
+							<fieldset>
+							        <label>
+							            <input type="radio" name="searchType" value="제목" id="type_title" checked />
+							            <span>제목</span>
+							        </label>
+							        <label>
+							            <input type="radio" name="searchType" value="내용" id="type_content" />
+							            <span>내용</span>
+							        </label>
+							        <div id="search_bar">
+							            <input type="text" id="s_bar" name="searchText" placeholder="검색어입력">
+							            <button id="s_btn" type="submit">검색</button>
+							        </div>
+							    </fieldset>	
+							</form>
 						</div>  <!--  제목및 버튼검색창의 끝 -->	
 					<hr class="hr">
 					<!-- 메인 테이블 -->
@@ -153,7 +147,7 @@ $(document).ready(function() {
 												<td>
 													<a class="title">
 													${k.FA_SUBJECT}</a>
-													</td>																		 																															 												
+												</td>																		 																															 												
 												<td>${k.FA_WRITER}</td>
 												<td>${k.FA_DATE.substring(0,10)}</td>
 											</tr>

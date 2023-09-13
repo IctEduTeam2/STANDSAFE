@@ -7,210 +7,460 @@
  
  
  	<!--공지사항  -->
-      <!-- 페이징을 위한 시작과 끝구하고, 리스트 출력  -->
-   <select id="noticelist" parameterType="Map" resultType="nbbsvo">
-    	select * from NOTICE_T  where NOTICE_ST = 1  
-    	order by NOTICE_NUM desc limit #{limit} offset #{offset}
-    	
-   </select> 
-   
-      <!--게시글 갯수구하기  -->
-   <select id="noticecount" resultType="int">
-   	select count(*) from NOTICE_T
-   </select>
-   
+    <!-- 페이징을 위한 시작과 끝구하고, 리스트 출력  -->
+	   <select id="noticelist" parameterType="Map" resultType="nbbsvo">
+	    select * from NOTICE_T  where NOTICE_ST = 1  
+	    order by NOTICE_NUM desc limit #{limit} offset #{offset}	
+	   </select>    
+   <!--게시글 갯수구하기  -->
+	   <select id="noticecount" resultType="int">
+	   	select count(*) from NOTICE_T
+	   </select>
    <!--상세  -->
-   <select id="noticeonelist" parameterType="String" resultType="nbbsvo">
-   	select * from NOTICE_T where NOTICE_NUM = #{NOTICE_NUM}
-   </select>
-   
+	   <select id="noticeonelist" parameterType="String" resultType="nbbsvo">
+	   	select * from NOTICE_T where NOTICE_NUM = #{NOTICE_NUM}
+	   </select>
    <!--조회수  -->
-   <update id="noticehitup" parameterType="String">
-   	update NOTICE_T
-   	set NOTICE_HIT = NOTICE_HIT +1
-   	where NOTICE_NUM = #{NOTICE_NUM}
-   </update>
-   
+	   <update id="noticehitup" parameterType="String">
+	   	update NOTICE_T
+	   	set NOTICE_HIT = NOTICE_HIT +1
+	   	where NOTICE_NUM = #{NOTICE_NUM}
+	   </update>
+	   
    
    
    	<!--이벤트 -->
-      <!-- 페이징을 위한 시작과 끝구하고, 리스트 출력  -->
-   <select id="eventlist" parameterType="Map" resultType="ebbsvo">
-    	select * from EVENT_T  where EVENT_ST = 1  
-    	order by EVENT_NUM desc limit #{limit} offset #{offset}
-    	
-   </select> 
+    <!-- 페이징을 위한 시작과 끝구하고, 리스트 출력  -->
+	   <select id="eventlist" parameterType="Map" resultType="ebbsvo">
+	    select * from EVENT_T  where EVENT_ST = 1  
+	    order by EVENT_NUM desc limit #{limit} offset #{offset} 	
+	   </select> 
    
-      <!--게시글 갯수구하기  -->
-   <select id="eventcount" resultType="int">
-   	select count(*) from EVENT_T
-   </select>
-   
+   <!--게시글 갯수구하기  -->
+	   <select id="eventcount" resultType="int">
+	   	select count(*) from EVENT_T
+	   </select>
    <!--상세  -->
-   <select id="eventonelist" parameterType="String" resultType="ebbsvo">
-   	select * from EVENT_T where EVENT_NUM = #{EVENT_NUM}
-   </select>
-   
+	   <select id="eventonelist" parameterType="String" resultType="ebbsvo">
+	   	select * from EVENT_T where EVENT_NUM = #{EVENT_NUM}
+	   </select>
    <!--조회수  -->
-   <update id="eventhitup" parameterType="String">
-   	update EVENT_T
-   	set EVENT_HIT = EVENT_HIT +1
-   	where EVENT_NUM = #{EVENT_NUM }
-   </update>
+	   <update id="eventhitup" parameterType="String">
+	   	update EVENT_T
+	   	set EVENT_HIT = EVENT_HIT +1
+	   	where EVENT_NUM = #{EVENT_NUM }
+	   </update>
    
    
    
    <!-- faq  -->
-    <select id="faqlist" parameterType="Map" resultType="faqbbsvo">
-    	select * from FAQ_T  where FA_ST = 1  
-    	order by FA_NUM desc limit #{limit} offset #{offset}
-    	
-   </select> 
-   
-       <!--게시글 갯수구하기  -->
-   <select id="faqcount" resultType="int">
-   	select count(*) from FAQ_T
-   </select>
-
+	    <select id="faqlist" parameterType="Map" resultType="faqbbsvo">
+	    select * from FAQ_T  where FA_ST = 1  
+	    order by FA_NUM desc limit #{limit} offset #{offset}
+	   </select>  
+   <!--게시글 갯수구하기  -->
+	   <select id="faqcount" resultType="int">
+	   	select count(*) from FAQ_T
+	   </select>
    <!--조회수  -->
-   <update id="faqhitup" parameterType="String">
-   	update FAQ_T
-   	set FA_HIT = FA_HIT +1
-   	where FA_NUM = #{FA_NUM }
-   </update>
-   
-    <select id="faqonelist" parameterType="String" resultType="faqbbsvo">
-   	select * from FAQ_T where  FA_NUM  = #{ FA_NUM }
-   </select>
+	   <update id="faqhitup" parameterType="String">
+	   	update FAQ_T
+	   	set FA_HIT = FA_HIT +1
+	   	where FA_NUM = #{FA_NUM }
+	   </update> 
+	<!--상세  -->
+	    <select id="faqonelist" parameterType="String" resultType="faqbbsvo">
+	   	select * from FAQ_T where  FA_NUM  = #{ FA_NUM }
+	 	</select>
    
    
    
      <!-- 상품 Q&A -->
-      <!-- 페이징을 위한 시작과 끝구하고, 리스트 출력  -->
-   <select id="qnalist" parameterType="Map" resultType="qnabbsvo">
-    	select * from QA_T 
-    	order by BOARD_NUM desc limit #{limit} offset #{offset}
-    	
-   </select> 
-   
-      <!--게시글 갯수구하기  -->
-   <select id="qnacount" resultType="int">
-   	select count(*) from QA_T
-   </select>
-   
+     <!-- 페이징을 위한 시작과 끝구하고, 리스트 출력  -->
+	   <select id="qnalist" parameterType="Map" resultType="qnabbsvo">
+	    select * from QA_T 
+	    order by BOARD_NUM desc limit #{limit} offset #{offset}	
+	   </select> 
+     <!--게시글 갯수구하기  -->
+	   <select id="qnacount" resultType="int">
+	   	select count(*) from QA_T
+	   </select>
    <!--상세  -->
-   <select id="qnaonelist" parameterType="String" resultType="qnabbsvo">
-   	select * from QA_T where BOARD_NUM = #{BOARD_NUM}
-   </select>
-   
-   <insert id="qnainsert" parameterType="qnabbsvo" >
-   	insert into QA_T (BOARD_SUBJECT, BOARD_WRITER, BOARD_CONTENT, BOARD_FILE, BOARD_ST,BOARD_LOCK, BOARD_DATE, BOARD_TYPE,CLIENT_NUM,PROD_NUM)
-   	values(#{BOARD_SUBJECT},#{BOARD_WRITER},#{BOARD_CONTENT},#{BOARD_FILE},1,#{BOARD_LOCK},SYSDATE(),#{BOARD_TYPE},#{CLIENT_NUM}, #{PROD_NUM})
-   </insert>
-   
-   
-   <update id="qnaupdate" parameterType="qnabbsvo">
-   	update QA_T
-	set
-    BOARD_SUBJECT=#{BOARD_SUBJECT},
-    BOARD_CONTENT=#{BOARD_CONTENT},
-    BOARD_FILE=#{BOARD_FILE},
-    BOARD_ST=1,
-    BOARD_LOCK=#{BOARD_LOCK},
-    BOARD_UPDATE=SYSDATE(),
-    BOARD_TYPE=#{BOARD_TYPE},
-    CLIENT_NUM=#{CLIENT_NUM},
-    PROD_NUM=#{PROD_NUM}
-	where BOARD_NUM=#{BOARD_NUM}
-   </update>
-
-
-
-   <update id="qnadelete" parameterType="String">
-   	update QA_T
-   	set BOARD_ST = 0 where BOARD_NUM = #{BOARD_NUM}
-   </update>
+	   <select id="qnaonelist" parameterType="String" resultType="qnabbsvo">
+	   	select * from QA_T where BOARD_NUM = #{BOARD_NUM}
+	   </select>
+   <!-- 상세 -->
+	   <insert id="qnainsert" parameterType="qnabbsvo" >
+	   	insert into QA_T (BOARD_SUBJECT, BOARD_WRITER, BOARD_CONTENT, BOARD_FILE, BOARD_ST,BOARD_LOCK, BOARD_DATE, BOARD_TYPE,CLIENT_NUM,PROD_NUM)
+	   	values(#{BOARD_SUBJECT},#{BOARD_WRITER},#{BOARD_CONTENT},#{BOARD_FILE},1,#{BOARD_LOCK},SYSDATE(),#{BOARD_TYPE},#{CLIENT_NUM}, #{PROD_NUM})
+	   </insert>
+ 	<!-- 수정 -->  
+	   <update id="qnaupdate" parameterType="qnabbsvo">
+	   	update QA_T
+		set
+	    BOARD_SUBJECT=#{BOARD_SUBJECT},
+	    BOARD_CONTENT=#{BOARD_CONTENT},
+	    BOARD_FILE=#{BOARD_FILE},
+	    BOARD_ST=1,
+	    BOARD_LOCK=#{BOARD_LOCK},
+	    BOARD_UPDATE=SYSDATE(),
+	    BOARD_TYPE=#{BOARD_TYPE},
+	    CLIENT_NUM=#{CLIENT_NUM},
+	    PROD_NUM=#{PROD_NUM}
+		where BOARD_NUM=#{BOARD_NUM}
+	   </update>
+   <!--삭제  -->
+	   <update id="qnadelete" parameterType="String">
+	   	update QA_T
+	   	set BOARD_ST = 0 where BOARD_NUM = #{BOARD_NUM}
+	   </update>
   
   
   
   
   <!--신고 -->
-  <select id="reportlist" parameterType="Map" resultType="repbbsvo">
-    	select * from REPORT_T 
-    	order by REPORT_NUM desc limit #{limit} offset #{offset}
-    	
-   </select> 
-   
-      <!--게시글 갯수구하기  -->
-   <select id="reportcount" resultType="int">
-   	select count(*) from REPORT_T
-   </select>
-   
+	  <select id="reportlist" parameterType="Map" resultType="repbbsvo">
+	    select * from REPORT_T 
+	    order by REPORT_NUM desc limit #{limit} offset #{offset}
+	   </select> 
+   <!--게시글 갯수구하기  -->
+	   <select id="reportcount" resultType="int">
+	   	select count(*) from REPORT_T
+	   </select>
    <!--상세  -->
-   <select id="reportonelist" parameterType="String" resultType="repbbsvo">
-   	select * from REPORT_T where REPORT_NUM = #{REPORT_NUM}
-   </select>
-   
-   <insert id="reportinsert" parameterType="repbbsvo" >
-   	insert into REPORT_T (REPORT_SUBJECT, REPORT_WRITER,REPORT_CONTENT, REPORT_FILE, REPORT_DATE, REPORT_TYPE,CLIENT_NUM,PROD_NUM)
-   	values(#{REPORT_SUBJECT},#{REPORT_WRITER},#{REPORT_CONTENT},#{REPORT_FILE},SYSDATE(),#{REPORT_TYPE},#{CLIENT_NUM}, #{PROD_NUM})
-   </insert>
-   
-   
-   
+	   <select id="reportonelist" parameterType="String" resultType="repbbsvo">
+	   	select * from REPORT_T where REPORT_NUM = #{REPORT_NUM}
+	   </select>
+
+  
+  
    <!-- review -->
-
-    <!-- 페이징을 위한 시작과 끝구하고, 리스트 출력  -->
-   <select id="reviewlist" parameterType="Map" resultType="reviewbbsvo">
-    	select * from REVIEW_T 
-    	order by RE_NUM desc limit #{limit} offset #{offset}
-    	
-   </select> 
+   <!-- 페이징을 위한 시작과 끝구하고, 리스트 출력  -->
+	   <select id="reviewlist" parameterType="Map" resultType="reviewbbsvo">
+	    select * from REVIEW_T 
+	    order by RE_NUM desc limit #{limit} offset #{offset}
+	   </select> 
    
-      <!--게시글 갯수구하기  -->
-   <select id="reviewcount" resultType="int">
-   	select count(*) from REVIEW_T
-   </select>
-   
+   <!--게시글 갯수구하기  -->
+	   <select id="reviewcount" resultType="int">
+	   	select count(*) from REVIEW_T
+	   </select>
    <!--상세  -->
-   <select id="reviewonelist" parameterType="String" resultType="reviewbbsvo">
-   	select * from REVIEW_T where RE_NUM = #{RE_NUM}
-   </select>
-   
-   <insert id="reviewinsert" parameterType="reviewbbsvo" >
-   	insert into REVIEW_T (RE_SUBJECT, RE_WRITER, RE_CONTENT, RE_FILE, RE_TYPE,  RE_DATE, RE_UPDATE, RE_LOCK,CLIENT_NUM,PROD_NUM)
-   	values(#{RE_SUBJECT},#{RE_WRITER},#{RE_CONTENT},#{RE_FILE},#{RE_TYPE},SYSDATE(),#{RE_UPDATE},#{RE_LOCK}, #{CLIENT_NUM}, #{PROD_NUM})
-   </insert>
-   
-   
-   <update id="reviewupdate" parameterType="reviewbbsvo">
-   	update REVIEW_T
-	set
-    RE_SUBJECT=#{RE_SUBJECT},
-    RE_CONTENT=#{RE_CONTENT},
-    RE_FILE=#{RE_FILE},
-    RE_LOCK=#{RE_LOCK},
-    RE_UPDATE=SYSDATE(),
-    RE_TYPE=#{RE_TYPE},
-    CLIENT_NUM=#{CLIENT_NUM},
-    PROD_NUM=#{PROD_NUM}
-	where RE_NUM=#{RE_NUM}
-   </update>
-
-   <update id="reviewdelete" parameterType="String">
-   	update REVIEW_T
-   	set RE_ST = 0 where RE_NUM = #{RE_NUM}
-   	
-   </update>
+	   <select id="reviewonelist" parameterType="String" resultType="reviewbbsvo">
+	   	select * from REVIEW_T where RE_NUM = #{RE_NUM}
+	   </select>
+   <!--삽입  -->
+	   <insert id="reviewinsert" parameterType="reviewbbsvo" >
+	   	insert into REVIEW_T (RE_SUBJECT, RE_WRITER, RE_CONTENT, RE_FILE, RE_TYPE,  RE_DATE, RE_UPDATE, RE_LOCK,CLIENT_NUM,PROD_NUM)
+	   	values(#{RE_SUBJECT},#{RE_WRITER},#{RE_CONTENT},#{RE_FILE},#{RE_TYPE},SYSDATE(),#{RE_UPDATE},#{RE_LOCK}, #{CLIENT_NUM}, #{PROD_NUM})
+	   </insert>
+   <!--수정  -->
+	   <update id="reviewupdate" parameterType="reviewbbsvo">
+	   	update REVIEW_T
+		set
+	    RE_SUBJECT=#{RE_SUBJECT},
+	    RE_CONTENT=#{RE_CONTENT},
+	    RE_FILE=#{RE_FILE},
+	    RE_LOCK=#{RE_LOCK},
+	    RE_UPDATE=SYSDATE(),
+	    RE_TYPE=#{RE_TYPE},
+	    CLIENT_NUM=#{CLIENT_NUM},
+	    PROD_NUM=#{PROD_NUM}
+		where RE_NUM=#{RE_NUM}
+	   </update>
+	<!--삭제  -->
+	   <update id="reviewdelete" parameterType="String">
+	   	update REVIEW_T
+	   	set RE_ST = 0 where RE_NUM = #{RE_NUM}
+	   </update>
    
    
-   <!-- 검색 -->
-   
-   <select id="searchevcon" parameterType="String" resultType="ebbsvo">
+   <!-- 검색 이벤트 - 검색-->
+   <select id="searchevscon" parameterType="String" resultType="ebbsvo">
    	select * from EVENT_T where EVENT_CONTENT LIKE CONCAT('%', #{searchText}, '%')
+   	order by EVENT_NUM desc 
+    </select>  
+    <select id="searchevsub" parameterType="String" resultType="ebbsvo">
+   	select * from EVENT_T where EVENT_SUBJECT LIKE CONCAT('%', #{searchText}, '%')
+   	order by EVENT_NUM desc 
     </select>
+    
+    
+     <!-- 검색 faq - 검색-->
+   <select id="searchfaqcon" parameterType="String" resultType="faqbbsvo">
+   	select * from FAQ_T where FA_ANSWER LIKE CONCAT('%', #{searchText}, '%') 
+   	order by FA_NUM desc 
+    </select>  
+    <select id="searchfaqsub" parameterType="String" resultType="faqbbsvo">
+   	select * from FAQ_T where FA_SUBJECT LIKE CONCAT('%', #{searchText}, '%')
+   	order by FA_NUM desc 
+    </select>
+    
+    
+     <!-- 검색 공지사항 - 검색-->
+   <select id="searchnoticecon" parameterType="String" resultType="nbbsvo">
+   	select * from NOTICE_T where NOTICE_CONTENT LIKE CONCAT('%', #{searchText}, '%') 
+   	order by NOTICE_NUM desc 
+    </select>  
+    <select id="searchnoticesub" parameterType="String" resultType="nbbsvo">
+   	select * from NOTICE_T where NOTICE_SUBJECT LIKE CONCAT('%', #{searchText}, '%')
+   	order by NOTICE_NUM desc 
+    </select>
+    
+    <!-- 검색 q&a - 검색-->
+   <select id="searchqacon" parameterType="String" resultType="qnabbsvo">
+   	select * from QA_T where BOARD_CONTENT LIKE CONCAT('%', #{searchText}, '%') 
+   	order by BOARD_NUM desc 
+    </select>  
+    <select id="searchqasub" parameterType="String" resultType="qnabbsvo">
+   	select * from QA_T where BOARD_SUBJECT LIKE CONCAT('%', #{searchText}, '%')
+   	order by BOARD_NUM desc
+    </select>
+    <select id="searchqawriter" parameterType="String" resultType="qnabbsvo">
+   	select * from QA_T where BOARD_WRITER LIKE CONCAT('%', #{searchText}, '%')
+   	order by BOARD_NUM desc
+    </select>
+    
+    <!-- 검색 리뷰 - 검색-->
+   <select id="searchreviewcon" parameterType="String" resultType="reviewbbsvo">
+   	select * from REVIEW_T where 
+   	RE_ST =1 AND
+   	RE_CONTENT LIKE CONCAT('%', #{searchText}, '%') 
+   	order by RE_NUM desc
+    </select>  
+    <select id="searchreviewsub" parameterType="String" resultType="reviewbbsvo">
+   	select * from REVIEW_T where 
+   	RE_ST =1 AND 
+   	RE_SUBJECT LIKE CONCAT('%', #{searchText}, '%')
+   	order by RE_NUM desc
+    </select>
+    <select id="searchreviewwriter" parameterType="String" resultType="reviewbbsvo">
+   	select * from REVIEW_T where 
+   	RE_ST =1 AND 
+   	RE_WRITER LIKE CONCAT('%', #{searchText}, '%')
+   	order by RE_NUM desc
+    </select>
+    
+    
+    <!-- 검색 신고 - 검색-->
+   <select id="searchreportcon" parameterType="String" resultType="repbbsvo">
+   	select * from REPORT_T where REPORT_CONTENT LIKE CONCAT('%', #{searchText}, '%') 
+   	order by REPORT_NUM desc
+    </select>  
+    <select id="searchreportsub" parameterType="String" resultType="repbbsvo">
+   	select * from REPORT_T where REPORT_SUBJECT LIKE CONCAT('%', #{searchText}, '%')
+   	order by REPORT_NUM desc
+    </select>
+    
+    
+    
+  
+  <!--검색2 : 검색페이지 - 검색 -->
+  <!--공지사항  -->
+  <select id="searchNotice" resultType="nbbsvo">
+  	select * 
+  	from NOTICE_T
+  	where NOTICE_ST = 1  
+  	
+	  
+        <!-- 항목 종류 검색 조건 -->
+        <if test="s_type != null and s_type != ''">
+            <choose>
+                <when test="s_type == '제목'">
+                    AND NOTICE_SUBJECT LIKE  CONCAT('%', #{word}, '%') 
+                </when>
+                <when test="s_type == '작성자'">
+                    AND NOTICE_WRITER LIKE CONCAT('%', #{word}, '%') 
+                </when>
+                <when test="s_type == '내용'">
+                    AND NOTICE_CONTENT LIKE CONCAT('%', #{word}, '%') 
+                </when>
+            </choose>
+        </if>
 
-   
+        <!-- 시작 날짜 검색 조건 -->
+        <if test="start != null and start != ''">
+            AND NOTICE_DATE &gt;= #{start}
+        </if>
+
+        <!-- 종료 날짜 검색 조건 -->
+        <if test="end != null and end != ''">
+            AND NOTICE_DATE &lt;= #{end}
+        </if> 
+      order by NOTICE_NUM desc
+        
+    </select>
+    
+    <!-- 이용안내 -->
+    <select id="searchFaq" resultType="faqbbsvo">
+  	select * 
+  	from FAQ_T
+  	where FA_ST = 1  
+  	
+	  
+        <!-- 항목 종류 검색 조건 -->
+        <if test="s_type != null and s_type != ''">
+            <choose>
+                <when test="s_type == '제목'">
+                    AND FA_SUBJECT LIKE  CONCAT('%', #{word}, '%') 
+                </when>
+                <when test="s_type == '작성자'">
+                    AND FA_WRITER LIKE CONCAT('%', #{word}, '%') 
+                </when>
+                <when test="s_type == '내용'">
+                    AND FA_ANSWER LIKE CONCAT('%', #{word}, '%') 
+                </when>
+            </choose>
+        </if>
+
+        <!-- 시작 날짜 검색 조건 -->
+        <if test="start != null and start != ''">
+            AND FA_DATE &gt;= #{start}
+        </if>
+
+        <!-- 종료 날짜 검색 조건 -->
+        <if test="end != null and end != ''">
+            AND FA_DATE &lt;= #{end}
+        </if> 
+      order by FA_NUM desc
+        
+    </select>
+	
+   <!--이벤트  -->
+   <select id="searchEvent" resultType="ebbsvo">
+  	select * 
+  	from EVENT_T
+  	where EVENT_ST = 1  
+  	
+	  
+        <!-- 항목 종류 검색 조건 -->
+        <if test="s_type != null and s_type != ''">
+            <choose>
+                <when test="s_type == '제목'">
+                    AND EVENT_SUBJECT LIKE  CONCAT('%', #{word}, '%') 
+                </when>
+                <when test="s_type == '작성자'">
+                    AND EVENT_WRITER LIKE CONCAT('%', #{word}, '%') 
+                </when>
+                <when test="s_type == '내용'">
+                    AND EVENT_CONTENT LIKE CONCAT('%', #{word}, '%') 
+                </when>
+            </choose>
+        </if>
+
+        <!-- 시작 날짜 검색 조건 -->
+        <if test="start != null and start != ''">
+            AND EVENT_DATE &gt;= #{start}
+        </if>
+
+        <!-- 종료 날짜 검색 조건 -->
+        <if test="end != null and end != ''">
+            AND EVENT_DATE &lt;= #{end}
+        </if> 
+      order by EVENT_NUM desc
+    </select>
+    
+   <!--상품qa  -->
+   <select id="searchQa" resultType="qnabbsvo">
+  	select * 
+  	from QA_T
+  	where BOARD_ST = 1  
+  	
+	  
+        <!-- 항목 종류 검색 조건 -->
+        <if test="s_type != null and s_type != ''">
+            <choose>
+                <when test="s_type == '제목'">
+                    AND BOARD_SUBJECT LIKE  CONCAT('%', #{word}, '%') 
+                </when>
+                <when test="s_type == '작성자'">
+                    AND BOARD_WRITER LIKE CONCAT('%', #{word}, '%') 
+                </when>
+                <when test="s_type == '내용'">
+                    AND BOARD_CONTENT LIKE CONCAT('%', #{word}, '%') 
+                </when>
+            </choose>
+        </if>
+
+        <!-- 시작 날짜 검색 조건 -->
+        <if test="start != null and start != ''">
+            AND BOARD_DATE &gt;= #{start}
+        </if>
+
+        <!-- 종료 날짜 검색 조건 -->
+        <if test="end != null and end != ''">
+            AND BOARD_DATE &lt;= #{end}
+        </if> 
+        order by BOARD_NUM desc
+    </select>
+    
+   <!--리뷰 -->
+   <select id="searchReview" resultType="reviewbbsvo">
+  	select * 
+  	from REVIEW_T
+  	where RE_ST = 1  
+  	
+	  
+        <!-- 항목 종류 검색 조건 -->
+        <if test="s_type != null and s_type != ''">
+            <choose>
+                <when test="s_type == '제목'">
+                    AND RE_SUBJECT LIKE  CONCAT('%', #{word}, '%') 
+                </when>
+                <when test="s_type == '작성자'">
+                    AND RE_WRITER LIKE CONCAT('%', #{word}, '%') 
+                </when>
+                <when test="s_type == '내용'">
+                    AND RE_CONTENT LIKE CONCAT('%', #{word}, '%') 
+                </when>
+            </choose>
+        </if>
+
+        <!-- 시작 날짜 검색 조건 -->
+        <if test="start != null and start != ''">
+            AND RE_DATE &gt;= #{start}
+        </if>
+
+        <!-- 종료 날짜 검색 조건 -->
+        <if test="end != null and end != ''">
+            AND RE_DATE &lt;= #{end}
+        </if> 
+        order by RE_NUM desc
+    </select>    
+
+   <!--신고 -->
+   <select id="searchReport" resultType="repbbsvo">
+  	select * 
+  	from REPORT_T
+  	where REPORT_ST = 1  
+  	
+	  
+        <!-- 항목 종류 검색 조건 -->
+        <if test="s_type != null and s_type != ''">
+            <choose>
+                <when test="s_type == '제목'">
+                    AND REPORT_SUBJECT LIKE  CONCAT('%', #{word}, '%') 
+                </when>
+                <when test="s_type == '작성자'">
+                    AND REPORT_WRITER LIKE CONCAT('%', #{word}, '%') 
+                </when>
+                <when test="s_type == '내용'">
+                    AND REPORT_CONTENT LIKE CONCAT('%', #{word}, '%') 
+                </when>
+            </choose>
+        </if>
+        <!-- 시작 날짜 검색 조건 -->
+        <if test="start != null and start != ''">
+            AND REPORT_DATE &gt;= #{start}
+        </if>
+
+        <!-- 종료 날짜 검색 조건 -->
+        <if test="end != null and end != ''">
+            AND REPORT_DATE &lt;= #{end}
+        </if> 
+        order by REPORT_NUM desc
+    </select>    
+
 </mapper>
 
 
