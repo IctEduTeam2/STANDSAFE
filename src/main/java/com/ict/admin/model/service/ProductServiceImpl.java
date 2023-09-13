@@ -58,8 +58,8 @@ public class ProductServiceImpl implements ProductService{
 	}
 	// 상품등록
 	@Override
-	public int getProductInsert(ProductVO pvo) {
-		return productDAO.getgetProductInsert(pvo);
+	public int getProductInsert(ProductVO provo) {
+		return productDAO.getgetProductInsert(provo);
 	}
 	
 }
