@@ -1,12 +1,17 @@
 package com.ict.admin.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ict.admin.model.service.NoticeService;
@@ -23,45 +28,43 @@ public class Admin_notice {
 	
 	@RequestMapping("/admin_notice.do")
 	public ModelAndView AdminNo(HttpServletRequest request) {
-		ModelAndView mv = new ModelAndView("admin_notice/notice");
-		
-		//페이징 처리 
-		if(paging.getTotalRecord() <= paging.getNumPerPage()) {
-			paging.setTotalPage(1);
-		}else {
-			paging.setTotalPage(paging.getTotalRecord()/paging.getNumPerPage());
-			if(paging.getTotalRecord()%paging.getNumPerPage() != 0) {
-				paging.setTotalPage(paging.getTotalPage() +1);
-			}
-		}
-		
-		String cPage = request.getParameter("cPage");
-		if(cPage==null) {
-			paging.setNowPage(1);
-		}else{
-			paging.setNowPage(Integer.parseInt(cPage));
-		}
-		
-		paging.setOffset(paging.getNumPerPage()*(paging.getNowPage()-1));
-		paging.setBeginBlock((int)((paging.getNowPage()-1)/paging.getPagePerBlock())
-				*paging.getPagePerBlock()+1);
-	
-		paging.setEndBlock(paging.getBeginBlock()+paging.getPagePerBlock()-1);
-		
-		if(paging.getEndBlock() > paging.getTotalPage()) {
-			paging.setEndBlock(paging.getTotalPage());
-		}
-		
-		List<NoticeVO> list = notiService.getadnoticelist(paging.getOffset(),paging.getNumPerPage());
-		
-		String notice_num = request.getParameter("NOTICE_NUM");
-		NoticeVO anvo = notiService.getAdNoticeOneList(notice_num);
-		
-		mv.addObject("list", list);
-		mv.addObject("anvo", anvo);
-		mv.addObject("paging", paging);
-		return mv;
+	    ModelAndView mv = new ModelAndView("admin_notice/notice");
+	    
+	    // 페이징 처리를 위한 로직 추가
+	    int totalRecord = notiService.getTotalRecord(); // 전체 공지사항 레코드 수
+	    paging.setTotalRecord(totalRecord);
+	    
+	    if (totalRecord <= paging.getNumPerPage()) {
+	        paging.setTotalPage(1);
+	    } else {
+	        paging.setTotalPage(totalRecord / paging.getNumPerPage());
+	        if (totalRecord % paging.getNumPerPage() != 0) {
+	            paging.setTotalPage(paging.getTotalPage() + 1);
+	        }
+	    }
+	    
+	    String cPage = request.getParameter("cPage");
+	    if (cPage == null) {
+	        paging.setNowPage(1);
+	    } else {
+	        paging.setNowPage(Integer.parseInt(cPage));
+	    }
+	    
+	    paging.setOffset(paging.getNumPerPage() * (paging.getNowPage() - 1));
+	    paging.setBeginBlock((int) ((paging.getNowPage() - 1) / paging.getPagePerBlock()) * paging.getPagePerBlock() + 1);
+	    paging.setEndBlock(paging.getBeginBlock() + paging.getPagePerBlock() - 1);
+	    
+	    if (paging.getEndBlock() > paging.getTotalPage()) {
+	        paging.setEndBlock(paging.getTotalPage());
+	    }
+	    
+	    List<NoticeVO> list = notiService.getadnoticelist(paging.getOffset(), paging.getNumPerPage());
+	    
+	    mv.addObject("list", list);
+	    mv.addObject("paging", paging);
+	    return mv;
 	}
+
 	
 	@RequestMapping("/admin_qa.do")
 	public ModelAndView AdminQa() {
@@ -126,12 +129,34 @@ public class Admin_notice {
 		ModelAndView mv = new ModelAndView("admin_notice/notice");
 		return mv;
 	}
-	//테이블 삭제버튼
-	@RequestMapping("/adnotice_deletetable.do")
-	public ModelAndView AdminTableDelete() {
-		ModelAndView mv = new ModelAndView("admin_notice/notice");
-		return mv;
+	
+	//삭제된 게시물 보기 
+	@RequestMapping("/admin_deleted_notices.do")
+	@ResponseBody
+	public List<NoticeVO> getDeletedNotices() {
+	    List<NoticeVO> deletedNotices = notiService.getDeletedNotices(); // 삭제된 게시물을 조회하는 서비스 메서드 호출
+	    return deletedNotices; // 조회된 삭제된 게시물 데이터를 JSON 형식으로 반환
 	}
+
+	
+	//검색버튼
+//	@RequestMapping("/adnotice_search.do")
+//	public ModelAndView Search(
+//			HttpSession session,
+//			@ModelAttribute("title")String title,
+//			@ModelAttribute("title2")String title2,
+//			@ModelAttribute("searchText")String searchText,
+//			@ModelAttribute("dateCreated1")String dateCreated1,
+//			@ModelAttribute("dateCreated2")String dateCreated2,
+//			@ModelAttribute("trip-start")String trip-start,
+//			@ModelAttribute("trip-close")String trip-close) {
+//		
+//		session.removeAttribute();
+//		System.pri		
+//		ModelAndView mv = new ModelAndView();
+//	}
+	
+	
 	
 		
 	//Q&A

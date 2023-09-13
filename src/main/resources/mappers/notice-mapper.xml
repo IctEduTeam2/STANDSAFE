@@ -20,15 +20,19 @@
  	<select id="noticeonelist" parameterType="String" resultType="nvo">
  		select * from NOTICE_T where NOTICE_NUM = #{NOTICE_NUM}
  	</select>
- 	
- 	<select id="">
- 		SELECT * FROM NOTICE_T WHERE NOTICE_ST = 2;
- 	</select>
- 	
+
 	<!-- 조회수  --> 	
  	<update id="noticehitup" parameterType="String">
  		update NOTICE_T set NOTICE_HIT = NOTICE_HIT +1 where NOTICE_NUM = #{NOTICE_NUM}
  	</update>
+ 	
+ 	<!-- 검색  -->
+ 	
+ 	<!-- 삭제된 게시물 보기  -->
+ 	<select id="noticetable" resultType="nvo">
+ 		SELECT * FROM NOTICE_T WHERE NOTICE_ST = 2;
+ 	</select>
+ 	
  	
  	
  </mapper>
