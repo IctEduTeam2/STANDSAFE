@@ -269,6 +269,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 						<div style="width: 60%; float: left; margin-left: 10px;">
 							<a href=""
 								style="font-size: 18px; margin-left: 10px; font-weight: 600;">
+								
 								<p
 									style="color: gray; font-size: 16px; opacity: 0.7; margin-bottom: 10px;">2023.03.02
 									- 취소완료</p> <b style="font-size: 16px;">주문번호:</b> <b
