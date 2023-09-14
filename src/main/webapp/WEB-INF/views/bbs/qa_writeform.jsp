@@ -78,8 +78,38 @@ label {
     color: #1b5ac2; /* 체크 색상 설정 */
     font-weight: bold; /* 글꼴 두껍게 설정 */
 }
-
-
+#High{
+	width: 325px;
+	padding: 7px;
+	margin-left : 30px;
+	border: 1px solid #1b5ac2;
+	outline: none;
+	float: left;
+}
+#Low{
+	width: 325px;
+	padding: 7px;
+	margin-left : 30px;
+	border: 1px solid #1b5ac2;
+	outline: none;
+	float: left;
+}
+#Prod{
+	width: 325px;
+	padding: 7px;
+	margin-left : 30px;
+	border: 1px solid #1b5ac2;
+	outline: none;
+	float: left;
+}
+#cate1{
+line-height: 2rem;
+  padding: 0.2em 0.4em;
+}
+#cate2{
+line-height: 2rem;
+  padding: 0.2em 0.4em;
+}
 
 </style> 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
@@ -112,6 +142,76 @@ label {
 		f.submit();
 	}
 </script>
+ <script>
+        function categoty(){
+            const cate_high = document.getElementById('High');
+            const cate_low = document.getElementById('Low');
+            
+            // 하위 카테고리를 초기화합니다.
+			
+            cate_low.innerHTML = '';
+            // 선택된 상위 카테고리 값을 가져옵니다.
+            const select_cate = cate_high.value;
+	
+            // 선택된 상위 카테고리에 따라 하위 카테고리를 추가합니다.
+            switch (select_cate) {
+            	case '0' :
+            		addCategory(cate_low, '====소분류====');
+            		break;
+                case '1':
+                    addCategory(cate_low, '소화기');
+                    addCategory(cate_low, '화재 감지 | 대피');
+                    break;
+                case '2':
+                	addCategory(cate_low, '구급함 | 제세동기');
+                	addCategory(cate_low, '재난안전용품');
+                	addCategory(cate_low, '방역안전용품');
+                    break;
+                case '3':
+                	addCategory(cate_low, '마스크');
+                	addCategory(cate_low, '위생장갑');
+                	addCategory(cate_low, '통조림 | 비상식량');
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        function addCategory(selectElement, value) {
+            const option = document.createElement('option');
+            option.value = value;
+            option.textContent = '' + value;
+            selectElement.appendChild(option);
+        }
+
+        // 페이지 로드 시 초기 하위 카테고리를 설정합니다.
+        categoty();
+        
+        
+        
+     // 라디오 버튼의 상태가 변경될 때 호출되는 함수
+function onRadioChange() {
+    const productCombo = document.getElementById('High');
+    const radioButtons = document.getElementsByName('BOARD_TYPE');
+    
+    for (const radioButton of radioButtons) {
+        if (radioButton.checked && radioButton.value === '상품문의') { // "상품문의" 라디오 버튼 선택 시
+            productCombo.disabled = false; // 카테고리 콤보박스 활성화
+        } else {
+            productCombo.disabled = true; // 다른 라디오 버튼이 선택된 경우 카테고리 콤보박스 비활성화
+        }
+    }
+}
+
+// 라디오 버튼의 변경 이벤트에 함수를 연결
+const radioButtons = document.getElementsByName('BOARD_TYPE');
+for (const radioButton of radioButtons) {
+    radioButton.addEventListener('change', onRadioChange);
+}
+
+// 초기 상태 설정
+onRadioChange();
+</script>
 </head>
 <body>
 	<div id="mydiv"> 
@@ -129,7 +229,7 @@ label {
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">문의 유형</td>
 									<td id="radio">
-										<input type="radio" name="BOARD_TYPE" value="배송문의" checked />
+										<input type="radio" name="BOARD_TYPE" value="상품문의" checked  />
 										<span>상품문의</span>	
 									
 										<input type="radio" name="BOARD_TYPE" value="결제/주문문의" />
@@ -138,7 +238,26 @@ label {
 										<input type="radio" name="BOARD_TYPE" value="기타문의" />
 										<span>기타문의</span>	
 									</td>
-							
+							</tr>
+							<tr align="center">
+								<td bgcolor="#1b5ac2" class="w_font">분류</td>
+								<td>
+									<label id="cate1" for=High></label>
+										<select id="High" onchange="categoty()" disabled>
+											<option value="0"> ====대분류==== </option>
+											<option value="1"> ■ 소방/안전 </option>
+											<option value="2"> ■ 재난/응급/긴급 </option>
+											<option value="3"> ■ 일상/기타 </option>
+										</select>
+									<label id="cate2" for="Low"></label>
+    								<select id="Low" disabled>
+    									<!--처음 글쓰기들어왔을때, 초기값  -->
+    									<option value="0"> ====소분류==== </option>
+    								</select>
+    								<label id="cate3" for="Prod"></label>
+    								<select id="Prod" disabled>
+    								</select>
+								</td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">작성자</td>
