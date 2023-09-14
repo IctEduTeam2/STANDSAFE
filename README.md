@@ -1,5 +1,6 @@
 <div align=center>
-	<img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=200&section=header&text=Team2 %20Github!&fontSize=90" />	
+	<img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=200&section=header&text=Team2 Github!&fontSize=90" />	
+
 </div>
 <div align=center>
 	<h3>📚 Tech Stack 📚</h3>
@@ -38,7 +39,7 @@
 <div align=center>
 		<img src="https://img.shields.io/badge/kakao-FFCD00?style=flat&logo=kakao&logoColor=white" />
 		<img src="https://img.shields.io/badge/naver-03C75A?style=flat&logo=naver&logoColor=white" />
-		<img src="https://framerusercontent.com/images/EhEElRcoy4v5Y9uyUj3XkTWg.jpg" style="width:150px; height:70px;" />
-		<img src="https://www.data.go.kr/images/biz/common/logo/logo-footer-01.png" style="width:150px; height:70px;"/>
+		<img src="https://framerusercontent.com/images/EhEElRcoy4v5Y9uyUj3XkTWg.jpg" style="width:150px; height:30px;" />
+		<img src="https://www.data.go.kr/images/biz/common/logo/logo-footer-01.png" style="width:150px; height:30px;"/>
 	<br>
 </div>
