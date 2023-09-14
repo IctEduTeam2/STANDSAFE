@@ -38,8 +38,8 @@
 <div align=center>
 		<img src="https://img.shields.io/badge/kakao-FFCD00?style=flat&logo=kakao&logoColor=white" />
 		<img src="https://img.shields.io/badge/naver-03C75A?style=flat&logo=naver&logoColor=white" />
-	<img src="https://img.shields.io/badge/AWS-232F3E?style=flat&logo=AmazonAWS&logoColor=white" style="width=30px; height=10px;" />
-	<img src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=GitHub&logoColor=white" style="width=30px; height=10px;"/>
+	<img src="https://framerusercontent.com/images/EhEElRcoy4v5Y9uyUj3XkTWg.jpg" style="width=30px; height=10px;" />
+	<img src="https://www.data.go.kr/images/biz/common/logo/logo-footer-01.png" style="width=30px; height=10px;"/>
 	<br>
 </div>
 <div align=center>
