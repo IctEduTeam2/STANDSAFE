@@ -36,10 +36,10 @@
 	<p>🎨 API 🎨</p>
 </div>
 <div align=center>
-		<img src="https://img.shields.io/badge/kakao-FFCD00?style=flat&logo=kakao&logoColor=white" />
-		<img src="https://img.shields.io/badge/naver-03C75A?style=flat&logo=naver&logoColor=white" />
-	<img src="https://framerusercontent.com/images/EhEElRcoy4v5Y9uyUj3XkTWg.jpg" style="width=30px; height=10px;" />
-	<img src="https://www.data.go.kr/images/biz/common/logo/logo-footer-01.png" style="width=30px; height=10px;"/>
+	<img src="https://img.shields.io/badge/kakao-FFCD00?style=flat&logo=kakao&logoColor=white" style="float:left;" />
+	<img src="https://img.shields.io/badge/naver-03C75A?style=flat&logo=naver&logoColor=white" style="float:left;" />
+	<img src="https://framerusercontent.com/images/EhEElRcoy4v5Y9uyUj3XkTWg.jpg" style="width=30px; height=10px; float:left;" />
+	<img src="https://www.data.go.kr/images/biz/common/logo/logo-footer-01.png" style="width=30px; height=10px; float: left;"/>
 	<br>
 </div>
 <div align=center>
