@@ -21,7 +21,7 @@
 </div>
 <br>
 <div align=center>
-	<p>🛠 API 🛠</p>
+	<p>🛠 Tool 🛠</p>
 </div>
 <div align=center>
 	<img src="https://img.shields.io/badge/Eclipse%20IDE-2C2255?style=flat&logo=EclipseIDE&logoColor=white" />
@@ -33,13 +33,13 @@
 </div>
 <br>
 <div align=center>
-	<p>🎨 SNS & Portfolio 🎨</p>
+	<p>🎨 API 🎨</p>
 </div>
 <div align=center>
 		<img src="https://img.shields.io/badge/kakao-FFCD00?style=flat&logo=kakao&logoColor=white" />
 		<img src="https://img.shields.io/badge/naver-03C75A?style=flat&logo=naver&logoColor=white" />
-		<img src="https://img.shields.io/badge/Mail-30B980?style=flat&logo=Gmail&logoColor=white" />
-		<img src="https://img.shields.io/badge/Notion-000000?style=flat&logo=Notion&logoColor=white" />
+		<img src="https://framerusercontent.com/images/EhEElRcoy4v5Y9uyUj3XkTWg.jpg" />
+		<img src="https://www.data.go.kr/images/biz/common/logo/logo-footer-01.png" />
 	<br>
 </div>
 <div align=center>
