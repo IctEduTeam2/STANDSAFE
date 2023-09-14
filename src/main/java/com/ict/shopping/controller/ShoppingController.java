@@ -30,6 +30,7 @@ import com.ict.shopping.model.vo.PayVO;
 import com.ict.shopping.model.vo.PopUpVO;
 import com.ict.shopping.model.vo.ProductVO;
 import com.ict.shopping.model.vo.WishVO;
+import com.ict.user.model.service.PointService;
 import com.ict.user.model.vo.PointVO;
 import com.ict.user.model.vo.UserVO;
 
@@ -37,6 +38,8 @@ import com.ict.user.model.vo.UserVO;
 public class ShoppingController {
 	@Autowired
 	private ShoppingService shoppingService;
+	@Autowired
+	private PointService pointService;
 
 	@GetMapping("/")
 	public ModelAndView getMain() {
@@ -71,8 +74,41 @@ public class ShoppingController {
 	// 메인화면 장바구니 담기
 	@GetMapping("/basketAdd.do")
 	public ModelAndView getBasketForm(@RequestParam("prod_num") String prod_num,
-			@RequestParam("client_num") String client_num) {
+			@RequestParam("client_num") String client_num, @RequestParam("st")String st) {
 		ModelAndView mv = new ModelAndView("redirect:/");
+		ProductVO pvo = shoppingService.getProductOne(prod_num);
+		BasketVO bvo = new BasketVO();
+		bvo.setProd_num(prod_num);
+		// 세일이 아닐때
+		if (pvo.getProd_sale().equals("0")) {
+			bvo.setCart_price(pvo.getProd_price());
+		} else {
+			bvo.setCart_price(pvo.getProd_sale());
+		}
+		bvo.setCart_amount("1");
+		bvo.setCart_st("0");
+		bvo.setClient_num(client_num);
+		try {
+			BasketVO bvo2 = shoppingService.getBasketSelect(bvo);
+			if (bvo2.getCart_num() != null) { // 장바구니에 상품이 존재 할 때
+				shoppingService.getBasketUpdate(bvo);
+			}
+		} catch (Exception e) { // 장바구니에 상품이 존재하지 않을때
+			shoppingService.getBasket(bvo);
+		}
+		if(st.equals("0")) {
+			return mv;
+		} else if(st.equals("1")){
+			return new ModelAndView("redirect:/basketform.do?client_num=" + client_num);
+		}
+		return mv;
+	}
+
+	// 상품리스트에서 장바구니 담은 후 제자리
+	@GetMapping("/basketAdd2.do")
+	public ModelAndView getBasketForm2(@RequestParam("prod_num") String prod_num,
+			@RequestParam("client_num") String client_num, @RequestParam("prod_high")String prod_high, @RequestParam("prod_low")String prod_low) {
+		ModelAndView mv = new ModelAndView("redirect:/productsform.do?prod_high=" + prod_high + "&prod_low=" + prod_low + "&sort=1");
 		ProductVO pvo = shoppingService.getProductOne(prod_num);
 		BasketVO bvo = new BasketVO();
 		bvo.setProd_num(prod_num);
@@ -95,7 +131,6 @@ public class ShoppingController {
 		}
 		return mv;
 	}
-
 	// 바로구매
 	@PostMapping("/justbuy.do")
 	public ModelAndView getJustBuy(@RequestParam("prod_num") String prod_num,
@@ -407,7 +442,8 @@ public class ShoppingController {
 	// client_num
 	public ModelAndView getOrderPoint(int point, String take_peo, @RequestParam("address") String address,
 			@RequestParam("paytype") String paytype, String detailAddress2, String phone, String memo, String order_num,
-			String client_num, String prod_num, @RequestParam("price") int price, String amount) {
+			String client_num, String prod_num, @RequestParam("price") int price, String amount, HttpSession session) {
+		ModelAndView mv = new ModelAndView("redirect:/");
 		BasketVO bvo2 = new BasketVO();
 		bvo2.setCart_price(Integer.toString(price));
 		bvo2.setProd_num(prod_num);
@@ -433,7 +469,9 @@ public class ShoppingController {
 		pointVO.setPOINT_REM(point - price);
 		pointVO.setCLIENT_NUM(Integer.parseInt(client_num));
 		shoppingService.getPointSub(pointVO);
-		return null;
+		session.removeAttribute("POINT_REM");
+		session.setAttribute("POINT_REM", pointService.getPointsByUserId(Integer.parseInt(client_num)));
+		return mv;
 	}
 
 	// 온라인결제시
@@ -499,7 +537,6 @@ public class ShoppingController {
 		mv.addObject("count", prodlist.size());
 		mv.addObject("prod_high", prodlist.get(0).getProd_high());
 		mv.addObject("prod_low", prodlist.get(0).getProd_low());
-		System.out.println(sort);
 		return mv;
 	}
 	

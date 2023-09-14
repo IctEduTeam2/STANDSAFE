@@ -101,8 +101,7 @@ public class UserController {
 	            session.setAttribute("dbpw", uvo.getPW());
 	            session.setAttribute("nick", uvo.getNICKNAME());
 	            session.setAttribute("ID", uvo.getID());
-	            //session.setAttribute("POINT_REM", pointService.getPointsByUserId(uvo.getCLIENT_NUM()));
-	            mv.addObject("POINT_REM", pointService.getPointsByUserId(uvo.getCLIENT_NUM()));
+	            session.setAttribute("POINT_REM", pointService.getPointsByUserId(uvo.getCLIENT_NUM()));
 	            session.setAttribute("loginChk", "ok");
 	            mv.setViewName("redirect:/");
 	        } else {

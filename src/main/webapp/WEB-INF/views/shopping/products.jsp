@@ -37,14 +37,121 @@ button:hover {
 	border: 0;
 	border-radius: 5px;
 	margin-right: 20px;
+}/* 모달 스타일링 */
+.modal {
+	display: none;
+	position: fixed;
+	z-index: 100;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    margin: 0 auto; /* 가운데 정렬을 위해 좌우 마진을 자동으로 설정 */
+    text-align: center;
+    position: fixed; /* 모달을 고정 위치로 설정 */
+    top: 50%; /* 화면 상단에서 절반의 위치로 이동 */
+    left: 50%; /* 화면 왼쪽에서 절반의 위치로 이동 */
+    transform: translate(-50%, -50%); /* 중앙 정렬 */
+}
+/* 닫기 버튼 스타일 */
+.close {
+    color: #888;
+    float: right;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #000;
+}
+/* 버튼 스타일 */
+.button-container {
+    margin-top: 20px;
+}
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 0 10px;
+}
+
+.continue-shopping-button {
+    background-color: #3498db;
+    color: #fff;
+}
+
+.continue-shopping-button:hover {
+    background-color: #2980b9;
+}
+
+.view-cart-button {
+    background-color: #e74c3c;
+    color: #fff;
+}
+
+.view-cart-button:hover {
+    background-color: #c0392b;
 }
 </style>
 <script type="text/javascript">
-	function addToCart(button) {
+function addToCart(button) {
+    var prod_num = button.getAttribute('data-prodnum');
+    var client_num = button.getAttribute('data-usernum');
+    if ("${id}" == "" || "${id}" == null) {
+        alert("로그인 후 이용 가능합니다.");
+        return;
+    } else {
+        openModal(button); // 장바구니 추가 후 모달 열기, button을 전달
+    }
+}
+
+// 모달 열기
+function openModal(button) {
+    var prod_num = button.getAttribute('data-prodnum');
+    var client_num = button.getAttribute('data-usernum');
+    var modalId = 'myModal' + prod_num; // 모달의 ID 생성
+    document.getElementById(modalId).style.display = 'block';
+}
+
+	// 모달 닫기
+	function closeModal(button) {
+	    var prod_num = button.getAttribute('data-prodnum');
+	    var client_num = button.getAttribute('data-usernum');
+	    var modalId = 'myModal' + prod_num; // 모달의 ID 생성
+
+	    document.getElementById(modalId).style.display = 'none';
+	}
+
+	// "쇼핑 계속하기" 버튼 클릭 시 이벤트 처리
+	function continueShopping(button) {
+		var prod_num = button.getAttribute('data-prodnum');
+		var client_num = button.getAttribute('data-usernum');
+		var prod_high = button.getAttribute('data-high');
+		var prod_low = button.getAttribute('data-low');
+		location.href = "/basketAdd2.do?client_num=" + client_num + "&prod_num="
+				+ prod_num + "&prod_high=" + prod_high + "&prod_low=" + prod_low + "&sort=1";
+		closeModal(button);
+	}
+
+	// "장바구니 보기" 버튼 클릭 시 이벤트 처리
+	function viewCart(button) {
 		var prod_num = button.getAttribute('data-prodnum');
 		var client_num = button.getAttribute('data-usernum');
 		location.href = "/basketAdd.do?client_num=" + client_num + "&prod_num="
-				+ prod_num;
+				+ prod_num + "&st=1";
+		closeModal(button);
 	}
 	function changeSortOrder(sortOrder, clickedButton) {
 	    // 클릭한 버튼에만 스타일을 적용합니다.
@@ -245,12 +352,24 @@ button:hover {
 										</c:otherwise>
 									</c:choose>
 									<div class="caption">
-										<button class="product_btn1"
-											onclick="window.location.href='/productOneListform.do?prod_num=${a.prod_num}'">상세보기</button>
-										<button class="product_btn2" onclick="addToCart(this)"
-											data-prodnum="${a.prod_num}" data-usernum="${id }">장바구니
-											담기</button>
-									</div></li>
+								<button class="product_btn1"
+									onclick="window.location.href='/productOneListform.do?prod_num=${a.prod_num}'">상세보기</button>
+								<button class="product_btn2" onclick="addToCart(this)"
+									data-prodnum="${a.prod_num}" data-usernum="${id }">장바구니 담기</button>
+							</div></li>
+							
+							<div id="myModal${a.prod_num }" class="modal">
+							<div class="modal-content">
+								<h2 style="font-size: 24px; margin-bottom: 10px;">장바구니에 상품이 추가되었습니다</h2>
+								<p>선택한 상품: ${a.prod_name }</p>
+								<div class="button-container">
+									<button class="btn continue-shopping-button"
+										onclick="continueShopping(this)" data-prodnum="${a.prod_num}" data-usernum="${id }" data-high="${prod_high }" data-low="${prod_low }">쇼핑 계속하기</button>
+									<button class="btn view-cart-button" onclick="viewCart(this)" data-prodnum="${a.prod_num}" data-usernum="${id }">장바구니
+										보기</button>
+								</div>
+							</div>
+						</div>
 							</c:forEach>
 						</ul>
 					</div>
