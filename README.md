@@ -1,7 +1,10 @@
 <div align=center>
-	<img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=200&section=header&text=Team2Github!&fontSize=90" />	
+	<img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=200&section=header&text=Team2%20Github!&fontSize=90" />	
 	<br>
-	STANDSAFE
+	<h3>STANDSAFE</h3>
+	STANDSAFE는 개인, 가정 그리고 기업을 위한 다양한 재난대비용품을 제공하는 온라인 플랫폼입니다. 사용자는 비상식량, 생수, 응급의료용품 등 다양한 카테고리의 제품을 구매할 수 있습니다.
+또한, 재난 정보 API를 통해 재난 상황을 파악할 수 있어, 안전한 대처가 가능합니다.
+	<hr>
 </div>
 <div align=center>
 	<h3>📚 Tech Stack 📚</h3>
