@@ -106,17 +106,17 @@ function setAllDates() {
         var writtenDate = row.cells[7].textContent; //여기를 실제 작성일로 대체해야 합니다.
         dateCell.textContent = writtenDate; // 작성일을 업데이트합니다.
     }
-    document.getElementById('searchTitle').value = "dateCreated1"; // 검색 제목을 '작성일'로 설정
+    document.getElementById('searchTitle').value = ""; // 검색 제목을 '작성일'로 설정
     document.getElementById('startDate').value = ""; // 'start' 필드 초기화
     document.getElementById('close').value = ""; // 'close' 필드 초기화
 }
     
     //초기화 
 function resetFields() {
-    document.getElementById('searchKey').value = ""; // 검색어 필드 초기화 
-    document.getElementById('searchTitleSelect').value = ""; // 검색어 필드 초기화 
-    document.getElementById('start').value = ""; // 'start' 필드 초기화
-    document.getElementById('close').value = ""; // 'close' 필드 초기화
+    document.getElementById('searchKey').value = "제목"; // 검색어 필드 초기화 
+    document.getElementById('searchTitleSelect').value = "기간"; // 검색어 필드 초기화 
+    document.getElementById('start1').value = ""; // 'start' 필드 초기화
+    document.getElementById('close1').value = ""; // 'close' 필드 초기화
 }
 function setStartField() {
     var startDate = document.getElementById('startDate').value;
@@ -166,6 +166,7 @@ function setStartField() {
 		<!-- 검색 영역 -->
 
 		<form id="searchForm" action="/adnotice_search.do" method="post" onsubmit="setStartField()">
+		
 			<div
 				style="float: left; margin-top: 5%; border: 1px solid black; width: 60%; height: 400px;">
 				<div>
@@ -178,14 +179,14 @@ function setStartField() {
 										&nbsp</span> <select id="searchKey" name="searchKey" title="검색항목선택"
 									class="select_option"
 									style="margin-left: 55px; width: 300px; height: 50px; font-size: 20px;">
-										<option value="">제목</option>
+										<option value="제목">제목</option>
 										<option value="title">게시물 제목</option>
 										<option value="title2">작성자</option>
 										
 								</select>
 								<!-- 검색어 입력창  -->
 								</span> <span style="margin-left: 10px;"> <input type="text"
-									id="fromDate" name="searchText" title="검색어 입력" value=""
+									id="fromDate" name="searchText" title="검색어 입력" 
 									maxlength="10" style="width: 240px; height: 50px;">
 								</span>&nbsp&nbsp&nbsp&nbsp
 							</p>
@@ -199,17 +200,18 @@ function setStartField() {
 									style="font-family: '맑은 고딕'; font-size: 16px; margin-left: 50px; float: left;">기간검색</span>
 								<span>
 								<select id="searchTitleSelect" name="searchTitle" title="작성일 선택" class="select_option" style="margin-left: 50px; width: 300px; height: 50px; font-size: 20px;">
-    								<option value="">기간</option>
-    								<option value="dateCreated1">작성일</option>
+    								<option value="기간">기간</option>
+    								<option value="dateCreated1"
+    								>작성일</option>
     								<option value="dateCreated2">수정일</option>
 								</select>
 
 								</span> <span style="margin-left: 10px;">
 								 <!-- 달력 --> 
 								 <input
-									type="date" id="start" name="trip-start"
+									type="date" id="start1" name="start1"
 									style="height: 40px; width: 300px;" />
-								</span> <span> <input type="date" id="close" name="trip-close"
+								</span> <span> <input type="date" id="close1" name="close1"
 									style="height: 40px; width: 300px;" />
 								</span>
 							</p>
@@ -245,16 +247,16 @@ function setStartField() {
 									style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
 									onclick="resetFields()"></span>
 								 <span style="float: right; margin-top: 130px; margin-right: -494px;">
-									<input type="button" alt="검색" value="검색"
-									style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
-									onclick="searchAll()">
+								 <input type="hidden" value="공지사항" name="mg_type">
+									<button class="searchbtn" type="submit"
+									style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;">검색</button>
 								</span>
 							</div>
 						</dt>
 					</dl>
 				</div>
 			</div>
-		</form>
+		</form> 
 	</div>
 	<!-- 수평선 추가 -->
 	<div
@@ -357,7 +359,7 @@ function setStartField() {
 	<!-- 페이지 번호 출력 부분 -->
 <tfoot>
     <tr>
-        <td colspan="10">
+        <td colspan="11">
             <ol class="paging">
                 <!-- 이전 버튼 -->
                 <c:if test="${paging.beginBlock > paging.pagePerBlock}">
@@ -391,7 +393,7 @@ function setStartField() {
     </tr>
 </tfoot>
 	
-		</table>
+	</table>
 	</div>
 	<!-- 하단 버튼 -->
 	<div>

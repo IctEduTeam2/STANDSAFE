@@ -140,21 +140,32 @@ public class Admin_notice {
 
 	
 	//검색버튼
-//	@RequestMapping("/adnotice_search.do")
-//	public ModelAndView Search(
-//			HttpSession session,
-//			@ModelAttribute("title")String title,
-//			@ModelAttribute("title2")String title2,
-//			@ModelAttribute("searchText")String searchText,
-//			@ModelAttribute("dateCreated1")String dateCreated1,
-//			@ModelAttribute("dateCreated2")String dateCreated2,
-//			@ModelAttribute("trip-start")String trip-start,
-//			@ModelAttribute("trip-close")String trip-close) {
-//		
-//		session.removeAttribute();
-//		System.pri		
-//		ModelAndView mv = new ModelAndView();
-//	}
+
+	@PostMapping("/adnotice_search.do")
+	public ModelAndView adNotiSearch(
+			HttpServletRequest request,
+			HttpSession session,
+			@ModelAttribute("searchKey")String searchKey,
+			@ModelAttribute("searchText")String searchText,
+			@ModelAttribute("searchTitle")String searchTitle,
+			@ModelAttribute("start1")String start1,
+			@ModelAttribute("close1")String close1,
+			@ModelAttribute("mg_type")String mg_type
+			
+			) {
+		ModelAndView mv = new ModelAndView();
+		
+		System.out.println("검색어선택: " + searchKey);
+		System.out.println("검색어 입력: " + searchText);
+		System.out.println("기간: " + searchTitle);
+		System.out.println("스타트: " + start1);
+		System.out.println("클로즈: " + close1);
+		System.out.println("타입: " + mg_type);
+		
+		
+		return mv;
+	}
+
 	
 	
 	
