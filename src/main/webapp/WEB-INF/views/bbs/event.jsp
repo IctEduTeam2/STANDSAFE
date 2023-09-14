@@ -65,6 +65,20 @@ table tfoot ol.paging li a:hover {
 }
 
 </style> 
+<script type="text/javascript">
+	function wordchk() {
+    var word = document.getElementById("s_bar").value; // 검색어 필드의 값 가져오기
+
+    // 검색어가 비어 있으면 알림창 표시
+    if (!word || word.trim() === "") {
+        alert("검색어를 입력하세요.");
+        return false; // 폼 제출을 취소합니다.
+    }
+
+    // 검색어가 입력되었으면 폼 제출을 허용
+    return true;
+}
+</script>
 </head>
 <body onload="InitializeStaticMenu();">
 	<div id="mydiv">
@@ -73,7 +87,7 @@ table tfoot ol.paging li a:hover {
 			<article>
 				<div id="bbs_top" >					
 					<div id="bbs_sub"><h1>이벤트</h1></div>
-							<form action="/bbs_ev_search.do" method="post">
+							<form action="/bbs_ev_search.do" method="post" onsubmit="return wordchk()">
 							    <fieldset>
 							        <label>
 							            <input type="radio" name="searchType" value="제목" id="type_title" checked />
@@ -84,7 +98,8 @@ table tfoot ol.paging li a:hover {
 							            <span>내용</span>
 							        </label>
 							        <div id="search_bar">
-							            <input type="text" id="s_bar" name="searchText" placeholder="검색어입력">
+							            <input type="text" id="s_bar" name="word" placeholder="검색어입력">
+							            <input type="hidden" name="bbs_type" value="이벤트">
 							            <button id="s_btn" type="submit">검색</button>
 							        </div>
 							    </fieldset>
