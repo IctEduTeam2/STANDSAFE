@@ -71,8 +71,8 @@ function setTodayDate() {
     var day = today.getDate().toString().padStart(2, '0');
 
     // 오늘 날짜를 기간 검색 필드에 설정합니다.
-    document.getElementById('start').value = year + '-' + month + '-' + day;
-    document.getElementById('close').value = year + '-' + month + '-' + day;
+    document.getElementById('start1').value = year + '-' + month + '-' + day;
+    document.getElementById('close1').value = year + '-' + month + '-' + day;
 	}
 //기간검색-일주일 
 function setOneWeekDate() {
@@ -90,8 +90,8 @@ function setOneWeekDate() {
     var oneWeekAgoDay = oneWeekAgo.getDate().toString().padStart(2, '0');
 
     // 오늘 날짜를 기간 검색 필드에 설정합니다.
-    document.getElementById('start').value = oneWeekAgoYear + '-' + oneWeekAgoMonth + '-' + oneWeekAgoDay;
-    document.getElementById('close').value = year + '-' + month + '-' + day;
+    document.getElementById('start1').value = oneWeekAgoYear + '-' + oneWeekAgoMonth + '-' + oneWeekAgoDay;
+    document.getElementById('close1').value = year + '-' + month + '-' + day;
 	}
 //기간검색-전체기간(수정해야함 )
 function setAllDates() {
@@ -201,8 +201,7 @@ function setStartField() {
 								<span>
 								<select id="searchTitleSelect" name="searchTitle" title="작성일 선택" class="select_option" style="margin-left: 50px; width: 300px; height: 50px; font-size: 20px;">
     								<option value="기간">기간</option>
-    								<option value="dateCreated1"
-    								>작성일</option>
+    								<option value="dateCreated1">작성일</option>
     								<option value="dateCreated2">수정일</option>
 								</select>
 

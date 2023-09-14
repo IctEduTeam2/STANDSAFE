@@ -45,12 +45,23 @@ public class NoticeDAO {
 		return sqlSessionTemplate.selectOne("notice.noticeonelist", notice_num);
 	}
 	
-	//검색 
-	
-	
+
 	//삭제된 게시물 보기 
-	public List<NoticeVO> getDeletedNotices(){
-		return sqlSessionTemplate.selectList("notice.noticetable");
+	
+	
+	//검색
+	//공지사항
+	public List<NoticeVO> adNotiSearch(String searchKey,String searchText,String searchTitle,String start1,String close1) {
+		Map<String, Object> params = new HashMap<>();
+		
+		params.put("searchKey", searchKey);
+		params.put("searchText", searchText);
+		params.put("searchTitle", searchTitle);
+		params.put("start1", start1);
+		params.put("close1", close1);
+		
+		return sqlSessionTemplate.selectList("notice.adsearchnoti", params);
+		
 	}
 	
 	

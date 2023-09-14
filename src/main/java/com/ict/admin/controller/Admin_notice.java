@@ -131,12 +131,7 @@ public class Admin_notice {
 	}
 	
 	//삭제된 게시물 보기 
-	@RequestMapping("/admin_deleted_notices.do")
-	@ResponseBody
-	public List<NoticeVO> getDeletedNotices() {
-	    List<NoticeVO> deletedNotices = notiService.getDeletedNotices(); // 삭제된 게시물을 조회하는 서비스 메서드 호출
-	    return deletedNotices; // 조회된 삭제된 게시물 데이터를 JSON 형식으로 반환
-	}
+
 
 	
 	//검색버튼
@@ -162,7 +157,18 @@ public class Admin_notice {
 		System.out.println("클로즈: " + close1);
 		System.out.println("타입: " + mg_type);
 		
-		
+		switch (mg_type) {
+			
+		case "공지사항":
+			List<NoticeVO> list = notiService.adNotiSearch(searchKey,searchText,searchTitle,start1,close1);
+			mv.addObject("list", list);
+			mv.setViewName("admin_notice/notice");
+			break;
+			
+		default :
+		//전체
+		break;
+		}//스위치 종료
 		return mv;
 	}
 
