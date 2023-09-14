@@ -113,6 +113,7 @@
     }
 
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <script>
     function select_op(selectElement) {
         var select_c = selectElement.value;
@@ -132,6 +133,17 @@
         }
     }
 </script>
+<script type="text/javascript">
+function checknick(lock, writer, nick) {
+    // 게시물이 비밀글이고 작성자가 현재 사용자와 다른 경우 알림창 표시
+    if (lock == 1 && writer !== nick) {
+        alert("이 게시물은 비밀글로 다른 사용자의 접근이 제한됩니다.");
+        event.preventDefault(); // 링크 이벤트 중단
+    }
+}
+
+</script>
+
 <script type="text/javascript">
 var msg = "${msg}";
 if (msg && msg !== "") {
@@ -208,7 +220,7 @@ if (msg && msg !== "") {
 											<td>${k.BOARD_TYPE}</td>
 											
 												    <td>
-												      <a href="/bbs_qa_onelist.do?BOARD_NUM=${k.BOARD_NUM}&cPage=1">
+												      <a href="/bbs_qa_onelist.do?BOARD_NUM=${k.BOARD_NUM}&cPage=1" onclick="checknick('${k.BOARD_LOCK}', '${k.BOARD_WRITER}', '${nick}')">
 												        ${k.BOARD_LOCK == 1 ? '[비밀] ' : ''}${k.BOARD_SUBJECT}
 												      </a></td>
 											

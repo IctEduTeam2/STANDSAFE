@@ -1720,10 +1720,4 @@ public class BBSController {
 	
 	
 	
-	
-	
-	
-	
-	
-	
 }//마지막괄호

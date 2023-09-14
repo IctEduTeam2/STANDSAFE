@@ -184,8 +184,7 @@ if (msg && msg !== "") {
 		                <input type="date" id="start" name="start"> ~ 
 		                <input type="date" id="end" name="end">
 		            </div>
-		            <div class="button-container">
-		              <button class="search-button" type="submit" onclick="all(this)">전체검색</button>        
+		            <div class="button-container">  
 		              <button class="search-button" type="submit">검색</button>        
 		                <br>
 		                 

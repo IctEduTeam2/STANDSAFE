@@ -137,6 +137,16 @@ table td:nth-child(4) {
     }
 </script>
 <script type="text/javascript">
+function checknick(lock, writer, nick) {
+    // 게시물이 비밀글이고 작성자가 현재 사용자와 다른 경우 알림창 표시
+    if (lock == 1 && writer !== nick) {
+        alert("이 게시물은 비밀글로 다른 사용자의 접근이 제한됩니다.");
+        event.preventDefault(); // 링크 이벤트 중단
+    }
+}
+
+</script>
+<script type="text/javascript">
 var msg = "${msg}";
 if (msg && msg !== "") {
     alert(msg);
@@ -225,7 +235,7 @@ if (msg && msg !== "") {
 												  </c:when>
 												  <c:otherwise>
 												    <td>
-												      <a href="/bbs_review_onelist.do?RE_NUM=${k.RE_NUM}&cPage=1">
+												      <a href="/bbs_review_onelist.do?RE_NUM=${k.RE_NUM}&cPage=1" onclick="checknick('${k.RE_LOCK}', '${k.RE_WRITER}', '${nick}')">
 												        ${k.RE_LOCK == 1 ? '[비밀] ' : ''}${k.RE_SUBJECT}
 												      </a>
 												    </td>
