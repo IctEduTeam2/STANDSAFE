@@ -131,7 +131,11 @@
 	   <select id="reportonelist" parameterType="String" resultType="repbbsvo">
 	   	select * from REPORT_T where REPORT_NUM = #{REPORT_NUM}
 	   </select>
-
+	<!--삽입  -->
+   <insert id="reportinsert" parameterType="repbbsvo" >
+   	insert into REPORT_T (REPORT_SUBJECT, REPORT_WRITER,REPORT_CONTENT, REPORT_FILE, REPORT_DATE, REPORT_TYPE,CLIENT_NUM,PROD_NUM, REPORT_NICK)
+   	values(#{REPORT_SUBJECT},#{REPORT_WRITER},#{REPORT_CONTENT},#{REPORT_FILE},SYSDATE(),#{REPORT_TYPE},#{CLIENT_NUM}, #{PROD_NUM}, #{REPORT_NICK})
+   </insert>
   
   
    <!-- review -->

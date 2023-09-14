@@ -95,7 +95,6 @@ label {
 				f.BOARD_CONTENT.focus();
 				return;
 			}
-
 		 var checkbox = document.getElementById("chkbox");
 	        // 체크박스가 체크되었을 때
 	        if (checkbox.checked) {
@@ -131,7 +130,7 @@ label {
 								<td bgcolor="#1b5ac2" class="w_font">문의 유형</td>
 									<td id="radio">
 										<input type="radio" name="BOARD_TYPE" value="배송문의" checked />
-										<span>배송문의</span>	
+										<span>상품문의</span>	
 									
 										<input type="radio" name="BOARD_TYPE" value="결제/주문문의" />
 										<span>결제/주문문의</span>	
@@ -139,6 +138,7 @@ label {
 										<input type="radio" name="BOARD_TYPE" value="기타문의" />
 										<span>기타문의</span>	
 									</td>
+							
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">작성자</td>

@@ -654,6 +654,7 @@ public class BBSController {
 		}
 	}
 	
+	//작성완료 : 신고하기
 	@PostMapping("/bbs_report_writeOk.do")
 	public ModelAndView BbsReportWriteOk(REP_BBS_VO repvo,
 			HttpServletRequest request, HttpSession session) {
@@ -703,7 +704,8 @@ public class BBSController {
 			}
 			System.out.println("가려진 닉넴" + maskNick);
 			
-			mv.addObject("maskNick", maskNick);
+			
+			
 
 			//회원client_num 갖고오자. 디비에 넣어야한다. 
 			String num = (String) request.getSession().getAttribute("id");
@@ -718,11 +720,12 @@ public class BBSController {
 			//vo에 갖고온값 저장.
 			repvo.setREPORT_TYPE(type);
 			
-			
+			repvo.setREPORT_NICK(maskNick);
 
 			int result = bbsService.getReportWriteOk(repvo);
 			
 			if(result >0) {
+				
 				
 				return mv;
 			}else {
@@ -1627,7 +1630,6 @@ public class BBSController {
 			@ModelAttribute("end")String end
 			) {
 		ModelAndView mv = new ModelAndView();
-		
 		session.removeAttribute("reponelist");
         session.removeAttribute("qaonelist");
         session.removeAttribute("revonelist");
