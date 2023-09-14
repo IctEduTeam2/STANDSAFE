@@ -1,5 +1,7 @@
 <div align=center>
-	<img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=200&section=header&text=Yermi%20Github!&fontSize=90" />	
+	<img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=200&section=header&text=Team2 Github!&fontSize=90" />	
+	<br>
+	STANDSAFE
 </div>
 <div align=center>
 	<h3>📚 Tech Stack 📚</h3>
@@ -38,7 +40,7 @@
 <div align=center>
 		<img src="https://img.shields.io/badge/kakao-FFCD00?style=flat&logo=kakao&logoColor=white" />
 		<img src="https://img.shields.io/badge/naver-03C75A?style=flat&logo=naver&logoColor=white" />
-		<img src="https://framerusercontent.com/images/EhEElRcoy4v5Y9uyUj3XkTWg.jpg" style="width:150px; height:50px;" />
+		<img src="https://daoift3qrrnil.cloudfront.net/business_employment_companies/images/000/035/386/original/logo-toss.png?1688458316" style="width:150px; height:50px;" />
 		<img src="https://www.data.go.kr/images/biz/common/logo/logo-footer-01.png" style="width:150px; height:30px;"/>
 	<br>
 </div>
