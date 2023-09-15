@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="com.ict.admin.model.vo.AdminVO"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +13,8 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
 <!-- Link Swiper's CSS -->
-
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
@@ -75,19 +79,22 @@
 						</tr>
 						<tr>
 							<td>주소</td>
-							
+							<c:set var="addressParts" value="${adVO.ADMIN_ADDR.split(',')}" />
+
 							<td><input type="text" name="postcode" id="postcode"
-								placeholder="우편번호" value="${parts.length > 0 ? parts[0] : ''}"
+								placeholder="우편번호"
+								value="${fn:length(addressParts) > 0 ? addressParts[0] : ''}"
 								readonly> <input type="button"
 								onclick="execDaumPostcode()" value="우편번호 찾기"><br> <input
 								type="text" name="address" id="address" placeholder="주소"
-								value="${parts.length > 1 ? parts[1] : ''}" readonly> <input
-								type="text" name="extraAddress" id="extraAddress"
-								placeholder="참고주소" value="${parts.length > 2 ? parts[2] : ''}"
+								value="${fn:length(addressParts) > 1 ? addressParts[1] : ''}"
+								readonly> <input type="text" name="extraAddress"
+								id="extraAddress" placeholder="참고주소"
+								value="${fn:length(addressParts) > 2 ? addressParts[2] : ''}"
 								readonly> <input type="text" name="detailAddress"
 								id="detailAddress" placeholder="상세주소"
-								value="${parts.length > 3 ? parts[3] : ''}"> <span
-								id="guide" style="color: #999; display: none"></span> <input
+								value="${fn:length(addressParts) > 3 ? addressParts[3] : ''}">
+								<span id="guide" style="color: #999; display: none"></span> <input
 								type="hidden" id="ADMIN_ADDR" name="ADMIN_ADDR"
 								value="${adVO.ADMIN_ADDR}"></td>
 						</tr>
@@ -129,7 +136,7 @@
 			}
 		}
 		// 별명 유효성 검사
-	function checkNickDuplicate() {
+	function checkAdminNickDuplicate() {
     return new Promise((resolve, reject) => {
         const nickname = document.getElementById("ADMIN_NICK").value;
         const resultSpan = document.getElementById("nickname_result");
@@ -327,7 +334,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	<script type="text/javascript">
 	function user_infoFixCancel(event) {
 		event.preventDefault();
-		location.href = "userInfoFixCancel.do";
+		location.href = "adminManagement.do";
 	}
 	</script>
 	<script type="text/javascript">
