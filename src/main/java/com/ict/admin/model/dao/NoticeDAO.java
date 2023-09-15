@@ -45,8 +45,11 @@ public class NoticeDAO {
 		return sqlSessionTemplate.selectOne("notice.noticeonelist", notice_num);
 	}
 	
-
-	//삭제된 게시물 보기 
+	
+	//테이블 삭제 버튼
+	public int getAdNotiUpdateRow(String notice_num) {
+		return sqlSessionTemplate.delete("notice.noticeupdate", notice_num);
+	}
 	
 	
 	//검색

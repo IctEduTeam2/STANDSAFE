@@ -39,8 +39,12 @@ public class NoticeServiceImpl implements NoticeService{
 	public NoticeVO getAdNoticeOneList(String notice_num) {
 		return noticeDAO.getAdNoticeOneList(notice_num);
 	}
-
 	
+	//테이블 삭제 버튼
+	@Override
+	public int getAdNotiUpdateRow(String notice_num) {
+		return noticeDAO.getAdNotiUpdateRow(notice_num);
+	}
 	
 	
 	

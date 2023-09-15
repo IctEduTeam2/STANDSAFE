@@ -32,25 +32,19 @@
  	
  	<!-- 검색  -->
  	<select id="adsearchnoti" resultType="nvo">
- 		select * from NOTICE_T where NOTICE_ST = 1
+ 		select * from NOTICE_T where NOTICE_ST = 1 || NOTICE_ST = 0
  		
  	<!-- 항목 종류 검색  -->
 	<if test="mg_type != null and mg_type != ''">
             <choose>
-                <when test="mg_type == '게시물 제목'">
+                <when test="searchKey == '제목'">
                     AND NOTICE_SUBJECT LIKE  CONCAT('%', #{searchText}, '%') 
                 </when>
-                <when test="mg_type == '작성자'">
+                <when test="searchKey == '작성자'">
                     AND NOTICE_WRITER LIKE CONCAT('%', #{searchText}, '%') 
                 </when>
-                <when test="mg_type == '작성일'">
-                    AND NOTICE_DATE LIKE CONCAT('%', #{searchText}, '%') 
-                </when>
-                <when test="mg_type == '수정일'">
-                    AND NOTICE_UPDATE LIKE CONCAT('%', #{searchText}, '%') 
-                </when>
-                
-                <when test="mg_type == '검색어 입력'">
+
+                <when test="searchKey == '내용'">
                     AND NOTICE_CONTENT LIKE CONCAT('%', #{searchText}, '%') 
                 </when>
             </choose>
@@ -69,6 +63,12 @@
     
  	</select>
  	
+ 	
+ 	<!-- 테이블 삭제 버튼 -->
+	<update id="noticeupdate" parameterType="String">
+		UPDATE NOTICE_T SET NOTICE_ST = 2 WHERE NOTICE_NUM = #{NOTICE_NUM};
+	</update> 	
+
  	
  	
  </mapper>

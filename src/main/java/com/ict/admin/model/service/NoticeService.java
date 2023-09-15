@@ -22,7 +22,10 @@ public interface NoticeService {
 	//onelist
 	public NoticeVO getAdNoticeOneList(String notice_num);
 	
-	//삭제된 게시물 보기 
+
+	//테이블 삭제 버튼
+	int getAdNotiUpdateRow(String notice_num);
+	
 	
 	
 	//검색

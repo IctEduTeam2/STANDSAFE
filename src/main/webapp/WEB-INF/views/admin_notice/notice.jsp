@@ -111,7 +111,7 @@ function setAllDates() {
     document.getElementById('close').value = ""; // 'close' 필드 초기화
 }
     
-    //초기화 
+//초기화 
 function resetFields() {
     document.getElementById('searchKey').value = "제목"; // 검색어 필드 초기화 
     document.getElementById('searchTitleSelect').value = "기간"; // 검색어 필드 초기화 
@@ -124,12 +124,11 @@ function setStartField() {
     return true; // 폼 제출을 진행하도록 true 반환
 }
     
-	// 검색 버튼 
-	
+// 테이블 게시물 삭제버튼
+function deleteRow(noticeNum){
+	location.href="/admin_Updaterow.do";
+}
 
-
-    //삭제된게시물 보기 
-	
 
 
 
@@ -180,8 +179,8 @@ function setStartField() {
 									class="select_option"
 									style="margin-left: 55px; width: 300px; height: 50px; font-size: 20px;">
 										<option value="제목">제목</option>
-										<option value="title">게시물 제목</option>
-										<option value="title2">작성자</option>
+										<option value="작성자">작성자</option>
+										<option value="내용">내용</option>
 										
 								</select>
 								<!-- 검색어 입력창  -->
@@ -323,9 +322,9 @@ function setStartField() {
             </tr>
         </c:when>
         <c:otherwise>
-            <tr>
-                <td><input type="checkbox" name="chk" id="chkbox" />
-                <label for="chkbox"></label>
+            <tr id="row_${k.NOTICE_NUM}">
+                <td><input type="checkbox" name="chk" id="chkbox_${k.NOTICE_NUM}" />
+                <label for="chkbox_${k.NOTICE_NUM}"></label>
                 </td>
                 <td>${paging.totalRecord -((paging.nowPage-1)*paging.numPerPage + vs.index)}</td>
                 <td>${k.NOTICE_SUBJECT}</td>
@@ -341,12 +340,14 @@ function setStartField() {
                     </c:choose>
                 </td>
                 <!--onelist 갈때 cPage 필요하다. 같이보내자. -->
-                <td><input type="button" value="삭제"></td>
+                <!-- 게시글 삭제 버튼 -->
+                <td><input type="button" value="삭제" onclick="deleteRow(${k.NOTICE_NUM})"></td>
                 <td>${k.NOTICE_HIT}</td>
                 <td>${k.NOTICE_DATE.substring(0,10)}</td>
                 <td>${k.NOTICE_UPDATE.substring(0,10)}</td>
                 <td>${k.NOTICE_WRITER}</td>
                 <td>${k.NOTICE_ST}</td>
+               <!--  <td id="status_${k.NOTICE_NUM}">${k.NOTICE_ST}</td> -->
             </tr>
         </c:otherwise>
     </c:choose>
