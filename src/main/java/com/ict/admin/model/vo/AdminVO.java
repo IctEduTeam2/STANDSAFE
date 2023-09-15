@@ -2,7 +2,15 @@ package com.ict.admin.model.vo;
 
 public class AdminVO {
 	private String ADMIN_ID,ADMIN_PW,ADMIN_NAME,ADMIN_NICK,ADMIN_MAIL,ADMIN_BIRTH,ADMIN_PHONE,ADMIN_ADDR;
-	private int ADMIN_ST;
+	private int ADMIN_NUM, ADMIN_ST;
+	
+	
+	public int getADMIN_NUM() {
+		return ADMIN_NUM;
+	}
+	public void setADMIN_NUM(int aDMIN_NUM) {
+		ADMIN_NUM = aDMIN_NUM;
+	}
 	public String getADMIN_ID() {
 		return ADMIN_ID;
 	}

@@ -17,49 +17,6 @@
 <link rel="stylesheet" href="resources/css/basis.css" />
 <link rel="stylesheet" href="resources/css/userinfo.css" />
 
-<script type="text/javascript">
-	function toggleEdit(fieldName) {
-		let viewElement = document.getElementById(fieldName + "View");
-		let editElement = document.getElementById(fieldName + "Edit");
-		let button = event.target; // 현재 클릭된 버튼
-		let cancelButton = document.getElementById(fieldName + "Cancel");
-
-		if (editElement.style.display === "none") {
-			// 편집 모드로 전환
-			editElement.style.display = "";
-			viewElement.style.display = "none";
-			editElement.value = viewElement.innerText; // 입력을 현재 값으로 채움
-			button.innerText = "수정";
-			cancelButton.style.display = ""; // 취소 버튼 표시
-		} else {
-			// 보기 모드로 전환
-			editElement.style.display = "none";
-			viewElement.style.display = "";
-			viewElement.innerText = editElement.value; // 표시된 값을 편집된 값으로 업데이트합니다
-			button.innerText = "수정";
-			cancelButton.style.display = "none"; // 취소 버튼 숨기기
-		}
-	}
-
-	function cancelEdit(fieldName) {
-		let viewElement = document.getElementById(fieldName + "View");
-		let editElement = document.getElementById(fieldName + "Edit");
-		let editSaveButton = document
-				.querySelector(`button[onclick="toggleEdit('${fieldName}')"]`);
-		let cancelButton = document.getElementById(fieldName + "Cancel");
-
-		// 편집 중에 변경한 내용을 되돌립니다
-		editElement.value = viewElement.innerText;
-
-		// 편집 상태를 벗어남
-		editElement.style.display = "none";
-		cancelButton.style.display = "none"; // 취소 버튼 숨김
-		viewElement.style.display = "";
-
-		// 버튼의 이름을 '수정'으로 변경합니다.
-		editSaveButton.innerText = "수정";
-	}
-</script>
 </head>
 <body onload="InitializeStaticMenu();">
 	<div id="mydiv">

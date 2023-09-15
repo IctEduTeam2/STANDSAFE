@@ -5,54 +5,73 @@
 <mapper namespace="admin">
 	<!-- 회원가입 -->
 	<insert id="insert" parameterType="adVO">
-		insert into ADMIN_T(ADMIN_ID, ADMIN_PW, ADMIN_NAME, ADMIN_NICK, 
+		insert into ADMIN_T(ADMIN_ID, ADMIN_PW, ADMIN_NAME, ADMIN_NICK,
 		<if test="ADMIN_MAIL != null and ADMIN_MAIL != ''">
-		ADMIN_MAIL,
-		</if> 
+			ADMIN_MAIL,
+		</if>
 		<if test="ADMIN_BIRTH != null and ADMIN_BIRTH != ''">
-		ADMIN_BIRTH, 
+			ADMIN_BIRTH,
 		</if>
 		<if test="ADMIN_PHONE != null and ADMIN_PHONE != ''">
-		ADMIN_PHONE,
+			ADMIN_PHONE,
 		</if>
 		<if test="ADMIN_ADDR != null and ADMIN_ADDR != ''">
-		ADMIN_ADDR,
+			ADMIN_ADDR,
 		</if>
 		ADMIN_ST)
 		values(
-		#{ADMIN_ID}, #{ADMIN_PW}, #{ADMIN_NAME}, #{ADMIN_NICK}, 
+		#{ADMIN_ID}, #{ADMIN_PW}, #{ADMIN_NAME},
+		#{ADMIN_NICK},
 		<if test="ADMIN_MAIL != null and ADMIN_MAIL != ''">
-		#{ADMIN_MAIL}, 
+			#{ADMIN_MAIL},
 		</if>
 		<if test="ADMIN_BIRTH != null and ADMIN_BIRTH != ''">
-		#{ADMIN_BIRTH}, 
+			#{ADMIN_BIRTH},
 		</if>
 		<if test="ADMIN_PHONE != null and ADMIN_PHONE != ''">
-		#{ADMIN_PHONE},
+			#{ADMIN_PHONE},
 		</if>
 		<if test="ADMIN_ADDR != null and ADMIN_ADDR != ''">
-		#{ADMIN_ADDR},
+			#{ADMIN_ADDR},
 		</if>
 		1)
 	</insert>
-	
+
 	<!-- 아이디 중복체크 -->
 	<select id="idCheck" parameterType="String" resultType="int">
-		SELECT COUNT(*) FROM ADMIN_T
+		SELECT
+		COUNT(*) FROM ADMIN_T
 		WHERE ADMIN_ID = #{ADMIN_ID}
 	</select>
-	
+
 	<!-- 닉네임 중복체크 -->
 	<select id="nickCheck" parameterType="String" resultType="int">
-		SELECT COUNT(*) FROM ADMIN_T
+		SELECT
+		COUNT(*) FROM ADMIN_T
 		WHERE ADMIN_NICK = #{ADMIN_NICK}
 	</select>
-		
+
 	<!-- 로그인 -->
 	<select id="selectPwd" parameterType="String" resultType="adVO">
-		select * from ADMIN_T where ADMIN_ID = #{ADMIN_ID}
+		select
+		* from ADMIN_T where ADMIN_ID = #{ADMIN_ID}
 	</select>
+
+	<!-- 관리자 전체 검색 -->
+	<select id="selectAll" parameterType="String" resultType="adVO">
+		SELECT * FROM ADMIN_T WHERE admin_st != 0
+	</select>
+	<!-- 관리자 검색 몇명인지 -->
+	<select id="countAdmins" resultType="int">
+		SELECT COUNT(*) FROM ADMIN_T WHERE admin_st != 0
+	</select>
+	<!-- 1사람 결과 -->
+	<select id="adminDetail" parameterType="int" resultType="adVO">
+		SELECT * FROM ADMIN_T WHERE ADMIN_NUM = #{ADMIN_NUM}
+	</select>
+
 </mapper>
+	
 
 
 

@@ -24,7 +24,7 @@
 			<article>
 				<div class="login-header">
 					<h1
-						style="text-align: center; font-size: 30px; margin-bottom: 20px; margin-top: 100px;">login</h1>
+						style="text-align: center; font-size: 30px; margin-bottom: 20px; margin-top: 100px;">관리자 login</h1>
 				</div>
 				<form action="/admin_loginok.do" method="post">
 					<div class="login-form">

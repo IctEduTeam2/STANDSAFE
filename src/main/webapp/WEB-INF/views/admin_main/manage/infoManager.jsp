@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="com.ict.user.model.vo.UserVO" %>
+<%@ page import="com.ict.admin.model.vo.AdminVO"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,17 +10,10 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
 <!-- Link Swiper's CSS -->
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 
 <script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script type="text/javascript">
-    if ('${sessionScope.message}' !== '') {
-        alert('${sessionScope.message}');
-        <% session.removeAttribute("message"); %>
-    }
-</script>
+
 <link rel="stylesheet" href="resources/css/slide.css" />
 <link rel="stylesheet" href="resources/css/basis.css" />
 <link rel="stylesheet" href="resources/css/userinfo.css" />
@@ -28,7 +21,7 @@
 </head>
 <body onload="InitializeStaticMenu();">
 	<div id="mydiv">
-		<jsp:include page="../Semantic/header.jsp"></jsp:include>
+		<jsp:include page="../../Semantic/header.jsp"></jsp:include>
 		<section id="contents">
 			<article>
 				<br>
@@ -38,79 +31,65 @@
 				<form action="user_userfixok.do" method="POST" id="userForm">
 					<table style="margin: auto;">
 						<tr>
-							<td>아이디</td>
-							<td><a type="text" id="ID" name="ID"
-								style="color: grey;">${uvo.ID }</a><input type="hidden" name="ID" value="${sessionScope.uvo.ID}">
-								</td>
+							<td>관리자 아이디</td>
+							<td><a type="text" id="ADMIN_ID" name="ADMIN_ID"
+								style="color: grey;">${adVO.ADMIN_ID }</a><input type="hidden"
+								name="ADMIN_ID" value="${sessionScope.adVO.ADMIN_ID}"></td>
 						</tr>
 						<tr>
-							<td>비밀번호<span class="required">*</span></td>
-							<td><input type="password" id="password" name="PW" placeholder="새 비밀번호" 
-							maxlength="18" onkeyup="validatePassword()" 
-							autocomplete="current-password">
-								<span id="password_result"></span></td>
+							<td>비밀번호</td>
+							<td><input type="password" id="password" name="ADMIN_PW"
+								placeholder="새 비밀번호" maxlength="18" onkeyup="validatePassword()"
+								autocomplete="current-password"> <span
+								id="password_result"></span></td>
 						</tr>
 						<tr>
 							<td>별명<span class="required">*</span></td>
-							<td><input type="text" id="NICKNAME" name="NICKNAME"
-								placeholder="내용 입력" value="${uvo.NICKNAME}">
-								<button type="button" onclick="checkNickDuplicate()">중복
+							<td><input type="text" id="ADMIN_NICK" name="ADMIN_NICK"
+								placeholder="내용 입력" value="${adVO.ADMIN_NICK}">
+								<button type="button" onclick="checkAdminNickDuplicate()">중복
 									검사</button> <span id="nickname_result"></span></td>
 						</tr>
 						<tr>
 							<td>이름</td>
-							<td><a type="text" id="M_NAME" name="M_NAME"
-								style="color: grey;">${uvo.m_NAME}</a></td>
+							<td><a type="text" id="ADMIN_NAME" name="ADMIN_NAME"
+								style="color: grey;">${adVO.ADMIN_NAME}</a></td>
 						</tr>
 						<tr>
 							<td>생년월일</td>
-							<td><input type="date" id="BIRTH" name="BIRTH" value="${uvo.BIRTH}"></td>
+							<td><input type="date" id="ADMIN_BIRTH" name="ADMIN_BIRTH"
+								value="${adVO.ADMIN_BIRTH}"></td>
 						</tr>
 						<tr>
-							<td>전화번호<span class="required">*</span></td>
-							<td><input type="text" id="PHONE" name="PHONE"
+							<td>전화번호</td>
+							<td><input type="text" id="ADMIN_PHONE" name="ADMIN_PHONE"
 								placeholder="'-'없이 작성하세요" maxlength="11"
-								onkeyup="validatePhone()" value="${uvo.PHONE}">
-								<span id="phone_result"></span></td>
+								onkeyup="validatePhone()" value="${adVO.ADMIN_PHONE}"> <span
+								id="phone_result"></span></td>
 						</tr>
 						<tr>
 							<td>이메일<span class="required">*</span></td>
-							<td><input type="text" id="MAIL" name="MAIL"
-								placeholder="email@standsafe.com"
-								value="${uvo.MAIL}" onkeyup="checkEmail()">
-								<span id="email_result"></span></td>
+							<td><input type="text" id="ADMIN_MAIL" name="ADMIN_MAIL"
+								placeholder="email@standsafe.com" value="${adVO.ADMIN_MAIL}"
+								onkeyup="checkEmail()"> <span id="email_result"></span></td>
 						</tr>
 						<tr>
-    <td>주소</td>
-    <td>
-        <%
-    UserVO uvo = (UserVO) session.getAttribute("uvo");
-    String[] parts = uvo.getADDR().split(",");
-%>
-        <input type="text" name="postcode" id="postcode" placeholder="우편번호" value="${parts.length > 0 ? parts[0] : ''}" readonly>
-        <input type="button" onclick="execDaumPostcode()" value="우편번호 찾기"><br>
-        <input type="text" name="address" id="address" placeholder="주소" value="${parts.length > 1 ? parts[1] : ''}" readonly>
-        <input type="text" name="extraAddress" id="extraAddress" placeholder="참고주소" value="${parts.length > 2 ? parts[2] : ''}" readonly>
-        <input type="text" name="detailAddress" id="detailAddress" placeholder="상세주소" value="${parts.length > 3 ? parts[3] : ''}">
-        <span id="guide" style="color: #999; display: none"></span>
-        <input type="hidden" id="ADDR" name="ADDR" value="${uvo.ADDR}">
-    </td>
-</tr>
-
-						<tr>
-							<td>적립금</td>
-							<td><a type="text" id="POINT_REM" name="POINT_REM" style="color: grey;">${POINT_REM} 포인트</a></td>
-						</tr>
-						<tr>
-							<td>[선택]쇼핑정보 수신 동의</td>
-							<td>
-								<div class="scrollbox">
-									<p><%@ include file="text/alarm_text.jsp"%></p>
-									<input type="hidden" name="EMAIL_ST" id="email_st" value="0">
-								</div> 이메일 수신에 동의하십니까? <input type="checkbox" id="emailAgreeCheckbox"
-								checked> 동의함<input type="hidden" name="CLIENT_NUM" value="${uvo.CLIENT_NUM}">
-								
-							</td>
+							<td>주소</td>
+							
+							<td><input type="text" name="postcode" id="postcode"
+								placeholder="우편번호" value="${parts.length > 0 ? parts[0] : ''}"
+								readonly> <input type="button"
+								onclick="execDaumPostcode()" value="우편번호 찾기"><br> <input
+								type="text" name="address" id="address" placeholder="주소"
+								value="${parts.length > 1 ? parts[1] : ''}" readonly> <input
+								type="text" name="extraAddress" id="extraAddress"
+								placeholder="참고주소" value="${parts.length > 2 ? parts[2] : ''}"
+								readonly> <input type="text" name="detailAddress"
+								id="detailAddress" placeholder="상세주소"
+								value="${parts.length > 3 ? parts[3] : ''}"> <span
+								id="guide" style="color: #999; display: none"></span> <input
+								type="hidden" id="ADMIN_ADDR" name="ADMIN_ADDR"
+								value="${adVO.ADMIN_ADDR}"></td>
 						</tr>
 					</table>
 					<div style="width: 100%; text-align: center;">
@@ -119,15 +98,11 @@
 						<button class="cancel-button" onclick="user_infoFixCancel(event)">나가기</button>
 					</div>
 				</form>
-
-
 			</article>
 		</section>
-		<jsp:include page="../Semantic/quickmenu.jsp"></jsp:include>
-		<script src="resources/js/quick.js"></script>
-		<jsp:include page="../Semantic/footer.jsp"></jsp:include>
+		<jsp:include page="../../Semantic/footer.jsp"></jsp:include>
 	</div>
-<script defer type="text/javascript">
+	<script defer type="text/javascript">
 	//비밀번호 유효성 검사
 		function validatePassword() {
 			const password = document.getElementById("password").value;
@@ -156,7 +131,7 @@
 		// 별명 유효성 검사
 	function checkNickDuplicate() {
     return new Promise((resolve, reject) => {
-        const nickname = document.getElementById("NICKNAME").value;
+        const nickname = document.getElementById("ADMIN_NICK").value;
         const resultSpan = document.getElementById("nickname_result");
 
         // 별명이 빈 문자열인 경우
@@ -169,10 +144,10 @@
         }
 
         $.ajax({
-            url: "/checkNickDuplicate.do",
+            url: "/checkAdminNickDuplicate.do",
             type: "POST",
             data: {
-                'NICKNAME': nickname
+                'ADMIN_NICK': nickname
             },
             success: function(result) {
                 if (result === "not_duplicate") {
@@ -199,7 +174,7 @@
 }
 	//전화번호 유효성 검사
 	function validatePhone() {
-		const phone = document.getElementById("PHONE").value;
+		const phone = document.getElementById("ADMIN_PHONE").value;
 		const resultSpan = document.getElementById("phone_result");
 		const phoneRegex = /^\d{11}$/;
 
@@ -227,7 +202,7 @@
 	}
 	//이메일 유효성 검사
 	function checkEmail() {
-		const email = document.getElementById("MAIL").value;
+		const email = document.getElementById("ADMIN_MAIL").value;
 		const resultSpan = document.getElementById("email_result");
 		const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -324,14 +299,13 @@ function prepareAddr() {
     var fullAddress = fullAddressParts.join(", ");
 
     console.log("Full Address:", fullAddress);
-    document.getElementById("ADDR").value = fullAddress.trim();
-    console.log("ADDR value:", document.getElementById("ADDR").value);
+    document.getElementById("ADMIN_ADDR").value = fullAddress.trim();
 }
 </script>
-<script type="text/javascript">
+	<script type="text/javascript">
 //페이지 로드 시 주소 분할 및 할당 코드
 document.addEventListener("DOMContentLoaded", function() {
-    var fullAddress = "${sessionScope.uvo.ADDR}";
+    var fullAddress = "${sessionScope.adVO.ADMIN_ADDR}";
     var addressParts = fullAddress.split(", ");
 
     if (addressParts[0] && addressParts[0].trim() !== "") {
@@ -350,37 +324,12 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 </script>
-<script type="text/javascript">
+	<script type="text/javascript">
 	function user_infoFixCancel(event) {
 		event.preventDefault();
 		location.href = "userInfoFixCancel.do";
 	}
 	</script>
-	<script type="text/javascript">
-	//페이지 로딩이 완료되면 실행
-	document.addEventListener("DOMContentLoaded", function() {
-		const emailAgreeCheckbox = document
-				.getElementById("emailAgreeCheckbox");
-		const email_st = document.getElementById("email_st");
-
-		// 초기 설정
-		email_st.value = emailAgreeCheckbox.checked ? 1 : 0;
-
-		// 체크박스 상태 변경 시
-		emailAgreeCheckbox.addEventListener("change", function() {
-			email_st.value = this.checked ? 1 : 0;
-		});
-	});
-	// 수신 동의 유효성 검사
-	function validateEmailSt() {
-		const emailSt = document.getElementById("email_st").value;
-		if (emailSt != "0" && emailSt != "1") {
-			alert("수신 동의 선택이 잘못되었습니다.");
-			return false;
-		}
-		return true;
-	}
-</script>
 	<script type="text/javascript">
 	function validateAll() {
 		console.log("validateAll 도착");

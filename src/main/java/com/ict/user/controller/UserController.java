@@ -96,13 +96,14 @@ public class UserController {
 
 	        if (isTempPasswordMatch || isOriginalPasswordMatch) {
 	            // 로그인 성공 처리
+	        	int POINT_REM = pointService.getPointsByUserId(uvo.getCLIENT_NUM());
 	            session.setAttribute("uvo", uvo);
 	            session.setAttribute("id", Integer.toString(uvo.getCLIENT_NUM()));
 	            session.setAttribute("dbpw", uvo.getPW());
 	            session.setAttribute("nick", uvo.getNICKNAME());
 	            session.setAttribute("ID", uvo.getID());
-	            //session.setAttribute("POINT_REM", pointService.getPointsByUserId(uvo.getCLIENT_NUM()));
-	            mv.addObject("POINT_REM", pointService.getPointsByUserId(uvo.getCLIENT_NUM()));
+	            session.setAttribute("POINT_REM", POINT_REM);
+	           //mv.addObject("POINT_REM", pointService.getPointsByUserId(uvo.getCLIENT_NUM()));
 	            session.setAttribute("loginChk", "ok");
 	            mv.setViewName("redirect:/");
 	        } else {

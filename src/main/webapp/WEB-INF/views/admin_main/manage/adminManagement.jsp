@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,6 +10,7 @@
 <title>STANDSAFE</title>
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- Link Swiper's CSS -->
 <style type="text/css">
 .box1 {
@@ -45,6 +47,8 @@
 .btn {
 	padding: 5px 10px;
 	margin: 2px;
+	color:white;
+	background-color: navy; 
 }
 
 .light-blue {
@@ -112,18 +116,18 @@ table tbody tr:nth-child(even) {
 		window.location.href = 'userManagement.do';
 	}
 </script>
+
 </head>
 <body onload="InitializeStaticMenu();">
 	<div id="mydiv">
 		<jsp:include page="../header.jsp"></jsp:include>
 		<section id="contents">
-			<!-- 여기에 컨텐츠 넣으시면 됩니다. -->
 			<div>
 				<button class="btn" onclick="adminRightsGo()">관리자 권한 관리</button>
 				<button class="btn" onclick="userManageGo()">사용자 관리</button>
 			</div>
 			<div class="box-container">
-				<div class="box1">관리자 총 인원: 5명</div>
+				<div class="box1">관리자 총 인원: ${countAdmins}명</div>
 				<div class="box2">
 					<div>
 						검색어: <select>
@@ -154,49 +158,27 @@ table tbody tr:nth-child(even) {
 			<table>
 				<thead>
 					<tr>
-						<th>check box</th>
-						<th>관리자 아이디</th>
-						<th>이름</th>
-						<th>이메일 주소</th>
-						<th>전화번호</th>
-						<th>주소</th>
-						<th>등급</th>
-						<th>가입일</th>
+						<th class="column_1">check box</th>
+						<th class="column_2">관리자 아이디</th>
+						<th class="column_3">이름</th>
+						<th class="column_4">별명</th>
+						<th class="column_5">이메일 주소</th>
+						<th class="column_6">생일</th>
+						<th class="column_7">전화번호</th>
+						<th class="column_8">주소</th>
 					</tr>
 				</thead>
 				<tbody>
-					<!-- 임시 데이터 추가 시작 -->
-					<tr>
-						<td><input type="checkbox"></td>
-						<td>admin001</td>
-						<td>홍길동</td>
-						<td>hong001@email.com</td>
-						<td>010-1234-5678</td>
-						<td>서울시 강남구</td>
-						<td>관리자</td>
-						<td>2023-08-28</td>
-					</tr>
-					<tr>
-						<td><input type="checkbox"></td>
-						<td>admin002</td>
-						<td>이순신</td>
-						<td>lee002@email.com</td>
-						<td>010-8765-4321</td>
-						<td>서울시 서초구</td>
-						<td>일반</td>
-						<td>2023-08-27</td>
-					</tr>
-					<!-- 임시 데이터 추가 끝 -->
-					<c:forEach var="item" items="${items}">
-						<tr>
+					<c:forEach var="admin" items="${adminList}">
+						<tr onclick="viewAdminInfo('${admin.ADMIN_NUM}')">
 							<td><input type="checkbox"></td>
-							<td>${item}</td>
-							<td>${item}</td>
-							<td>${item}</td>
-							<td>${item}</td>
-							<td>${item}</td>
-							<td>${item}</td>
-							<td>${item}</td>
+							<td>${admin.ADMIN_ID}</td>
+							<td>${admin.ADMIN_NAME}</td>
+							<td>${admin.ADMIN_NICK}</td>
+							<td>${admin.ADMIN_MAIL}</td>
+							<td>${admin.ADMIN_BIRTH}</td>
+							<td>${admin.ADMIN_PHONE}</td>
+							<td>${admin.ADMIN_ADDR}</td>
 						</tr>
 					</c:forEach>
 				</tbody>
@@ -209,5 +191,10 @@ table tbody tr:nth-child(even) {
 		</section>
 		<jsp:include page="../../Semantic/footer.jsp"></jsp:include>
 	</div>
+	<script type="text/javascript">
+	function viewAdminInfo(ADMIN_NUM) {
+	    window.location.href = '/infoManager.do?ADMIN_NUM=' + ADMIN_NUM;
+	}
+	</script>
 </body>
 </html>

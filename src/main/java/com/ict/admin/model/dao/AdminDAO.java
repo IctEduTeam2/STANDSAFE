@@ -1,5 +1,7 @@
 package com.ict.admin.model.dao;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -19,6 +21,28 @@ public class AdminDAO {
 	//비밀번호조회
 	public AdminVO getAdminPw(String admin_ID) {
 		return sqlSessionTemplate.selectOne("admin.selectPwd", admin_ID);
+	}
+	
+	//닉 중복체크
+	public int isAdminNickDuplicate(String ADMIN_NICK) {
+		return sqlSessionTemplate.selectOne("admin.nickCheck",ADMIN_NICK);
+	}
+	//아이디 중복체크
+	public int isAdminIdDuplicate(String ADMIN_ID) {
+		return sqlSessionTemplate.selectOne("admin.idCheck",ADMIN_ID);
+	}
+	//관리자 전체
+	public List<AdminVO> getAllAdmins() {
+		return sqlSessionTemplate.selectList("admin.selectAll");
+	}
+	//관리자수
+	public int getCountAdmins() {
+		return sqlSessionTemplate.selectOne("admin.countAdmins");
+	}
+
+	//개별화면
+	public AdminVO getAdminDetail(int ADMIN_NUM) {
+	    return sqlSessionTemplate.selectOne("admin.adminDetail", ADMIN_NUM);
 	}
 	
 }
