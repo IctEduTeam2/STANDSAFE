@@ -157,52 +157,6 @@ td {
 						</div>
 						<hr style="width: 100%;">
 						<!--물품하나 끝태크-->
-						<!--물품하나 시작태그-->
-						<div style="width: 100%; float: left; padding: 20px;">
-							<div style="float: left;">
-								<img src="resources/images/products/product1.jpg"
-									style="width: 160px; height: 200px;">
-							</div>
-							<div style="float: left; margin-left: 30px;">
-								<p style="color: gray; opacity: 0.5;">2022.11.02 결제</p>
-								<p style="font-size: 14px; margin-top: 10px;">톰과 싸우는 제리 인형</p>
-								<p style="font-size: 20px; margin-top: 10px;">
-									<b>5,000 원 x 1 = 5,000 원</b>
-								</p>
-							</div>
-							<div style="float: right; margin-right: 20px; margin-top: 160px;">
-								<!-- 구매완료시 반품요청 / 배송준비시 환불요청-->
-								<button>반품요청</button>
-								<button style="display: none;">환불요청</button>
-								<button>재구매</button>
-								<button>리뷰쓰기</button>
-							</div>
-						</div>
-						<hr style="width: 100%;">
-						<!--물품하나 끝태크-->
-						<!--물품하나 시작태그-->
-						<div style="width: 100%; float: left; padding: 20px;">
-							<div style="float: left;">
-								<img src="resources/images/products/product1.jpg"
-									style="width: 160px; height: 200px;">
-							</div>
-							<div style="float: left; margin-left: 30px;">
-								<p style="color: gray; opacity: 0.5;">2022.11.02 결제</p>
-								<p style="font-size: 14px; margin-top: 10px;">톰과 싸우는 제리 인형</p>
-								<p style="font-size: 20px; margin-top: 10px;">
-									<b>5,000 원 x 1 = 5,000 원</b>
-								</p>
-							</div>
-							<div style="float: right; margin-right: 20px; margin-top: 160px;">
-								<!-- 구매완료시 반품요청 / 배송준비시 환불요청-->
-								<button>반품요청</button>
-								<button style="display: none;">환불요청</button>
-								<button>재구매</button>
-								<button>리뷰쓰기</button>
-							</div>
-						</div>
-						<hr style="width: 100%;">
-						<!--물품하나 끝태크-->
 
 						<!-- 배송내용-->
 						<div style="float: left; width: 100%; padding: 20px;">

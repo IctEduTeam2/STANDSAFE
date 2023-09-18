@@ -186,7 +186,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 						<img class="basket_img"
 							src="resources/images/products/${a.prod_img }">
 						<div style="width: 60%; float: left; margin-left: 10px;">
-							<a href="/orderOneListform.do?pay_oknum=${a.pay_oknum}"
+							<a href="/orderOneListform.do?pay_oknum=${a.pay_oknum}&client_num=${id}"
 								style="font-size: 18px; margin-left: 10px; font-weight: 600;">
 								<p
 									style="color: gray; font-size: 16px; opacity: 0.7; margin-bottom: 10px;">${a.pay_ok }
@@ -205,6 +205,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 						</div>
 						<div style="float: right; margin-top: 30px;">
 						<form>
+							<input type="hidden" value="${id}" name="client_num">
 							<input type="hidden" value="${a.pay_oknum }" name="pay_oknum">
 							<input type="button" value="상세보기" class="order_detail"
 								onclick="orderOne_go(this.form)"></form>

@@ -105,6 +105,13 @@
 		WHERE client_num = #{client_num} AND
 		prod_num = #{prod_num} and cart_st = 0
 	</select>
+	
+	<!-- 장바구니 조회 -->
+	<select id="cartinfo" resultType="basketVO"
+		parameterType="String">
+		SELECT * FROM CART_T
+		WHERE cart_num = #{cart_num}
+	</select>
 
 	<!-- 장바구니 수량변경 -->
 	<update id="basketupdate" parameterType="basketVO">
@@ -174,28 +181,35 @@
 
 	<!-- 주문조회 리스트 -->
 	<select id="paylist" resultType="payVO" parameterType="String">
-	SELECT
-    P.PROD_IMG,
-    PAY.pay_num,
-    PAY.take_peo,
-    PAY.take_addr,
-    PAY.take_phone,
-    PAY.take_memo,
-    PAY.pay_type,
-    PAY.pay_card,
-    DATE_FORMAT(PAY.pay_ok, '%Y-%m-%d') AS pay_ok,
-    PAY.pay_oknum,
-    PAY.pay_st,
-    PAY.cart_num,
-    PAY.client_num,
-    PAY.paymentkey,
-    PAY.pay_money
-FROM PAY_T AS PAY
-JOIN CART_T AS C ON PAY.cart_num = C.cart_num
-JOIN PRODUCT_T AS P ON C.prod_num = P.prod_num
-WHERE PAY.client_num = #{client_num}
-GROUP BY PAY.pay_oknum 
-ORDER BY PAY.pay_ok DESC
+		SELECT
+		P.PROD_IMG,
+		PAY.pay_num,
+		PAY.take_peo,
+		PAY.take_addr,
+		PAY.take_phone,
+		PAY.take_memo,
+		PAY.pay_type,
+		PAY.pay_card,
+		DATE_FORMAT(PAY.pay_ok, '%Y-%m-%d') AS pay_ok,
+		PAY.pay_oknum,
+		PAY.pay_st,
+		PAY.cart_num,
+		PAY.client_num,
+		PAY.paymentkey,
+		PAY.pay_money
+		FROM PAY_T AS PAY
+		JOIN CART_T AS C ON PAY.cart_num = C.cart_num
+		JOIN PRODUCT_T AS P ON C.prod_num = P.prod_num
+		WHERE PAY.client_num = #{client_num}
+		GROUP BY PAY.pay_oknum
+		ORDER BY PAY.pay_ok DESC
+	</select>
+
+	<!-- 주문상세 -->
+	<select id="orderlist" resultType="payVO" parameterType="String">
+		SELECT *
+		FROM PAY_T
+		WHERE pay_oknum = #{pay_oknum}
 	</select>
 </mapper>
 

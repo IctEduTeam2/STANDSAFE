@@ -1,0 +1,5 @@
+SELECT
+    C.PROD_NUM
+FROM PAY_T AS PAY
+WHERE PAY_OKNUM = 'tW2K040mgcJidkJ'
+JOIN CART_T AS C ON PAY.cart_num = C.cart_num

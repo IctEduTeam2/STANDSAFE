@@ -123,4 +123,15 @@ public class ShoppingService {
 	public List<PayVO> getPayList(String client_num) {
 		return shoppingDAO.getPayList(client_num);
 	}
+	
+	// 주문상세내역
+	public List<PayVO> getOrderOneList(String pay_oknum) {
+		return shoppingDAO.getOrderOneList(pay_oknum);
+	}
+	
+	// 장바구니 조회
+	public BasketVO getCartInfo(String cart_num) {
+		return shoppingDAO.getCartInfo(cart_num);
+	}
+	
 }

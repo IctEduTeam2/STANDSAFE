@@ -122,5 +122,15 @@ public class ShoppingDAO {
 	// 주문리스트
 	public List<PayVO> getPayList(String client_num) {
 		return sqlSessionTemplate.selectList("shopping.paylist", client_num);
+	}	
+	
+	// 주문상세내역
+	public List<PayVO> getOrderOneList(String pay_oknum) {
+		return sqlSessionTemplate.selectList("shopping.orderlist", pay_oknum);
+	}	
+	
+	// 장바구니 조회
+	public BasketVO getCartInfo(String cart_num) {
+		return sqlSessionTemplate.selectOne("shopping.cartinfo", cart_num);
 	}
 }

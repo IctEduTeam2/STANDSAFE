@@ -491,8 +491,6 @@ public class ShoppingController {
 		// 카트키 가져오기
 		String key = shoppingService.getBasket(bvo2);
 
-		System.out.println(key);
-
 		PayVO pvo = new PayVO();
 		pvo.setTake_peo((String) (map.get("take_peo")));
 		pvo.setTake_addr((String) (map.get("take_addr")));
@@ -547,16 +545,32 @@ public class ShoppingController {
 	public ModelAndView getOrderListForm(@RequestParam("client_num")String client_num) {
 		ModelAndView mv = new ModelAndView("shopping/orderlist");
 		List<PayVO> paylist = shoppingService.getPayList(client_num);
-		for(int i=0; i<paylist.size(); i++) {
-			System.out.println(paylist.get(i).getPay_ok());
-		}
 		mv.addObject("paylist", paylist);
 		return mv;
 	}
 	
 	// 주문상세내역
 	@GetMapping("/orderOneListform.do")
-	public ModelAndView getOrderOneListForm() {
-		return new ModelAndView("shopping/order_onelist");
+	public ModelAndView getOrderOneListForm(@RequestParam("pay_oknum")String pay_oknum, @RequestParam("client_num")String client_num) {
+		ModelAndView mv = new ModelAndView("shopping/order_onelist");
+		List<PayVO> paylist = shoppingService.getOrderOneList(pay_oknum);
+	    List<BasketVO> cartList = new ArrayList<>();
+	    List<ProductVO> prodList = new ArrayList<>();
+	    for (PayVO pay : paylist) {
+	        // 각 PayVO에 있는 cart_num 값을 사용하여 CART_T 정보를 조회하고 cartList에 추가
+	    	BasketVO cartInfo = shoppingService.getCartInfo(pay.getCart_num());
+	        cartList.add(cartInfo);
+	    }
+
+	    for (BasketVO basket : cartList) {
+	    	ProductVO prodInfo = shoppingService.getProductOne(basket.getProd_num());
+	    	prodList.add(prodInfo);
+	    }
+	    
+	    mv.addObject("paylist", paylist);
+	    mv.addObject("cartList", cartList);
+	    mv.addObject("prodList", prodList);
+	    
+		return mv;
 	}
 }
