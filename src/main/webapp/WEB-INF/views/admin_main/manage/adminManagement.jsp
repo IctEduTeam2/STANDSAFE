@@ -109,6 +109,56 @@ table tbody tr:nth-child(even) {
 select, input[type="text"] {
 	height: 28px; /* 원하는 크기로 조정하세요 */
 }
+
+.deleted-admin {
+	color: gray;
+}
+
+.empty-text {
+	text-align: center;
+	font-weight: bold;
+}
+/* 체크박스 크기 2배로 확대 */
+.adminCheckbox {
+	transform: scale(2);
+}
+/* paging */
+table tfoot ol.paging {
+	list-style: none;
+}
+
+table tfoot ol.paging li {
+	float: left;
+	margin-right: 8px;
+}
+
+table tfoot ol.paging li a {
+	display: block;
+	padding: 3px 7px;
+	border: 1px solid #00B3DC;
+	color: #2f313e;
+	font-weight: bold;
+}
+
+table tfoot ol.paging li a:hover {
+	background: #00B3DC;
+	color: white;
+	font-weight: bold;
+}
+
+.disable {
+	padding: 3px 7px;
+	border: 1px solid silver;
+	color: silver;
+}
+
+.now {
+	padding: 3px 7px;
+	border: 1px solid #ff4aa5;
+	background: #ff4aa5;
+	color: white;
+	font-weight: bold;
+}
 </style>
 
 <link rel="stylesheet" href="resources/css/slide.css" />
@@ -123,7 +173,7 @@ select, input[type="text"] {
 	}
 	//삭제된 관리자 검색
 	function getDeactivatedAdmins() {
-		window.location.href = 'adminManagement.do';
+	    window.location.href = 'getDeactivatedAdmins.do';
 	}
 </script>
 </head>
@@ -138,20 +188,27 @@ select, input[type="text"] {
 			</div>
 			<!-- 검색 박스 -->
 			<div class="box-container">
-				<div class="box1">관리자 총 인원: ${countAdmins}명</div>
+				<!-- 관리자 인원 표시 -->
+				<div class="box1">
+					관리자 총 인원: ${countAdmins}명<br> 삭제된 관리자 인원:
+					${countDeactivatedAdmins}명
+				</div>
 				<div class="box2">
 					<div class="search-keyword">
-						검색어: <select>
-							<option value="id">아이디</option>
-							<option value="name">이름</option>
-							<option value="nick">별명</option>
-							<option value="email">이메일</option>
-							<option value="birth">생일</option>
-							<option value="phone">전화번호</option>
-							<option value="addr">주소</option>
-						</select> <input type="text" placeholder="검색어 입력">
-						<button class="btn navy">검색</button>
-						<button class="btn gray">검색 초기화</button>
+						<form action="/adminManagement.do" method="GET">
+							<!-- action 부분에 원하는 URL로 변경하세요. -->
+							검색어: <select name="category">
+								<option value="ADMIN_ID">아이디</option>
+								<option value="ADMIN_NAME">이름</option>
+								<option value="ADMIN_NICK">별명</option>
+								<option value="ADMIN_MAIL">이메일</option>
+								<option value="ADMIN_BIRTH">생일</option>
+								<option value="ADMIN_PHONE">전화번호</option>
+								<option value="ADMIN_ADDR">주소</option>
+							</select> <input type="text" name="keyword" placeholder="검색어 입력">
+							<button type="submit" class="btn navy">검색</button>
+							<button type="reset" class="btn gray">검색 초기화</button>
+						</form>
 					</div>
 					<div class="search-period" style="visibility: hidden;">
 						기간 검색: <select>
@@ -184,11 +241,19 @@ select, input[type="text"] {
 					</tr>
 				</thead>
 				<tbody>
+					<c:if test="${empty adminList}">
+						<tr>
+							<td colspan="8" class="empty-text">삭제된 관리자가 없습니다.</td>
+							<!-- 'colspan'의 값을 테이블의 열 수에 맞게 조절해야 합니다. -->
+						</tr>
+					</c:if>
+
 					<c:forEach var="admin" items="${adminList}">
 						<c:choose>
 							<c:when test="${admin.ADMIN_ST == 0}">
 								<!-- 삭제된 관리자 표시 -->
 								<tr class="deleted-admin">
+									<td>-</td>
 									<td>${admin.ADMIN_ID}(Deleted)</td>
 									<td>${admin.ADMIN_NAME}(Deleted)</td>
 									<td>${admin.ADMIN_NICK}(Deleted)</td>
@@ -199,36 +264,89 @@ select, input[type="text"] {
 								</tr>
 							</c:when>
 							<c:otherwise>
-							<tr onclick="viewAdminInfo('${admin.ADMIN_NUM}')">
-								<td><input type="checkbox" class="adminCheckbox"
-									value="${admin.ADMIN_NUM}" onclick="event.stopPropagation();"></td>
-								<td>${admin.ADMIN_ID}</td>
-								<td>${admin.ADMIN_NAME}</td>
-								<td>${admin.ADMIN_NICK}</td>
-								<td>${admin.ADMIN_MAIL}</td>
-								<td>${admin.ADMIN_BIRTH}</td>
-								<td>${admin.ADMIN_PHONE}</td>
-								<td>${admin.ADMIN_ADDR}</td>
-							</tr>
+								<tr onclick="viewAdminInfo('${admin.ADMIN_NUM}')">
+									<td><input type="checkbox" class="adminCheckbox"
+										value="${admin.ADMIN_NUM}" onclick="event.stopPropagation();"></td>
+									<td>${admin.ADMIN_ID}</td>
+									<td>${admin.ADMIN_NAME}</td>
+									<td>${admin.ADMIN_NICK}</td>
+									<td>${admin.ADMIN_MAIL}</td>
+									<td>${admin.ADMIN_BIRTH}</td>
+									<td>${admin.ADMIN_PHONE}</td>
+									<td>${admin.ADMIN_ADDR}</td>
+								</tr>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="8">
+							<ol class="paging">
+								<!-- 이전 버튼 -->
+								<c:choose>
+									<c:when test="${paging.beginBlock <= paging.pagePerBlock }">
+										<li class="disable">이전으로</li>
+									</c:when>
+									<c:otherwise>
+										<li><a
+											href="/bbs_list.do?cPage=${paging.beginBlock-paging.pagePerBlock }">이전으로</a></li>
+									</c:otherwise>
+								</c:choose>
+
+								<!-- 페이지번호들 -->
+								<c:forEach begin="${paging.beginBlock }"
+									end="${paging.endBlock }" step="1" var="k">
+									<!--  현재 페이지는 링크 X, 나머지 페이지는 해당 페이지로 이동하게 링크 처리 -->
+									<c:if test="${ k == paging.nowPage}">
+										<li class="now">${k}</li>
+									</c:if>
+									<c:if test="${ k != paging.nowPage}">
+										<li><a href="/adminManagement.do?cPage=${k}">${k}</a></li>
+									</c:if>
+								</c:forEach>
+
+								<!-- 이후 버튼 -->
+								<c:choose>
+									<c:when test="${paging.endBlock >= paging.totalPage }">
+										<li class="disable">다음으로</li>
+									</c:when>
+									<c:otherwise>
+										<li><a
+											href="/adminManagement.do?cPage=${paging.beginBlock+paging.pagePerBlock }">다음으로</a></li>
+									</c:otherwise>
+								</c:choose>
+								<div class="dawn-btn">
+									<button class="btn"
+										onclick="window.location.href='registmanager.do'">관리자
+										등록</button>
+									<button class="btn" onclick="deleteSelectedAdmins()">선택한
+										관리자 삭제</button>
+									<button class="btn"
+										onclick="window.location.href='emaillist.do'">메일보내기</button>
+								</div>
+							</ol>
+						</td>
+
+					</tr>
+				</tfoot>
 			</table>
-			<div class="dawn-btn">
-				<button class="btn"
-					onclick="window.location.href='registmanager.do'">관리자 등록</button>
-				<button class="btn" onclick="deleteSelectedAdmins()">선택한
-					관리자 삭제</button>
-				<button class="btn" onclick="window.location.href='emaillist.do'">메일보내기</button>
-			</div>
 		</section>
 		<jsp:include page="../../Semantic/footer.jsp"></jsp:include>
 	</div>
 	<script type="text/javascript">
 		function viewAdminInfo(ADMIN_NUM) {
 			window.location.href = '/infoManager.do?ADMIN_NUM=' + ADMIN_NUM;
+			
 		}
 	</script>
+	<script type="text/javascript">
+    <%if (request.getAttribute("message") != null) {%>
+        alert('<%=request.getAttribute("message")%>
+		');
+	<%}%>		
+	</script>
+
 	<script type="text/javascript">
 		// 관리자 삭제 기능을 위한 함수를 정의합니다.
 		function deleteSelectedAdmins() {
@@ -280,4 +398,5 @@ select, input[type="text"] {
 		}
 	</script>
 </body>
+
 </html>

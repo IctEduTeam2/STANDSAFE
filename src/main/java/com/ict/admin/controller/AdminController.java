@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +25,14 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ict.admin.model.service.AdminService;
 import com.ict.admin.model.vo.AdminVO;
 import com.ict.admin.model.vo.OrderVO;
+import com.ict.common.Paging;
 import com.ict.user.model.vo.UserVO;
 
 @Controller
 public class AdminController {
+	@Autowired
+	private Paging paging;
+
 	@Autowired
 	private AdminService adminService;
 
@@ -123,17 +128,58 @@ public class AdminController {
 
 	// 관리자관리(들어가면 전체보기)
 	@RequestMapping("/adminManagement.do")
-	public ModelAndView getAdminManagement(HttpSession session) {
-		ModelAndView mv = new ModelAndView("/admin_main/manage/adminManagement");
-		// 전체보여주기
-		List<AdminVO> adminList = adminService.getAllAdmins();
-		// 관리자 수 카운트
-		int countAdmins = adminService.getCountAdmins();
-		session.setAttribute("adminList", adminList);
-		mv.addObject("countAdmins", countAdmins);
-		mv.addObject("adminList", adminList);
-		return mv;
+	public ModelAndView getAdminManagement(HttpServletRequest request, HttpSession session) {
+	    ModelAndView mv = new ModelAndView("/admin_main/manage/adminManagement");
+	    
+	    // 페이징을 위해 전체개수 구하기(활성 관리자 수)
+	    int count = adminService.getCountAdmins();
+	    paging.setTotalRecord(count);
+	    
+	    // 페이징처리
+	    if (paging.getTotalRecord() <= paging.getNumPerPage()) {
+	        paging.setTotalPage(1);
+	    } else {
+	        paging.setTotalPage(paging.getTotalRecord() / paging.getNumPerPage());
+	        if (paging.getTotalRecord() % paging.getNumPerPage() != 0) {
+	            paging.setTotalPage(paging.getTotalPage() + 1);
+	        }
+	    }
+
+	    String cPage = request.getParameter("cPage");
+	    paging.setNowPage(cPage == null ? 1 : Integer.parseInt(cPage));
+	    paging.setOffset(paging.getNumPerPage() * (paging.getNowPage() - 1));
+
+	    paging.setBeginBlock((int) ((paging.getNowPage() - 1) / paging.getPagePerBlock()) * paging.getPagePerBlock() + 1);
+	    paging.setEndBlock(paging.getBeginBlock() + paging.getPagePerBlock() - 1);
+	    if (paging.getEndBlock() > paging.getTotalPage()) {
+	        paging.setEndBlock(paging.getTotalPage());
+	    }
+
+	    // adminManagement.jsp에서 제출한 검색 키워드 및 카테고리를 받기
+	    String keyword = request.getParameter("keyword");
+	    String category = request.getParameter("category");
+	    
+	    List<AdminVO> adminList = null;
+	    if (keyword != null && !keyword.trim().isEmpty() && category != null && !category.trim().isEmpty()) {
+	        // 검색어와 카테고리가 제출된 경우 검색 쿼리를 실행
+	        adminList = adminService.getAdminlistByKeyword(category, keyword, paging.getOffset(), paging.getNumPerPage());
+	    } else {
+	        // 검색어와 카테고리가 제출되지 않은 경우 기존의 전체 목록 쿼리를 실행
+	        adminList = adminService.getAdminlist(paging.getOffset(), paging.getNumPerPage());
+	    }
+
+	    List<AdminVO> deactivatedAdminList = adminService.getDeactivatedAdminlist(paging.getOffset(), paging.getNumPerPage());
+	    int countAdmins = adminList.size();
+	    int countDeactivatedAdmins = deactivatedAdminList.size();
+	    
+	    mv.addObject("paging", paging);
+	    mv.addObject("adminList", adminList);
+	    mv.addObject("countDeactivatedAdmins", countDeactivatedAdmins);
+	    mv.addObject("countAdmins", countAdmins);
+
+	    return mv;
 	}
+
 
 	// 관리자 개인정보
 	@RequestMapping("/infoManager.do")
@@ -228,14 +274,14 @@ public class AdminController {
 		}
 		return mv;
 	}
-	//선택한 관리자(들) 삭제
+
+	// 선택한 관리자(들) 삭제
 	@RequestMapping(value = "/deletemanager.do", method = RequestMethod.POST)
 	public ResponseEntity<String> deactivateAdmins(@RequestParam String adminIDs, HttpSession session) {
 		// 문자열 형태의 관리자 ID를 정수 리스트로 변환
-		List<Integer> adminIdList = Arrays.stream(adminIDs.split(","))
-				.map(Integer::parseInt)
+		List<Integer> adminIdList = Arrays.stream(adminIDs.split(",")).map(Integer::parseInt)
 				.collect(Collectors.toList());
-		
+
 		try {
 			adminService.deactivateAdmins(adminIdList);
 			return new ResponseEntity<>("Success", HttpStatus.OK);
@@ -243,19 +289,59 @@ public class AdminController {
 			return new ResponseEntity<>("Failure", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	// ==========================================================================================완료
-	//비활성화된 관리자
+
+	// 비활성화된 관리자
 	@RequestMapping("/getDeactivatedAdmins.do")
-	public ModelAndView getDeactivatedAdmins() {
-	    List<AdminVO> deactivatedAdminList = adminService.getDeactivatedAdmins();
-	    ModelAndView mv = new ModelAndView("adminManagement");
-	    mv.addObject("adminList", deactivatedAdminList);
-	    return mv;
+	public ModelAndView getDeactivatedAdmins(HttpServletRequest request, HttpSession session) {
+		ModelAndView mv = new ModelAndView("/admin_main/manage/adminManagement");
+		// 페이징을 위해 전체개수 구하기(활성 관리자 수)
+		int count = adminService.countDeactivatedAdmins();
+		paging.setTotalRecord(count);
+		
+		// 페이징처리
+		if (paging.getTotalRecord() <= paging.getNumPerPage()) {
+			paging.setTotalPage(1);
+		} else {
+			paging.setTotalPage(paging.getTotalRecord() / paging.getNumPerPage());
+			if (paging.getTotalRecord() % paging.getNumPerPage() != 0) {
+				paging.setTotalPage(paging.getTotalPage() + 1);
+			}
+		}
+
+		String cPage = request.getParameter("cPage");
+		if (cPage == null) {
+			paging.setNowPage(1);
+		} else {
+			paging.setNowPage(Integer.parseInt(cPage));
+		}
+
+		paging.setOffset(paging.getNumPerPage() * (paging.getNowPage() - 1));
+
+		paging.setBeginBlock(
+				(int) ((paging.getNowPage() - 1) / paging.getPagePerBlock()) * paging.getPagePerBlock() + 1);
+
+		paging.setEndBlock(paging.getBeginBlock() + paging.getPagePerBlock() - 1);
+
+		if (paging.getEndBlock() > paging.getTotalPage()) {
+			paging.setEndBlock(paging.getTotalPage());
+		}
+
+		List<AdminVO> adminList = adminService.getAdminlist(paging.getOffset(), paging.getNumPerPage());
+		List<AdminVO> deactivatedAdminList = adminService.getDeactivatedAdminlist(paging.getOffset(),paging.getNumPerPage());
+		// 앞에 몇명인지 보여주는 용도
+		int countAdmins = adminList.size();
+		int countDeactivatedAdmins = deactivatedAdminList.size();
+		mv.addObject("paging", paging);
+		mv.addObject("adminList", deactivatedAdminList); // 비활성화된 관리자 목록
+		mv.addObject("countAdmins", countAdmins);
+		mv.addObject("countDeactivatedAdmins", countDeactivatedAdmins);
+		return mv;
 	}
-	
+	// ==========================================================================================완료
+
 	// 사용자관리
 	@RequestMapping("/userManagement.do")
-	public ModelAndView getUserManagement() {
+	public ModelAndView getUserManagement(HttpServletRequest request, HttpSession session) {
 		return new ModelAndView("/admin_main/manage/userManagement");
 	}
 

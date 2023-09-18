@@ -1,6 +1,8 @@
 package com.ict.admin.model.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,5 +63,36 @@ public class AdminDAO {
 	//비활성화된 관리자
 	public List<AdminVO> getDeactivatedAdmins() {
 	    return sqlSessionTemplate.selectList("admin.getDeactivatedAdmins");
+	}
+	// 페이징을 위한 전체게시물 구하기
+	public int getTotalCount() {
+		return sqlSessionTemplate.selectOne("admin.admaincount");
+	}
+	// 시작과 끝 블럭 구하기
+	public List<AdminVO> getAdminlist(int offset, int limit) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("limit", limit);
+		map.put("offset", offset);
+		return sqlSessionTemplate.selectList("admin.adminlist", map);
+	}
+	// 시작과 끝 블럭 구하기
+	public List<AdminVO> getDeactivatedAdminlist(int offset, int limit) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("limit", limit);
+		map.put("offset", offset);
+		return sqlSessionTemplate.selectList("admin.getDeactivatedAdminlist", map);
+	}
+	// 페이징을 위한 삭제된 관리자
+	public int countDeactivatedAdmins() {
+		return sqlSessionTemplate.selectOne("admin.countDeactivatedAdmins");
+	}
+
+	public List<AdminVO> getAdminlistByKeyword(String category, String keyword, int offset, int limit) {
+	    Map<String, Object> map = new HashMap<>();
+	    map.put("category", category);
+	    map.put("keyword", keyword);
+	    map.put("limit", limit);
+	    map.put("offset", offset);
+	    return sqlSessionTemplate.selectList("admin.getAdminlistByKeyword", map);
 	}
 }

@@ -44,7 +44,7 @@
 							</tr>
 							<tr>
 								<th class="header-style">대상</th>
-								<td>유저 전체에게 보내는 메일입니다</td>
+								<td>체크한 대상만</td>
 							</tr>
 							<tr>
 								<th class="header-style">첨부파일</th>

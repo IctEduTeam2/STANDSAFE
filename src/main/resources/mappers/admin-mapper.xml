@@ -58,9 +58,11 @@
 	</select>
 
 	<!-- 관리자 전체 검색 -->
-	<select id="selectAll" parameterType="String" resultType="adVO">
-		SELECT
-		* FROM ADMIN_T WHERE admin_st != 0
+	<select id="adminlist" parameterType="Map" resultType="adVO">
+		select *
+		from ADMIN_T where ADMIN_ST = 1
+		order by ADMIN_NUM desc limit #{limit}
+		offset #{offset}
 	</select>
 	<!-- 관리자 검색 몇명인지 -->
 	<select id="countAdmins" resultType="int">
@@ -104,10 +106,55 @@
 			#{item, jdbcType=INTEGER}
 		</foreach>
 	</update>
+
 	<!-- 삭제된 관리자 검색 -->
-	<select id="getDeactivatedAdmins" resultType="adVO">
-		SELECT * FROM ADMIN_T WHERE ADMIN_ST = 0
+	<select id="getDeactivatedAdminlist" parameterType="Map"
+		resultType="adVO">
+		select * from ADMIN_T where ADMIN_ST = 0
+		order by ADMIN_NUM
+		desc limit #{limit} offset #{offset}
 	</select>
+	<!-- 삭제된 관리자 검색 몇명인지 -->
+	<select id="countDeactivatedAdmins" resultType="int">
+		SELECT COUNT(*)
+		FROM ADMIN_T
+		WHERE admin_st != 1
+	</select>
+
+	<!-- 검색 -->
+	<select id="getAdminlistByKeyword" parameterType="map"
+		resultType="adVO">
+		SELECT * FROM ADMIN_T
+		WHERE
+		<choose>
+			<when test="category == 'ADMIN_ID'">
+				ADMIN_ID LIKE CONCAT('%', #{keyword}, '%')
+			</when>
+			<when test="category == 'ADMIN_NAME'">
+				ADMIN_NAME LIKE CONCAT('%', #{keyword}, '%')
+			</when>
+			<when test="category == 'ADMIN_NICK'">
+				ADMIN_NICK LIKE CONCAT('%', #{keyword}, '%')
+			</when>
+			<when test="category == 'ADMIN_MAIL'">
+				ADMIN_MAIL LIKE CONCAT('%', #{keyword}, '%')
+			</when>
+			<when test="category == 'ADMIN_BIRTH'">
+				ADMIN_BIRTH LIKE CONCAT('%', #{keyword}, '%')
+			</when>
+			<when test="category == 'ADMIN_PHONE'">
+				ADMIN_PHONE LIKE CONCAT('%', #{keyword}, '%')
+			</when>
+			<when test="category == 'ADMIN_ADDR'">
+				ADMIN_ADDR LIKE CONCAT('%', #{keyword}, '%')
+			</when>
+			<otherwise>
+				1=1
+			</otherwise>
+		</choose>
+		LIMIT #{offset}, #{limit}
+	</select>
+
 </mapper>
 	
 

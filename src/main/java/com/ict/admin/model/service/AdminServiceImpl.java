@@ -70,6 +70,29 @@ public class AdminServiceImpl implements AdminService{
 		return adminDAO.getDeactivatedAdmins();
 	}
 
+	// 시작과 끝 블럭 구하기
+	@Override
+	public List<AdminVO> getAdminlist(int offset, int limit) {
+		return adminDAO.getAdminlist(offset,limit);
+	}
+	// 시작과 끝 블럭 구하기(삭제된 관리자)
+	@Override
+	public List<AdminVO> getDeactivatedAdminlist(int offset, int limit) {
+		return adminDAO.getDeactivatedAdminlist(offset,limit);
+	}
+
+	@Override
+	public int countDeactivatedAdmins() {
+		return adminDAO.countDeactivatedAdmins();
+	}
+
+	@Override
+	public List<AdminVO> getAdminlistByKeyword(String category, String keyword, int offset, int limit) {
+		return adminDAO.getAdminlistByKeyword(category, keyword, offset, limit);
+	}
+	
+	
+
 
 
 
