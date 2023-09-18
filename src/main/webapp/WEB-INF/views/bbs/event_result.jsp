@@ -140,13 +140,7 @@ if (msg && msg !== "") {
     alert(msg);
 }
 </script>
-<script type="text/javascript">
-	function all(f) {
-	f.action ="/bbs_all_search.do"
-	f.submit();
-}
-	
-</script>
+
 </head>
 <body onload="InitializeStaticMenu();">
 	<div id="mydiv">

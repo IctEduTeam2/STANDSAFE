@@ -22,11 +22,15 @@ public interface NoticeService {
 	//onelist
 	public NoticeVO getAdNoticeOneList(String notice_num);
 	
-	//검색 
-	
-	//삭제된 게시물 보기 
-	List<NoticeVO> getDeletedNotices();
 
+	//테이블 삭제 버튼
+	int getAdNotiUpdateRow(String notice_num);
+	
+	
+	
+	//검색
+	//searchKey,searchText,searchTitle,start1,close1
+	public List<NoticeVO> adNotiSearch(String searchKey,String searchText,String start1,String close1);
 	
 	
 	

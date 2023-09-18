@@ -17,6 +17,7 @@ import com.ict.bbs.model.vo.NO_BBS_VO;
 import com.ict.bbs.model.vo.QA_BBS_VO;
 import com.ict.bbs.model.vo.REP_BBS_VO;
 import com.ict.bbs.model.vo.RE_BBS_VO;
+import com.ict.shopping.model.vo.ProductVO;
 
 @Repository
 public class BBS_DAO {
@@ -336,4 +337,12 @@ public class BBS_DAO {
 
 	
 	
+	//콤보
+	public List<ProductVO> getProductList(String high, String low) {
+		Map<String, String> combo = new HashMap<>();
+		
+		combo.put("high", high);
+		combo.put("low", low);
+		return sqlSessionTemplate.selectList("bbs.productcombo", combo);
+	}
 }

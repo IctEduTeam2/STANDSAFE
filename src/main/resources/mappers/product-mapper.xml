@@ -28,10 +28,19 @@
  		select * from PAYBACK_T where PB_NUM = #{pb_num}
  	</select>
  	  <!-- 상품 등록 -->
-    <insert id="insertproduct" parameterType="provo">
-        INSERT INTO products (prod_name, prod_img, prod_price, prod_sale, prod_amount,
-        prod_regdate, prod_img, prod_detail, prod_high, prod_low)
-        VALUES (#{prod_name}, #{prod_price}, #{prod_sale}, #{prod_amount}, 
-        #{prod_regdate}, #{prod_img}, #{prod_detail}, #{prod_high}, #{prod_low})
+    <insert id="productinsert" parameterType="provo">
+        INSERT INTO PRODUCT_T (PROD_NAME, PROD_IMG, PROD_PRICE, PROD_SALE, PROD_AMOUNT,
+        PROD_REGDATE, PROD_DETAIL, PROD_HIGH, PROD_LOW, PROD_ST)
+        VALUES (#{PROD_NAME}, #{PROD_IMG}, #{PROD_PRICE}, #{PROD_SALE}, #{PROD_AMOUNT}, 
+        sysdate(), #{PROD_DETAIL}, #{PROD_HIGH}, #{PROD_LOW}, #{PROD_ST})
     </insert>
+    
+
+    <update id="productupdate" parameterType="String">
+    	update PRODUCT_T
+    	set PROD_ST = 0
+    	where PROD_NUM = #{PROD_NUM}
+    </update>
+    
+    
  </mapper>

@@ -26,11 +26,41 @@
  		update NOTICE_T set NOTICE_HIT = NOTICE_HIT +1 where NOTICE_NUM = #{NOTICE_NUM}
  	</update>
  	
- 	<!-- 검색  -->
  	
  	<!-- 삭제된 게시물 보기  -->
- 	<select id="noticetable" resultType="nvo">
- 		SELECT * FROM NOTICE_T WHERE NOTICE_ST = 2;
+
+ 	
+ 	<!-- 검색  -->
+ 	<select id="adsearchnoti" resultType="nvo">
+ 		select * from NOTICE_T where NOTICE_ST = 1 OR NOTICE_ST = 0
+ 		
+ 	<!-- 항목 종류 검색  -->
+	<if test="searchKey != null and mg_type != ''">
+            <choose>
+                <when test="searchKey == '게시물제목'">
+                    AND NOTICE_SUBJECT LIKE  CONCAT('%', #{searchText}, '%') 
+                </when>
+                <when test="searchKey == '작성자'">
+                    AND NOTICE_WRITER LIKE CONCAT('%', #{searchText}, '%') 
+                </when>
+             
+                <when test="searchKey == '내용'">
+                    AND NOTICE_CONTENT LIKE CONCAT('%', #{searchText}, '%') 
+                </when>
+            </choose>
+        </if>
+
+	<!-- 시작 날짜 검색 조건 -->
+    <if test="start1 != null and start1 != ''">
+        AND NOTICE_DATE &gt;= #{start1}
+    </if>
+
+    <!-- 종료 날짜 검색 조건 -->
+    <if test="close1 != null and close1 != ''">
+        AND NOTICE_DATE &lt;= #{close1}
+    </if> 
+  order by NOTICE_NUM desc
+    
  	</select>
  	
  	

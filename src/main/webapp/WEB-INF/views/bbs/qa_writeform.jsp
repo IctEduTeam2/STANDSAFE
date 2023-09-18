@@ -79,7 +79,7 @@ label {
     font-weight: bold; /* 글꼴 두껍게 설정 */
 }
 #High{
-	width: 325px;
+	width: 225px;
 	padding: 7px;
 	margin-left : 30px;
 	border: 1px solid #1b5ac2;
@@ -87,7 +87,7 @@ label {
 	float: left;
 }
 #Low{
-	width: 325px;
+	width: 225px;
 	padding: 7px;
 	margin-left : 30px;
 	border: 1px solid #1b5ac2;
@@ -95,7 +95,7 @@ label {
 	float: left;
 }
 #Prod{
-	width: 325px;
+	width: 225px;
 	padding: 7px;
 	margin-left : 30px;
 	border: 1px solid #1b5ac2;
@@ -109,6 +109,16 @@ line-height: 2rem;
 #cate2{
 line-height: 2rem;
   padding: 0.2em 0.4em;
+}
+#combo_btn{
+	width: 80x;
+	padding: 5px;
+	float: left;
+	margin-left : 30px;
+	height: 35px;
+	background-color: #1b5ac2;
+	border: none;
+	color:white;
 }
 
 </style> 
@@ -142,75 +152,74 @@ line-height: 2rem;
 		f.submit();
 	}
 </script>
- <script>
-        function categoty(){
-            const cate_high = document.getElementById('High');
-            const cate_low = document.getElementById('Low');
-            
-            // 하위 카테고리를 초기화합니다.
-			
-            cate_low.innerHTML = '';
-            // 선택된 상위 카테고리 값을 가져옵니다.
-            const select_cate = cate_high.value;
-	
-            // 선택된 상위 카테고리에 따라 하위 카테고리를 추가합니다.
-            switch (select_cate) {
-            	case '0' :
-            		addCategory(cate_low, '====소분류====');
-            		break;
-                case '1':
-                    addCategory(cate_low, '소화기');
-                    addCategory(cate_low, '화재 감지 | 대피');
-                    break;
-                case '2':
-                	addCategory(cate_low, '구급함 | 제세동기');
-                	addCategory(cate_low, '재난안전용품');
-                	addCategory(cate_low, '방역안전용품');
-                    break;
-                case '3':
-                	addCategory(cate_low, '마스크');
-                	addCategory(cate_low, '위생장갑');
-                	addCategory(cate_low, '통조림 | 비상식량');
-                    break;
-                default:
-                    break;
-            }
-        }
+<script type="text/javascript">
+	function prod_combo() {
+		
+		location.href="/product_combo.do"
+	}
+</script>
+<script type="text/javascript">
+function categoty() {
+	 var highCategory = document.getElementById("High").value;
+	    var lowCategory = document.getElementById("Low");
 
-        function addCategory(selectElement, value) {
-            const option = document.createElement('option');
-            option.value = value;
-            option.textContent = '' + value;
-            selectElement.appendChild(option);
-        }
+	    // 기존 Low 카테고리 옵션 제거
+	    lowCategory.innerHTML = "";
 
-        // 페이지 로드 시 초기 하위 카테고리를 설정합니다.
-        categoty();
-        
-        
-        
-     // 라디오 버튼의 상태가 변경될 때 호출되는 함수
-function onRadioChange() {
-    const productCombo = document.getElementById('High');
-    const radioButtons = document.getElementsByName('BOARD_TYPE');
+	    // 선택한 High 카테고리에 따라 Low 카테고리 옵션 추가
+	    if (highCategory === "1") {
+	        lowCategory.innerHTML += '<option value="1"> 소화기 </option>';
+	        lowCategory.innerHTML += '<option value="2"> 화재 감지 | 대피 </option>';
+	        // 다른 옵션들도 추가
+	    } else if (highCategory === "2") {        
+	        lowCategory.innerHTML += '<option value="3"> 구급함 | 제세동기 </option>';
+	        lowCategory.innerHTML += '<option value="4"> 재난안전용품 </option>';
+	        lowCategory.innerHTML += '<option value="5"> 방역안전용품 </option>';
+	        // 다른 옵션들도 추가
+	    } else if (highCategory === "3") {
+	        lowCategory.innerHTML += '<option value="6"> 마스크 </option>';
+	        lowCategory.innerHTML += '<option value="7"> 위생장갑 </option>';
+	        lowCategory.innerHTML += '<option value="8"> 통조림 | 비상식량 </option>';
+	        // 다른 옵션들도 추가
+	    }else if(highCategory === "0"){
+	    	lowCategory.innerHTML += '<option value="0"> ====소분류==== </option>';
+	    }
+	}
+
+	function prod_combo() {
+	    // 선택한 High와 Low 카테고리를 사용하여 상품 목록을 생성하고 콤보 박스에 추가하는 코드를 작성
+	}
+</script>
+<script type="text/javascript">
+function updateProductList() {
+    var lowCategory = document.getElementById("Low").value;
+    var prodCategory = document.getElementById("Prod");
     
-    for (const radioButton of radioButtons) {
-        if (radioButton.checked && radioButton.value === '상품문의') { // "상품문의" 라디오 버튼 선택 시
-            productCombo.disabled = false; // 카테고리 콤보박스 활성화
-        } else {
-            productCombo.disabled = true; // 다른 라디오 버튼이 선택된 경우 카테고리 콤보박스 비활성화
-        }
-    }
-}
+   
+   $.ajax({
+	   url : "/product_combo.do?lowCategory="+lowCategory,
+	   method: "post",
+	   dataType: "text",
+	   success: function(data) {
+		   console.log(data)
+		   
+		    // "prod" 콤보 박스 엘리먼트 가져오기
+		   var prodCategory = document.getElementById("Prod");
 
-// 라디오 버튼의 변경 이벤트에 함수를 연결
-const radioButtons = document.getElementsByName('BOARD_TYPE');
-for (const radioButton of radioButtons) {
-    radioButton.addEventListener('change', onRadioChange);
+		    // 받은 HTML을 "prod" 콤보 박스에 추가
+		    prodCategory.innerHTML = data;
+	   },
+	   error:function() {
+		   alert("읽기실패");
+	   }
+   });
 }
-
-// 초기 상태 설정
-onRadioChange();
+// Low 카테고리 변경 시에도 물품 리스트 업데이트
+document.getElementById("Low").addEventListener("change", updateProductList)
+ //선택한물품의 번호
+    var selectedOption = prodCategory.options[prodCategory.selectedIndex];
+    var prodNum = selectedOption.value; 
+    console.log(prodNum);
 </script>
 </head>
 <body>
@@ -243,19 +252,20 @@ onRadioChange();
 								<td bgcolor="#1b5ac2" class="w_font">분류</td>
 								<td>
 									<label id="cate1" for=High></label>
-										<select id="High" onchange="categoty()" disabled>
+										<select id="High" onchange="categoty()">
 											<option value="0"> ====대분류==== </option>
 											<option value="1"> ■ 소방/안전 </option>
 											<option value="2"> ■ 재난/응급/긴급 </option>
 											<option value="3"> ■ 일상/기타 </option>
 										</select>
 									<label id="cate2" for="Low"></label>
-    								<select id="Low" disabled>
+    								<select id="Low" onchange="updateProductList()">
     									<!--처음 글쓰기들어왔을때, 초기값  -->
     									<option value="0"> ====소분류==== </option>
     								</select>
     								<label id="cate3" for="Prod"></label>
-    								<select id="Prod" disabled>
+    								<select id="Prod" name="prod_name"> 
+    								<!--동적으로 자동으로 붙여질곳  -->
     								</select>
 								</td>
 							</tr>

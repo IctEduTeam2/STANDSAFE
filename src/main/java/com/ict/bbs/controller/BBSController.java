@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -31,6 +32,7 @@ import com.ict.bbs.model.vo.REP_BBS_VO;
 import com.ict.bbs.model.vo.RE_BBS_VO;
 
 import com.ict.common.Paging;
+import com.ict.shopping.model.vo.ProductVO;
 import com.ict.user.model.vo.UserVO;
 
 @Controller
@@ -630,6 +632,10 @@ public class BBSController {
 			//비밀글 체크시 제목앞에 붙이기.
 			String lock =  request.getParameter("secret_flag");
 			System.out.println("비밀글여부  : " + lock);  //1이 비밀글 0은 일반
+			
+			
+			
+			
 			
 			//[비밀] 을 붙일 제목가져오기
 			String sub = qnavo.getBOARD_SUBJECT();
@@ -1718,6 +1724,186 @@ public class BBSController {
 	    }
 
 	    return mv;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value="/product_combo.do", produces="text/xml; charset=utf-8")
+	public StringBuilder getProductList(
+			HttpServletRequest request,
+			HttpSession session,
+			@ModelAttribute("lowCategory")String lowCategory 
+			){
+			
+		System.out.println("lowCategory1:" +lowCategory); //카테고리 넘버 가져와진다. 
+		StringBuilder html = new StringBuilder();
+		ProductVO prodvo = new ProductVO();
+		
+		
+		if(lowCategory.equals("1")) {
+			String high1= "1";
+			String low1= "1";
+			
+			List<ProductVO> pro_list1 = bbsService.getProductList(high1, low1);	
+			
+			html.append("<select>");
+			for (ProductVO k : pro_list1) {
+			    html.append("<option value=\"").append(k.getProd_num()).append("\">").append(k.getProd_name()).append("</option>");
+				/*
+				 * html.append("<input type=\"hidden\" name=\"prod_num\" value=\"").append(k.
+				 * getProd_num()).append("\">");
+				 */
+			}
+			System.out.println("물품 배열 리스트:" + pro_list1);
+			
+			html.append("</select>");		
+			System.out.println("html:"+html);
+			
+			return html;
+		}else if (lowCategory.equals("2")) {
+			String high1= "1";
+			String low1= "2";
+			
+			List<ProductVO> pro_list1 = bbsService.getProductList(high1, low1);	
+			
+			html.append("<select>");
+			for (ProductVO k : pro_list1) {
+			    html.append("<option value=\"").append(k.getProd_num()).append("\">").append(k.getProd_name()).append("</option>");
+				/*
+				 * html.append("<input type=\"hidden\" name=\"prod_num\" value=\"").append(k.
+				 * getProd_num()).append("\">");
+				 */
+			}
+			System.out.println("물품 배열 리스트:" + pro_list1);
+			html.append("</select>");		
+			System.out.println("html:"+html);
+			
+			return html;
+			
+		}else if (lowCategory.equals("3")) {
+			String high1= "2";
+			String low1= "1";
+			
+			List<ProductVO> pro_list1 = bbsService.getProductList(high1, low1);	
+			
+			html.append("<select>");
+			for (ProductVO k : pro_list1) {
+			    html.append("<option value=\"").append(k.getProd_num()).append("\">").append(k.getProd_name()).append("</option>");
+				/*
+				 * html.append("<input type=\"hidden\" name=\"prod_num\" value=\"").append(k.
+				 * getProd_num()).append("\">");
+				 */
+			}
+			System.out.println("물품 배열 리스트:" + pro_list1);
+			html.append("</select>");		
+			System.out.println("html:"+html);
+			
+			return html;
+			
+		}else if (lowCategory.equals("4")) {
+			String high1= "2";
+			String low1= "2";
+			
+			List<ProductVO> pro_list1 = bbsService.getProductList(high1, low1);	
+			
+			html.append("<select>");
+			for (ProductVO k : pro_list1) {
+			    html.append("<option value=\"").append(k.getProd_num()).append("\">").append(k.getProd_name()).append("</option>");
+				/*
+				 * html.append("<input type=\"hidden\" name=\"prod_num\" value=\"").append(k.
+				 * getProd_num()).append("\">");
+				 */
+			}
+			System.out.println("물품 배열 리스트:" + pro_list1);
+			html.append("</select>");		
+			System.out.println("html:"+html);
+			
+			return html;
+			
+		}else if (lowCategory.equals("5")) {
+			String high1= "2";
+			String low1= "3";
+			
+			List<ProductVO> pro_list1 = bbsService.getProductList(high1, low1);	
+			
+			html.append("<select>");
+			for (ProductVO k : pro_list1) {
+			    html.append("<option value=\"").append(k.getProd_num()).append("\">").append(k.getProd_name()).append("</option>");
+				/*
+				 * html.append("<input type=\"hidden\" name=\"prod_num\" value=\"").append(k.
+				 * getProd_num()).append("\">");
+				 */
+			}
+			System.out.println("물품 배열 리스트:" + pro_list1);
+			html.append("</select>");		
+			System.out.println("html:"+html);
+			
+			return html;
+			
+		}else if (lowCategory.equals("6")) {
+			String high1= "3";
+			String low1= "1";
+			
+			List<ProductVO> pro_list1 = bbsService.getProductList(high1, low1);	
+			
+			html.append("<select>");
+			for (ProductVO k : pro_list1) {
+			    html.append("<option value=\"").append(k.getProd_num()).append("\">").append(k.getProd_name()).append("</option>");
+				/*
+				 * html.append("<input type=\"hidden\" name=\"prod_num\" value=\"").append(k.
+				 * getProd_num()).append("\">");
+				 */
+			}
+			System.out.println("물품 배열 리스트:" + pro_list1);
+			html.append("</select>");		
+			System.out.println("html:"+html);
+			
+			return html;
+			
+		}else if (lowCategory.equals("7")) {
+			String high1= "3";
+			String low1= "2";
+			
+			List<ProductVO> pro_list1 = bbsService.getProductList(high1, low1);	
+			
+			html.append("<select>");
+			for (ProductVO k : pro_list1) {
+			    html.append("<option value=\"").append(k.getProd_num()).append("\">").append(k.getProd_name()).append("</option>");
+				/*
+				 * html.append("<input type=\"hidden\" name=\"prod_num\" value=\"").append(k.
+				 * getProd_num()).append("\">");
+				 */
+			}
+			System.out.println("물품 배열 리스트:" + pro_list1);
+			html.append("</select>");		
+			System.out.println("html:"+html);
+			
+			return html;
+			
+		}else if (lowCategory.equals("8")) {
+			String high1= "3";
+			String low1= "3";
+			
+			List<ProductVO> pro_list1 = bbsService.getProductList(high1, low1);	
+			
+			html.append("<select>");
+			for (ProductVO k : pro_list1) {
+			    html.append("<option value=\"").append(k.getProd_num()).append("\">").append(k.getProd_name()).append("</option>");
+				/*
+				 * html.append("<input type=\"hidden\" name=\"prod_num\" value=\"").append(k.
+				 * getProd_num()).append("\">");
+				 */
+			}
+			System.out.println("물품 배열 리스트:" + pro_list1);
+			html.append("</select>");		
+			System.out.println("html:"+html);
+			
+			return html;
+			
+		}
+
+		
+		return null;
 	}
 	
 	

@@ -30,6 +30,8 @@ public class Admin_notice {
 	public ModelAndView AdminNo(HttpServletRequest request) {
 	    ModelAndView mv = new ModelAndView("admin_notice/notice");
 	    
+	    
+	    
 	    // 페이징 처리를 위한 로직 추가
 	    int totalRecord = notiService.getTotalRecord(); // 전체 공지사항 레코드 수
 	    paging.setTotalRecord(totalRecord);
@@ -130,31 +132,67 @@ public class Admin_notice {
 		return mv;
 	}
 	
-	//삭제된 게시물 보기 
-	@RequestMapping("/admin_deleted_notices.do")
-	@ResponseBody
-	public List<NoticeVO> getDeletedNotices() {
-	    List<NoticeVO> deletedNotices = notiService.getDeletedNotices(); // 삭제된 게시물을 조회하는 서비스 메서드 호출
-	    return deletedNotices; // 조회된 삭제된 게시물 데이터를 JSON 형식으로 반환
+	
+	//테이블 게시물 삭제버튼
+	@RequestMapping("/admin_Updaterow.do")
+	public ModelAndView AdminDeleterow() {
+		ModelAndView mv = new ModelAndView("admin_notice/notice");
+		return mv;
 	}
-
+	
+	
+	
+	
 	
 	//검색버튼
-//	@RequestMapping("/adnotice_search.do")
-//	public ModelAndView Search(
-//			HttpSession session,
-//			@ModelAttribute("title")String title,
-//			@ModelAttribute("title2")String title2,
-//			@ModelAttribute("searchText")String searchText,
-//			@ModelAttribute("dateCreated1")String dateCreated1,
-//			@ModelAttribute("dateCreated2")String dateCreated2,
-//			@ModelAttribute("trip-start")String trip-start,
-//			@ModelAttribute("trip-close")String trip-close) {
-//		
-//		session.removeAttribute();
-//		System.pri		
-//		ModelAndView mv = new ModelAndView();
-//	}
+	@RequestMapping("/adnotice_search.do")
+	public ModelAndView adNotiSearch(
+			HttpServletRequest request,
+			HttpSession session,
+			@ModelAttribute("searchKey")String searchKey,
+			@ModelAttribute("searchText")String searchText,
+			@ModelAttribute("searchTitle")String searchTitle,
+			@ModelAttribute("start1")String start1,
+			@ModelAttribute("close1")String close1,
+			@ModelAttribute("mg_type")String mg_type
+			
+			) {
+		ModelAndView mv = new ModelAndView();
+		
+		System.out.println("검색어선택: " + searchKey);
+		System.out.println("검색어 입력: " + searchText);
+		System.out.println("기간: " + searchTitle);
+		System.out.println("스타트: " + start1);
+		System.out.println("클로즈: " + close1);
+		System.out.println("타입: " + mg_type);
+		
+		switch (mg_type) {
+			
+			case "공지사항":
+				List<NoticeVO> list2 = notiService.adNotiSearch(searchKey,searchText,start1,close1);
+				mv.addObject("list2", list2);
+				System.out.println("갖고온 배열 list2"+ list2) ;
+				mv.setViewName("admin_notice/notice");
+				
+				
+				for (NoticeVO k : list2) {
+					System.err.println(k.getNOTICE_NUM());
+					System.err.println(k.getNOTICE_SUBJECT());
+					System.err.println(k.getNOTICE_WRITER());
+				}
+				break;
+				
+			default :
+			//전체
+			break;
+			}//스위치 종료
+		
+		
+
+		
+		return mv;
+	}
+
 	
 	
 	

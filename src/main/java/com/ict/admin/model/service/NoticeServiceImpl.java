@@ -40,13 +40,18 @@ public class NoticeServiceImpl implements NoticeService{
 		return noticeDAO.getAdNoticeOneList(notice_num);
 	}
 	
-	//검색 
-	
-	
-	//삭제된 게시물보기   
-	public List<NoticeVO> getDeletedNotices(){
-		return noticeDAO.getDeletedNotices();
+	//테이블 삭제 버튼
+	@Override
+	public int getAdNotiUpdateRow(String notice_num) {
+		return noticeDAO.getAdNotiUpdateRow(notice_num);
 	}
 	
 	
+	
+	
+	//검색
+	@Override
+	public List<NoticeVO> adNotiSearch(String searchKey,String searchText,String start1,String close1) {
+		return noticeDAO.adNotiSearch(searchKey,searchText,start1,close1);
+	}
 }

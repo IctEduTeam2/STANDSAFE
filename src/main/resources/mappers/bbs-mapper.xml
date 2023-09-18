@@ -429,6 +429,11 @@
 
 
 
+	<!-- 콤보 -->
+	<select id="productcombo" resultType="productVO">
+		select * from PRODUCT_T where PROD_HIGH = #{high} AND PROD_LOW = #{low}
+	</select>
+
 </mapper>
 
 

@@ -60,8 +60,19 @@ table tfoot ol.paging li a:hover {
 }
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+// JavaScript로 list 또는 list2 변수를 확인
+///var list2 = "${list2}"; // 서버에서 받은 list2 변수 상태
+ var isList2Empty = ${empty list2};
+cosole.log(isList2Empty);
+if (isList2Empty) {
+    // list 변수가 비어있을 때 실행할 내용
+    // 예: 특정 HTML 요소를 숨기거나 변경
+    document.getElementById("listDiv").style.display = "none";
+    document.getElementById("listDiv2").style.display = "block";
 
-<script>
+}
+
 //기간검색-오늘 
 function setTodayDate() {
     // 오늘 날짜를 구합니다.
@@ -71,8 +82,8 @@ function setTodayDate() {
     var day = today.getDate().toString().padStart(2, '0');
 
     // 오늘 날짜를 기간 검색 필드에 설정합니다.
-    document.getElementById('start').value = year + '-' + month + '-' + day;
-    document.getElementById('close').value = year + '-' + month + '-' + day;
+    document.getElementById('start1').value = year + '-' + month + '-' + day;
+    document.getElementById('close1').value = year + '-' + month + '-' + day;
 	}
 //기간검색-일주일 
 function setOneWeekDate() {
@@ -90,8 +101,8 @@ function setOneWeekDate() {
     var oneWeekAgoDay = oneWeekAgo.getDate().toString().padStart(2, '0');
 
     // 오늘 날짜를 기간 검색 필드에 설정합니다.
-    document.getElementById('start').value = oneWeekAgoYear + '-' + oneWeekAgoMonth + '-' + oneWeekAgoDay;
-    document.getElementById('close').value = year + '-' + month + '-' + day;
+    document.getElementById('start1').value = oneWeekAgoYear + '-' + oneWeekAgoMonth + '-' + oneWeekAgoDay;
+    document.getElementById('close1').value = year + '-' + month + '-' + day;
 	}
 //기간검색-전체기간(수정해야함 )
 function setAllDates() {
@@ -106,17 +117,17 @@ function setAllDates() {
         var writtenDate = row.cells[7].textContent; //여기를 실제 작성일로 대체해야 합니다.
         dateCell.textContent = writtenDate; // 작성일을 업데이트합니다.
     }
-    document.getElementById('searchTitle').value = "dateCreated1"; // 검색 제목을 '작성일'로 설정
+    document.getElementById('searchTitle').value = ""; // 검색 제목을 '작성일'로 설정
     document.getElementById('startDate').value = ""; // 'start' 필드 초기화
     document.getElementById('close').value = ""; // 'close' 필드 초기화
 }
     
     //초기화 
 function resetFields() {
-    document.getElementById('searchKey').value = ""; // 검색어 필드 초기화 
-    document.getElementById('searchTitleSelect').value = ""; // 검색어 필드 초기화 
-    document.getElementById('start').value = ""; // 'start' 필드 초기화
-    document.getElementById('close').value = ""; // 'close' 필드 초기화
+    document.getElementById('searchKey').value = "제목"; // 검색어 필드 초기화 
+    document.getElementById('searchTitleSelect').value = "기간"; // 검색어 필드 초기화 
+    document.getElementById('start1').value = ""; // 'start' 필드 초기화
+    document.getElementById('close1').value = ""; // 'close' 필드 초기화
 }
 function setStartField() {
     var startDate = document.getElementById('startDate').value;
@@ -124,16 +135,37 @@ function setStartField() {
     return true; // 폼 제출을 진행하도록 true 반환
 }
     
-	// 검색 버튼 
-	
-
-
-    //삭제된게시물 보기 
-	
-
-
-
-
+// 테이블 게시물 삭제버튼
+function deleteRow(noticeNum){
+	// 이 행의 체크박스가 체크되어 있는지 확인
+	var checkbox = document.getElementById("checkbox_" + noticeNum);
+	if(checkBox.checked){
+		//행을 숨김
+		var row = document.getElementById("row_" + noticeNum);
+		row.style.display = "none";
+		
+		//"등록상태"를 2로 변경
+		var statusCell = docyment.getElementById("status_" + noticeNum);
+		statusCell.innerHTML = "2"
+		
+		//DB에 상태를 업데이트하기 위해서는 AJAX필요
+			$.ajax({
+	            type: "POST",  // 요청 메서드 (GET, POST 등)
+	            url: "/adDeleterow.do",  // 요청을 보낼 URL
+	            data: { noticeNum: noticeNum, status: 2 },  // 서버로 보낼 데이터
+	            success: function(response) {
+	                // 요청이 성공적으로 완료된 경우 실행할 코드
+	                console.log("상태 업데이트 성공");
+	            },
+	            error: function(xhr, status, error) {
+	                // 요청이 실패한 경우 실행할 코드
+	                console.log("상태 업데이트 실패");
+	            }
+	        });
+	}else{
+		alert("게시물을 삭제하려면 체크박스를 선택해 주세요.");
+	}
+}
 
 </script>
 </head>
@@ -166,6 +198,7 @@ function setStartField() {
 		<!-- 검색 영역 -->
 
 		<form id="searchForm" action="/adnotice_search.do" method="post" onsubmit="setStartField()">
+		
 			<div
 				style="float: left; margin-top: 5%; border: 1px solid black; width: 60%; height: 400px;">
 				<div>
@@ -178,14 +211,14 @@ function setStartField() {
 										&nbsp</span> <select id="searchKey" name="searchKey" title="검색항목선택"
 									class="select_option"
 									style="margin-left: 55px; width: 300px; height: 50px; font-size: 20px;">
-										<option value="">제목</option>
-										<option value="title">게시물 제목</option>
-										<option value="title2">작성자</option>
+										<option value="내용">내용</option>
+										<option value="게시물제목">게시물 제목</option>
+										<option value="작성자">작성자</option>
 										
 								</select>
 								<!-- 검색어 입력창  -->
 								</span> <span style="margin-left: 10px;"> <input type="text"
-									id="fromDate" name="searchText" title="검색어 입력" value=""
+									id="fromDate" name="searchText" title="검색어 입력" 
 									maxlength="10" style="width: 240px; height: 50px;">
 								</span>&nbsp&nbsp&nbsp&nbsp
 							</p>
@@ -199,7 +232,7 @@ function setStartField() {
 									style="font-family: '맑은 고딕'; font-size: 16px; margin-left: 50px; float: left;">기간검색</span>
 								<span>
 								<select id="searchTitleSelect" name="searchTitle" title="작성일 선택" class="select_option" style="margin-left: 50px; width: 300px; height: 50px; font-size: 20px;">
-    								<option value="">기간</option>
+    								<option value="기간">기간</option>
     								<option value="dateCreated1">작성일</option>
     								<option value="dateCreated2">수정일</option>
 								</select>
@@ -207,9 +240,9 @@ function setStartField() {
 								</span> <span style="margin-left: 10px;">
 								 <!-- 달력 --> 
 								 <input
-									type="date" id="start" name="trip-start"
+									type="date" id="start1" name="start1"
 									style="height: 40px; width: 300px;" />
-								</span> <span> <input type="date" id="close" name="trip-close"
+								</span> <span> <input type="date" id="close1" name="close1"
 									style="height: 40px; width: 300px;" />
 								</span>
 							</p>
@@ -245,16 +278,16 @@ function setStartField() {
 									style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
 									onclick="resetFields()"></span>
 								 <span style="float: right; margin-top: 130px; margin-right: -494px;">
-									<input type="button" alt="검색" value="검색"
-									style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
-									onclick="searchAll()">
+								 <input type="hidden" value="공지사항" name="mg_type">
+									<button class="searchbtn" type="submit"
+									style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;">검색</button>
 								</span>
 							</div>
 						</dt>
 					</dl>
 				</div>
 			</div>
-		</form>
+		</form> 
 	</div>
 	<!-- 수평선 추가 -->
 	<div
@@ -294,7 +327,7 @@ function setStartField() {
 			</thead>
 
 			<!--  테이블 내용  -->
-			<tbody>
+			<tbody  id="listDiv" >
 				<c:choose>
 					<c:when test="${empty list}">
 						<tr>
@@ -304,8 +337,8 @@ function setStartField() {
 
 					<c:otherwise>
 						<c:forEach var="k" items="${list}" varStatus="vs">
-    <c:choose>
-        <c:when test="${k.NOTICE_ST == 2}">
+   					 <c:choose>
+      			  <c:when test="${k.NOTICE_ST == 2}">
             <!-- NOTICE_ST가 2인 데이터만 표시합니다. -->
             <tr>
                 <td class="column_1">선택</td>
@@ -322,9 +355,9 @@ function setStartField() {
             </tr>
         </c:when>
         <c:otherwise>
-            <tr>
-                <td><input type="checkbox" name="chk" id="chkbox" />
-                <label for="chkbox"></label>
+            <tr id="row_${k.NOTICE_NUM}">
+                <td><input type="checkbox" name="chk" id="chkbox_${k.NOTICE_NUM}" />
+                <label for="chkbox_${k.NOTICE_NUM}"></label>
                 </td>
                 <td>${paging.totalRecord -((paging.nowPage-1)*paging.numPerPage + vs.index)}</td>
                 <td>${k.NOTICE_SUBJECT}</td>
@@ -340,12 +373,79 @@ function setStartField() {
                     </c:choose>
                 </td>
                 <!--onelist 갈때 cPage 필요하다. 같이보내자. -->
-                <td><input type="button" value="삭제"></td>
+                <!-- 게시글 삭제 버튼 -->
+                <td><input type="button" value="삭제" onclick="deleteRow(${k.NOTICE_NUM})"></td>
                 <td>${k.NOTICE_HIT}</td>
                 <td>${k.NOTICE_DATE.substring(0,10)}</td>
                 <td>${k.NOTICE_UPDATE.substring(0,10)}</td>
                 <td>${k.NOTICE_WRITER}</td>
-                <td>${k.NOTICE_ST}</td>
+                <td id="status_${k.NOTICE_NUM}">${k.NOTICE_ST}</td>
+            </tr>
+        </c:otherwise>
+    </c:choose>
+</c:forEach>
+
+					</c:otherwise>
+				</c:choose>
+				
+				
+				
+				
+			</tbody>
+			<!-- ========================================================================================================== -->
+			<tbody  id="listDiv2" style="display:none;">
+				<c:choose>
+					<c:when test="${empty list2}">
+						<tr>
+							<td colspan="11"><p>자료가 존재하지 않습니다.</p></td>
+						</tr>
+					</c:when>
+
+					<c:otherwise>
+						<c:forEach var="k" items="${list2}" varStatus="vs">
+   					 <c:choose>
+      			  <c:when test="${k.NOTICE_ST == 2}">
+            <!-- NOTICE_ST가 2인 데이터만 표시합니다. -->
+            <tr>
+                <td class="column_1">선택</td>
+                <td class="column_2">NO.</td>
+                <td class="column_3">게시물 제목</td>
+                <td class="column_4">내용</td>
+                <td class="column_5">파일 이름</td>
+                <td class="column_6">삭제</td>
+                <td class="column_7">조회수</td>
+                <td class="column_8">작성일</td>
+                <td class="column_9">수정일</td>
+                <td class="column_10">작성자</td>
+                <td class="column_11">등록상태</td>
+            </tr>
+        </c:when>
+        <c:otherwise>
+            <tr id="row_${k.NOTICE_NUM}">
+                <td><input type="checkbox" name="chk" id="chkbox_${k.NOTICE_NUM}" />
+                <label for="chkbox_${k.NOTICE_NUM}"></label>
+                </td>
+                <td>${paging.totalRecord -((paging.nowPage-1)*paging.numPerPage + vs.index)}</td>
+                <td>${k.NOTICE_SUBJECT}</td>
+                <td>${k.NOTICE_CONTENT}</td>
+                <td>
+                    <c:choose>
+                        <c:when test="${empty k.NOTICE_FILE}">
+                            없음
+                        </c:when>
+                        <c:otherwise>
+                            있음
+                        </c:otherwise>
+                    </c:choose>
+                </td>
+                <!--onelist 갈때 cPage 필요하다. 같이보내자. -->
+                <!-- 게시글 삭제 버튼 -->
+                <td><input type="button" value="삭제" onclick="deleteRow(${k.NOTICE_NUM})"></td>
+                <td>${k.NOTICE_HIT}</td>
+                <td>${k.NOTICE_DATE.substring(0,10)}</td>
+                <td>${k.NOTICE_UPDATE.substring(0,10)}</td>
+                <td>${k.NOTICE_WRITER}</td>
+                <td id="status_${k.NOTICE_NUM}">${k.NOTICE_ST}</td>
             </tr>
         </c:otherwise>
     </c:choose>
@@ -357,7 +457,7 @@ function setStartField() {
 	<!-- 페이지 번호 출력 부분 -->
 <tfoot>
     <tr>
-        <td colspan="10">
+        <td colspan="11">
             <ol class="paging">
                 <!-- 이전 버튼 -->
                 <c:if test="${paging.beginBlock > paging.pagePerBlock}">
@@ -391,7 +491,7 @@ function setStartField() {
     </tr>
 </tfoot>
 	
-		</table>
+	</table>
 	</div>
 	<!-- 하단 버튼 -->
 	<div>

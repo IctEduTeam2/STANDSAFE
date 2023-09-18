@@ -8,6 +8,7 @@ import com.ict.bbs.model.vo.NO_BBS_VO;
 import com.ict.bbs.model.vo.QA_BBS_VO;
 import com.ict.bbs.model.vo.REP_BBS_VO;
 import com.ict.bbs.model.vo.RE_BBS_VO;
+import com.ict.shopping.model.vo.ProductVO;
 
 
 public interface BBS_Service {
@@ -135,4 +136,9 @@ public interface BBS_Service {
 	public List<QA_BBS_VO> searchQa(String s_type,String word,String start,String end);
 	public List<RE_BBS_VO> searchReview(String s_type,String word,String start,String end);
 	
+	
+	
+	
+	//콤보
+	public List<ProductVO> getProductList(String high, String low);
 }
