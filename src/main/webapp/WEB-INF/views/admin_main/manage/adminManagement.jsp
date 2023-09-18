@@ -177,7 +177,7 @@ table tfoot ol.paging li a:hover {
 	}
 </script>
 </head>
-<body onload="InitializeStaticMenu();">
+<body><!-- onload="InitializeStaticMenu();" -->
 	<div id="mydiv">
 		<jsp:include page="../header.jsp"></jsp:include>
 		<section id="contents">
@@ -207,7 +207,7 @@ table tfoot ol.paging li a:hover {
 								<option value="ADMIN_ADDR">주소</option>
 							</select> <input type="text" name="keyword" placeholder="검색어 입력">
 							<button type="submit" class="btn navy">검색</button>
-							<button type="reset" class="btn gray">검색 초기화</button>
+							<button type="button" class="btn gray">검색 초기화</button>
 						</form>
 					</div>
 					<div class="search-period" style="visibility: hidden;">
@@ -339,6 +339,12 @@ table tfoot ol.paging li a:hover {
 			window.location.href = '/infoManager.do?ADMIN_NUM=' + ADMIN_NUM;
 			
 		}
+	</script>
+	<script type="text/javascript">
+	document.querySelector('.btn.gray').addEventListener('click', function(event) {
+	    event.preventDefault();  // 기본 이벤트 동작을 중지
+	    window.location.href = 'adminManagement.do';
+	});
 	</script>
 	<script type="text/javascript">
     <%if (request.getAttribute("message") != null) {%>
