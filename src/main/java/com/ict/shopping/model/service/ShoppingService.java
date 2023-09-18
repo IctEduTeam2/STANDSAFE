@@ -110,6 +110,11 @@ public class ShoppingService {
 		shoppingDAO.getPointSub(pointvo);
 	}
 	
+	// 결제 후 상품재고량 수정
+	public void getProductSub(BasketVO bvo) {
+		shoppingDAO.getProductSub(bvo);
+	}
+	
 	// 상품리스트
 	public List<ProductVO> getProductList(ProductVO pvo) {
 		return shoppingDAO.getProductList(pvo);

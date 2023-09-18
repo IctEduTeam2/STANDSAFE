@@ -101,6 +101,12 @@ td {
 	function order_go() {
 		location.href = "/orderlistform.do?client_num=" + ${id};
 	}
+	function order() {
+		if(!confirm("주문을 취소하시겠습니까?")) {
+			return;
+		} else {
+			alert("주문이 취소되었습니다.");
+	}
 </script>
 </head>
 
@@ -133,6 +139,7 @@ td {
         <c:choose>
             <c:when test="${deliveryvo.deli_st == 0}">
                 (배송준비중)
+						<button style="float: right; margin: 0" onclick="order()">주문취소</button>
             </c:when>
             <c:when test="${deliveryvo.deli_st == 1}">
                 (배송중)
@@ -144,6 +151,9 @@ td {
             <c:when test="${deliveryvo.deli_st == 3}">
                 (구매확정)
             </c:when>
+            <c:when test="${paylist[0].pay_st == 1 }">
+            	(결제취소)
+            </c:when>
             <c:otherwise>
                 (알 수 없는 상태- 관리자에게 문의하세요.)
             </c:otherwise>
@@ -154,29 +164,54 @@ td {
 					<div
 						style="width: 100%; float: left; border: 1px solid black; margin-top: 30px;">
 						<!--물품하나 시작태그-->
-						<div style="width: 100%; float: left; padding: 20px;">
-							<div style="float: left;">
-								<img src="resources/images/products/product1.jpg"
-									style="width: 160px; height: 200px;">
-							</div>
-							<div style="float: left; margin-left: 30px;">
-								<p style="color: gray; opacity: 0.5;">2022.11.02 결제</p>
-								<p style="font-size: 14px; margin-top: 10px;">톰과 싸우는 제리 인형</p>
-								<p style="font-size: 20px; margin-top: 10px;">
-									<b>5,000 원 x 1 = 5,000 원</b>
-								</p>
-							</div>
-							<div style="float: right; margin-right: 20px; margin-top: 160px;">
-								<!-- 구매완료시 반품요청 / 배송준비시 환불요청-->
-								<button>반품요청</button>
-								<button style="display: none;">환불요청</button>
-								<button>재구매</button>
-								<button>리뷰쓰기</button>
-							</div>
-						</div>
-						<hr style="width: 100%;">
-						<!--물품하나 끝태크-->
+					<c:forEach var="a" items="${cartList}">
+							<c:forEach var="b" items="${prodList}">
+								<c:choose>
+									<c:when test="${a.prod_num == b.prod_num }">
+										<div style="width: 100%; float: left; padding: 20px;">
+											<div style="float: left;">
 
+												<img src="resources/images/products/${b.prod_img }"
+													style="width: 160px; height: 200px;">
+											</div>
+											<div style="float: left; margin-left: 30px;">
+												<p style="color: gray; opacity: 0.5;">${paylist[0].pay_ok }
+													결제</p>
+												<p style="font-size: 14px; margin-top: 10px;">${b.prod_name}</p>
+												<p style="font-size: 20px; margin-top: 10px;">
+													<b><fmt:formatNumber
+															value="${a.cart_price/a.cart_amount}" type="number"
+															pattern="#,### 원" /> x ${a.cart_amount } = <fmt:formatNumber
+															value="${a.cart_price }" type="number" pattern="#,### 원" /></b>
+												</p>
+											</div>
+											<div
+												style="float: right; margin-right: 20px; margin-top: 160px;">
+												<!-- 구매완료시 반품요청 / 배송준비시 환불요청-->
+												<c:choose>
+													<c:when test="${deliveryvo.deli_st == 0}">
+													</c:when>
+													<c:when test="${deliveryvo.deli_st == 1}">
+														<button>반품요청</button>
+														<button>교환요청</button>
+													</c:when>
+													<c:when test="${deliveryvo.deli_st == 2}">
+														<button>반품요청</button>
+														<button>교환요청</button>
+													</c:when>
+													<c:when test="${deliveryvo.deli_st == 3}">
+														<button>재구매</button>
+														<button>리뷰쓰기</button>
+													</c:when>
+												</c:choose>
+											</div>
+										</div>
+										<hr style="width: 100%;">
+									</c:when>
+								</c:choose>
+							</c:forEach>
+							<!--물품하나 끝태크-->
+					</c:forEach>
 						<!-- 배송내용-->
 						<div style="float: left; width: 100%; padding: 20px;">
 							<table>
@@ -188,20 +223,27 @@ td {
 								<tbody>
 									<tr>
 										<td>수령인:</td>
-										<td>단호박</td>
+										<td>${paylist[0].take_peo}</td>
 									</tr>
 									<tr>
 										<td>연락처:</td>
-										<td>010-1234-5678</td>
+										<td>${paylist[0].take_phone}</td>
 									</tr>
 									<tr>
 										<td>배송지:</td>
-										<td>서울 애호박구 늙은호박동 단호박길</td>
+										<td>${paylist[0].take_addr}</td>
 									</tr>
+									
+									<c:choose>
+									<c:when test="${paylist[0].take_memo == null || paylist[0].take_memo == ''}">
+									</c:when>
+									<c:otherwise>
 									<tr>
 										<td>배송메모:</td>
-										<td>배송주세요</td>
+										<td>${paylist[0].take_memo}</td>
 									</tr>
+									</c:otherwise>
+									</c:choose>
 								</tbody>
 							</table>
 						</div>
@@ -219,19 +261,23 @@ td {
 								<tbody>
 									<tr>
 										<td>상품금액:</td>
-										<td><b style="color: blue;">+ </b>159,593 원</td>
+										<td><b style="color: blue;">+ </b><fmt:formatNumber value="${sum}" type="number"
+									pattern="#,### 원" /></td>
 									</tr>
 									<tr>
 										<td>할인금액:</td>
-										<td><b style="color: orangered;">- </b>5,000 원</td>
+										<td><b style="color: orangered;">- </b>
+										<fmt:formatNumber value="${sum - paylist[0].pay_money}" type="number"
+									pattern="#,### 원" /></td>
 									</tr>
 									<tr>
 										<td>배송비:</td>
-										<td>0 원</td>
+										<td>3,000 원</td>
 									</tr>
 									<tr>
 										<td>결제금액:</td>
-										<td>154,593 원</td>
+										<td><c:set var="totalPay" value="${paylist[0].pay_money + 3000}" />
+<fmt:formatNumber value="${totalPay}" type="number" pattern="#,### 원" /></td>
 									</tr>
 								</tbody>
 							</table>
@@ -247,6 +293,9 @@ td {
 										<th style="text-align: left;">결제 방법</th>
 									</tr>
 								</thead>
+								
+								 <c:choose>
+            						<c:when test="${paylist[0].pay_type == 0}">
 								<tbody>
 									<tr>
 										<td>결제방법:</td>
@@ -261,21 +310,23 @@ td {
 										<td>154,593 원</td>
 									</tr>
 								</tbody>
-								<tbody style="display: none;">
+								</c:when>
+								<c:otherwise>
+								<tbody>
 									<tr>
 										<td>결제방법:</td>
 										<td>포인트</td>
 									</tr>
-									<tr>
-										<td>카드번호:</td>
-										<td>154,593 원</td>
-									</tr>
-								</tbody>
+								</tbody></c:otherwise>
+								</c:choose>
 							</table>
+								 <c:choose>
+            						<c:when test="${paylist[0].pay_type == 0}">
 							<p style="opacity: 0.5; margin-top: 50px;">
 								무이자 적용 여부는 카드사로 문의하시면 정확하게 확인 할 수 있습니다. <br>
 								<br> 배송중으로 된 상태에서는 결제취소가 어렵습니다. 반품 후 취소/환불신청을 통해 해주세요.
 							</p>
+							</c:when></c:choose>
 						</div>
 						<!-- 명세서 끝-->
 					</div>

@@ -179,6 +179,13 @@
 		#{CLIENT_NUM})
 	</insert>
 	
+	<!-- 재고량 차감 -->
+<update id="productsub" parameterType="basketVO">
+    UPDATE PRODUCT_T
+    SET prod_amount = prod_amount - #{cart_amount}
+    WHERE prod_num = #{prod_num}
+</update>
+	
 	<!-- 배송 추가 -->
 	<insert id="deliveryadd" parameterType="String">
 		INSERT INTO DELIVERY_T(pay_oknum, deli_st) VALUES(

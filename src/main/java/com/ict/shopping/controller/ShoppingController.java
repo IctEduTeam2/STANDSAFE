@@ -5,6 +5,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -458,7 +459,11 @@ public class ShoppingController {
 		PayVO pvo = new PayVO();
 		pvo.setTake_peo(take_peo);
 		pvo.setTake_addr(address);
-		pvo.setTake_phone(phone);
+
+        String regEx = "(\\d{3})(\\d{3,4})(\\d{4})";
+        String chPhone =  phone.replaceAll(regEx, "$1-$2-$3");
+        
+		pvo.setTake_phone(chPhone);
 		pvo.setTake_memo(memo);
 		pvo.setPay_type(paytype);
 		pvo.setPay_oknum(order_num);
@@ -466,12 +471,13 @@ public class ShoppingController {
 		pvo.setPay_money(price);
 		pvo.setClient_num(client_num);
 		shoppingService.getPayInsert(pvo);
+		
 		PointVO pointVO = new PointVO();
 		pointVO.setPOINT_USE(price);
 		pointVO.setPOINT_REM(point - price);
 		pointVO.setCLIENT_NUM(Integer.parseInt(client_num));
 		shoppingService.getPointSub(pointVO);
-		
+		shoppingService.getProductSub(bvo2);
 		shoppingService.getDeliveryAdd(order_num);
 		session.removeAttribute("POINT_REM");
 		session.setAttribute("POINT_REM", pointService.getPointsByUserId(Integer.parseInt(client_num)));
@@ -497,7 +503,12 @@ public class ShoppingController {
 		PayVO pvo = new PayVO();
 		pvo.setTake_peo((String) (map.get("take_peo")));
 		pvo.setTake_addr((String) (map.get("take_addr")));
-		pvo.setTake_phone((String) (map.get("take_phone")));
+
+        String regEx = "(\\d{3})(\\d{3,4})(\\d{4})";
+        String phone = (String)map.get("take_phone");
+        String chPhone = phone.replaceAll(regEx, "$1-$2-$3");
+        
+		pvo.setTake_phone(chPhone);
 		pvo.setTake_memo((String) (map.get("take_memo")));
 		pvo.setPay_type((String) (map.get("pay_type")));
 		pvo.setPay_money(Integer.parseInt((String)(map.get("cart_price"))));
@@ -505,6 +516,7 @@ public class ShoppingController {
 		pvo.setPaymentKey((String) (map.get("paymentKey")));
 		pvo.setCart_num(key);
 		pvo.setClient_num((String) (map.get("client_num")));
+		shoppingService.getProductSub(bvo2);
 		shoppingService.getPayInsert(pvo);
 		shoppingService.getDeliveryAdd((String)map.get("pay_oknum"));
 		// 카트키 가져오기
@@ -561,6 +573,9 @@ public class ShoppingController {
 		List<PayVO> paylist = shoppingService.getOrderOneList(pay_oknum);
 	    List<BasketVO> cartList = new ArrayList<>();
 	    List<ProductVO> prodList = new ArrayList<>();
+	    
+	    int sum = 0;
+
 	    for (PayVO pay : paylist) {
 	        // 각 PayVO에 있는 cart_num 값을 사용하여 CART_T 정보를 조회하고 cartList에 추가
 	    	BasketVO cartInfo = shoppingService.getCartInfo(pay.getCart_num());
@@ -570,12 +585,15 @@ public class ShoppingController {
 	    for (BasketVO basket : cartList) {
 	    	ProductVO prodInfo = shoppingService.getProductOne(basket.getProd_num());
 	    	prodList.add(prodInfo);
+	        sum = sum + (Integer.parseInt(prodInfo.getProd_price()) * Integer.parseInt(basket.getCart_amount()));
 	    }
+	    
 	    DeliveryVO deliveryvo = shoppingService.getDeliverySelect(pay_oknum);
+	    mv.addObject("sum", sum);
 	    mv.addObject("deliveryvo", deliveryvo);
+	    mv.addObject("prodList", prodList);
 	    mv.addObject("paylist", paylist);
 	    mv.addObject("cartList", cartList);
-	    mv.addObject("prodList", prodList);
 	    
 		return mv;
 	}

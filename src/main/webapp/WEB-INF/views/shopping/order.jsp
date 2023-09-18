@@ -148,6 +148,10 @@ var extraAddr = '';
 	}
     
 	function point2(f) {
+		if(!confirm("포인트로 상품을 구매하시겠습니까?")) {
+			alert("구매를 취소하였습니다.");
+			return;
+		} else {
 	    const price = parseFloat('${price}');
 	    const inputValue = parseFloat(f.point.value.trim());  
 	    var agreeRadio = document.getElementById("agreeRadio");
@@ -179,6 +183,7 @@ var extraAddr = '';
 	        f.action = "/ordercom.do?address=" + address + "&price=" + price + "&paytype=1";
 	        f.submit();
 	    }
+		}
 	}
 </script>
 </head>
@@ -439,7 +444,7 @@ $(document).ready(function() {
 										<input type="hidden" value="${order_num}" name="order_num">
 										<input type="button"
 											style="font-size: 26px; width: 100%; height: 100px; border-radius: 20px;"
-											class="pay" onclick="point2(this.form)" value="point">
+											class="pay" onclick="point2(this.form)" value="포인트결제">
 									</div>
 
 

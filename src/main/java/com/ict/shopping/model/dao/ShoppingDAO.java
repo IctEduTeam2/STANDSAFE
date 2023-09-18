@@ -109,7 +109,12 @@ public class ShoppingDAO {
 	public void getPointSub(PointVO pointvo) {
 		sqlSessionTemplate.insert("shopping.pointsub", pointvo);
 	}
-
+	
+	// 결제 후 상품재고량 수정
+	public void getProductSub(BasketVO bvo) {
+		sqlSessionTemplate.update("shopping.productsub", bvo);
+	}
+	
 	// 상품리스트
 	public List<ProductVO> getProductList(ProductVO pvo) {
 		return sqlSessionTemplate.selectList("shopping.productlist", pvo);
