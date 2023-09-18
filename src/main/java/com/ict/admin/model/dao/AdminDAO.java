@@ -45,4 +45,21 @@ public class AdminDAO {
 	    return sqlSessionTemplate.selectOne("admin.adminDetail", ADMIN_NUM);
 	}
 	
+	//관리자 업데이트
+	public int updateAdmin(AdminVO adVO) {
+		return sqlSessionTemplate.update("admin.adminUpdate", adVO);
+	}
+	//관리자 삭제 처리
+	public int adminOut(AdminVO adVO) {
+		return sqlSessionTemplate.update("admin.adminOut", adVO);
+	}
+
+	//관리자 삭제 처리2
+	public Object deactivateAdmins(List<Integer> adminIDs) {
+		return sqlSessionTemplate.update("admin.deactivateAdmins", adminIDs);
+	}
+	//비활성화된 관리자
+	public List<AdminVO> getDeactivatedAdmins() {
+	    return sqlSessionTemplate.selectList("admin.getDeactivatedAdmins");
+	}
 }

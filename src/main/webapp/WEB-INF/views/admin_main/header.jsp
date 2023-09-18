@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
@@ -52,7 +53,7 @@
 		<% } %>
 		</div>
 		<div id="nav">
-			<a href="/admin_loginok.do" style="margin-left: 8px;"><img id="logo"
+			<a href="/admin_logo.do" style="margin-left: 8px;"><img id="logo"
 				src="resources/images/admin_logo.png"></a>
 			<ul class="menu">
 				<li><a href="/userManagement.do">회원관리</a>

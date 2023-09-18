@@ -21,7 +21,19 @@
 <link rel="stylesheet" href="resources/css/slide.css" />
 <link rel="stylesheet" href="resources/css/basis.css" />
 <link rel="stylesheet" href="resources/css/userinfo.css" />
+<script type="text/javascript">
+    window.onload = function() {
+        // message 속성이 있는지 확인하고 알림 표시
+        <c:if test="${not empty sessionScope.message}">
+            alert('${sessionScope.message}');
+        </c:if>
 
+        // error 속성이 있는지 확인하고 알림 표시
+        <c:if test="${not empty sessionScope.error}">
+            alert('${sessionScope.error}');
+        </c:if>
+    }
+</script>
 </head>
 <body onload="InitializeStaticMenu();">
 	<div id="mydiv">
@@ -32,13 +44,13 @@
 				<h1
 					style="text-align: center; font-size: 30px; margin-bottom: 20px;">회원정보</h1>
 
-				<form action="user_userfixok.do" method="POST" id="userForm">
+				<form action="admin_fixok.do" method="POST" id="userForm">
 					<table style="margin: auto;">
 						<tr>
 							<td>관리자 아이디</td>
 							<td><a type="text" id="ADMIN_ID" name="ADMIN_ID"
-								style="color: grey;">${adVO.ADMIN_ID }</a><input type="hidden"
-								name="ADMIN_ID" value="${sessionScope.adVO.ADMIN_ID}"></td>
+								style="color: grey;">${adVO.ADMIN_ID}</a><input type="hidden"
+								name="ADMIN_ID" value="${adVO.ADMIN_ID}"></td>
 						</tr>
 						<tr>
 							<td>비밀번호</td>
@@ -57,7 +69,8 @@
 						<tr>
 							<td>이름</td>
 							<td><a type="text" id="ADMIN_NAME" name="ADMIN_NAME"
-								style="color: grey;">${adVO.ADMIN_NAME}</a></td>
+								style="color: grey;">${adVO.ADMIN_NAME}</a>
+								<input type="hidden" name="ADMIN_NUM" value="${adVO.ADMIN_NUM}"></td>
 						</tr>
 						<tr>
 							<td>생년월일</td>
@@ -103,6 +116,7 @@
 						<button type="submit" class="save-button"
 							onclick="return prepareAndSubmit()">수정</button>
 						<button class="cancel-button" onclick="user_infoFixCancel(event)">나가기</button>
+						<!-- <button class="cancel-button" onclick="deleteAdmin(event)">삭제하기</button> -->
 					</div>
 				</form>
 			</article>
@@ -338,11 +352,17 @@ document.addEventListener("DOMContentLoaded", function() {
 	}
 	</script>
 	<script type="text/javascript">
+	function deleteAdmin(event) {
+		event.preventDefault();
+		location.href = "deletemanager.do";
+	}
+	</script>
+	<script type="text/javascript">
 	function validateAll() {
 		console.log("validateAll 도착");
 		if (validateNickname() && validatePhone()
 			&& validatePassword() && checkEmail() 
-			&& validateEmail() && validateEmailSt()) {
+			&& validateEmail())) {
 			console.log("수정완료");
 			return true;
 		}

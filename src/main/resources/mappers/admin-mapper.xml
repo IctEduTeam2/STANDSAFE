@@ -59,17 +59,55 @@
 
 	<!-- 관리자 전체 검색 -->
 	<select id="selectAll" parameterType="String" resultType="adVO">
-		SELECT * FROM ADMIN_T WHERE admin_st != 0
+		SELECT
+		* FROM ADMIN_T WHERE admin_st != 0
 	</select>
 	<!-- 관리자 검색 몇명인지 -->
 	<select id="countAdmins" resultType="int">
-		SELECT COUNT(*) FROM ADMIN_T WHERE admin_st != 0
+		SELECT COUNT(*) FROM ADMIN_T
+		WHERE admin_st != 0
 	</select>
 	<!-- 1사람 결과 -->
 	<select id="adminDetail" parameterType="int" resultType="adVO">
-		SELECT * FROM ADMIN_T WHERE ADMIN_NUM = #{ADMIN_NUM}
+		SELECT *
+		FROM ADMIN_T WHERE ADMIN_NUM = #{ADMIN_NUM}
 	</select>
+	<!-- 관리자 업데이트 -->
+	<update id="adminUpdate" parameterType="adVO">
+		UPDATE ADMIN_T
+		<set>
+			<if test="ADMIN_PW != null">ADMIN_PW = #{ADMIN_PW},</if>
+			<if test="ADMIN_NICK != null">ADMIN_NICK = #{ADMIN_NICK},</if>
+			<if test="ADMIN_PHONE != null">ADMIN_PHONE = #{ADMIN_PHONE},</if>
+			<if test="ADMIN_BIRTH != null">ADMIN_BIRTH = #{ADMIN_BIRTH},</if>
+			<if test="ADMIN_MAIL != null">ADMIN_MAIL = #{ADMIN_MAIL},</if>
+			<if test="ADMIN_ADDR != null">ADMIN_ADDR = #{ADMIN_ADDR},</if>
+		</set>
+		WHERE ADMIN_ID = #{ADMIN_ID}
+	</update>
 
+	<!-- 관리자 삭제용 업뎃 -->
+	<update id="adminOut">
+		UPDATE ADMIN_T
+		SET ADMIN_ST = 0
+		WHERE ADMIN_NUM =
+		#{ADMIN_NUM}
+	</update>
+
+	<!-- 관리자의 상태를 비활성화로 업데이트하는 쿼리 -->
+	<update id="deactivateAdmins" parameterType="list">
+		UPDATE ADMIN_T
+		SET ADMIN_ST = 0
+		WHERE ADMIN_NUM IN
+		<foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+			#{item, jdbcType=INTEGER}
+		</foreach>
+	</update>
+	<!-- 삭제된 관리자 검색 -->
+	<select id="getDeactivatedAdmins" resultType="adVO">
+		SELECT * FROM ADMIN_T WHERE ADMIN_ST = 0
+	</select>
 </mapper>
 	
 

@@ -7,7 +7,7 @@
 
 <title>STANDSAFE</title>
 <meta name="viewport"
-	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+	content="width=device-width, initial-scale=1, minimum-scale=0.7, maximum-scale=1" />
 <!-- Link Swiper's CSS -->
 
 <link rel="stylesheet" href="resources/css/basis.css" />

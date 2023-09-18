@@ -48,13 +48,13 @@ public class UserController {
 	// 로고눌렀을때
 	@RequestMapping("/user_logo.do")
 	public ModelAndView getUserLogo() {
-		return new ModelAndView("index");
+		return new ModelAndView("/");
 	}
 
 	// 관리자에서 로고눌렀을때
 	@RequestMapping("/admin_logo.do")
 	public ModelAndView getLAdminLogo() {
-		return new ModelAndView("admin_main/index");
+		return new ModelAndView("/admin_main/index");
 	}
 
 	// 가입화면으로

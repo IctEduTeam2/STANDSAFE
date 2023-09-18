@@ -47,7 +47,28 @@ public class AdminServiceImpl implements AdminService{
 	public AdminVO getAdminDetail(int ADMIN_NUM) {
 	    return adminDAO.getAdminDetail(ADMIN_NUM);
 	}
-
+	
+	//관리자 업데이트
+	@Override
+	public int updateAdmin(AdminVO adVO) {
+		return adminDAO.updateAdmin(adVO);
+	}
+	
+	//탈퇴처리
+	@Override
+	public int adminOut(AdminVO adVO) {
+		return adminDAO.adminOut(adVO);
+	}
+	//탈퇴처리2
+	@Override
+	public void deactivateAdmins(List<Integer> adminIDs) {
+	    adminDAO.deactivateAdmins(adminIDs);
+	}
+	//비활성화된 관리자
+	@Override
+	public List<AdminVO> getDeactivatedAdmins() {
+		return adminDAO.getDeactivatedAdmins();
+	}
 
 
 

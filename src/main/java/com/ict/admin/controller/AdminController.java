@@ -1,14 +1,22 @@
 package com.ict.admin.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -16,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ict.admin.model.service.AdminService;
 import com.ict.admin.model.vo.AdminVO;
 import com.ict.admin.model.vo.OrderVO;
+import com.ict.user.model.vo.UserVO;
 
 @Controller
 public class AdminController {
@@ -111,48 +120,139 @@ public class AdminController {
 			return "not_duplicate";
 		}
 	}
+
 	// 관리자관리(들어가면 전체보기)
 	@RequestMapping("/adminManagement.do")
 	public ModelAndView getAdminManagement(HttpSession session) {
-	    ModelAndView mv = new ModelAndView("/admin_main/manage/adminManagement");
-	    //전체보여주기
-	    List<AdminVO> adminList = adminService.getAllAdmins();
-	    //관리자 수 카운트
-	    int countAdmins = adminService.getCountAdmins();
-	    session.setAttribute("adminList", adminList);
-	    mv.addObject("countAdmins", countAdmins);
-	    mv.addObject("adminList", adminList);
-	    return mv;
-	}	
-// ==========================================================================================완료	
-	//관리자 개인정보
+		ModelAndView mv = new ModelAndView("/admin_main/manage/adminManagement");
+		// 전체보여주기
+		List<AdminVO> adminList = adminService.getAllAdmins();
+		// 관리자 수 카운트
+		int countAdmins = adminService.getCountAdmins();
+		session.setAttribute("adminList", adminList);
+		mv.addObject("countAdmins", countAdmins);
+		mv.addObject("adminList", adminList);
+		return mv;
+	}
+
+	// 관리자 개인정보
 	@RequestMapping("/infoManager.do")
 	public ModelAndView viewAdminInfo(@RequestParam("ADMIN_NUM") int ADMIN_NUM) {
-		System.out.println("11111");
+		// System.out.println("11111");
 		ModelAndView mv = new ModelAndView("/admin_main/manage/infoManager");
-		System.out.println("22222222");
-		System.out.println(ADMIN_NUM); //1이 나옴
-	    // 데이터베이스에서 해당 관리자 정보 검색
-	    AdminVO adVO = adminService.getAdminDetail(ADMIN_NUM);
-	    System.out.println(adVO.getADMIN_ADDR());//없음
-	    System.out.println(adVO.getADMIN_BIRTH());//있음
-	    System.out.println(adVO.getADMIN_ID());//있음
-	    System.out.println(adVO.getADMIN_MAIL());//있음
-	    System.out.println(adVO.getADMIN_NAME());//있음
-	    System.out.println(adVO.getADMIN_NICK());//있음
-	    System.out.println(adVO.getADMIN_NUM());//있음
-	    System.out.println(adVO.getADMIN_PHONE());//없음
-	    System.out.println(adVO.getADMIN_PW());//있음
-	    System.out.println(adVO.getADMIN_ST());//있음
-	    mv.addObject("adVO", adVO);
-	    
+		// System.out.println("22222222");
+		System.out.println(ADMIN_NUM); // 1이 나옴
+		// 데이터베이스에서 해당 관리자 정보 검색
+		AdminVO adVO = adminService.getAdminDetail(ADMIN_NUM);
+//	    System.out.println(adVO.getADMIN_ADDR());//없음
+//	    System.out.println(adVO.getADMIN_BIRTH());//있음
+//	    System.out.println(adVO.getADMIN_ID());//있음
+//	    System.out.println(adVO.getADMIN_MAIL());//있음
+//	    System.out.println(adVO.getADMIN_NAME());//있음
+//	    System.out.println(adVO.getADMIN_NICK());//있음
+//	    System.out.println(adVO.getADMIN_NUM());//있음
+//	    System.out.println(adVO.getADMIN_PHONE());//없음
+//	    System.out.println(adVO.getADMIN_PW());//있음
+//	    System.out.println(adVO.getADMIN_ST());//있음
+		mv.addObject("adVO", adVO);
+		return mv;
+	}
+
+	// 관리자 개인정보 수정
+	@Transactional
+	@RequestMapping("/admin_fixok.do")
+	public ModelAndView AdminInfoFixOk(@ModelAttribute AdminVO adVO, HttpSession httpSession) {
+		ModelAndView mv = new ModelAndView();
+		try {
+			System.out.println("넘어온 아이디" + adVO.getADMIN_ID());
+			System.out.println("넘어온 비번" + adVO.getADMIN_PW());
+			System.out.println("넘어온 닉넴" + adVO.getADMIN_NICK());
+			System.out.println("넘어온 생일" + adVO.getADMIN_BIRTH());
+			System.out.println("넘어온 폰" + adVO.getADMIN_PHONE());
+			System.out.println("넘어온 메일" + adVO.getADMIN_MAIL());
+			System.out.println("넘어온 주소" + adVO.getADMIN_ADDR());
+			System.out.println("넘어온 클라아디" + adVO.getADMIN_NUM());
+
+			// If a password is passed, encrypt it
+			if (adVO.getADMIN_PW() != null && !adVO.getADMIN_PW().trim().isEmpty()) {
+				adVO.setADMIN_PW(passwordEncoder.encode(adVO.getADMIN_PW()));
+				System.out.println("수정한 비밀번호" + adVO.getADMIN_PW());
+			}
+			// 먼저 현재 사용자 정보를 가져옵니다.
+			AdminVO currentAdmin = adminService.getAdminPw(adVO.getADMIN_ID());
+			// System.out.println("디비 회원비번" + currentAdmin.getADMIN_PW());
+			// 각 필드에 대해 값이 없는 경우 현재 값으로 채웁니다.
+			if (adVO.getADMIN_PW() == null || adVO.getADMIN_PW().trim().isEmpty()) {
+				adVO.setADMIN_PW(currentAdmin.getADMIN_PW());
+				System.out.println("DB비번" + currentAdmin.getADMIN_PW());
+			}
+			if (adVO.getADMIN_BIRTH() == null || adVO.getADMIN_BIRTH().trim().isEmpty()) {
+				adVO.setADMIN_BIRTH(currentAdmin.getADMIN_BIRTH());
+			}
+			if (adVO.getADMIN_NICK() == null || adVO.getADMIN_NICK().trim().isEmpty()) {
+				adVO.setADMIN_NICK(currentAdmin.getADMIN_NICK());
+			}
+			if (adVO.getADMIN_PHONE() == null || adVO.getADMIN_PHONE().trim().isEmpty()) {
+				adVO.setADMIN_PHONE(currentAdmin.getADMIN_PHONE());
+			}
+			if (adVO.getADMIN_MAIL() == null || adVO.getADMIN_MAIL().trim().isEmpty()) {
+				adVO.setADMIN_MAIL(currentAdmin.getADMIN_MAIL());
+			}
+			if (adVO.getADMIN_ADDR() == null || adVO.getADMIN_ADDR().trim().isEmpty()) {
+				adVO.setADMIN_ADDR(currentAdmin.getADMIN_ADDR());
+			}
+			adVO.setADMIN_NAME(currentAdmin.getADMIN_NAME());
+			String ADMIN_ID = adVO.getADMIN_ID();
+			int ADMIN_NUM = adVO.getADMIN_NUM();
+			// 관리자업데이트
+			int updatedRows = adminService.updateAdmin(adVO);
+			System.out.println("updatedRows" + updatedRows);
+			if (updatedRows > 0) {
+				httpSession.setAttribute("adVO", adVO);
+				httpSession.setAttribute("ADMIN_ID", ADMIN_ID);
+				httpSession.setAttribute("message", "관리자 업데이트를 성공했습니다.");
+				mv.addObject("ADMIN_NUM", ADMIN_NUM);
+				mv.setViewName("redirect:/infoManager.do");
+				System.out.println("수정 성공");
+			} else {
+				httpSession.setAttribute("updateMessage", "실패");
+				throw new Exception("관리자 업데이트 실패");
+			}
+		} catch (Exception e) {
+			// 예외 메시지와 스택 트레이스 출력
+			e.printStackTrace();
+			mv.addObject("error", "관리자를 업데이트하는 동안 오류가 발생했습니다.");
+			mv.setViewName("redirect:/infoManager.do");
+			System.out.println("업데이트하는 동안 오류");
+
+		}
+		return mv;
+	}
+	//선택한 관리자(들) 삭제
+	@RequestMapping(value = "/deletemanager.do", method = RequestMethod.POST)
+	public ResponseEntity<String> deactivateAdmins(@RequestParam String adminIDs, HttpSession session) {
+		// 문자열 형태의 관리자 ID를 정수 리스트로 변환
+		List<Integer> adminIdList = Arrays.stream(adminIDs.split(","))
+				.map(Integer::parseInt)
+				.collect(Collectors.toList());
+		
+		try {
+			adminService.deactivateAdmins(adminIdList);
+			return new ResponseEntity<>("Success", HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>("Failure", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	// ==========================================================================================완료
+	//비활성화된 관리자
+	@RequestMapping("/getDeactivatedAdmins.do")
+	public ModelAndView getDeactivatedAdmins() {
+	    List<AdminVO> deactivatedAdminList = adminService.getDeactivatedAdmins();
+	    ModelAndView mv = new ModelAndView("adminManagement");
+	    mv.addObject("adminList", deactivatedAdminList);
 	    return mv;
 	}
 	
-	//관리자 개인정보 수정
-	//@RequestMapping("")
-	//public ModelAndView
-
 	// 사용자관리
 	@RequestMapping("/userManagement.do")
 	public ModelAndView getUserManagement() {
