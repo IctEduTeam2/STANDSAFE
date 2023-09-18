@@ -94,10 +94,10 @@ td {
 </style>
 <script type="text/javascript">
 	function main_go() {
-		location.href = "/mainform.do";
+		location.href = "/";
 	}
 	function order_go() {
-		location.href = "/orderlistform.do";
+		location.href = "/orderlistform.do?client_num=" + ${id};
 	}
 </script>
 </head>
@@ -128,6 +128,7 @@ td {
 						<p>
 							<b style="font-size: 18px;">주문내역 - </b> <b
 								style="font-size: 12px;">AASFSB123123F (구매완료)</b>
+						<button style="float: right; margin: 0">구매확정</button>
 						</p>
 					</div>
 					<!--주문내역-->

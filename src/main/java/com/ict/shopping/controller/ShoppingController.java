@@ -554,4 +554,9 @@ public class ShoppingController {
 		return mv;
 	}
 	
+	// 주문상세내역
+	@GetMapping("/orderOneListform.do")
+	public ModelAndView getOrderOneListForm() {
+		return new ModelAndView("shopping/order_onelist");
+	}
 }
