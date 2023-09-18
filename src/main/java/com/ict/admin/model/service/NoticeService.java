@@ -24,7 +24,13 @@ public interface NoticeService {
 	
 
 	//테이블 삭제 버튼
-	int getAdNotiUpdateRow(String notice_num);
+	int getupdateNoticeById(String notice_num);
+	
+	//삭제게시물 검색 버튼
+	List<NoticeVO> getDeletedNoti(int noticeNum);
+	//int getDeletedNoti(String notice_num);
+	
+	
 	
 	
 	

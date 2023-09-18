@@ -141,14 +141,32 @@ public class Admin_notice {
 		return mv;
 	}
 
-	// 테이블 게시물 삭제버튼
+	// 테이블 삭제버튼
 	@RequestMapping("/admin_Updaterow.do")
-	public ModelAndView AdminDeleterow() {
+	public ModelAndView AdminUpdaterow(@RequestParam("rowId") int rowId) {
+		notiService.getupdateNoticeById(Integer.toString(rowId));
 		ModelAndView mv = new ModelAndView("admin_notice/notice");
-		
+		mv.addObject("result", "success");
 		return mv;
 	}
 
+	//게시물삭제검색버튼 
+	@RequestMapping("/admin_showdelbtn.do")
+	public ModelAndView AdminShowbtndel(@RequestParam("noticeNum") int noticeNum) {
+		System.out.println("1");
+		ModelAndView mv = new ModelAndView("admin_notice/notice");
+		List<NoticeVO> delNotibtn = notiService.getDeletedNoti(noticeNum);
+		mv.addObject("delNotibtn", delNotibtn);
+		System.out.println(mv);
+		return mv;
+	}
+	
+	
+	
+	
+	
+	
+	
 	// 검색버튼
 	@PostMapping("/adnotice_search.do")
 	public ModelAndView adNotiSearch(HttpServletRequest request, HttpSession session,
@@ -185,6 +203,9 @@ public class Admin_notice {
 		return mv;
 	}
 
+	
+	
+	
 	// Q&A
 	@RequestMapping("/ad_allqa.do")
 	public ModelAndView AdminAllQa() {

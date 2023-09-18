@@ -125,10 +125,52 @@ function setStartField() {
 }
     
 // 테이블 게시물 삭제버튼
-function deleteRow(noticeNum){
-	location.href="/admin_Updaterow.do";
+function deleteRow(rowId) {
+	var checkbox = document.getElementById("chkbox_" + rowId);
+	if(checkbox.checked) {
+		$.ajax({
+			url: '/admin_Updaterow.do',
+			type: 'POST',
+			data: {rowId: rowId},
+			success: function(response){
+				var row = document.getElementById("row_" + rowId);
+				row.style.display = "none";		
+			},
+			error: function(erroe){
+				alert("Error occurred");
+			}
+		})
+		
+	} else {
+		alert("체크박스가 선택되지 않았습니다.");
+		
+	}
 }
+//삭제 게시물 검색
+function showDeletedNotices(noticeNum) {
+	var noticeNum = 2;
+	$.ajax({
+		url: '/admin_showdelbtn.do?noticeNum=' + noticeNum,
+		type: 'GET',
+		success: function(response) {
+			console.log("tlqkf3")
+			$('#table_wrap').append(response);
+			//기존의 모든 내용을 삭제한 후 새로운 내용을 추가합니다:
+			//$('#table_wrap').empty().append(response);
+			
+			//기존의 요소를 새로운 내용으로 완전히 대체합니다:
+			//$('#table_wrap').replaceWith(response);
+			
+			//#table_wrap 내의 특정 요소만 업데이트하고 싶다면, 더 세밀한 DOM 조작이 가능합니다:
+			//$('#table_wrap > tbody').append('<tr><td>New Row</td></tr>');
 
+			alert("성공 성공")
+		},
+		error: function(error) {
+			alert("에러 에러");
+		}
+	});
+}
 
 
 
@@ -221,7 +263,7 @@ function deleteRow(noticeNum){
 							style="float: right; margin-top: 50px; margin-left: 15px; margin-right: 30px;">
 							<input type="button" alt="삭제게시물" value="삭제게시물"
 							style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
-							onclick="showDeletedNotices()"></span> 
+							onclick="showDeletedNotices(2)"></span> 
 							
 						<span style="float: right; margin-top: 50px; margin-left: 15px;">
 							<input type="button" alt="전체기간" value="전체기간"

@@ -47,9 +47,20 @@ public class NoticeDAO {
 	
 	
 	//테이블 삭제 버튼
-	public int getAdNotiUpdateRow(String notice_num) {
-		return sqlSessionTemplate.delete("notice.noticeupdate", notice_num);
+	public int getupdateNoticeById(String notice_num) {
+		return sqlSessionTemplate.update("notice.noticeupdate", notice_num);
 	}
+	
+	//삭제게시물 검색 버튼
+	public List<NoticeVO> getDeletedNoti(int noticeNum) {
+		
+		return sqlSessionTemplate.selectList("notice.seldelbtn");
+		
+	}
+//	public int getDeletedNoti(String notice_num) {
+//		return sqlSessionTemplate.selectOne("notice.seldelbtn", notice_num);
+//	}
+	
 	
 	
 	//검색
