@@ -198,6 +198,20 @@
 		FROM DELIVERY_T
 		WHERE pay_oknum = #{pay_oknum}
 	</select>
+	
+	<!-- 결제 후 결제취소 - pay_t -->
+	<update id="payupdatest" parameterType="String">
+	    UPDATE PAY_T	
+	    SET pay_st = 1
+	    WHERE pay_oknum = #{pay_oknum}
+	</update>
+	
+	<!-- 결제 후 결제취소 - payback_t -->
+	<insert id="paybackinsert" parameterType="paybackVO">
+		INSERT INTO PAYBACK_T
+		(client_num, pb_content, pb_dp, pb_st, pay_oknum)
+		VALUES (#{client_num}, #{pb_content}, #{pb_dp}, #{pb_st}, #{pay_oknum})
+	</insert>
 
 	<!-- 주문조회 리스트 -->
 	<select id="paylist" resultType="payVO" parameterType="String">
@@ -220,7 +234,7 @@
 		FROM PAY_T AS PAY
 		JOIN CART_T AS C ON PAY.cart_num = C.cart_num
 		JOIN PRODUCT_T AS P ON C.prod_num = P.prod_num
-		WHERE PAY.client_num = #{client_num}
+		WHERE PAY.client_num = #{client_num} 
 		GROUP BY PAY.pay_oknum
 		ORDER BY PAY.pay_ok DESC
 	</select>

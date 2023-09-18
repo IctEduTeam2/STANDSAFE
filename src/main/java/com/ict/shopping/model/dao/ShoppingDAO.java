@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ict.shopping.model.vo.BasketVO;
 import com.ict.shopping.model.vo.DeliveryVO;
+import com.ict.shopping.model.vo.PayBackVO;
 import com.ict.shopping.model.vo.PayVO;
 import com.ict.shopping.model.vo.PopUpVO;
 import com.ict.shopping.model.vo.ProductVO;
@@ -109,12 +110,12 @@ public class ShoppingDAO {
 	public void getPointSub(PointVO pointvo) {
 		sqlSessionTemplate.insert("shopping.pointsub", pointvo);
 	}
-	
+
 	// 결제 후 상품재고량 수정
 	public void getProductSub(BasketVO bvo) {
 		sqlSessionTemplate.update("shopping.productsub", bvo);
 	}
-	
+
 	// 상품리스트
 	public List<ProductVO> getProductList(ProductVO pvo) {
 		return sqlSessionTemplate.selectList("shopping.productlist", pvo);
@@ -123,30 +124,40 @@ public class ShoppingDAO {
 	// 위시리스트
 	public List<WishVO> getWishList(String client_num) {
 		return sqlSessionTemplate.selectList("shopping.wishlist", client_num);
-	}	
-	
+	}
+
 	// 주문리스트
 	public List<PayVO> getPayList(String client_num) {
 		return sqlSessionTemplate.selectList("shopping.paylist", client_num);
-	}	
-	
+	}
+
 	// 주문상세내역
 	public List<PayVO> getOrderOneList(String pay_oknum) {
 		return sqlSessionTemplate.selectList("shopping.orderlist", pay_oknum);
-	}	
-	
+	}
+
 	// 장바구니 조회
 	public BasketVO getCartInfo(String cart_num) {
 		return sqlSessionTemplate.selectOne("shopping.cartinfo", cart_num);
-	}	
-	
+	}
+
 	// 배송 추가
 	public void getDeliveryAdd(String pay_oknum) {
 		sqlSessionTemplate.insert("shopping.deliveryadd", pay_oknum);
-	}	
-	
+	}
+
 	// 배송 조회
 	public DeliveryVO getDeliverySelect(String pay_oknum) {
 		return sqlSessionTemplate.selectOne("shopping.deliveryselect", pay_oknum);
+	}
+
+	// 결제 후 결제취소 - pay_t
+	public void getPayUpdateST(String pay_oknum) {
+		sqlSessionTemplate.update("shopping.payupdatest", pay_oknum);
+	}	
+	
+	// 결제 후 결제취소 - payback_t
+	public void getPayBackInsert(PayBackVO pbvo) {
+		sqlSessionTemplate.insert("shopping.paybackinsert", pbvo);
 	}
 }

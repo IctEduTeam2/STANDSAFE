@@ -28,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ict.shopping.model.service.ShoppingService;
 import com.ict.shopping.model.vo.BasketVO;
 import com.ict.shopping.model.vo.DeliveryVO;
+import com.ict.shopping.model.vo.PayBackVO;
 import com.ict.shopping.model.vo.PayVO;
 import com.ict.shopping.model.vo.PopUpVO;
 import com.ict.shopping.model.vo.ProductVO;
@@ -599,4 +600,25 @@ public class ShoppingController {
 	    
 		return mv;
 	}
+	
+	@GetMapping("/Order.do")
+	public ModelAndView getOrder(@RequestParam("pay_oknum")String pay_oknum, @RequestParam("st")String st, @RequestParam("client_num")String client_num, @RequestParam("pb_content")String pb_content) {
+		ModelAndView mv = new ModelAndView("redirect:/orderOneListform.do?pay_oknum=" + pay_oknum + "&client_num=" + client_num);
+		if(st.equals("0")) {
+			shoppingService.getPayUpdateST(pay_oknum);
+			List<PayVO> paylist = shoppingService.getPayList(client_num);
+			PayBackVO pbvo = new PayBackVO();
+			pbvo.setClient_num(client_num);
+			pbvo.setPb_content(pb_content);
+			pbvo.setPb_dp("0");
+			pbvo.setPb_st("8");
+			pbvo.setPay_oknum(pay_oknum);
+			shoppingService.getPayBackInsert(pbvo);
+			//shoppingService.getPointPlus(client_num);
+		} else if(st.equals("1")) {
+			// 구매확정시
+		}
+		return null;
+	}
+	
 }
