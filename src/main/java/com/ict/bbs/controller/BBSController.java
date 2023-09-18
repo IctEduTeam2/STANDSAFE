@@ -550,6 +550,12 @@ public class BBSController {
 		System.out.println("게시물번호로 조회하여 갖고온 멤버번호:" + dbnum);
 		String lock = reviewvo.getRE_LOCK();
 		System.out.println("비밀글여부 확인 1은 비밀, 0은 일반 : " + lock);
+		String p_num = reviewvo.getPROD_NUM();
+		System.out.println("물품번호는 : " + p_num);
+		
+		String prod_name = bbsService.getProdName(p_num);
+		System.out.println("물품이름은" + prod_name);
+		reviewvo.setPROD_NAME(prod_name);
 
 		
 		
@@ -805,6 +811,13 @@ public class BBSController {
 		String lock =  request.getParameter("secret_flag");
 		System.out.println("비밀글여부  : " + lock);  //1이 비밀글 0은 일반
 		
+		
+		String review_prod = request.getParameter("review_prod");
+		System.out.println("콤보선택한 물품의벨류값:" + review_prod);
+		reviewvo.setPROD_NUM(review_prod);
+		
+		
+		
 		//[비밀] 을 붙일 제목가져오기
 		String sub = reviewvo.getRE_SUBJECT();
 		
@@ -815,6 +828,22 @@ public class BBSController {
 		}
 
 		int result = bbsService.getReviewWriteOk(reviewvo);
+		
+		
+		
+		
+		String sessionid = (String) request.getSession().getAttribute("id");
+		
+		System.out.println("로그인한 아이디는(리뷰콤보): " + sessionid);
+		
+		
+		//pay_t 의 review_st 를 1 로 바꾸기위한 일처리
+		int changereview = bbsService.updateReviewStonPayT(sessionid);
+		
+		
+	
+			
+		
 		
 		
 		if(result >0) {
@@ -971,6 +1000,13 @@ public class BBSController {
 		ModelAndView mv = new ModelAndView("bbs/review_update");
 		
 		RE_BBS_VO reviewvo = bbsService.getReviewOneList(RE_NUM);
+		String p_num = reviewvo.getPROD_NUM();
+		System.out.println("물품번호는 : " + p_num);
+		
+		String prod_name = bbsService.getProdName(p_num);
+		System.out.println("물품이름은" + prod_name);
+		reviewvo.setPROD_NAME(prod_name);
+		
 		mv.addObject("reviewvo", reviewvo);
 		return mv;
 	}
@@ -1071,7 +1107,7 @@ public class BBSController {
 	
 	//수정완료 일처리 : 리뷰
 	@RequestMapping("/bbs_review_updateOk.do")
-	public ModelAndView BbsReviewUpdateOk(RE_BBS_VO riviewvo,HttpServletRequest request,
+	public ModelAndView BbsReviewUpdateOk(RE_BBS_VO reviewvo,HttpServletRequest request,
 			@ModelAttribute("cPage")String cPage,
 			@ModelAttribute("RE_NUM")String RE_NUM,
 			HttpSession session){
@@ -1079,17 +1115,17 @@ public class BBSController {
 		ModelAndView mv = new ModelAndView();
 		try {
 			String path = request.getSession().getServletContext().getRealPath("/resources/upload");
-			MultipartFile f_param = riviewvo.getFile();
+			MultipartFile f_param = reviewvo.getFile();
 
 			if(f_param.isEmpty()) {
-				riviewvo.setRE_FILE(riviewvo.getOld_f_name());
+				reviewvo.setRE_FILE(reviewvo.getOld_f_name());
 			}else {
 				
 				UUID uuid = UUID.randomUUID();
-				String f_name = uuid.toString()+"_"+riviewvo.getFile().getOriginalFilename();
-				riviewvo.setRE_FILE(f_name);
+				String f_name = uuid.toString()+"_"+reviewvo.getFile().getOriginalFilename();
+				reviewvo.setRE_FILE(f_name);
 				
-				byte[] in = riviewvo.getFile().getBytes();
+				byte[] in = reviewvo.getFile().getBytes();
 				
 				File out = new File(path, f_name);
 				
@@ -1101,19 +1137,27 @@ public class BBSController {
 			System.out.println("로그인한 닉넴 : " + nick); 
 			
 			//제리똥나온다. vo저장후 맵퍼에 보내자. 저장하라고
-			riviewvo.setRE_WRITER(nick);
+			reviewvo.setRE_WRITER(nick);
 			
 			//회원client_num 갖고오자. 디비에 넣어야한다. 
 			String num = (String) request.getSession().getAttribute("id");
 			System.out.println("닉네임의 번호:" + num);
 			//맞는 17번 나온다, 저장하자, 혜인님이만든 유저 vo의 클라인트넘버는 인트로, 나는 스트링으로 바꿔주는 작업
-			riviewvo.setCLIENT_NUM(num);
+			reviewvo.setCLIENT_NUM(num);
 		
 			//라디오체크박스 값을 맴퍼에 보내기위해 가지고오기
 			String type= request.getParameter("RE_TYPE");
 			
 			//vo에 갖고온값 저장.
-			riviewvo.setRE_TYPE(type);
+			reviewvo.setRE_TYPE(type);
+			
+			String p_num = request.getParameter("PROD_NUM");
+			System.out.println("수정하기의 물품번호:" + p_num);
+			if(p_num.equals("")) {
+				reviewvo.setPROD_NUM(null);
+			}else {
+				reviewvo.setPROD_NUM(p_num);
+			}
 			
 			//비밀글 체크시 제목앞에 붙이기.
 			String lock =  request.getParameter("secret_flag");
@@ -1121,20 +1165,20 @@ public class BBSController {
 			
 			
 			//[비밀] 을 붙일 제목가져오기
-			String sub = riviewvo.getRE_SUBJECT();
+			String sub = reviewvo.getRE_SUBJECT();
 			System.out.println(sub);
 			
 			if(lock.equals("1")) {
 				
-				riviewvo.setRE_LOCK("1");
-				riviewvo.setRE_SUBJECT(sub);
+				reviewvo.setRE_LOCK("1");
+				reviewvo.setRE_SUBJECT(sub);
 			}else {
-				riviewvo.setRE_LOCK("0");
-				riviewvo.setRE_SUBJECT(sub);
+				reviewvo.setRE_LOCK("0");
+				reviewvo.setRE_SUBJECT(sub);
 			}
 			
 
-			int result = bbsService.getReviewUpdateOk(riviewvo);
+			int result = bbsService.getReviewUpdateOk(reviewvo);
 			
 			
 			if(result >0) {
@@ -1912,10 +1956,6 @@ public class BBSController {
 			html.append("<select>");
 			for (ProductVO k : pro_list1) {
 			    html.append("<option value=\"").append(k.getProd_num()).append("\">").append(k.getProd_name()).append("</option>");
-				/*
-				 * html.append("<input type=\"hidden\" name=\"prod_num\" value=\"").append(k.
-				 * getProd_num()).append("\">");
-				 */
 			}
 			System.out.println("물품 배열 리스트:" + pro_list1);
 			html.append("</select>");		
@@ -1927,6 +1967,7 @@ public class BBSController {
 			//String msg = "카테고리선택하세요.";
 			html.append("<select>");
 			html.append("<option>").append("카테고리선택하세요").append("</option>");
+			html.append("</select>");	
 			return html;
 		}
 		
@@ -1935,37 +1976,55 @@ public class BBSController {
 	
 	
 	@ResponseBody
-	@RequestMapping(value="/review_combo.do", produces="text/xml; charset=utf-8")
+	@RequestMapping(value="/review_combo.do", produces="text/plain; charset=utf-8")
 	public StringBuilder getReviewcomlist(
 			HttpServletRequest request,
+			@ModelAttribute("reviewCategory")String reviewCategory ,
 			HttpSession session	){
+	
 		StringBuilder html = new StringBuilder();
 		
-		String sessionid = (String) session.getAttribute("id");
+		System.out.println("리뷰카테고리는:"+ reviewCategory);
 		
-		System.out.println("로그인한 아이디는(리뷰콤보): " + sessionid);
-		
-		
-		List<Review_comVO> recom = bbsService.getReviewcomList(sessionid);
-		System.out.println("리뷰콤보로 갖고온 리스트:" + recom);
-		//날짜가 1주일이내인것만 나오도록 함. 
-		//주문번호 형식으로 해당 로그인한 번호중 구매확정3인애들만 나온다. 
-		//deli_t에서 st 구매확정3인 애들중에, pay_oknum가 배송테이블과 결제테이블과 맞는애들의 pay_t의 카트번호 갖고옴
-		
-
-		//cart_num 찾아서 그걸로 cart_t 의 prod_num와 prod_t 의 prod_num 을 찾아서
-		List<Review_comVO> prod_num = bbsService.getReviewprodList(recom);
-		
-		System.out.println("물품번호 배열은?:" + prod_num);
-		for (Review_comVO k : prod_num) {
-			System.out.println("장바구니 번호"+ k.getCart_num());
-			System.out.println("물품번호:" + k.getProd_num());
+		if(reviewCategory.equals("1")) {
+			
+			String sessionid = (String) request.getSession().getAttribute("id");
+			
+			System.out.println("로그인한 아이디는(리뷰콤보): " + sessionid);
+			
+			
+			List<Review_comVO> recom = bbsService.getReviewcomList(sessionid);
+			System.out.println("리뷰콤보로 갖고온 리스트:" + recom);
+			
+			
+			//날짜가 1주일이내인것만 나오도록 함. 
+			//주문번호 형식으로 해당 로그인한 번호중 구매확정3인애들만 나온다. 
+			//deli_t에서 st 구매확정3인 애들중에, pay_oknum가 배송테이블과 결제테이블과 맞는애들의 pay_t의 카트번호 갖고옴
+			//한번에 조인쿼리함, 
+			//즉, 구매확정 날짜가 7일이내인 것들중에 확정이된 st3인 것들을 조회하는데, 로그인한사람의것만 조회하고,
+			//그 조회한 주문번호를 통해, 장바구니와 비교하여, 물품번호를 얻어냄 
+			//prod_num에 맞는 이름 찾기 .=> 완료 배열형식으로 나온다. 
+			
+			html.append("<select>");
+			for (Review_comVO review : recom) {
+				// 옵션 시작 태그 추가
+				html.append("<option value=\"").append(review.getProd_num()).append("\">");
+				
+				// 옵션 내용으로 상품 이름 추가
+				html.append(review.getProd_name());
+				
+				// 옵션 닫는 태그 추가
+				html.append("</option>");
+				html.append("</select>");	
+				System.out.println("html:"+html);
+			}
+			
+			return html;
+		}else {
+			
 		}
 		
-		
-		//prod_num에 맞는 이름 찾기 .
-		
-		return html;
+		return null;
 	}
 	
 	

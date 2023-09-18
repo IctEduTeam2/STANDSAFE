@@ -149,5 +149,5 @@ public interface BBS_Service {
 	
 	//리뷰리스트 찾기
 	public List<Review_comVO> getReviewcomList(String sessionid);
-	public List<Review_comVO> getReviewprodList(List<Review_comVO> recom);
+	//public List<Review_comVO> getReviewprodList(List<Review_comVO> recom);
 }

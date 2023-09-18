@@ -1,5 +1,6 @@
 package com.ict.bbs.model.dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -357,8 +358,17 @@ public class BBS_DAO {
 	public List<Review_comVO> getReviewcomList(String sessionid) {
 		return sqlSessionTemplate.selectList("bbs.reviewcomlist",sessionid);
 	}
-	public List<Review_comVO> getReviewprodList(List<Review_comVO> recom) {
-		return sqlSessionTemplate.selectList("bbs.reviewprodlist", recom);
-	}
+	/*public List<Review_comVO> getReviewprodList(List<Review_comVO> recom) {
+	    
+		List<String> cartNumList = new ArrayList<>();
+
+	    // recom 리스트에서 각 Review_comVO 객체의 cart_num을 추출하여 cartNumList에 추가합니다.
+	    for (Review_comVO reviewComVO : recom) {
+	        cartNumList.add(reviewComVO.getCart_num());
+	    }
+
+	    // cartNumList를 사용하여 pay_t와 cart_t를 조인하고 prod_num을 조회하는 쿼리를 실행합니다.
+	    return sqlSessionTemplate.selectList("bbs.reviewprodlist", cartNumList);
+	}*/
 	
 }

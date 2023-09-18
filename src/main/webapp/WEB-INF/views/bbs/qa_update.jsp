@@ -158,90 +158,6 @@ line-height: 2rem;
 	}
 	
 </script>
-<script type="text/javascript">
-function categoty() {
-		var highCategory = document.getElementById("High").value;
-	    var lowCategory = document.getElementById("Low");
-	    var prodCategory = document.getElementById("Prod");
-	    // 기존 Low 카테고리 옵션 제거
-	    lowCategory.innerHTML = "";
-
-	    // 선택한 High 카테고리에 따라 Low 카테고리 옵션 추가
-	    if (highCategory === "1") {
-	    	lowCategory.innerHTML += '<option value="0"> ====소분류==== </option>';
-	        lowCategory.innerHTML += '<option value="1"> 소화기 </option>';
-	        lowCategory.innerHTML += '<option value="2"> 화재 감지 | 대피 </option>';
-	        // 다른 옵션들도 추가
-	    } else if (highCategory === "2") {   
-	    	lowCategory.innerHTML += '<option value="0"> ====소분류==== </option>';
-	        lowCategory.innerHTML += '<option value="3"> 구급함 | 제세동기 </option>';
-	        lowCategory.innerHTML += '<option value="4"> 재난안전용품 </option>';
-	        lowCategory.innerHTML += '<option value="5"> 방역안전용품 </option>';
-	        // 다른 옵션들도 추가
-	    } else if (highCategory === "3") {
-	    	lowCategory.innerHTML += '<option value="0"> ====소분류==== </option>';
-	        lowCategory.innerHTML += '<option value="6"> 마스크 </option>';
-	        lowCategory.innerHTML += '<option value="7"> 위생장갑 </option>';
-	        lowCategory.innerHTML += '<option value="8"> 통조림 | 비상식량 </option>';
-	        // 다른 옵션들도 추가
-	    }else if(highCategory === "0"){
-	    	// High 카테고리가 0인 경우 "카테고리를 선택하세요" 옵션만 추가	
-	        lowCategory.innerHTML += '<option value="0">카테고리를 선택하세요</option>';
-	        prodCategory.innerHTML = "";
-	      
-	    }
-	}
-
-	function prod_combo() {
-	    // 선택한 High와 Low 카테고리를 사용하여 상품 목록을 생성하고 콤보 박스에 추가하는 코드를 작성
-	}
-</script>
-<script type="text/javascript">
-function updateProductList() {
-    var lowCategory = document.getElementById("Low").value;
-    var prodCategory = document.getElementById("Prod");
-    
-   
-   $.ajax({
-	   url : "/product_combo.do?lowCategory="+lowCategory,
-	   method: "post",
-	   dataType: "text",
-	   success: function(data) {
-		   console.log(data)
-		   
-		    // "prod" 콤보 박스 엘리먼트 가져오기
-		   var prodCategory = document.getElementById("Prod");
-
-		    // 받은 HTML을 "prod" 콤보 박스에 추가
-		    prodCategory.innerHTML = data;
-	   },
-	   error:function() {
-		   alert("읽기실패");
-	   }
-   });
-}
-// Low 카테고리 변경 시에도 물품 리스트 업데이트
-document.getElementById("Low").addEventListener("change", updateProductList)
- //선택한물품의 번호
-    var selectedOption = prodCategory.options[prodCategory.selectedIndex];
-    var prodNum = selectedOption.value; 
-    console.log(prodNum);
-</script>
-<script type="text/javascript">
-
-function prod_combo() {
-	var lowCategory = document.getElementById("Low").value;
-    var prodCategory = document.getElementById("Prod");
-
-    // Low 카테고리 초기화
-    prodCategory.innerHTML = "";
-
-    if (lowCategory === "0" ) {
-        // High 카테고리가 0인 경우 "카테고리를 선택하세요" 옵션만 추가
-        prodCategory.innerHTML += '<option value="">카테고리를 선택하세요</option>';
-    } 
-}
-</script>
 </head>
 <body>
 	<div id="mydiv"> 
@@ -274,10 +190,10 @@ function prod_combo() {
 										<td bgcolor="#1b5ac2" class="w_font">물품</td>
 										<c:choose>
 										<c:when test="${empty qnavo.PROD_NAME}">
-											<td id="type" style="color:gray; font-size:15px;">[선택물품없음]</td>
+											<td id="text" style="color:gray; font-size:15px;">[선택물품없음]</td>
 										</c:when>
 										<c:otherwise>
-											<td id="type">${qnavo.PROD_NAME}</td>
+											<td id="text">${qnavo.PROD_NAME}</td>
 										</c:otherwise>
 									</c:choose>
 									</tr>

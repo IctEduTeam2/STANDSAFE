@@ -110,15 +110,9 @@ line-height: 2rem;
 line-height: 2rem;
   padding: 0.2em 0.4em;
 }
-#combo_btn{
-	width: 80x;
-	padding: 5px;
-	float: left;
-	margin-left : 30px;
-	height: 35px;
-	background-color: #1b5ac2;
-	border: none;
-	color:white;
+#cate3{
+line-height: 2rem;
+  padding: 0.2em 0.4em;
 }
 
 </style> 

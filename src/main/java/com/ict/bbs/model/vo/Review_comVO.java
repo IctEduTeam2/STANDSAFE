@@ -1,5 +1,7 @@
 package com.ict.bbs.model.vo;
 
+import java.util.Map;
+
 public class Review_comVO {
 	
 	//pay_t
@@ -9,11 +11,43 @@ public class Review_comVO {
 	private String deli_num, deli_date, deli_st;
 	
 	//cart_t
-	private String prod_num, cart_amount,cart_price,cart_st;
+	private String prod_num, cart_amount,cart_price,cart_st, prod_name;
+	
+	private String sesstionid;
 	
 	
 	
-	
+
+    
+    
+    
+	public String getSesstionid() {
+		return sesstionid;
+	}
+
+
+
+
+	public void setSesstionid(String sesstionid) {
+		this.sesstionid = sesstionid;
+	}
+
+
+
+
+	public String getProd_name() {
+		return prod_name;
+	}
+
+
+
+
+	public void setProd_name(String prod_name) {
+		this.prod_name = prod_name;
+	}
+
+
+
 	public String getReview_st() {
 		return review_st;
 	}

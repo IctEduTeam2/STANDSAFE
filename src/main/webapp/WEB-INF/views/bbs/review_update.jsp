@@ -146,7 +146,18 @@ fieldset {
 										<span>칭찬합시다</span>	
 									</td>
 							</tr>
-							<tr align="center">
+										<tr align="center">
+													<td bgcolor="#1b5ac2" class="w_font">물품</td>
+													<c:choose>
+													<c:when test="${empty reviewvo.PROD_NAME}">
+														<td id="text" style="color:gray; font-size:15px;">[선택물품없음]</td>
+													</c:when>
+													<c:otherwise>
+														<td id="text">${reviewvo.PROD_NAME}</td>
+													</c:otherwise>
+												</c:choose>
+												</tr>
+										<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">작성자</td>
 								<!--이건 로그인한 사람이 자동으로 뜨게하기.  -->
 								<td id="text">${reviewvo.RE_WRITER}</td>
@@ -193,6 +204,7 @@ fieldset {
 									<td colspan="2">
 										<input type="button" value="작성" onclick="updateOk_go(this.form)" class="in_btn"/>
 										<input type="hidden" name="secret_flag" id="secret_flag" value="0" />
+										<input type="hidden" name="PROD_NUM" value="${reviewvo.PROD_NUM}">
 										<input type="hidden" name="RE_NUM" value="${reviewvo.RE_NUM}">
 										<input type="hidden" name="cPage" value="${cPage}">
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

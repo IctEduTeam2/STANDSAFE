@@ -441,26 +441,22 @@
 		select PROD_NAME from PRODUCT_T where PROD_NUM = #{p_num}
 	</select>
 	
-	<!--리뷰리스트  -->
-	<select id="reviewcomlist" parameterType="String" resultType="String">
-		SELECT CART_NUM
-		FROM PAY_T AS p
-		INNER JOIN DELIVERY_T AS d ON p.PAY_OKNUM = d.PAY_OKNUM
-		WHERE d.DELI_ST = 3
-	  	AND p.CLIENT_NUM = 35
-	  	AND p.PAY_OK >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
-	</select>
-	
-	<select id="reviewprodlist" parameterType="java.util.List" resultType="java.lang.String">
-	    SELECT p.CART_NUM AS payment_cart_num, c.CART_NUM AS cart_cart_num
-	    FROM PAY_T AS p
-	    INNER JOIN CART_T AS c ON p.CART_NUM = c.CART_NUM
-	    WHERE p.PAY_OKNUM IN
-	    <foreach collection="#{recom}" item="item" open="(" separator="," close=")">
-	        #{item}
-	    </foreach>
-	</select>
 
+
+	 <select id="reviewcomlist" parameterType="String" resultType="recomvo">
+		SELECT *
+			FROM PAY_T AS pay
+			INNER JOIN CART_T AS cart ON pay.CART_NUM = cart.CART_NUM
+			INNER JOIN PRODUCT_T AS p ON cart.PROD_NUM = p.PROD_NUM
+			WHERE pay.PAY_OKNUM IN (
+			    SELECT pay2.PAY_OKNUM
+			    FROM PAY_T AS pay2
+			    INNER JOIN DELIVERY_T AS d ON pay2.PAY_OKNUM = d.PAY_OKNUM
+			    WHERE d.DELI_ST = 3
+			      AND pay2.CLIENT_NUM = #{sessionid}
+			      AND pay2.PAY_OK >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+			)
+	</select>
 </mapper>
 
 

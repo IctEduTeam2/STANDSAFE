@@ -124,6 +124,20 @@ label {
 									</td>
 							</tr>
 							<tr align="center">
+							<td bgcolor="#1b5ac2" class="w_font">물품</td>
+							<c:choose>
+										<c:when test="${empty reviewvo.PROD_NAME}">
+											<td class="type" style="color:gray; font-size:15px;">[선택물품없음]</td>
+										</c:when>
+										<c:otherwise>
+											<td class="type">${reviewvo.PROD_NAME}</td>
+										</c:otherwise>
+									</c:choose>
+							
+								
+							
+							</tr>
+							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">작성자</td>
 								<!--이건 로그인한 사람이 자동으로 뜨게하기.  -->
 								<td id="type">${reviewvo.RE_WRITER}</td>

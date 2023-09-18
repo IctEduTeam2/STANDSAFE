@@ -98,7 +98,18 @@ fieldset {
 line-height: 2rem;
   padding: 0.2em 0.4em;
 }
-
+#cate2{
+line-height: 2rem;
+  padding: 0.2em 0.4em;
+}
+#list{
+	width: 225px;
+	padding: 7px;
+	margin-left : 30px;
+	border: 1px solid #1b5ac2;
+	outline: none;
+	float: left;
+}
 
 </style> 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
@@ -132,34 +143,31 @@ line-height: 2rem;
 		f.submit();
 	}
 </script>
+<!-- 페이지 로드 시 자동으로 실행될 JavaScript 코드 -->
 <script type="text/javascript">
 function review_cate() {
+    var reviewCategory = document.getElementById("review").value;
+    var reviewcombo = document.getElementById("list");
 
-    
-   $.ajax({
-	   url : "/review_combo.do?",
-	   method: "post",
-	   dataType: "text",
-	   success: function(data) {
-		   console.log(data)
-		   
-		    // "prod" 콤보 박스 엘리먼트 가져오기
-		   var reviewcombo = document.getElementById("review");
-
-		    // 받은 HTML을 "prod" 콤보 박스에 추가
-		    reviewcombo.innerHTML = data;
-	   },
-	   error:function() {
-		   alert("읽기실패");
-	   }
-   });
+    $.ajax({
+        url: "/review_combo.do?reviewCategory="+reviewCategory,
+        method: "post",
+        dataType: "text",
+        success: function(data) {
+            console.log(data);
+            
+            var reviewcombo = document.getElementById("list");
+            // "list" 콤보 박스 초기화
+            reviewcombo.innerHTML = "";
+            
+            // 데이터를 줄 단위로 분할하고 각 줄을 옵션으로 추가
+            reviewcombo.innerHTML = data;
+        },
+        error: function() {
+            alert("읽기 실패");
+        }
+    });
 }
-// Low 카테고리 변경 시에도 물품 리스트 업데이트
-document.getElementById("review").addEventListener("change", review_cate)
- //선택한물품의 번호
-    var selectedOption = reviewcombo.options[reviewcombo.selectedIndex];
-    var reviewNum = selectedOption.value; 
-    console.log(reviewNum);
 </script>
 </head>
 <body>
@@ -185,19 +193,22 @@ document.getElementById("review").addEventListener("change", review_cate)
 									</td>
 							</tr>
 							<tr align="center">
-								<td bgcolor="#1b5ac2" class="w_font">리뷰물품</td>
+								<td bgcolor="#1b5ac2" class="w_font">리뷰항목</td>
 								<td>
 									<label id="cate" for=review></label>
 										<select id="review" onchange="review_cate()">
-											<option value="0"> ====리뷰쓰기==== </option>			
-											<option value="1"> ====리뷰쓰기2==== </option>			
+											<option value="0"> ====리뷰선택==== </option>				
+											<option value="1"> ====미작성=== </option>				
+    								</select>
+   									<label id="cate2" for="list"></label>
+    								<select id="list" name="review_prod"> 
     								</select>
 								</td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">작성자</td>
 								<!--이건 로그인한 사람이 자동으로 뜨게하기.  -->
-								<td><input type="text" name="name" size="20" autocomplete='off' value="${nick}"/></td>
+								<td><input type="text" name="name" size="20" autocomplete='off' value="${nick}" disabled/></td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">제목</td>
