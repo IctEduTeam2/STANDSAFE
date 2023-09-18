@@ -66,7 +66,7 @@ table tfoot ol.paging li a:hover {
 	color: white;
 	font-weight: bold;
 }
-table td:nth-child(4) {
+table td:nth-child(3) {
   text-align: left;
   padding-left: 70px;
 }
@@ -110,7 +110,7 @@ table td:nth-child(4) {
 					<table class="m_table">				
 						<thead class="mh_table">
 							 <tr>
-							 	<th id="th1">번호</th><th id="th4">파일첨부</th><th id="th5">유형</th><th id="th2">제목</th><th id="th3">작성자</th><th id="th6">날짜</th>
+							 	<th id="th1">번호</th><th id="th5">유형</th><th id="th2">제목</th><th id="th3">작성자</th><th id="th6">날짜</th><th id="th4">파일첨부</th>
 							 </tr>
 						</thead>
 						<tbody class="mb_table">		
@@ -125,6 +125,15 @@ table td:nth-child(4) {
 									<c:forEach var="k" items="${list}" varStatus="vs">
 										<tr>
 											<td>${paging.totalRecord -((paging.nowPage-1)*paging.numPerPage + vs.index) }</td>
+											
+											<td>${k.REPORT_TYPE }</td>
+												    <td>
+												      <a href="/bbs_report_onelist.do?REPORT_NUM=${k.REPORT_NUM}&cPage=${paging.nowPage}">
+												       [비밀]${k.REPORT_SUBJECT}
+												      </a>
+												    </td>
+									                <td>${k.REPORT_NICK}</td>
+											<td> ${k.REPORT_DATE.substring(0, 10)}</td>
 											<td>
 												<c:choose>
 													<c:when test="${empty k.REPORT_FILE}">
@@ -135,14 +144,6 @@ table td:nth-child(4) {
 													</c:otherwise>
 												</c:choose>				
 											</td>
-											<td>${k.REPORT_TYPE }</td>
-												    <td>
-												      <a href="/bbs_report_onelist.do?REPORT_NUM=${k.REPORT_NUM}&cPage=${paging.nowPage}">
-												       [비밀]${k.REPORT_SUBJECT}
-												      </a>
-												    </td>
-									                <td>${k.REPORT_NICK}</td>
-											<td> ${k.REPORT_DATE.substring(0, 10)}</td>
 										</tr>
 									</c:forEach>
 								</c:otherwise>

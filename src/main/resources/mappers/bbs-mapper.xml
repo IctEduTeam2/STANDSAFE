@@ -89,7 +89,7 @@
 	   <select id="qnaonelist" parameterType="String" resultType="qnabbsvo">
 	   	select * from QA_T where BOARD_NUM = #{BOARD_NUM}
 	   </select>
-   <!-- 상세 -->
+   <!-- 삽입-->
 	   <insert id="qnainsert" parameterType="qnabbsvo" >
 	   	insert into QA_T (BOARD_SUBJECT, BOARD_WRITER, BOARD_CONTENT, BOARD_FILE, BOARD_ST,BOARD_LOCK, BOARD_DATE, BOARD_TYPE,CLIENT_NUM,PROD_NUM)
 	   	values(#{BOARD_SUBJECT},#{BOARD_WRITER},#{BOARD_CONTENT},#{BOARD_FILE},1,#{BOARD_LOCK},SYSDATE(),#{BOARD_TYPE},#{CLIENT_NUM}, #{PROD_NUM})
@@ -432,6 +432,33 @@
 	<!-- 콤보 -->
 	<select id="productcombo" resultType="productVO">
 		select * from PRODUCT_T where PROD_HIGH = #{high} AND PROD_LOW = #{low}
+	</select>
+
+
+
+	<!--물품번호  -->
+	<select id="productname" parameterType="String" resultType="String">
+		select PROD_NAME from PRODUCT_T where PROD_NUM = #{p_num}
+	</select>
+	
+	<!--리뷰리스트  -->
+	<select id="reviewcomlist" parameterType="String" resultType="String">
+		SELECT CART_NUM
+		FROM PAY_T AS p
+		INNER JOIN DELIVERY_T AS d ON p.PAY_OKNUM = d.PAY_OKNUM
+		WHERE d.DELI_ST = 3
+	  	AND p.CLIENT_NUM = 35
+	  	AND p.PAY_OK >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+	</select>
+	
+	<select id="reviewprodlist" parameterType="java.util.List" resultType="java.lang.String">
+	    SELECT p.CART_NUM AS payment_cart_num, c.CART_NUM AS cart_cart_num
+	    FROM PAY_T AS p
+	    INNER JOIN CART_T AS c ON p.CART_NUM = c.CART_NUM
+	    WHERE p.PAY_OKNUM IN
+	    <foreach collection="#{recom}" item="item" open="(" separator="," close=")">
+	        #{item}
+	    </foreach>
 	</select>
 
 </mapper>

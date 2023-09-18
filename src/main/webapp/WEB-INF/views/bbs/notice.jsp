@@ -113,7 +113,7 @@ table tfoot ol.paging li a:hover {
 						<thead class="mh_table">
 							 
 							 <tr>
-							 	<th id="th1">번호</th><th id="th4">파일첨부</th><th id="th2">제목</th><th id="th3">작성자</th><th id="th5">조회수</th><th id="th6">날짜</th>
+							 	<th id="th1">번호</th><th id="th2">제목</th><th id="th3">작성자</th><th id="th5">조회수</th><th id="th6">날짜</th><th id="th4">파일첨부</th>
 							 </tr>
 						</thead>
 						<tbody class="mb_table">	
@@ -129,16 +129,7 @@ table tfoot ol.paging li a:hover {
 										<tr>
 											
 											<td>${paging.totalRecord -((paging.nowPage-1)*paging.numPerPage + vs.index) }</td>
-											<td>
-												<c:choose>
-													<c:when test="${empty k.NOTICE_FILE}">
-														없음
-													</c:when>
-													<c:otherwise>
-														있음
-													</c:otherwise>
-												</c:choose>				
-											</td>
+											
 											<c:choose>
 												<c:when test="${k.NOTICE_ST ==2 }">
 													<td style="color:gray;">삭제된 게시물입니다.</td>
@@ -151,6 +142,16 @@ table tfoot ol.paging li a:hover {
 											<td>${k.NOTICE_WRITER}</td>
 											<td>${k.NOTICE_HIT}</td>
 											<td>${k.NOTICE_DATE.substring(0,10)}</td>
+											<td>
+												<c:choose>
+													<c:when test="${empty k.NOTICE_FILE}">
+														없음
+													</c:when>
+													<c:otherwise>
+														있음
+													</c:otherwise>
+												</c:choose>				
+											</td>
 										</tr>
 									</c:forEach>
 								</c:otherwise>

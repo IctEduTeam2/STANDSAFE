@@ -24,7 +24,7 @@ fieldset {
   padding: 40px 20px;
 }
 
-table td:nth-child(4) {
+table td:nth-child(3) {
   text-align: left;
   padding-left: 70px;
 }
@@ -141,7 +141,7 @@ table tfoot ol.paging li a:hover {
 					<table class="m_table">				
 						<thead class="mh_table">
 							 <tr>
-							 	<th id="th1">번호</th><th id="th4">파일첨부</th><th id="th5">유형</th><th id="th2">제목</th><th id="th3">작성자</th><th id="th6">날짜</th>
+							 	<th id="th1">번호</th><th id="th5">유형</th><th id="th2">제목</th><th id="th3">작성자</th><th id="th6">날짜</th><th id="th4">파일첨부</th>
 							 </tr>
 						</thead>
 						<tbody class="mb_table">		
@@ -156,16 +156,7 @@ table tfoot ol.paging li a:hover {
 									<c:forEach var="k" items="${list}" varStatus="vs">
 										<tr>
 											<td>${paging.totalRecord -((paging.nowPage-1)*paging.numPerPage + vs.index) }</td>
-											<td>
-												<c:choose>
-													<c:when test="${empty k.RE_FILE}">
-														없음
-													</c:when>
-													<c:otherwise>
-														있음
-													</c:otherwise>
-												</c:choose>				
-											</td>
+											
 											<td>${k.RE_TYPE }</td>
 											<c:choose>
 												  <c:when test="${k.RE_ST == 0}">
@@ -191,6 +182,16 @@ table tfoot ol.paging li a:hover {
 											     <td> ${k.RE_DATE.substring(0, 10)}</td>
 											    </c:otherwise>
 											  </c:choose>
+											  <td>
+												<c:choose>
+													<c:when test="${empty k.RE_FILE}">
+														없음
+													</c:when>
+													<c:otherwise>
+														있음
+													</c:otherwise>
+												</c:choose>				
+											</td>
 										</tr>
 									</c:forEach>
 								</c:otherwise>

@@ -124,6 +124,20 @@ label {
 									</td>
 							</tr>
 							<tr align="center">
+							<td bgcolor="#1b5ac2" class="w_font">물품</td>
+							<c:choose>
+										<c:when test="${empty qnavo.PROD_NAME}">
+											<td id="type" style="color:gray; font-size:15px;">[선택물품없음]</td>
+										</c:when>
+										<c:otherwise>
+											<td id="type">${qnavo.PROD_NAME}</td>
+										</c:otherwise>
+									</c:choose>
+							
+								
+							
+							</tr>
+							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">작성자</td>
 								<!--이건 로그인한 사람이 자동으로 뜨게하기.  -->
 								<td id="type">${qnavo.BOARD_WRITER }</td>
@@ -177,6 +191,7 @@ label {
 									 <div id="viewok" style="display: none;">
 										<input type="button" value="수정" onclick="update_go(this.form)" class="in_btn"/>
 										<input type="hidden" value="${qnavo.BOARD_NUM}" name="BOARD_NUM">
+										<input type="hidden" value="${qnavo.PROD_NUM}" name="PROD_NUM">
 										<input type="hidden" value="${cPage}" name="cPage">
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										<input type="button" value="목록" onclick="list_go(this.form)" class="in_btn"/>
@@ -184,7 +199,7 @@ label {
 										<input type="button" value="삭제"  onclick="delete_go(this.form)" class="in_btn"/>
 									</div>						
 									 <div id="viewno" >									
-										<input type="hidden" value="${qnavo.BOARD_NUM}" name="BOARD_NUM">
+										<input type="hidden" value="${qnavo.BOARD_NUM}" name="BOARD_NUM">					
 										<input type="hidden" value="${cPage}" name="cPage">
 										<input type="button" value="목록" onclick="list_go(this.form)" class="in_btn"/>									
 									</div>

@@ -85,7 +85,19 @@ fieldset {
     font-weight: bold; /* 글꼴 두껍게 설정 */
 }
 
+#review{
+	width: 225px;
+	padding: 7px;
+	margin-left : 30px;
+	border: 1px solid #1b5ac2;
+	outline: none;
+	float: left;
+}
 
+#cate{
+line-height: 2rem;
+  padding: 0.2em 0.4em;
+}
 
 
 </style> 
@@ -120,6 +132,35 @@ fieldset {
 		f.submit();
 	}
 </script>
+<script type="text/javascript">
+function review_cate() {
+
+    
+   $.ajax({
+	   url : "/review_combo.do?",
+	   method: "post",
+	   dataType: "text",
+	   success: function(data) {
+		   console.log(data)
+		   
+		    // "prod" 콤보 박스 엘리먼트 가져오기
+		   var reviewcombo = document.getElementById("review");
+
+		    // 받은 HTML을 "prod" 콤보 박스에 추가
+		    reviewcombo.innerHTML = data;
+	   },
+	   error:function() {
+		   alert("읽기실패");
+	   }
+   });
+}
+// Low 카테고리 변경 시에도 물품 리스트 업데이트
+document.getElementById("review").addEventListener("change", review_cate)
+ //선택한물품의 번호
+    var selectedOption = reviewcombo.options[reviewcombo.selectedIndex];
+    var reviewNum = selectedOption.value; 
+    console.log(reviewNum);
+</script>
 </head>
 <body>
 	<div id="mydiv"> 
@@ -142,6 +183,16 @@ fieldset {
 										<input type="radio" name="RE_TYPE" value="칭찬합시다" />
 										<span>칭찬합시다</span>	
 									</td>
+							</tr>
+							<tr align="center">
+								<td bgcolor="#1b5ac2" class="w_font">리뷰물품</td>
+								<td>
+									<label id="cate" for=review></label>
+										<select id="review" onchange="review_cate()">
+											<option value="0"> ====리뷰쓰기==== </option>			
+											<option value="1"> ====리뷰쓰기2==== </option>			
+    								</select>
+								</td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">작성자</td>

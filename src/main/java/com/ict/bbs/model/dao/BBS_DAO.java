@@ -17,6 +17,7 @@ import com.ict.bbs.model.vo.NO_BBS_VO;
 import com.ict.bbs.model.vo.QA_BBS_VO;
 import com.ict.bbs.model.vo.REP_BBS_VO;
 import com.ict.bbs.model.vo.RE_BBS_VO;
+import com.ict.bbs.model.vo.Review_comVO;
 import com.ict.shopping.model.vo.ProductVO;
 
 @Repository
@@ -345,4 +346,19 @@ public class BBS_DAO {
 		combo.put("low", low);
 		return sqlSessionTemplate.selectList("bbs.productcombo", combo);
 	}
+	
+	
+	//물품번호
+	public String getProdName(String p_num) {
+		return sqlSessionTemplate.selectOne("bbs.productname", p_num);
+	}
+	
+	//리뷰리스트
+	public List<Review_comVO> getReviewcomList(String sessionid) {
+		return sqlSessionTemplate.selectList("bbs.reviewcomlist",sessionid);
+	}
+	public List<Review_comVO> getReviewprodList(List<Review_comVO> recom) {
+		return sqlSessionTemplate.selectList("bbs.reviewprodlist", recom);
+	}
+	
 }

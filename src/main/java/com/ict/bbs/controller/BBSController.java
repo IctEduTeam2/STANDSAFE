@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -30,7 +31,7 @@ import com.ict.bbs.model.vo.NO_BBS_VO;
 import com.ict.bbs.model.vo.QA_BBS_VO;
 import com.ict.bbs.model.vo.REP_BBS_VO;
 import com.ict.bbs.model.vo.RE_BBS_VO;
-
+import com.ict.bbs.model.vo.Review_comVO;
 import com.ict.common.Paging;
 import com.ict.shopping.model.vo.ProductVO;
 import com.ict.user.model.vo.UserVO;
@@ -452,7 +453,8 @@ public class BBSController {
 		
 		String qna_num = request.getParameter("BOARD_NUM");
 		String cPage = request.getParameter("cPage");
-				
+
+
 		//onelist
 		QA_BBS_VO qnavo = bbsService.getQnaOneList(qna_num);
 		
@@ -465,6 +467,13 @@ public class BBSController {
 		System.out.println("게시물번호로 조회하여 갖고온 멤버번호:" + dbnum);
 		String lock = qnavo.getBOARD_LOCK();
 		System.out.println("비밀글여부 확인 1은 비밀, 0은 일반 : " + lock);
+		String p_num = qnavo.getPROD_NUM();
+		System.out.println("물품번호는 : " + p_num);
+		
+		String prod_name = bbsService.getProdName(p_num);
+		System.out.println("물품이름은" + prod_name);
+		qnavo.setPROD_NAME(prod_name);
+		
 
 			if(lock.equals("1") && !dbnum.equals(c_num)) {
 				session.setAttribute("qaonelist", "not");
@@ -633,9 +642,9 @@ public class BBSController {
 			String lock =  request.getParameter("secret_flag");
 			System.out.println("비밀글여부  : " + lock);  //1이 비밀글 0은 일반
 			
-			
-			
-			
+			String prod_num = request.getParameter("prod_num");
+			System.out.println("물품번호" + prod_num);
+			qnavo.setPROD_NUM(prod_num);
 			
 			//[비밀] 을 붙일 제목가져오기
 			String sub = qnavo.getBOARD_SUBJECT();
@@ -940,6 +949,13 @@ public class BBSController {
 		ModelAndView mv = new ModelAndView("bbs/qa_update");
 		
 		QA_BBS_VO qnavo = bbsService.getQnaOneList(BOARD_NUM);
+		String p_num = qnavo.getPROD_NUM();
+		System.out.println("물품번호는 : " + p_num);
+		
+		String prod_name = bbsService.getProdName(p_num);
+		System.out.println("물품이름은" + prod_name);
+		qnavo.setPROD_NAME(prod_name);
+		
 		mv.addObject("qnavo", qnavo);
 		return mv;
 		
@@ -999,7 +1015,6 @@ public class BBSController {
 			String num = (String) request.getSession().getAttribute("id");
 			System.out.println("닉네임의 번호:" + num);
 			
-		
 			qnavo.setCLIENT_NUM(num);
 		
 			//라디오체크박스 값을 맴퍼에 보내기위해 가지고오기
@@ -1007,6 +1022,16 @@ public class BBSController {
 			
 			//vo에 갖고온값 저장.
 			qnavo.setBOARD_TYPE(type);
+			
+			String p_num = request.getParameter("PROD_NUM");
+			System.out.println("수정하기의 물품번호:" + p_num);
+			if(p_num.equals("")) {
+				qnavo.setPROD_NUM(null);
+			}else {
+				qnavo.setPROD_NUM(p_num);
+			}
+			
+			
 			
 			//비밀글 체크시 제목앞에 붙이기.
 			String lock =  request.getParameter("secret_flag");
@@ -1737,8 +1762,6 @@ public class BBSController {
 			
 		System.out.println("lowCategory1:" +lowCategory); //카테고리 넘버 가져와진다. 
 		StringBuilder html = new StringBuilder();
-		ProductVO prodvo = new ProductVO();
-		
 		
 		if(lowCategory.equals("1")) {
 			String high1= "1";
@@ -1900,12 +1923,54 @@ public class BBSController {
 			
 			return html;
 			
+		}else if (lowCategory.equals("0")) {
+			//String msg = "카테고리선택하세요.";
+			html.append("<select>");
+			html.append("<option>").append("카테고리선택하세요").append("</option>");
+			return html;
 		}
-
 		
 		return null;
 	}
 	
 	
+	@ResponseBody
+	@RequestMapping(value="/review_combo.do", produces="text/xml; charset=utf-8")
+	public StringBuilder getReviewcomlist(
+			HttpServletRequest request,
+			HttpSession session	){
+		StringBuilder html = new StringBuilder();
+		
+		String sessionid = (String) session.getAttribute("id");
+		
+		System.out.println("로그인한 아이디는(리뷰콤보): " + sessionid);
+		
+		
+		List<Review_comVO> recom = bbsService.getReviewcomList(sessionid);
+		System.out.println("리뷰콤보로 갖고온 리스트:" + recom);
+		//날짜가 1주일이내인것만 나오도록 함. 
+		//주문번호 형식으로 해당 로그인한 번호중 구매확정3인애들만 나온다. 
+		//deli_t에서 st 구매확정3인 애들중에, pay_oknum가 배송테이블과 결제테이블과 맞는애들의 pay_t의 카트번호 갖고옴
+		
+
+		//cart_num 찾아서 그걸로 cart_t 의 prod_num와 prod_t 의 prod_num 을 찾아서
+		List<Review_comVO> prod_num = bbsService.getReviewprodList(recom);
+		
+		System.out.println("물품번호 배열은?:" + prod_num);
+		for (Review_comVO k : prod_num) {
+			System.out.println("장바구니 번호"+ k.getCart_num());
+			System.out.println("물품번호:" + k.getProd_num());
+		}
+		
+		
+		//prod_num에 맞는 이름 찾기 .
+		
+		return html;
+	}
+	
+	
+	
 	
 }//마지막괄호
+
+

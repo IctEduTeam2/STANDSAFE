@@ -153,36 +153,36 @@ line-height: 2rem;
 	}
 </script>
 <script type="text/javascript">
-	function prod_combo() {
-		
-		location.href="/product_combo.do"
-	}
-</script>
-<script type="text/javascript">
 function categoty() {
-	 var highCategory = document.getElementById("High").value;
+		var highCategory = document.getElementById("High").value;
 	    var lowCategory = document.getElementById("Low");
-
+	    var prodCategory = document.getElementById("Prod");
 	    // 기존 Low 카테고리 옵션 제거
 	    lowCategory.innerHTML = "";
 
 	    // 선택한 High 카테고리에 따라 Low 카테고리 옵션 추가
 	    if (highCategory === "1") {
+	    	lowCategory.innerHTML += '<option value="0"> ====소분류==== </option>';
 	        lowCategory.innerHTML += '<option value="1"> 소화기 </option>';
 	        lowCategory.innerHTML += '<option value="2"> 화재 감지 | 대피 </option>';
 	        // 다른 옵션들도 추가
-	    } else if (highCategory === "2") {        
+	    } else if (highCategory === "2") {   
+	    	lowCategory.innerHTML += '<option value="0"> ====소분류==== </option>';
 	        lowCategory.innerHTML += '<option value="3"> 구급함 | 제세동기 </option>';
 	        lowCategory.innerHTML += '<option value="4"> 재난안전용품 </option>';
 	        lowCategory.innerHTML += '<option value="5"> 방역안전용품 </option>';
 	        // 다른 옵션들도 추가
 	    } else if (highCategory === "3") {
+	    	lowCategory.innerHTML += '<option value="0"> ====소분류==== </option>';
 	        lowCategory.innerHTML += '<option value="6"> 마스크 </option>';
 	        lowCategory.innerHTML += '<option value="7"> 위생장갑 </option>';
 	        lowCategory.innerHTML += '<option value="8"> 통조림 | 비상식량 </option>';
 	        // 다른 옵션들도 추가
 	    }else if(highCategory === "0"){
-	    	lowCategory.innerHTML += '<option value="0"> ====소분류==== </option>';
+	    	// High 카테고리가 0인 경우 "카테고리를 선택하세요" 옵션만 추가	
+	        lowCategory.innerHTML += '<option value="0">카테고리를 선택하세요</option>';
+	        prodCategory.innerHTML = "";
+	      
 	    }
 	}
 
@@ -220,6 +220,21 @@ document.getElementById("Low").addEventListener("change", updateProductList)
     var selectedOption = prodCategory.options[prodCategory.selectedIndex];
     var prodNum = selectedOption.value; 
     console.log(prodNum);
+</script>
+<script type="text/javascript">
+
+function prod_combo() {
+	var lowCategory = document.getElementById("Low").value;
+    var prodCategory = document.getElementById("Prod");
+
+    // Low 카테고리 초기화
+    prodCategory.innerHTML = "";
+
+    if (lowCategory === "0" ) {
+        // High 카테고리가 0인 경우 "카테고리를 선택하세요" 옵션만 추가
+        prodCategory.innerHTML += '<option value="">카테고리를 선택하세요</option>';
+    } 
+}
 </script>
 </head>
 <body>
@@ -264,7 +279,7 @@ document.getElementById("Low").addEventListener("change", updateProductList)
     									<option value="0"> ====소분류==== </option>
     								</select>
     								<label id="cate3" for="Prod"></label>
-    								<select id="Prod" name="prod_name"> 
+    								<select id="Prod" name="prod_num"> 
     								<!--동적으로 자동으로 붙여질곳  -->
     								</select>
 								</td>
@@ -272,7 +287,7 @@ document.getElementById("Low").addEventListener("change", updateProductList)
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">작성자</td>
 								<!--이건 로그인한 사람이 자동으로 뜨게하기.  -->
-								<td><input type="text" name="BOARD_WRITER" size="20" autocomplete='off'value="${nick}"/></td>
+								<td><input type="text" name="BOARD_WRITER" size="20" autocomplete='off'value="${nick}" disabled/></td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font" >제목</td>

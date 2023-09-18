@@ -50,6 +50,7 @@ fieldset {
 
 #noti{color: red; font-size: 14px; text-align: left; padding-left: 30px}
 
+
 </style> 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <script type="text/javascript">
@@ -96,7 +97,7 @@ fieldset {
 										<input type="radio" name="REPORT_TYPE" value="건의" />
 										<span>건의</span>	
 									</td>
-							</tr>
+							</tr>				
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">작성자</td>
 								<!--이건 로그인한 사람이 자동으로 뜨게하기.  -->

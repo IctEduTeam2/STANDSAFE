@@ -55,14 +55,14 @@
 
 /* 위는 기본 게시판의 테이블 형식css */
 
-table td:nth-child(3) {
+table td:nth-child(2) {
   text-align: left;
   padding-left: 70px;
 }
 
 
 /*나머지 컬럼들을 가운데 정렬*/
-table td:not(:nth-child(3)) {
+table td:not(:nth-child(2)) {
   text-align: center;
 }  
 

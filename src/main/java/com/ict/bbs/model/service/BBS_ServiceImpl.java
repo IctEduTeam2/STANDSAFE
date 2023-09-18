@@ -12,6 +12,7 @@ import com.ict.bbs.model.vo.NO_BBS_VO;
 import com.ict.bbs.model.vo.QA_BBS_VO;
 import com.ict.bbs.model.vo.REP_BBS_VO;
 import com.ict.bbs.model.vo.RE_BBS_VO;
+import com.ict.bbs.model.vo.Review_comVO;
 import com.ict.shopping.model.vo.ProductVO;
 
 
@@ -274,4 +275,20 @@ public class BBS_ServiceImpl implements BBS_Service{
 	}
 	
 	
+	//물품찾기
+	@Override
+	public String getProdName(String p_num) {
+		return bbsDAO.getProdName(p_num);
+	}
+	
+	//리뷰리스트
+	@Override
+	public List<Review_comVO> getReviewcomList(String sessionid) {
+		return bbsDAO.getReviewcomList(sessionid);
+	}
+	
+	@Override
+	public List<Review_comVO> getReviewprodList(List<Review_comVO> recom) {
+		return bbsDAO.getReviewprodList(recom);
+	}
 }

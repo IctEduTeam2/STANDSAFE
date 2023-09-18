@@ -8,6 +8,7 @@ import com.ict.bbs.model.vo.NO_BBS_VO;
 import com.ict.bbs.model.vo.QA_BBS_VO;
 import com.ict.bbs.model.vo.REP_BBS_VO;
 import com.ict.bbs.model.vo.RE_BBS_VO;
+import com.ict.bbs.model.vo.Review_comVO;
 import com.ict.shopping.model.vo.ProductVO;
 
 
@@ -141,4 +142,12 @@ public interface BBS_Service {
 	
 	//콤보
 	public List<ProductVO> getProductList(String high, String low);
+	
+	
+	//물품번호 찾기
+	public String getProdName(String p_num);
+	
+	//리뷰리스트 찾기
+	public List<Review_comVO> getReviewcomList(String sessionid);
+	public List<Review_comVO> getReviewprodList(List<Review_comVO> recom);
 }
