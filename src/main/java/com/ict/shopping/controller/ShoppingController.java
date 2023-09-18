@@ -445,7 +445,8 @@ public class ShoppingController {
 	public ModelAndView getOrderPoint(int point, String take_peo, @RequestParam("address") String address,
 			@RequestParam("paytype") String paytype, String detailAddress2, String phone, String memo, String order_num,
 			String client_num, String prod_num, @RequestParam("price") int price, String amount, HttpSession session) {
-		ModelAndView mv = new ModelAndView("redirect:/");
+
+		ModelAndView mv = new ModelAndView("redirect:/orderOneListform.do?pay_oknum=" + order_num + "&client_num=" + client_num);
 		BasketVO bvo2 = new BasketVO();
 		bvo2.setCart_price(Integer.toString(price));
 		bvo2.setProd_num(prod_num);
@@ -490,6 +491,7 @@ public class ShoppingController {
 	// String phone, String memo, String order_num, String prod_num, String
 	// client_num
 	public ModelAndView getOrderCard(@RequestParam Map<String, Object> map) {
+		ModelAndView mv = new ModelAndView("redirect:/orderOneListform.do?pay_oknum=" + (String) (map.get("pay_oknum")) + "&client_num=" + (String) (map.get("client_num")));
 		BasketVO bvo2 = new BasketVO();
 		bvo2.setCart_price((String) (map.get("cart_price")));
 		bvo2.setProd_num((String) (map.get("prod_num")));
@@ -520,7 +522,7 @@ public class ShoppingController {
 		shoppingService.getPayInsert(pvo);
 		shoppingService.getDeliveryAdd((String)map.get("pay_oknum"));
 		// 카트키 가져오기
-		return null;
+		return mv;
 	}
 
 	// 품목별 상품 리스트
