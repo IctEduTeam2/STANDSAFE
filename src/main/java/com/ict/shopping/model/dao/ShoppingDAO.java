@@ -117,5 +117,10 @@ public class ShoppingDAO {
 	// 위시리스트
 	public List<WishVO> getWishList(String client_num) {
 		return sqlSessionTemplate.selectList("shopping.wishlist", client_num);
+	}	
+	
+	// 주문리스트
+	public List<PayVO> getPayList(String client_num) {
+		return sqlSessionTemplate.selectList("shopping.paylist", client_num);
 	}
 }

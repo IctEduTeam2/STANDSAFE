@@ -118,4 +118,9 @@ public class ShoppingService {
 	public List<WishVO> getWishList(String client_num) {
 		return shoppingDAO.getWishList(client_num);
 	}
+	
+	// 주문리스트
+	public List<PayVO> getPayList(String client_num) {
+		return shoppingDAO.getPayList(client_num);
+	}
 }

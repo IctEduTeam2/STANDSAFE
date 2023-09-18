@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -169,6 +171,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 			<div
 				style="width: 60%; margin: auto; height: auto; margin-top: 60px;">
 				<div class="baskets">
+				
 					<!-- 제품 한개-->
 					<div class="basket_cont">
 						<img class="basket_img"
@@ -187,97 +190,6 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 							<input type="hidden" value="주문번호" name="주문번호">
 							<input type="button" value="상세보기" class="order_detail"
 								onclick="orderOne_go(this.form)"></form>
-						</div>
-					</div>
-					<!-- 제품한개 끝태그 -->
-					<!-- 제품 한개-->
-					<div class="basket_cont">
-						<img class="basket_img"
-							src="resources/images/products/product1.jpg">
-						<div style="width: 60%; float: left; margin-left: 10px;">
-							<a href=""
-								style="font-size: 18px; margin-left: 10px; font-weight: 600;">
-								<p
-									style="color: gray; font-size: 16px; opacity: 0.7; margin-bottom: 10px;">2023.03.02
-									- 취소완료</p> <b style="font-size: 16px;">주문번호:</b> <b
-								style="font-size: 14px">FENMBIEJS302</b>
-							</a> <br> <b style="font-size: 14px;">1,000,000원</b>
-						</div>
-						<div style="float: right; margin-top: 30px;">
-							<input type="button" value="상세보기" class="order_detail">
-						</div>
-					</div>
-					<!-- 제품한개 끝태그 -->
-					<!-- 제품 한개-->
-					<div class="basket_cont">
-						<img class="basket_img"
-							src="resources/images/products/product1.jpg">
-						<div style="width: 60%; float: left; margin-left: 10px;">
-							<a href=""
-								style="font-size: 18px; margin-left: 10px; font-weight: 600;">
-								<p
-									style="color: gray; font-size: 16px; opacity: 0.7; margin-bottom: 10px;">2023.03.02
-									- 취소완료</p> <b style="font-size: 16px;">주문번호:</b> <b
-								style="font-size: 14px">FENMBIEJS302</b>
-							</a> <br> <b style="font-size: 14px;">1,000,000원</b>
-						</div>
-						<div style="float: right; margin-top: 30px;">
-							<input type="button" value="상세보기" class="order_detail">
-						</div>
-					</div>
-					<!-- 제품한개 끝태그 -->
-					<!-- 제품 한개-->
-					<div class="basket_cont">
-						<img class="basket_img"
-							src="resources/images/products/product1.jpg">
-						<div style="width: 60%; float: left; margin-left: 10px;">
-							<a href=""
-								style="font-size: 18px; margin-left: 10px; font-weight: 600;">
-								<p
-									style="color: gray; font-size: 16px; opacity: 0.7; margin-bottom: 10px;">2023.03.02
-									- 취소완료</p> <b style="font-size: 16px;">주문번호:</b> <b
-								style="font-size: 14px">FENMBIEJS302</b>
-							</a> <br> <b style="font-size: 14px;">1,000,000원</b>
-						</div>
-						<div style="float: right; margin-top: 30px;">
-							<input type="button" value="상세보기" class="order_detail">
-						</div>
-					</div>
-					<!-- 제품한개 끝태그 -->
-					<!-- 제품 한개-->
-					<div class="basket_cont">
-						<img class="basket_img"
-							src="resources/images/products/product1.jpg">
-						<div style="width: 60%; float: left; margin-left: 10px;">
-							<a href=""
-								style="font-size: 18px; margin-left: 10px; font-weight: 600;">
-								<p
-									style="color: gray; font-size: 16px; opacity: 0.7; margin-bottom: 10px;">2023.03.02
-									- 취소완료</p> <b style="font-size: 16px;">주문번호:</b> <b
-								style="font-size: 14px">FENMBIEJS302</b>
-							</a> <br> <b style="font-size: 14px;">1,000,000원</b>
-						</div>
-						<div style="float: right; margin-top: 30px;">
-							<input type="button" value="상세보기" class="order_detail">
-						</div>
-					</div>
-					<!-- 제품한개 끝태그 -->
-					<!-- 제품 한개-->
-					<div class="basket_cont">
-						<img class="basket_img"
-							src="resources/images/products/product1.jpg">
-						<div style="width: 60%; float: left; margin-left: 10px;">
-							<a href=""
-								style="font-size: 18px; margin-left: 10px; font-weight: 600;">
-								
-								<p
-									style="color: gray; font-size: 16px; opacity: 0.7; margin-bottom: 10px;">2023.03.02
-									- 취소완료</p> <b style="font-size: 16px;">주문번호:</b> <b
-								style="font-size: 14px">FENMBIEJS302</b>
-							</a> <br> <b style="font-size: 14px;">1,000,000원</b>
-						</div>
-						<div style="float: right; margin-top: 30px;">
-							<input type="button" value="상세보기" class="order_detail">
 						</div>
 					</div>
 					<!-- 제품한개 끝태그 -->

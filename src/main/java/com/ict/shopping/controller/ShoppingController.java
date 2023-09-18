@@ -462,6 +462,7 @@ public class ShoppingController {
 		pvo.setPay_type(paytype);
 		pvo.setPay_oknum(order_num);
 		pvo.setCart_num(key);
+		pvo.setPay_money(price);
 		pvo.setClient_num(client_num);
 		shoppingService.getPayInsert(pvo);
 		PointVO pointVO = new PointVO();
@@ -538,6 +539,16 @@ public class ShoppingController {
 		mv.addObject("prod_high", prodlist.get(0).getProd_high());
 		mv.addObject("prod_low", prodlist.get(0).getProd_low());
 		return mv;
+	}
+	
+	
+	// 주문조회 리스트
+	@GetMapping("/orderlistform.do")
+	public ModelAndView getOrderListForm(@RequestParam("client_num")String client_num) {
+		ModelAndView mv = new ModelAndView("shopping/orderlist");
+		List<PayVO> paylist = shoppingService.getPayList(client_num);
+		mv.addObject(paylist);
+		return new ModelAndView("shopping/orderlist");
 	}
 	
 }
