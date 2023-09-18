@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ict.shopping.model.vo.BasketVO;
+import com.ict.shopping.model.vo.DeliveryVO;
 import com.ict.shopping.model.vo.PayVO;
 import com.ict.shopping.model.vo.PopUpVO;
 import com.ict.shopping.model.vo.ProductVO;
@@ -132,5 +133,15 @@ public class ShoppingDAO {
 	// 장바구니 조회
 	public BasketVO getCartInfo(String cart_num) {
 		return sqlSessionTemplate.selectOne("shopping.cartinfo", cart_num);
+	}	
+	
+	// 배송 추가
+	public void getDeliveryAdd(String pay_oknum) {
+		sqlSessionTemplate.insert("shopping.deliveryadd", pay_oknum);
+	}	
+	
+	// 배송 조회
+	public DeliveryVO getDeliverySelect(String pay_oknum) {
+		return sqlSessionTemplate.selectOne("shopping.deliveryselect", pay_oknum);
 	}
 }

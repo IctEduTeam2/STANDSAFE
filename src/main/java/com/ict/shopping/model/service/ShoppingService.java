@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ict.shopping.model.dao.ShoppingDAO;
 import com.ict.shopping.model.vo.BasketVO;
+import com.ict.shopping.model.vo.DeliveryVO;
 import com.ict.shopping.model.vo.PayVO;
 import com.ict.shopping.model.vo.PopUpVO;
 import com.ict.shopping.model.vo.ProductVO;
@@ -132,6 +133,16 @@ public class ShoppingService {
 	// 장바구니 조회
 	public BasketVO getCartInfo(String cart_num) {
 		return shoppingDAO.getCartInfo(cart_num);
+	}
+	
+	// 배송 추가
+	public void getDeliveryAdd(String pay_oknum) {
+		shoppingDAO.getDeliveryAdd(pay_oknum);
+	}
+
+	// 배송 조회
+	public DeliveryVO getDeliverySelect(String pay_oknum) {
+		return shoppingDAO.getDeliverySelect(pay_oknum);
 	}
 	
 }

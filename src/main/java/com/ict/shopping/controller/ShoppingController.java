@@ -26,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ict.shopping.model.service.ShoppingService;
 import com.ict.shopping.model.vo.BasketVO;
+import com.ict.shopping.model.vo.DeliveryVO;
 import com.ict.shopping.model.vo.PayVO;
 import com.ict.shopping.model.vo.PopUpVO;
 import com.ict.shopping.model.vo.ProductVO;
@@ -470,6 +471,8 @@ public class ShoppingController {
 		pointVO.setPOINT_REM(point - price);
 		pointVO.setCLIENT_NUM(Integer.parseInt(client_num));
 		shoppingService.getPointSub(pointVO);
+		
+		shoppingService.getDeliveryAdd(order_num);
 		session.removeAttribute("POINT_REM");
 		session.setAttribute("POINT_REM", pointService.getPointsByUserId(Integer.parseInt(client_num)));
 		return mv;
@@ -497,11 +500,13 @@ public class ShoppingController {
 		pvo.setTake_phone((String) (map.get("take_phone")));
 		pvo.setTake_memo((String) (map.get("take_memo")));
 		pvo.setPay_type((String) (map.get("pay_type")));
+		pvo.setPay_money(Integer.parseInt((String)(map.get("cart_price"))));
 		pvo.setPay_oknum((String) (map.get("pay_oknum")));
 		pvo.setPaymentKey((String) (map.get("paymentKey")));
 		pvo.setCart_num(key);
 		pvo.setClient_num((String) (map.get("client_num")));
 		shoppingService.getPayInsert(pvo);
+		shoppingService.getDeliveryAdd((String)map.get("pay_oknum"));
 		// 카트키 가져오기
 		return null;
 	}
@@ -566,7 +571,8 @@ public class ShoppingController {
 	    	ProductVO prodInfo = shoppingService.getProductOne(basket.getProd_num());
 	    	prodList.add(prodInfo);
 	    }
-	    
+	    DeliveryVO deliveryvo = shoppingService.getDeliverySelect(pay_oknum);
+	    mv.addObject("deliveryvo", deliveryvo);
 	    mv.addObject("paylist", paylist);
 	    mv.addObject("cartList", cartList);
 	    mv.addObject("prodList", prodList);

@@ -34,6 +34,7 @@
 		<typeAlias type="com.ict.shopping.model.vo.BasketVO" alias="basketVO" /><!-- 장바구니 -->
 		<typeAlias type="com.ict.shopping.model.vo.WishVO" alias="wishVO" /><!-- 위시리스트 -->
 		<typeAlias type="com.ict.shopping.model.vo.PayVO" alias="payVO" /><!-- 결제 -->
+		<typeAlias type="com.ict.shopping.model.vo.DeliveryVO" alias="deliveryVO" /><!-- 배송 -->
 		
 		<typeAlias type="com.ict.admin.model.vo.ProductVO" alias="provo"/>
 		<typeAlias type="com.ict.admin.model.vo.ExchangeVO" alias="evo"/>

@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -127,8 +129,25 @@ td {
 					<div style="width: 100%; float: left;">
 						<p>
 							<b style="font-size: 18px;">주문내역 - </b> <b
-								style="font-size: 12px;">AASFSB123123F (구매완료)</b>
+								style="font-size: 12px;">${paylist[0].pay_oknum } 
+        <c:choose>
+            <c:when test="${deliveryvo.deli_st == 0}">
+                (배송준비중)
+            </c:when>
+            <c:when test="${deliveryvo.deli_st == 1}">
+                (배송중)
+            </c:when>
+            <c:when test="${deliveryvo.deli_st == 2}">
+                (배송완료)
 						<button style="float: right; margin: 0">구매확정</button>
+            </c:when>
+            <c:when test="${deliveryvo.deli_st == 3}">
+                (구매확정)
+            </c:when>
+            <c:otherwise>
+                (알 수 없는 상태- 관리자에게 문의하세요.)
+            </c:otherwise>
+        </c:choose></b>
 						</p>
 					</div>
 					<!--주문내역-->
