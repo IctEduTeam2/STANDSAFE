@@ -102,7 +102,7 @@ td {
 		location.href = "/orderlistform.do?client_num=" + ${id};
 	}
 	function Order1(st) {
-		if(st==0) {
+		if(st==0 || st == 1) {
 	    	if (confirm("주문을 취소하시겠습니까?")) {
 	    	var pb_content = prompt("취소 사유를 작성해주세요.");
 	    	if(pb_content == null || pb_content.trim() == "") {
@@ -112,7 +112,7 @@ td {
 	    		location.href = "/Order.do?client_num=${id}&pay_oknum=${paylist[0].pay_oknum}&st=" + st + "&pb_content=" + pb_content;
 	    	}
 	    }
-		} else if(st==1) {
+		} else if(st==2) {
 			if (confirm("구매확정 하시겠습니까?\n구매확정 이후 교환 및 환불이 불가능합니다.")) {
 				location.href = "/Order.do?client_num=${id}&pay_oknum=${paylist[0].pay_oknum}&st=" + st + "&pb_content=구매확정";
 		    	}
@@ -153,14 +153,21 @@ td {
             </c:when>
             <c:when test="${deliveryvo.deli_st == 0}">
                 (배송준비중)
+                		<c:choose>
+            				<c:when test="${{paylist[0].pay_type == 1}">
+						<button style="float: right; margin: 0" onclick="Order1(1)">결제취소</button>
+             				</c:when>
+            				<c:when test="${{paylist[0].pay_type == 0}">
 						<button style="float: right; margin: 0" onclick="Order1(0)">결제취소</button>
+             				</c:when>
+                		</c:choose>
             </c:when>
             <c:when test="${deliveryvo.deli_st == 1}">
                 (배송중)
             </c:when>
             <c:when test="${deliveryvo.deli_st == 2}">
                 (배송완료)
-						<button style="float: right; margin: 0" onclick="Order1(1)">구매확정</button>
+						<button style="float: right; margin: 0" onclick="Order1(2)">구매확정</button>
             </c:when>
             <c:when test="${deliveryvo.deli_st == 3}">
                 (구매확정)

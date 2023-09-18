@@ -160,4 +160,20 @@ public class ShoppingService {
 	public void getPayBackInsert(PayBackVO pbvo) {
 		shoppingDAO.getPayBackInsert(pbvo);
 	}
+	
+	// 결제취소 후 상품재고량 증가
+	public void getProductPlus(String pay_oknum) {
+		shoppingDAO.getProductPlus(pay_oknum);
+	}
+
+	//결제취소 후 포인트 증가
+	public void getPointPlus(PointVO pointvo) {
+		shoppingDAO.getPointPlus(pointvo);
+	}
+	
+	// 주문 조회
+	public List<PayVO> getPaySelect(PayVO pvo) {
+		return shoppingDAO.getPaySelect(pvo);
+	}
+
 }

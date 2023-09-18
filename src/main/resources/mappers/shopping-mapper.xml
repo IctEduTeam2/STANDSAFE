@@ -179,6 +179,14 @@
 		#{CLIENT_NUM})
 	</insert>
 	
+	<!-- 포인트 증가 -->
+	<insert id="pointplus" parameterType="pVO">
+		INSERT INTO POINT_T
+		(POINT_SAVE, POINT_REM, CLIENT_NUM)
+		VALUES (#{POINT_SAVE}, #{POINT_REM},
+		#{CLIENT_NUM})
+	</insert>
+	
 	<!-- 재고량 차감 -->
 <update id="productsub" parameterType="basketVO">
     UPDATE PRODUCT_T
@@ -212,7 +220,16 @@
 		(client_num, pb_content, pb_dp, pb_st, pay_oknum)
 		VALUES (#{client_num}, #{pb_content}, #{pb_dp}, #{pb_st}, #{pay_oknum})
 	</insert>
-
+	
+	<!-- 결제 취소 후 상품재고량 증가 -->
+	<update id="productplus" parameterType="String">
+	     UPDATE PRODUCT_T AS P
+    INNER JOIN CART_T AS C ON P.prod_num = C.prod_num
+    INNER JOIN PAY_T AS PAY ON C.cart_num = PAY.cart_num
+    SET P.prod_amount = P.prod_amount + C.cart_amount
+    WHERE PAY.pay_oknum = #{pay_oknum}
+	</update>
+	
 	<!-- 주문조회 리스트 -->
 	<select id="paylist" resultType="payVO" parameterType="String">
 		SELECT
@@ -238,6 +255,14 @@
 		GROUP BY PAY.pay_oknum
 		ORDER BY PAY.pay_ok DESC
 	</select>
+	
+	<!-- 주문조회 리스트 -->
+	<select id="payselect" resultType="payVO" parameterType="payVO">
+		SELECT *
+		FROM PAY_T 
+		WHERE client_num = #{client_num} AND pay_oknum = #{pay_oknum}
+	</select>
+	
 
 	<!-- 주문상세 -->
 	<select id="orderlist" resultType="payVO" parameterType="String">

@@ -160,4 +160,19 @@ public class ShoppingDAO {
 	public void getPayBackInsert(PayBackVO pbvo) {
 		sqlSessionTemplate.insert("shopping.paybackinsert", pbvo);
 	}
+	
+	// 결제취소 후 상품재고량 증가
+	public void getProductPlus(String pay_oknum) {
+		sqlSessionTemplate.update("shopping.productplus", pay_oknum);
+	}
+
+	//결제취소 후 포인트 증가
+	public void getPointPlus(PointVO pointvo) {
+		sqlSessionTemplate.insert("shopping.pointplus", pointvo);
+	}
+	
+	// 주문 조회
+	public List<PayVO> getPaySelect(PayVO pvo) {
+		return sqlSessionTemplate.selectList("shopping.payselect", pvo);
+	}
 }

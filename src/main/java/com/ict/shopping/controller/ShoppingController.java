@@ -77,7 +77,7 @@ public class ShoppingController {
 	// 메인화면 장바구니 담기
 	@GetMapping("/basketAdd.do")
 	public ModelAndView getBasketForm(@RequestParam("prod_num") String prod_num,
-			@RequestParam("client_num") String client_num, @RequestParam("st")String st) {
+			@RequestParam("client_num") String client_num, @RequestParam("st") String st) {
 		ModelAndView mv = new ModelAndView("redirect:/");
 		ProductVO pvo = shoppingService.getProductOne(prod_num);
 		BasketVO bvo = new BasketVO();
@@ -99,9 +99,9 @@ public class ShoppingController {
 		} catch (Exception e) { // 장바구니에 상품이 존재하지 않을때
 			shoppingService.getBasket(bvo);
 		}
-		if(st.equals("0")) {
+		if (st.equals("0")) {
 			return mv;
-		} else if(st.equals("1")){
+		} else if (st.equals("1")) {
 			return new ModelAndView("redirect:/basketform.do?client_num=" + client_num);
 		}
 		return mv;
@@ -110,8 +110,10 @@ public class ShoppingController {
 	// 상품리스트에서 장바구니 담은 후 제자리
 	@GetMapping("/basketAdd2.do")
 	public ModelAndView getBasketForm2(@RequestParam("prod_num") String prod_num,
-			@RequestParam("client_num") String client_num, @RequestParam("prod_high")String prod_high, @RequestParam("prod_low")String prod_low) {
-		ModelAndView mv = new ModelAndView("redirect:/productsform.do?prod_high=" + prod_high + "&prod_low=" + prod_low + "&sort=1");
+			@RequestParam("client_num") String client_num, @RequestParam("prod_high") String prod_high,
+			@RequestParam("prod_low") String prod_low) {
+		ModelAndView mv = new ModelAndView(
+				"redirect:/productsform.do?prod_high=" + prod_high + "&prod_low=" + prod_low + "&sort=1");
 		ProductVO pvo = shoppingService.getProductOne(prod_num);
 		BasketVO bvo = new BasketVO();
 		bvo.setProd_num(prod_num);
@@ -134,6 +136,7 @@ public class ShoppingController {
 		}
 		return mv;
 	}
+
 	// 바로구매
 	@PostMapping("/justbuy.do")
 	public ModelAndView getJustBuy(@RequestParam("prod_num") String prod_num,
@@ -447,7 +450,8 @@ public class ShoppingController {
 			@RequestParam("paytype") String paytype, String detailAddress2, String phone, String memo, String order_num,
 			String client_num, String prod_num, @RequestParam("price") int price, String amount, HttpSession session) {
 
-		ModelAndView mv = new ModelAndView("redirect:/orderOneListform.do?pay_oknum=" + order_num + "&client_num=" + client_num);
+		ModelAndView mv = new ModelAndView(
+				"redirect:/orderOneListform.do?pay_oknum=" + order_num + "&client_num=" + client_num);
 		BasketVO bvo2 = new BasketVO();
 		bvo2.setCart_price(Integer.toString(price));
 		bvo2.setProd_num(prod_num);
@@ -462,9 +466,9 @@ public class ShoppingController {
 		pvo.setTake_peo(take_peo);
 		pvo.setTake_addr(address);
 
-        String regEx = "(\\d{3})(\\d{3,4})(\\d{4})";
-        String chPhone =  phone.replaceAll(regEx, "$1-$2-$3");
-        
+		String regEx = "(\\d{3})(\\d{3,4})(\\d{4})";
+		String chPhone = phone.replaceAll(regEx, "$1-$2-$3");
+
 		pvo.setTake_phone(chPhone);
 		pvo.setTake_memo(memo);
 		pvo.setPay_type(paytype);
@@ -473,7 +477,7 @@ public class ShoppingController {
 		pvo.setPay_money(price);
 		pvo.setClient_num(client_num);
 		shoppingService.getPayInsert(pvo);
-		
+
 		PointVO pointVO = new PointVO();
 		pointVO.setPOINT_USE(price);
 		pointVO.setPOINT_REM(point - price);
@@ -492,7 +496,8 @@ public class ShoppingController {
 	// String phone, String memo, String order_num, String prod_num, String
 	// client_num
 	public ModelAndView getOrderCard(@RequestParam Map<String, Object> map) {
-		ModelAndView mv = new ModelAndView("redirect:/orderOneListform.do?pay_oknum=" + (String) (map.get("pay_oknum")) + "&client_num=" + (String) (map.get("client_num")));
+		ModelAndView mv = new ModelAndView("redirect:/orderOneListform.do?pay_oknum=" + (String) (map.get("pay_oknum"))
+				+ "&client_num=" + (String) (map.get("client_num")));
 		BasketVO bvo2 = new BasketVO();
 		bvo2.setCart_price((String) (map.get("cart_price")));
 		bvo2.setProd_num((String) (map.get("prod_num")));
@@ -507,21 +512,21 @@ public class ShoppingController {
 		pvo.setTake_peo((String) (map.get("take_peo")));
 		pvo.setTake_addr((String) (map.get("take_addr")));
 
-        String regEx = "(\\d{3})(\\d{3,4})(\\d{4})";
-        String phone = (String)map.get("take_phone");
-        String chPhone = phone.replaceAll(regEx, "$1-$2-$3");
-        
+		String regEx = "(\\d{3})(\\d{3,4})(\\d{4})";
+		String phone = (String) map.get("take_phone");
+		String chPhone = phone.replaceAll(regEx, "$1-$2-$3");
+
 		pvo.setTake_phone(chPhone);
 		pvo.setTake_memo((String) (map.get("take_memo")));
 		pvo.setPay_type((String) (map.get("pay_type")));
-		pvo.setPay_money(Integer.parseInt((String)(map.get("cart_price"))));
+		pvo.setPay_money(Integer.parseInt((String) (map.get("cart_price"))));
 		pvo.setPay_oknum((String) (map.get("pay_oknum")));
 		pvo.setPaymentKey((String) (map.get("paymentKey")));
 		pvo.setCart_num(key);
 		pvo.setClient_num((String) (map.get("client_num")));
 		shoppingService.getProductSub(bvo2);
 		shoppingService.getPayInsert(pvo);
-		shoppingService.getDeliveryAdd((String)map.get("pay_oknum"));
+		shoppingService.getDeliveryAdd((String) map.get("pay_oknum"));
 		// 카트키 가져오기
 		return mv;
 	}
@@ -558,55 +563,61 @@ public class ShoppingController {
 		mv.addObject("prod_low", prodlist.get(0).getProd_low());
 		return mv;
 	}
-	
-	
+
 	// 주문조회 리스트
 	@GetMapping("/orderlistform.do")
-	public ModelAndView getOrderListForm(@RequestParam("client_num")String client_num) {
+	public ModelAndView getOrderListForm(@RequestParam("client_num") String client_num) {
 		ModelAndView mv = new ModelAndView("shopping/orderlist");
 		List<PayVO> paylist = shoppingService.getPayList(client_num);
 		mv.addObject("paylist", paylist);
 		return mv;
 	}
-	
+
 	// 주문상세내역
 	@GetMapping("/orderOneListform.do")
-	public ModelAndView getOrderOneListForm(@RequestParam("pay_oknum")String pay_oknum, @RequestParam("client_num")String client_num) {
+	public ModelAndView getOrderOneListForm(@RequestParam("pay_oknum") String pay_oknum,
+			@RequestParam("client_num") String client_num) {
 		ModelAndView mv = new ModelAndView("shopping/order_onelist");
 		List<PayVO> paylist = shoppingService.getOrderOneList(pay_oknum);
-	    List<BasketVO> cartList = new ArrayList<>();
-	    List<ProductVO> prodList = new ArrayList<>();
-	    
-	    int sum = 0;
+		List<BasketVO> cartList = new ArrayList<>();
+		List<ProductVO> prodList = new ArrayList<>();
 
-	    for (PayVO pay : paylist) {
-	        // 각 PayVO에 있는 cart_num 값을 사용하여 CART_T 정보를 조회하고 cartList에 추가
-	    	BasketVO cartInfo = shoppingService.getCartInfo(pay.getCart_num());
-	        cartList.add(cartInfo);
-	    }
+		int sum = 0;
 
-	    for (BasketVO basket : cartList) {
-	    	ProductVO prodInfo = shoppingService.getProductOne(basket.getProd_num());
-	    	prodList.add(prodInfo);
-	        sum = sum + (Integer.parseInt(prodInfo.getProd_price()) * Integer.parseInt(basket.getCart_amount()));
-	    }
-	    
-	    DeliveryVO deliveryvo = shoppingService.getDeliverySelect(pay_oknum);
-	    mv.addObject("sum", sum);
-	    mv.addObject("deliveryvo", deliveryvo);
-	    mv.addObject("prodList", prodList);
-	    mv.addObject("paylist", paylist);
-	    mv.addObject("cartList", cartList);
-	    
+		for (PayVO pay : paylist) {
+			// 각 PayVO에 있는 cart_num 값을 사용하여 CART_T 정보를 조회하고 cartList에 추가
+			BasketVO cartInfo = shoppingService.getCartInfo(pay.getCart_num());
+			cartList.add(cartInfo);
+		}
+
+		for (BasketVO basket : cartList) {
+			ProductVO prodInfo = shoppingService.getProductOne(basket.getProd_num());
+			prodList.add(prodInfo);
+			sum = sum + (Integer.parseInt(prodInfo.getProd_price()) * Integer.parseInt(basket.getCart_amount()));
+		}
+
+		DeliveryVO deliveryvo = shoppingService.getDeliverySelect(pay_oknum);
+		mv.addObject("sum", sum);
+		mv.addObject("deliveryvo", deliveryvo);
+		mv.addObject("prodList", prodList);
+		mv.addObject("paylist", paylist);
+		mv.addObject("cartList", cartList);
+
 		return mv;
 	}
-	
+
 	@GetMapping("/Order.do")
-	public ModelAndView getOrder(@RequestParam("pay_oknum")String pay_oknum, @RequestParam("st")String st, @RequestParam("client_num")String client_num, @RequestParam("pb_content")String pb_content) {
-		ModelAndView mv = new ModelAndView("redirect:/orderOneListform.do?pay_oknum=" + pay_oknum + "&client_num=" + client_num);
-		if(st.equals("0")) {
+	public ModelAndView getOrder(@RequestParam("pay_oknum") String pay_oknum, @RequestParam("st") String st,
+			@RequestParam("client_num") String client_num, @RequestParam("pb_content") String pb_content,
+			HttpSession session) {
+		ModelAndView mv = new ModelAndView(
+				"redirect:/orderOneListform.do?pay_oknum=" + pay_oknum + "&client_num=" + client_num);
+		// 카드 취소
+		if (st.equals("0")) {
+
+		} else if (st.equals("1")) {
+			// 포인트 취소
 			shoppingService.getPayUpdateST(pay_oknum);
-			List<PayVO> paylist = shoppingService.getPayList(client_num);
 			PayBackVO pbvo = new PayBackVO();
 			pbvo.setClient_num(client_num);
 			pbvo.setPb_content(pb_content);
@@ -614,11 +625,26 @@ public class ShoppingController {
 			pbvo.setPb_st("8");
 			pbvo.setPay_oknum(pay_oknum);
 			shoppingService.getPayBackInsert(pbvo);
-			//shoppingService.getPointPlus(client_num);
-		} else if(st.equals("1")) {
-			// 구매확정시
+			shoppingService.getProductPlus(pay_oknum);
+
+			PayVO pvo = new PayVO();
+			pvo.setClient_num(client_num);
+			pvo.setPay_oknum(pay_oknum);
+
+			List<PayVO> paylist = shoppingService.getPaySelect(pvo);
+			PointVO point = new PointVO();
+			point.setCLIENT_NUM(Integer.parseInt(client_num));
+
+			point.setPOINT_REM(shoppingService.getPoint(client_num).getPOINT_REM() + paylist.get(0).getPay_money());
+			point.setPOINT_SAVE(paylist.get(0).getPay_money());
+			shoppingService.getPointPlus(point);
+			session.removeAttribute("POINT_REM");
+			session.setAttribute("POINT_REM", pointService.getPointsByUserId(Integer.parseInt(client_num)));
+		} else if(st.equals("2")) {
+			// 구매 확정시
+			
 		}
-		return null;
+		return mv;
 	}
-	
+
 }
