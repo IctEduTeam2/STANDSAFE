@@ -174,13 +174,28 @@
 
 	<!-- 주문조회 리스트 -->
 	<select id="paylist" resultType="payVO" parameterType="String">
-		SELECT
-		PAY_OKNUM,
-		SUM(PAY_MONEY) AS pay_money
-		FROM
-		PAY_T WHERE client_num = #{client_num}
-		GROUP BY
-		PAY_OKNUM;
+	SELECT
+    P.PROD_IMG,
+    PAY.pay_num,
+    PAY.take_peo,
+    PAY.take_addr,
+    PAY.take_phone,
+    PAY.take_memo,
+    PAY.pay_type,
+    PAY.pay_card,
+    DATE_FORMAT(PAY.pay_ok, '%Y-%m-%d') AS pay_ok,
+    PAY.pay_oknum,
+    PAY.pay_st,
+    PAY.cart_num,
+    PAY.client_num,
+    PAY.paymentkey,
+    PAY.pay_money
+FROM PAY_T AS PAY
+JOIN CART_T AS C ON PAY.cart_num = C.cart_num
+JOIN PRODUCT_T AS P ON C.prod_num = P.prod_num
+WHERE PAY.client_num = #{client_num}
+GROUP BY PAY.pay_oknum 
+ORDER BY PAY.pay_ok DESC
 	</select>
 </mapper>
 

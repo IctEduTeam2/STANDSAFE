@@ -1,7 +1,7 @@
 package com.ict.shopping.model.vo;
 
 public class PayVO {
-	private String pay_num, take_peo, take_addr, take_phone, take_memo, pay_type, pay_card, pay_ok, pay_oknum, pay_st, cart_num, client_num, paymentKey;
+	private String pay_num, take_peo, take_addr, take_phone, take_memo, pay_type, pay_card, pay_ok, prod_img, pay_oknum, pay_st, cart_num, client_num, paymentKey;
 	private int pay_money;
 	
 	public int getPay_money() {
@@ -14,6 +14,14 @@ public class PayVO {
 
 	public String getPay_num() {
 		return pay_num;
+	}
+
+	public String getProd_img() {
+		return prod_img;
+	}
+
+	public void setProd_img(String prod_img) {
+		this.prod_img = prod_img;
 	}
 
 	public String getPaymentKey() {

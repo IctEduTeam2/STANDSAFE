@@ -547,8 +547,11 @@ public class ShoppingController {
 	public ModelAndView getOrderListForm(@RequestParam("client_num")String client_num) {
 		ModelAndView mv = new ModelAndView("shopping/orderlist");
 		List<PayVO> paylist = shoppingService.getPayList(client_num);
-		mv.addObject(paylist);
-		return new ModelAndView("shopping/orderlist");
+		for(int i=0; i<paylist.size(); i++) {
+			System.out.println(paylist.get(i).getPay_ok());
+		}
+		mv.addObject("paylist", paylist);
+		return mv;
 	}
 	
 }

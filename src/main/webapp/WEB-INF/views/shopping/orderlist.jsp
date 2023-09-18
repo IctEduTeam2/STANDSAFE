@@ -151,6 +151,8 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 </head>
 
 <body onload="InitializeStaticMenu();">
+<script type="text/javascript">
+</script>
 	<div id="mydiv">
 		<jsp:include page="../Semantic/header.jsp"></jsp:include>
 		<section id="contents" style="border: 0px solid black;">
@@ -168,33 +170,52 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 				</ul>
 			</div>
 
+					<c:choose>
+					<c:when test="${empty paylist}">
+						<div style="float:left; margin: auto; text-align:center; border: 1px solid black; width: 100%; height: 600px; margin-top: 50px;">
+						<h1 style="text-align: center;">주문하신 내역이 없습니다.</h1>
+						</div>					
+					</c:when>
+					<c:otherwise>
 			<div
 				style="width: 60%; margin: auto; height: auto; margin-top: 60px;">
 				<div class="baskets">
-				
+					<c:forEach var="a" items="${paylist}">
 					<!-- 제품 한개-->
 					<div class="basket_cont">
 						<img class="basket_img"
-							src="resources/images/products/product1.jpg">
+							src="resources/images/products/${a.prod_img }">
 						<div style="width: 60%; float: left; margin-left: 10px;">
-							<a href=""
+							<a href="/orderOneListform.do?pay_oknum=${a.pay_oknum}"
 								style="font-size: 18px; margin-left: 10px; font-weight: 600;">
 								<p
-									style="color: gray; font-size: 16px; opacity: 0.7; margin-bottom: 10px;">2023.03.02
-									- 취소완료</p> <b style="font-size: 16px;">주문번호:</b> <b
-								style="font-size: 14px">FENMBIEJS302</b>
-							</a> <br> <b style="font-size: 14px;">1,000,000원</b>
+									style="color: gray; font-size: 16px; opacity: 0.7; margin-bottom: 10px;">${a.pay_ok }
+									- <c:choose>
+										<c:when test="${a.pay_st == '0'}">
+											결제완료
+										</c:when>
+										<c:otherwise>
+											결제취소
+										</c:otherwise>
+									</c:choose>
+									</p> <b style="font-size: 16px;">주문번호:</b> <b
+								style="font-size: 14px">${a.pay_oknum }</b>
+							</a> <br> <b style="font-size: 14px;"><fmt:formatNumber value="${a.pay_money}" type="number"
+									pattern="#,### 원" /></b>
 						</div>
 						<div style="float: right; margin-top: 30px;">
 						<form>
-							<input type="hidden" value="주문번호" name="주문번호">
+							<input type="hidden" value="${a.pay_oknum }" name="pay_oknum">
 							<input type="button" value="상세보기" class="order_detail"
 								onclick="orderOne_go(this.form)"></form>
 						</div>
 					</div>
+					</c:forEach>
 					<!-- 제품한개 끝태그 -->
 				</div>
 			</div>
+					</c:otherwise>
+					</c:choose>
 		</section>
 		<jsp:include page="../Semantic/quickmenu.jsp"></jsp:include>
 		<script src="resources/js/quick.js"></script>

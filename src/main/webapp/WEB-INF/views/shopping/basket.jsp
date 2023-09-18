@@ -207,7 +207,8 @@ function deleteSelectedProducts() {
 					<c:when test="${empty bvolist }">
 						<div style="float:left; margin: auto; text-align:center; border: 1px solid black; width: 100%; height: 600px; margin-top: 50px;">
 						<h1 style="text-align: center;">장바구니에 상품이 존재하지 않습니다.</h1>
-						</div>					</c:when>
+						</div>					
+					</c:when>
 					<c:otherwise>
 			<div
 				style="width: 60%; margin: auto; height: auto; margin-top: 60px;">
@@ -234,7 +235,8 @@ function deleteSelectedProducts() {
 							<div style="width: 60%; float: left; margin-top: 80px;">
 								<a href="/productOneListform.do?prod_num=${a.prod_num }"
 									style="font-size: 18px; margin-left: 10px; font-weight: 600;">${a.prod_name}</a>
-								<br> <b style="margin-left: 10px; font-size: 14px;"><c:choose>
+								<br> <b style="margin-left: 10px; font-size: 14px;">
+									<c:choose>
 										<c:when test="${a.prod_sale == '0'}">
 											<fmt:formatNumber value="${a.prod_price}" type="number"
 												pattern="#,### 원" />
