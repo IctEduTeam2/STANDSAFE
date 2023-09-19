@@ -74,10 +74,12 @@ fieldset {
     color: #1b5ac2; /* 체크 색상 설정 */
     font-weight: bold; /* 글꼴 두껍게 설정 */
 }
-#noti{color: red; font-size: 14px; text-align: left; padding-left: 30px}
-#content{
-	width: 100%;
-	height:800px;
+#noti{color: red; font-size: 14px; text-align: left; margin-left: 70px}
+
+.mf_table td{
+	border-bottom:none;
+	padding : 10px;
+	height: 30px;
 }
 </style> 
 <script type="text/javascript">
@@ -106,23 +108,23 @@ fieldset {
 						<table class="m_table">
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">신고 유형</td>
-									<td id="type">
+									<td>
 										<span>${repvo.REPORT_TYPE}</span>	
 									</td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">작성자</td>
 								<!--이건 로그인한 사람이 자동으로 뜨게하기.  -->
-								<td id="type">${repvo.REPORT_WRITER}</td>
+								<td>${repvo.REPORT_WRITER}</td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">제목</td>
-								<td id="type">${repvo.REPORT_SUBJECT}</td>
+								<td>${repvo.REPORT_SUBJECT}</td>
 							</tr>
 							
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font" width="200px;">첨부파일</td>
-								<td id="type">
+								<td>
 									<c:choose>
 										<c:when test="${empty repvo.REPORT_FILE}">
 											<b>첨부 파일 없음</b>
@@ -138,13 +140,11 @@ fieldset {
 								<td id="noti"><p>신고 게시글은 모두 비밀글 처리 됩니다. 무방비한 작성과 타인을 향한 욕설은 관리자에 의해 강제 삭제됩니다.<p></td>
 							</tr>
 							<tr align="center">
-								<td colspan="2" style="height: 800px">
-
+								<td colspan="2" style="height: 800px; border-bottom: none; ">
 										${repvo.REPORT_CONTENT }		
-
 								</td>
 							</tr>
-							<tfoot>
+							<tfoot class="mf_table">
 								<tr align="center">
 									<td colspan="2">
 										<input type="button" value="목록" onclick="list_go(this.form)" class="in_btn"/>

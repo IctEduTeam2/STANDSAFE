@@ -29,15 +29,7 @@ public class JaenanController {
 		return new ModelAndView("jaenan/info_jaenan_jijinlive");
 	}
 	
-	@RequestMapping("/jaenan_rainlive.do")
-	public ModelAndView JaenanRainLive() {
-		return new ModelAndView("jaenan/info_rainlive");
-	}
 	
-	@RequestMapping("/jaenan_rainnotice.do")
-	public ModelAndView JaenanRainNotice() {
-		return new ModelAndView("jaenan/info_rainnotice");
-	}
 	
 	@RequestMapping("/jaenan_fire.do")
 	public ModelAndView JaenanFire() {

@@ -52,6 +52,7 @@
 	height: 30px;
 }
 
+/* 각 게시판 검색구간에 필요한것 */
 
 /* 위는 기본 게시판의 테이블 형식css */
 
@@ -69,8 +70,8 @@ table td:not(:nth-child(2)) {
 /* 테이블 제목컬럼 간격 조절 */
 
 
-#th1{ width: 10px;}
-#th2{ width: 500px; }
+#th1{ width: 50px;}
+#th2{ width: 400px; }
 #th3{ width: 100px;}
 #th4{ width: 100px;}
 #th5{ width: 100px;}
@@ -211,3 +212,93 @@ table td:not(:nth-child(2)) {
 .w_font{
 	color: white;
 }
+
+
+
+/* 검색결과창 */
+    .custom-search {
+        width: 700px;
+        margin: 20px auto;
+        background-color: white;
+        padding: 50px;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        height:250px;
+    }
+
+    .search-input select,
+    .search-input input[type="text"] {
+        margin-right: 10px;
+    }
+
+    .button-container {
+        text-align: right; /* 오른쪽 정렬로 변경 */
+        margin-top: 10px;
+    }
+
+    .button-container .search-button,
+    .button-container .search-button-alt {
+        width: 120px;
+        height: 40px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+        margin: 5px;
+    }
+    
+    .button-container .search-button {
+        background-color: #505BBD;
+    }
+
+    .button-container .search-button-alt {
+        background-color: #D3D3D3;
+    }
+
+    .search-input {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start; /* 왼쪽 정렬로 변경 */
+    }
+
+    .date-picker {
+        margin-top: 10px;
+    }
+    .searchKey{
+    margin-left: 50px; 
+    margin-right: 20px;
+    height:50px; 
+    width: 200px;
+    font-size: 16px;
+    padding: 0px;
+    }
+    #fromDate{
+    height:45px; 
+    width: 400px;
+    font-size: 16px;
+    padding: 0px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 50px; 
+    }
+    #start{
+    margin-left: 50px;
+    height:50px; 
+    width: 200px;
+    font-size: 16px;
+    padding: 0px;
+    }
+    #end{
+     height:50px; 
+    width: 200px;
+    font-size: 16px;
+    padding: 0px;
+    }
+    #h1{
+    padding-top: 200px;
+    }
+    

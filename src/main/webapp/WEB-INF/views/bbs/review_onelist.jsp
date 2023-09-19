@@ -117,7 +117,7 @@ label {
 							<tbody>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">리뷰 유형</td>
-									<td id="type">
+									<td>
 										<span>${reviewvo.RE_TYPE}</span>	
 									</td>
 							</tr>
@@ -125,10 +125,10 @@ label {
 							<td bgcolor="#1b5ac2" class="w_font">물품</td>
 							<c:choose>
 										<c:when test="${empty reviewvo.PROD_NAME}">
-											<td class="type" style="color:gray; font-size:15px;">[선택물품없음]</td>
+											<td style="color:gray; font-size:15px;">[선택물품없음]</td>
 										</c:when>
 										<c:otherwise>
-											<td class="type">${reviewvo.PROD_NAME}</td>
+											<td>${reviewvo.PROD_NAME}</td>
 										</c:otherwise>
 									</c:choose>
 							
@@ -138,16 +138,16 @@ label {
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">작성자</td>
 								<!--이건 로그인한 사람이 자동으로 뜨게하기.  -->
-								<td id="type">${reviewvo.RE_WRITER}</td>
+								<td>${reviewvo.RE_WRITER}</td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">제목</td>
-								<td id="type">${reviewvo.RE_SUBJECT}</td>
+								<td>${reviewvo.RE_SUBJECT}</td>
 							</tr>
 							
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font" width="200px;">첨부파일</td>
-								<td id="type">
+								<td>
 									<c:choose>
 										<c:when test="${empty reviewvo.RE_FILE}">
 											<b>첨부 파일 없음</b>

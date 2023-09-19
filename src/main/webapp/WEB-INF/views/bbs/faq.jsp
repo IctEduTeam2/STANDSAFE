@@ -23,6 +23,8 @@ fieldset {
   margin: 0;
   padding: 40px 20px;
 }
+
+
 .content-row .conts {
     display: none;
     text-align: left;
@@ -36,6 +38,8 @@ fieldset {
 .title {
   cursor: pointer; /* 링크인 제목에 마우스 커서를 손 모양으로 변경 */
 }
+
+/* 페이징 */
 table tfoot ol.paging {
     list-style: none;
     text-align: center; /* 가운데 정렬을 위한 변경 */
@@ -78,6 +82,7 @@ table td:nth-child(3) {
   text-align: left;
   padding-left: 70px;
 }
+
 
 
 

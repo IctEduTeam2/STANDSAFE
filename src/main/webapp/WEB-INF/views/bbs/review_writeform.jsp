@@ -111,6 +111,7 @@ line-height: 2rem;
 	outline: none;
 	float: left;
 }
+#noti{color: red; font-size: 14px; text-align: left;}
 
 </style> 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
@@ -170,6 +171,9 @@ function review_cate() {
     });
 }
 </script>
+<script type="text/javascript">
+</script>
+
 </head>
 <body>
 	<div id="mydiv"> 
@@ -206,6 +210,7 @@ function review_cate() {
    									<label id="cate2" for="list"></label>
     								<select id="list" name="review_prod"> 
     								</select>
+    								<span id="noti">칭찬합시다로 작성시 분류 선택안하셔도 됩니다.</span>
     							</td>
 								</c:when>
 								<c:when test="${prod_st==1 }">

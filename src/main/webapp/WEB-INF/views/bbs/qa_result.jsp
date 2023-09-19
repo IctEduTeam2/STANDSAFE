@@ -20,97 +20,15 @@
 	  padding: 40px 20px;
 	}
 
-
-    .custom-search {
-        width: 700px;
-        margin: 20px auto;
-        background-color: white;
-        padding: 50px;
-        border-radius: 10px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        height:250px;
-    }
-
     label {
         display: inline;
         text-align: center;
     }
 
-    .search-input select,
-    .search-input input[type="text"] {
-        margin-right: 10px;
-    }
-
-    .button-container {
-        text-align: right; /* 오른쪽 정렬로 변경 */
-        margin-top: 10px;
-    }
-
-    .button-container .search-button,
-    .button-container .search-button-alt {
-        width: 120px;
-        height: 40px;
-        font-size: 16px;
-        border: none;
-        border-radius: 5px;
-        color: white;
-        cursor: pointer;
-        margin: 5px;
-    }
-
-    .button-container .search-button {
-        background-color: #505BBD;
-    }
-
-    .button-container .search-button-alt {
-        background-color: #D3D3D3;
-    }
-
-    .search-input {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start; /* 왼쪽 정렬로 변경 */
-    }
-
-    .date-picker {
-        margin-top: 10px;
-    }
-    .searchKey{
-    margin-left: 50px; 
-    margin-right: 20px;
-    height:50px; 
-    width: 200px;
-    font-size: 16px;
-    padding: 0px;
-    }
-    #fromDate{
-    height:45px; 
-    width: 400px;
-    font-size: 16px;
-    padding: 0px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    margin-left: 50px; 
-    }
-    #start{
-    margin-left: 50px;
-    height:50px; 
-    width: 200px;
-    font-size: 16px;
-    padding: 0px;
-    }
-    #end{
-     height:50px; 
-    width: 200px;
-    font-size: 16px;
-    padding: 0px;
-    }
-    #h1{
-    padding-top: 200px;
-    }
+table td:nth-child(3) {
+  text-align: left;
+  padding-left: 70px;
+}
 
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
@@ -240,6 +158,6 @@ function checknick(lock, writer, nick) {
 		<jsp:include page="../Semantic/quickmenu.jsp"></jsp:include>
 		<script src="resources/js/quick.js"></script>
 		<jsp:include page="../Semantic/footer.jsp"></jsp:include>
-</div>
+
 </body>
 </html>

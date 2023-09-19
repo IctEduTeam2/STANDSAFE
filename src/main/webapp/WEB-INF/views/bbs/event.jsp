@@ -24,7 +24,6 @@ fieldset {
   padding: 40px 20px;
 }
 
-
 /* paging */
 table tfoot ol.paging {
     list-style: none;
@@ -65,6 +64,7 @@ table tfoot ol.paging li a:hover {
 	color: white;
 	font-weight: bold;
 }
+
 
 </style> 
 <script type="text/javascript">
@@ -109,13 +109,13 @@ table tfoot ol.paging li a:hover {
 						</div>  <!--  제목및 버튼검색창의 끝 -->		
 					<hr class="hr">
 					<!-- 메인 테이블 -->
-					<table id="s_table" class="m_table">				
+					<table class="m_table">				
 						<thead class="mh_table">
 							 <tr>
 							 	<th id="th1">번호</th><th id="th2">제목</th><th id="th3">작성자</th><th id="th5">조회수</th><th id="th6">날짜</th><th id="th4">파일첨부</th>
 							 </tr>
 						</thead>
-						<tbody id="s_table" class="mb_table">	
+						<tbody class="mb_table">	
 							<c:choose>
 								<c:when test="${empty list}">
 									<tr>

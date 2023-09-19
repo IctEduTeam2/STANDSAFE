@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>STANDSAFE</title>
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
@@ -31,16 +31,19 @@
 						<thead class="mh_table">
 							 <tr>
 							 	<th id="th1">번호</th>
-							 	<th id="th4">파일첨부</th>
 							 	<th id="th2">제목</th>
 							 	<th id="th3">작성자</th>
 							 	<th id="th5">조회수</th>
 							 	<th id="th6">날짜</th>
+							 	<th id="th4">파일첨부</th>
 							 </tr>
 						</thead>
 						<tbody class="mb_table">		
 							<tr>
 								<td>${nvo.NOTICE_NUM}</td>
+								
+								<td>${nvo.NOTICE_SUBJECT}</td><td>${nvo.NOTICE_WRITER}</td>
+								<td>${nvo.NOTICE_HIT}</td><td>${nvo.NOTICE_DATE.substring(0,10)}</td>
 								<td>
 								<c:choose>
 									<c:when test="${empty nvo.NOTICE_FILE}">
@@ -51,9 +54,6 @@
 									</c:otherwise>
 								</c:choose>				
 								</td>
-								<td>${nvo.NOTICE_SUBJECT}</td><td>${nvo.NOTICE_WRITER}</td>
-								<td>${nvo.NOTICE_HIT}</td><td>${nvo.NOTICE_DATE.substring(0,10)}</td>
-						
 							</tr>						
 						</tbody>
 					</table>

@@ -14,17 +14,15 @@
 <style type="text/css">
 
 .m_table{width: 80%;}
+.mf_table td{
+	border-bottom:none;
+	padding : 10px;
+	height: 30px;
+}
 
 label {
   line-height: 2rem;
   padding: 0.2em 0.4em;
-}
-
-
-#radio { color: black; text-align: left;}
-
-.in_btn{  
-	margin-top: 50px;
 }
 
 #chkbox_div {
@@ -65,14 +63,6 @@ label {
     color: #1b5ac2; /* 체크 색상 설정 */
     font-weight: bold; /* 글꼴 두껍게 설정 */
 }
-
-
-.type { color: black; text-align: left; padding-left: 100px;}
-#content{
-	width: 100%;
-	height:800px;
-}
-
 
 </style> 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
@@ -120,18 +110,18 @@ label {
 							<tbody>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">문의 유형</td>
-									<td class="type">
+									<td>
 										<span>${qnavo.BOARD_TYPE}</span>	
 									</td>
 							</tr>
 							<tr align="center">
-							<td bgcolor="#1b5ac2" class="w_font">물품</td>
+							<td bgcolor="#1b5ac2" class="w_font">문의할 물품</td>
 							<c:choose>
 										<c:when test="${empty qnavo.PROD_NAME}">
-											<td class="type" style="color:gray; font-size:15px;">[선택물품없음]</td>
+											<td style="color:gray; font-size:15px;">[선택물품없음]</td>
 										</c:when>
 										<c:otherwise>
-											<td class="type">${qnavo.PROD_NAME}</td>
+											<td>${qnavo.PROD_NAME}</td>
 										</c:otherwise>
 									</c:choose>
 							
@@ -141,16 +131,16 @@ label {
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">작성자</td>
 								<!--이건 로그인한 사람이 자동으로 뜨게하기.  -->
-								<td class="type">${qnavo.BOARD_WRITER }</td>
+								<td>${qnavo.BOARD_WRITER }</td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">제목</td>
-								<td class="type">${qnavo.BOARD_SUBJECT }</td>
+								<td>${qnavo.BOARD_SUBJECT }</td>
 							</tr>
 							
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font" width="200px;">첨부파일</td>
-								<td class="type">
+								<td>
 									<c:choose>
 										<c:when test="${empty qnavo.BOARD_FILE}">
 											<b>첨부 파일 없음</b>
@@ -181,12 +171,12 @@ label {
 							</tr>
 							<tr align="center">
 							
-								<td colspan="2" style="height: 800px;">
+								<td colspan="2" style="height: 800px; border-bottom: none;">
 									${qnavo.BOARD_CONTENT }							
 								</td>
 							</tr>
 							</tbody>
-							<tfoot>
+							<tfoot class="mf_table">
 								<tr align="center" >
 									<td colspan="2">
 									 <div id="viewok" style="display: none;">

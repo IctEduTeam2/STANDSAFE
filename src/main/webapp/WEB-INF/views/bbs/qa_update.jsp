@@ -23,7 +23,11 @@ label {
   line-height: 2rem;
   padding: 0.2em 0.4em;
 }
-
+.mf_table td{
+	border-bottom:none;
+	padding : 10px;
+	height: 30px;
+}
 [type="text"]{
 	width: 325px;
 	padding: 7px;
@@ -32,14 +36,6 @@ label {
 	outline: none;
 	float: left;
 }
-
-
-#radio { color: black; text-align: left;}
-
-.in_btn{  
-	margin-top: 50px;
-}
-
 
 #chkbox_div {
     display: flex;
@@ -78,48 +74,6 @@ label {
     font-size: 16px; /* 표시 크기 설정 */
     color: #1b5ac2; /* 체크 색상 설정 */
     font-weight: bold; /* 글꼴 두껍게 설정 */
-}
-#High{
-	width: 225px;
-	padding: 7px;
-	margin-left : 30px;
-	border: 1px solid #1b5ac2;
-	outline: none;
-	float: left;
-}
-#Low{
-	width: 225px;
-	padding: 7px;
-	margin-left : 30px;
-	border: 1px solid #1b5ac2;
-	outline: none;
-	float: left;
-}
-#Prod{
-	width: 225px;
-	padding: 7px;
-	margin-left : 30px;
-	border: 1px solid #1b5ac2;
-	outline: none;
-	float: left;
-}
-#cate1{
-line-height: 2rem;
-  padding: 0.2em 0.4em;
-}
-#cate2{
-line-height: 2rem;
-  padding: 0.2em 0.4em;
-}
-#combo_btn{
-	width: 80x;
-	padding: 5px;
-	float: left;
-	margin-left : 30px;
-	height: 35px;
-	background-color: #1b5ac2;
-	border: none;
-	color:white;
 }
 
 
@@ -183,17 +137,20 @@ line-height: 2rem;
 										<td bgcolor="#1b5ac2" class="w_font">물품</td>
 										<c:choose>
 										<c:when test="${empty qnavo.PROD_NAME}">
-											<td id="text" style="color:gray; font-size:15px;">[선택물품없음]</td>
+											<td><input type="text" name="PROD_NAME" size="20" autocomplete='off' value="[선택물품없음]" disabled/></td>
+											
 										</c:when>
 										<c:otherwise>
-											<td id="text">${qnavo.PROD_NAME}</td>
+											<td><input type="text" name="PROD_NAME" size="20" autocomplete='off' value="${qnavo.PROD_NAME}" disabled/></td>
+										
 										</c:otherwise>
 									</c:choose>
 									</tr>
 										<tr align="center">
 											<td bgcolor="#1b5ac2" class="w_font">작성자</td>
 											<!--이건 로그인한 사람이 자동으로 뜨게하기.  -->
-											<td id="text">${qnavo.BOARD_WRITER}</td>
+			
+											<td><input type="text" name="BOARD_WRITER" size="20" autocomplete='off' value="${qnavo.BOARD_WRITER}" disabled/></td>
 										</tr>
 										<tr align="center">
 											<td bgcolor="#1b5ac2" class="w_font">제목</td>
@@ -225,13 +182,13 @@ line-height: 2rem;
 												</div>
 										</tr>
 										<tr align="center">
-											<td colspan="2">
+											<td colspan="2" style="border-bottom: none;">
 												<textarea rows="10" cols="60" name="BOARD_CONTENT" id="content">
 												${qnavo.BOARD_CONTENT}
 												</textarea>
 											</td>
 										</tr>
-										<tfoot>
+										<tfoot class=mf_table>
 											<tr align="center">
 												<td colspan="2">
 													<input type="button" value="작성" onclick="updateOk_go(this.form)" class="in_btn"/>

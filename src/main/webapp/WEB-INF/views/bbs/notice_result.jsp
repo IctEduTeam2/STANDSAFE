@@ -21,96 +21,12 @@
 	}
 
 
-    .custom-search {
-        width: 700px;
-        margin: 20px auto;
-        background-color: white;
-        padding: 50px;
-        border-radius: 10px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        height:250px;
-    }
 
     label {
         display: inline;
         text-align: center;
     }
 
-    .search-input select,
-    .search-input input[type="text"] {
-        margin-right: 10px;
-    }
-
-    .button-container {
-        text-align: right; /* 오른쪽 정렬로 변경 */
-        margin-top: 10px;
-    }
-
-    .button-container .search-button,
-    .button-container .search-button-alt {
-        width: 120px;
-        height: 40px;
-        font-size: 16px;
-        border: none;
-        border-radius: 5px;
-        color: white;
-        cursor: pointer;
-        margin: 5px;
-    }
-
-    .button-container .search-button {
-        background-color: #505BBD;
-    }
-
-    .button-container .search-button-alt {
-        background-color: #D3D3D3;
-    }
-
-    .search-input {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start; /* 왼쪽 정렬로 변경 */
-    }
-
-    .date-picker {
-        margin-top: 10px;
-    }
-    .searchKey{
-    margin-left: 50px; 
-    margin-right: 20px;
-    height:50px; 
-    width: 200px;
-    font-size: 16px;
-    padding: 0px;
-    }
-    #fromDate{
-    height:45px; 
-    width: 400px;
-    font-size: 16px;
-    padding: 0px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    margin-left: 50px; 
-    }
-    #start{
-    margin-left: 50px;
-    height:50px; 
-    width: 200px;
-    font-size: 16px;
-    padding: 0px;
-    }
-    #end{
-     height:50px; 
-    width: 200px;
-    font-size: 16px;
-    padding: 0px;
-    }
-    #h1{
-    padding-top: 200px;
-    }
 
 </style> 
 <script>
@@ -184,7 +100,7 @@
 					<table class="m_table">				
 						<thead class="mh_table">
 							 <tr>
-							 	<th id="th1">번호</th><th id="th4">파일첨부</th><th id="th2">제목</th><th id="th3">작성자</th><th id="th5">조회수</th><th id="th6">날짜</th>
+							 	<th id="th1">번호</th><th id="th2">제목</th><th id="th3">작성자</th><th id="th5">조회수</th><th id="th6">날짜</th><th id="th4">파일첨부</th>
 							 </tr>
 						</thead>
 						<tbody class="mb_table">	
@@ -199,6 +115,16 @@
 									<c:forEach var="k" items="${s_result3}" varStatus="vs">
 										<tr>
 											<td>${index}</td>
+											
+											<c:choose>
+												<c:when test="${k.NOTICE_ST ==1 }">
+													<td><a href="/bbs_notice_onelist.do?NOTICE_NUM=${k.NOTICE_NUM}&cPage=1&wrod=${word}">${k.NOTICE_SUBJECT}</a></td>				
+												</c:when>
+											</c:choose>
+											<!--onelist 갈때 cPage 필요하다. 같이보내자. -->
+											<td>${k.NOTICE_WRITER}</td>
+											<td>${k.NOTICE_HIT}</td>
+											<td>${k.NOTICE_DATE.substring(0,10)}</td>
 											<td>
 												<c:choose>
 													<c:when test="${empty k.NOTICE_FILE}">
@@ -209,15 +135,6 @@
 													</c:otherwise>
 												</c:choose>				
 											</td>
-											<c:choose>
-												<c:when test="${k.NOTICE_ST ==1 }">
-													<td><a href="/bbs_notice_onelist.do?NOTICE_NUM=${k.NOTICE_NUM}&cPage=1&wrod=${word}">${k.NOTICE_SUBJECT}</a></td>				
-												</c:when>
-											</c:choose>
-											<!--onelist 갈때 cPage 필요하다. 같이보내자. -->
-											<td>${k.NOTICE_WRITER}</td>
-											<td>${k.NOTICE_HIT}</td>
-											<td>${k.NOTICE_DATE.substring(0,10)}</td>
 										</tr>
 										 <c:set var="index" value="${index - 1}" />
 									</c:forEach>

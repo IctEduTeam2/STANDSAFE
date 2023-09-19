@@ -35,10 +35,6 @@ label {
 
 #radio { color: black; text-align: left;}
 
-.in_btn{  
-	margin-top: 50px;
-}
-
 
 #chkbox_div {
     display: flex;
@@ -115,6 +111,13 @@ line-height: 2rem;
   padding: 0.2em 0.4em;
 }
 
+
+.mf_table td{
+	border-bottom:none;
+	padding : 10px;
+	height: 30px;
+}
+#noti{color: red; font-size: 14px; text-align: left; }
 </style> 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <script type="text/javascript">
@@ -276,6 +279,7 @@ function prod_combo() {
     								<select id="Prod" name="prod_num"> 
     								<!--동적으로 자동으로 붙여질곳  -->
     								</select>
+    								<span id="noti">상품문의가 아닌 일반 문의인 경우 선택하지않으셔도 됩니다.</span>
 								</td>
 							</tr>
 							<tr align="center">
@@ -302,12 +306,12 @@ function prod_combo() {
 									</div>
 									</td>
 							</tr>
-							<tr align="center">
-								<td colspan="2">
+							<tr align="center" >
+								<td colspan="2" style="border-bottom: none;">
 									<textarea rows="10" cols="60" name="BOARD_CONTENT" id="content"></textarea>
 								</td>
 							</tr>
-							<tfoot>
+							<tfoot class="mf_table">
 								<tr align="center">
 									<td colspan="2">
 										<input type="button" value="작성" onclick="save_go(this.form)" class="in_btn"/>

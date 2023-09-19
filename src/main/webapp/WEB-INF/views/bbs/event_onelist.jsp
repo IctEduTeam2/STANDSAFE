@@ -33,16 +33,19 @@
 						<thead class="mh_table">
 							 <tr>
 							 	<th id="th1">번호</th>
-							 	<th id="th4">파일첨부</th>
 							 	<th id="th2">제목</th>
 							 	<th id="th3">작성자</th>
 							 	<th id="th5">조회수</th>
 							 	<th id="th6">날짜</th>
+							 	<th id="th4">파일첨부</th>
 							 </tr>
 						</thead>
 						<tbody class="mb_table">		
 							<tr>
 								<td>${evo.EVENT_NUM}</td>
+								
+								<td>${evo.EVENT_SUBJECT}</td><td>${evo.EVENT_WRITER}</td>
+								<td>${evo.EVENT_HIT}</td><td>${evo.EVENT_DATE.substring(0,10)}</td>
 								<td>
 								<c:choose>
 									<c:when test="${empty evo.EVENT_FILE}">
@@ -53,9 +56,6 @@
 									</c:otherwise>
 								</c:choose>				
 								</td>
-								<td>${evo.EVENT_SUBJECT}</td><td>${evo.EVENT_WRITER}</td>
-								<td>${evo.EVENT_HIT}</td><td>${evo.EVENT_DATE.substring(0,10)}</td>
-						
 							</tr>				
 						</tbody>
 					</table>
