@@ -191,4 +191,9 @@ public class ShoppingDAO {
 		sqlSessionTemplate.insert("shopping.paybackcanclereturn", pbvo);
 	}
 	
+	// 교환 환불 취소
+	public void getPayBackCancleReturnIsCancle(PayBackVO pbvo) {
+		sqlSessionTemplate.insert("shopping.paybackcanclereturniscancle", pbvo);
+	}
+	
 }

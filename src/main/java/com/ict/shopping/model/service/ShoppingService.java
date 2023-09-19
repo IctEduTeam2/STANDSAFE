@@ -190,5 +190,10 @@ public class ShoppingService {
 	public void getPayBackCancleReturn(PayBackVO pbvo) {
 		shoppingDAO.getPayBackCancleReturn(pbvo);
 	}
+
+	// 교환 환불 취소
+	public void getPayBackCancleReturnIsCancle(PayBackVO pbvo) {
+		shoppingDAO.getPayBackCancleReturnIsCancle(pbvo);
+	}
 	
 }

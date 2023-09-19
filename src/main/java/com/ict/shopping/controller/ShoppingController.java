@@ -691,9 +691,10 @@ public class ShoppingController {
 	// 교환, 환불 기능
 	@PostMapping("/productcanclereturn.do")
 	public ModelAndView getPayBackCancleReturn(PayBackVO pbvo, HttpServletRequest request, @RequestParam("st")String st) {
-		ModelAndView mv = new ModelAndView();
+		ModelAndView mv = new ModelAndView(
+				"redirect:/orderOneListform.do?pay_oknum=" + pbvo.getPay_oknum() + "&client_num=" + pbvo.getClient_num());
 		try {
-			String path = request.getSession().getServletContext().getRealPath("resources/upload");
+			String path = request.getSession().getServletContext().getRealPath("/resources/upload");
 
 			MultipartFile f_param = pbvo.getFile();
 
@@ -719,6 +720,20 @@ public class ShoppingController {
 			pbvo.setPb_st("0");
 		}
 		shoppingService.getPayBackCancleReturn(pbvo);
+		return mv;
+	}
+	
+	// 교환, 환불 접수중에 취소시
+	@GetMapping("/productcanclereturniscancle.do")
+	public ModelAndView getPayBackCancleReturnIsCancle(@RequestParam("client_num")String client_num, @RequestParam("pay_oknum")String pay_oknum, @RequestParam("st")String st,  @RequestParam("prod_num")String prod_num) {
+		ModelAndView mv = new ModelAndView(
+				"redirect:/orderOneListform.do?pay_oknum=" + pay_oknum + "&client_num=" + client_num);
+		
+		PayBackVO pbvo = new PayBackVO();
+		pbvo.setClient_num(client_num);
+		pbvo.setPay_oknum(pay_oknum);
+		pbvo.setProd_num(prod_num);
+		shoppingService.getPayBackCancleReturnIsCancle(pbvo);
 		return mv;
 	}
 }

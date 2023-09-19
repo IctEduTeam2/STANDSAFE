@@ -119,6 +119,26 @@ td {
 		    	}
 		}
 	        	}
+	
+	function cancle(st, prod_num) {
+		if(st==0) {
+			if(confirm("교환 접수를 취소하시겠습니까?")) {
+				alert("교환 접수가 취소되었습니다.");
+    			location.href = "/productcanclereturniscancle.do?client_num=${id}&pay_oknum=${paylist[0].pay_oknum}&st=" + st + "&prod_num=" + prod_num;
+			}
+		} else if(st==1) {
+			if(confirm("환불 접수를 취소하시겠습니까?")) {
+				alert("환불 접수가 취소되었습니다.");
+    			location.href = "/productcanclereturniscancle.do?client_num=${id}&pay_oknum=${paylist[0].pay_oknum}&st=" + st + "&prod_num=" + prod_num;
+			}
+		} else if(st==2) {
+			alert("접수를 취소할수 없습니다.\n관리자에게 문의하세요.");
+			return;
+		} else if(st==3) {
+			alert("접수를 취소할수 없습니다.\n관리자에게 문의하세요.");
+			return;
+		}
+	}	
 </script>
 </head>
 
@@ -210,6 +230,30 @@ td {
 												<!-- 구매완료시 반품요청 / 배송준비시 환불요청-->
 												<c:choose>
 										            <c:when test="${paylist[0].pay_st == 1 }">
+										            </c:when>
+										            <c:when test="${pbvo.pb_st == 0 }">
+										            	<button onclick="cancle(0, ${b.prod_num})">교환 접수중</button>
+										            </c:when>
+										            <c:when test="${pbvo.pb_st == 1 }">
+										            	<button onclick="cancle(2, ${b.prod_num})">교환 접수완료</button>
+										            </c:when>
+										            <c:when test="${pbvo.pb_st == 2 }">
+										            	<button onclick="cancle(2, ${b.prod_num})">교환 회수완료</button>
+										            </c:when>
+										            <c:when test="${pbvo.pb_st == 3 }">
+										            	<button onclick="cancle(2, ${b.prod_num})">교환 완료</button>
+										            </c:when>
+										            <c:when test="${pbvo.pb_st == 4 }">
+										            	<button onclick="cancle(1, ${b.prod_num})")">반품 접수중</button>
+										            </c:when>
+										            <c:when test="${pbvo.pb_st == 5 }">
+										            	<button onclick="cancle(3, ${b.prod_num})">반품 접수완료</button>
+										            </c:when>
+										            <c:when test="${pbvo.pb_st == 6 }">
+										            	<button onclick="cancle(3, ${b.prod_num})">반품 회수완료</button>
+										            </c:when>
+										            <c:when test="${pbvo.pb_st == 7 }">
+										            	<button onclick="cancle(3, ${b.prod_num})">반품 완료</button>
 										            </c:when>
 													<c:when test="${deliveryvo.deli_st == 0}">
 													</c:when>

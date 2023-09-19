@@ -291,11 +291,20 @@
 		WHERE pay_oknum = #{pay_oknum}
 	</select>
 	
-		<!-- 결제 후 결제취소 - payback_t -->
+		<!-- 교환 환불 -->
 	 <insert id="paybackcanclereturn" parameterType="paybackVO">
         INSERT INTO PAYBACK_T (PB_TITLE, PB_CONTENT, PB_DP, PB_FILE, PB_ST, CLIENT_NUM, PAY_OKNUM, PROD_NUM)
         VALUES (#{pb_title}, #{pb_content}, #{pb_dp}, #{pb_file}, #{pb_st}, #{client_num}, #{pay_oknum}, #{prod_num})
     </insert>
+    
+		<!-- 교환 환불를 취소 -->
+    <delete id="paybackcanclereturniscancle" parameterType="paybackVO">
+        DELETE FROM PAYBACK_T
+        WHERE client_num = #{client_num}
+        AND pay_oknum = #{pay_oknum}
+        AND prod_num = #{prod_num}
+    </delete>
+    
 </mapper>
 
 
