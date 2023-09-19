@@ -171,8 +171,18 @@ public class ShoppingDAO {
 		sqlSessionTemplate.insert("shopping.pointplus", pointvo);
 	}
 	
+	// 구매확정
+	public void getDeliveryComfirm(String pay_oknum) {
+		sqlSessionTemplate.update("shopping.deliverycomfirm", pay_oknum);
+	}
+	
 	// 주문 조회
 	public List<PayVO> getPaySelect(PayVO pvo) {
 		return sqlSessionTemplate.selectList("shopping.payselect", pvo);
+	}	
+	
+	// 페이백 조회
+	public PayBackVO getPayBackSelect(String pay_oknum) {
+		return sqlSessionTemplate.selectOne("shopping.paybackselect", pay_oknum);
 	}
 }

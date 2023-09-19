@@ -597,6 +597,15 @@ public class ShoppingController {
 		}
 
 		DeliveryVO deliveryvo = shoppingService.getDeliverySelect(pay_oknum);
+		
+		try {
+			PayBackVO pbvo = shoppingService.getPayBackSelect(pay_oknum);
+			mv.addObject("pbvo", pbvo);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		
 		mv.addObject("sum", sum);
 		mv.addObject("deliveryvo", deliveryvo);
 		mv.addObject("prodList", prodList);
@@ -642,9 +651,16 @@ public class ShoppingController {
 			session.setAttribute("POINT_REM", pointService.getPointsByUserId(Integer.parseInt(client_num)));
 		} else if(st.equals("2")) {
 			// 구매 확정시
-			
+			shoppingService.getDeliveryComfirm(pay_oknum);
 		}
 		return mv;
 	}
-
+	@GetMapping("/reviewprodwriteform.do")
+	public ModelAndView getOrder(@RequestParam("prod_num")String prod_num) {
+		ModelAndView mv = new ModelAndView("bbs/review_writeform");
+		ProductVO pvo = shoppingService.getProductOne(prod_num);
+		mv.addObject("prod_st", 1);
+		mv.addObject("pvo", pvo);
+		return mv;
+	}
 }

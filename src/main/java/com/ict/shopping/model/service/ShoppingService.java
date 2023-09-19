@@ -171,9 +171,19 @@ public class ShoppingService {
 		shoppingDAO.getPointPlus(pointvo);
 	}
 	
+	// 구매확정
+	public void getDeliveryComfirm(String pay_oknum) {
+		shoppingDAO.getDeliveryComfirm(pay_oknum);
+	}
+	
 	// 주문 조회
 	public List<PayVO> getPaySelect(PayVO pvo) {
 		return shoppingDAO.getPaySelect(pvo);
+	}
+	
+	// 페이백 조회
+	public PayBackVO getPayBackSelect(String pay_oknum) {
+		return shoppingDAO.getPayBackSelect(pay_oknum);
 	}
 
 }

@@ -109,6 +109,7 @@ td {
 	    		alert("취소사유를 작성해주세요.");
 	    		return;
 	    	} else {
+	    		alert("주문이 취소되었습니다.");
 	    		location.href = "/Order.do?client_num=${id}&pay_oknum=${paylist[0].pay_oknum}&st=" + st + "&pb_content=" + pb_content;
 	    	}
 	    }
@@ -149,28 +150,28 @@ td {
 								style="font-size: 12px;">${paylist[0].pay_oknum } 
         <c:choose>
             <c:when test="${paylist[0].pay_st == 1 }">
-            	(결제취소)
+            	(결제취소 - ${pbvo.pb_date })
             </c:when>
             <c:when test="${deliveryvo.deli_st == 0}">
-                (배송준비중)
+                (배송준비중 - ${deliveryvo.deli_date })
                 		<c:choose>
-            				<c:when test="${{paylist[0].pay_type == 1}">
+            				<c:when test="${paylist[0].pay_type == 1}">
 						<button style="float: right; margin: 0" onclick="Order1(1)">결제취소</button>
              				</c:when>
-            				<c:when test="${{paylist[0].pay_type == 0}">
+            				<c:when test="${paylist[0].pay_type == 0}">
 						<button style="float: right; margin: 0" onclick="Order1(0)">결제취소</button>
              				</c:when>
                 		</c:choose>
             </c:when>
             <c:when test="${deliveryvo.deli_st == 1}">
-                (배송중)
+                (배송중 - ${deliveryvo.deli_date })
             </c:when>
             <c:when test="${deliveryvo.deli_st == 2}">
-                (배송완료)
+                (배송완료 - ${deliveryvo.deli_date })
 						<button style="float: right; margin: 0" onclick="Order1(2)">구매확정</button>
             </c:when>
             <c:when test="${deliveryvo.deli_st == 3}">
-                (구매확정)
+                (구매확정 - ${deliveryvo.deli_date })
             </c:when>
             <c:otherwise>
                 (알 수 없는 상태- 관리자에게 문의하세요.)
@@ -188,14 +189,15 @@ td {
 									<c:when test="${a.prod_num == b.prod_num }">
 										<div style="width: 100%; float: left; padding: 20px;">
 											<div style="float: left;">
-
+<a href="/productOneListform.do?prod_num=${b.prod_num }">
 												<img src="resources/images/products/${b.prod_img }"
-													style="width: 160px; height: 200px;">
+													style="width: 160px; height: 200px;"></a>
 											</div>
 											<div style="float: left; margin-left: 30px;">
 												<p style="color: gray; opacity: 0.5;">${paylist[0].pay_ok }
 													결제</p>
-												<p style="font-size: 14px; margin-top: 10px;">${b.prod_name}</p>
+												<p style="font-size: 14px; margin-top: 10px;">
+<a href="/productOneListform.do?prod_num=${b.prod_num }">${b.prod_name}</a></p>
 												<p style="font-size: 20px; margin-top: 10px;">
 													<b><fmt:formatNumber
 															value="${a.cart_price/a.cart_amount}" type="number"
@@ -207,6 +209,8 @@ td {
 												style="float: right; margin-right: 20px; margin-top: 160px;">
 												<!-- 구매완료시 반품요청 / 배송준비시 환불요청-->
 												<c:choose>
+										            <c:when test="${paylist[0].pay_st == 1 }">
+										            </c:when>
 													<c:when test="${deliveryvo.deli_st == 0}">
 													</c:when>
 													<c:when test="${deliveryvo.deli_st == 1}">
@@ -218,8 +222,8 @@ td {
 														<button>교환요청</button>
 													</c:when>
 													<c:when test="${deliveryvo.deli_st == 3}">
-														<button>재구매</button>
-														<button>리뷰쓰기</button>
+														<button onclick="location.href = '/productOneListform.do?prod_num=${b.prod_num }'">재구매</button>
+														<button onclick="location.href = '/reviewprodwriteform.do?prod_num=${b.prod_num }'">리뷰쓰기</button>
 													</c:when>
 												</c:choose>
 											</div>
