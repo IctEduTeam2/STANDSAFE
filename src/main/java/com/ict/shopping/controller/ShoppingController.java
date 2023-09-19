@@ -9,6 +9,7 @@ import java.net.http.HttpResponse;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -24,11 +25,15 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
+import com.ict.bbs.model.vo.NO_BBS_VO;
+import com.ict.common.Paging;
 import com.ict.shopping.model.service.ShoppingService;
 import com.ict.shopping.model.vo.BasketVO;
 import com.ict.shopping.model.vo.DeliveryVO;
@@ -36,6 +41,7 @@ import com.ict.shopping.model.vo.PayBackVO;
 import com.ict.shopping.model.vo.PayVO;
 import com.ict.shopping.model.vo.PopUpVO;
 import com.ict.shopping.model.vo.ProductVO;
+import com.ict.shopping.model.vo.ReviewVO;
 import com.ict.shopping.model.vo.WishVO;
 import com.ict.user.model.service.PointService;
 import com.ict.user.model.vo.PointVO;
@@ -67,17 +73,42 @@ public class ShoppingController {
 
 	// 상품 한개
 	@GetMapping("/productOneListform.do")
-	public ModelAndView getProductOneListForm(@RequestParam("prod_num") String prod_num) {
+	public ModelAndView getProductOneListForm(HttpServletRequest request, @RequestParam("prod_num") String prod_num) {
 		ModelAndView mv = new ModelAndView("shopping/product_onelist");
 		try {
 			ProductVO pvo = shoppingService.getProductOne(prod_num);
 			mv.addObject("pvo", pvo);
+			
+			ReviewVO rvo = new ReviewVO();
+			rvo.setProd_num(prod_num);
+			rvo.setRe_st("1");
+			rvo.setRe_lock("0");
+			List<ReviewVO> rvolist = shoppingService.getReviewList(rvo);
+			mv.addObject("rvolist", rvolist);
 		} catch (Exception e) {
+			System.out.println(e);
 			return new ModelAndView("shopping/error");
 		}
 		return mv;
 	}
-
+	
+	@ResponseBody
+	@RequestMapping(value = "/reqAjax2", method = RequestMethod.GET)
+	public List<ReviewVO> reqAjax2(String prod_num) {
+		System.out.println(prod_num);
+	    List<ReviewVO> dataList = new ArrayList<>();
+	    ReviewVO rvo = new ReviewVO();
+	    rvo.setProd_num(prod_num);
+	    rvo.setRe_st("1");
+	    rvo.setRe_lock("0");
+	    List<ReviewVO> rvolist = shoppingService.getReviewList(rvo);
+	    for (ReviewVO review : rvolist) {
+	        dataList.add(review);
+	    }
+	    
+	    return dataList;
+	}
+	
 	// 메인화면 장바구니 담기
 	@GetMapping("/basketAdd.do")
 	public ModelAndView getBasketForm(@RequestParam("prod_num") String prod_num,

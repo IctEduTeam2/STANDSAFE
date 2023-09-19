@@ -191,7 +191,8 @@
 	<!-- 재고량 차감 -->
 	<update id="productsub" parameterType="basketVO">
 		UPDATE PRODUCT_T
-		SET prod_amount = prod_amount - #{cart_amount}
+		SET
+		prod_amount = prod_amount - #{cart_amount}
 		WHERE prod_num = #{prod_num}
 	</update>
 
@@ -213,7 +214,8 @@
 	<!-- 결제 후 결제취소 - pay_t -->
 	<update id="payupdatest" parameterType="String">
 		UPDATE PAY_T
-		SET pay_st = 1
+		SET pay_st =
+		1
 		WHERE pay_oknum = #{pay_oknum}
 	</update>
 
@@ -229,16 +231,20 @@
 	<update id="productplus" parameterType="String">
 		UPDATE PRODUCT_T AS P
 		INNER JOIN CART_T AS C ON P.prod_num = C.prod_num
-		INNER JOIN PAY_T AS PAY ON C.cart_num = PAY.cart_num
-		SET P.prod_amount = P.prod_amount + C.cart_amount
+		INNER JOIN PAY_T AS
+		PAY ON C.cart_num = PAY.cart_num
+		SET P.prod_amount = P.prod_amount +
+		C.cart_amount
 		WHERE PAY.pay_oknum = #{pay_oknum}
 	</update>
 
 	<!-- 구매확정 -->
 	<update id="deliverycomfirm" parameterType="String">
 		UPDATE DELIVERY_T
-		SET deli_st = 3, deli_date = CURRENT_TIMESTAMP
-		WHERE pay_oknum = #{pay_oknum}
+		SET
+		deli_st = 3, deli_date = CURRENT_TIMESTAMP
+		WHERE pay_oknum =
+		#{pay_oknum}
 	</update>
 
 	<!-- 주문조회 리스트 -->
@@ -266,7 +272,8 @@
 		JOIN PRODUCT_T AS P ON
 		C.prod_num = P.prod_num
 		WHERE PAY.client_num = #{client_num}
-		GROUP BY PAY.pay_oknum
+		GROUP BY
+		PAY.pay_oknum
 		ORDER BY PAY.pay_ok DESC
 	</select>
 
@@ -274,7 +281,8 @@
 	<select id="payselect" resultType="payVO" parameterType="payVO">
 		SELECT *
 		FROM PAY_T
-		WHERE client_num = #{client_num} AND pay_oknum = #{pay_oknum}
+		WHERE client_num = #{client_num} AND pay_oknum =
+		#{pay_oknum}
 	</select>
 
 	<!-- 주문상세 -->
@@ -283,28 +291,52 @@
 		FROM PAY_T
 		WHERE pay_oknum = #{pay_oknum}
 	</select>
-	
+
 	<!-- 페이백 조회 -->
-	<select id="paybackselect" resultType="paybackVO" parameterType="String">
+	<select id="paybackselect" resultType="paybackVO"
+		parameterType="String">
 		SELECT *
 		FROM PAYBACK_T
 		WHERE pay_oknum = #{pay_oknum}
 	</select>
+
+	<!-- 교환 환불 -->
+	<insert id="paybackcanclereturn" parameterType="paybackVO">
+		INSERT INTO PAYBACK_T (PB_TITLE, PB_CONTENT, PB_DP, PB_FILE, PB_ST,
+		CLIENT_NUM, PAY_OKNUM, PROD_NUM)
+		VALUES (#{pb_title}, #{pb_content}, #{pb_dp}, #{pb_file}, #{pb_st},
+		#{client_num}, #{pay_oknum}, #{prod_num})
+	</insert>
+
+	<!-- 교환 환불를 취소 -->
+	<delete id="paybackcanclereturniscancle"
+		parameterType="paybackVO">
+		DELETE FROM PAYBACK_T
+		WHERE client_num = #{client_num}
+		AND pay_oknum = #{pay_oknum}
+		AND prod_num = #{prod_num}
+	</delete>
+
+	<!-- 리뷰리스트 -->
+	<select id="reviewlist" resultType="reviewVO"
+		parameterType="reviewVO">
+		SELECT *
+		FROM REVIEW_T
+		WHERE PROD_NUM = #{prod_num}
+		AND RE_ST = #{re_st}
+		AND RE_LOCK = #{re_lock}
+		ORDER BY RE_DATE DESC;
+	</select>
 	
-		<!-- 교환 환불 -->
-	 <insert id="paybackcanclereturn" parameterType="paybackVO">
-        INSERT INTO PAYBACK_T (PB_TITLE, PB_CONTENT, PB_DP, PB_FILE, PB_ST, CLIENT_NUM, PAY_OKNUM, PROD_NUM)
-        VALUES (#{pb_title}, #{pb_content}, #{pb_dp}, #{pb_file}, #{pb_st}, #{client_num}, #{pay_oknum}, #{prod_num})
-    </insert>
-    
-		<!-- 교환 환불를 취소 -->
-    <delete id="paybackcanclereturniscancle" parameterType="paybackVO">
-        DELETE FROM PAYBACK_T
-        WHERE client_num = #{client_num}
-        AND pay_oknum = #{pay_oknum}
-        AND prod_num = #{prod_num}
-    </delete>
-    
+	<!-- 리뷰 개수조회 -->
+	<select id="totalreviewcount" resultType="int"
+		parameterType="reviewVO">
+		SELECT COUNT(*)
+		FROM REVIEW_T
+		WHERE PROD_NUM = #{prod_num}
+		AND RE_ST = #{re_st}
+		AND RE_LOCK = #{re_lock}
+	</select>
 </mapper>
 
 

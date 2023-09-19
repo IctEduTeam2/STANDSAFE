@@ -12,6 +12,7 @@ import com.ict.shopping.model.vo.PayBackVO;
 import com.ict.shopping.model.vo.PayVO;
 import com.ict.shopping.model.vo.PopUpVO;
 import com.ict.shopping.model.vo.ProductVO;
+import com.ict.shopping.model.vo.ReviewVO;
 import com.ict.shopping.model.vo.WishVO;
 import com.ict.user.model.vo.PointVO;
 import com.ict.user.model.vo.UserVO;
@@ -195,5 +196,14 @@ public class ShoppingDAO {
 	public void getPayBackCancleReturnIsCancle(PayBackVO pbvo) {
 		sqlSessionTemplate.insert("shopping.paybackcanclereturniscancle", pbvo);
 	}
+
+	// 상품리뷰 조회
+	public List<ReviewVO> getReviewList(ReviewVO rvo) {
+		return sqlSessionTemplate.selectList("shopping.reviewlist", rvo);
+	}
 	
+	// 상품리뷰 개수조회
+	public int getTotalReviewCount(ReviewVO rvo) {
+		return sqlSessionTemplate.selectOne("shopping.totalreviewcount", rvo);
+	}
 }

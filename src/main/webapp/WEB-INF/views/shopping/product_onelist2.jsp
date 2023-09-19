@@ -298,13 +298,10 @@ tr td:nth-child(2) {
 		closeModal();
 	}
 </script>
-
-</head>
-
-<body onload="InitializeStaticMenu();"> <script type="text/javascript">
+ <script type="text/javascript">
  let totalData; //총 데이터 수
  let dataPerPage; //한 페이지에 나타낼 글 수
- let pageCount = 5; //페이징에 나타낼 페이지 수
+ let pageCount = 2; //페이징에 나타낼 페이지 수
  let globalCurrentPage=1; //현재 페이지
  let dataList; //표시하려하는 데이터 리스트
 
@@ -396,7 +393,7 @@ tr td:nth-child(2) {
 
 	  $("#pagingul").html(pageHtml);
 	  let displayCount = "";
-	  displayCount = "총 리뷰수: " + totalData;
+	  displayCount = "현재 1 - " + totalPage + " 페이지 / " + totalData + "건";
 	  $("#displayCount").text(displayCount);
 
 
@@ -424,6 +421,9 @@ tr td:nth-child(2) {
 	    displayData(globalCurrentPage, dataPerPage);
 	 });
  </script>
+</head>
+
+<body onload="InitializeStaticMenu();">
 	<script type="text/javascript">
 		var alertMessage = "${alertMessage}";
 		if (alertMessage) {
@@ -532,7 +532,7 @@ tr td:nth-child(2) {
 					<hr>
 					<div class="review b">
 						<h1 style="text-align: center; margin: 80px 0; font-size: 60px;">Review</h1>    <div class="app">
-						<input type="hidden" value="5" id="dataPerPage">
+						<input type="hidden" value="1" id="dataPerPage">
 						<span id="displayCount"></span>
 						<table id="dataTableBody">
 						</table>

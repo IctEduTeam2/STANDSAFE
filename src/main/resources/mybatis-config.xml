@@ -36,6 +36,7 @@
 		<typeAlias type="com.ict.shopping.model.vo.PayVO" alias="payVO" /><!-- 결제 -->
 		<typeAlias type="com.ict.shopping.model.vo.DeliveryVO" alias="deliveryVO" /><!-- 배송 -->
 		<typeAlias type="com.ict.shopping.model.vo.PayBackVO" alias="paybackVO" /><!-- 페이백 -->
+		<typeAlias type="com.ict.shopping.model.vo.ReviewVO" alias="reviewVO" /><!-- 리뷰 -->
 		
 		<typeAlias type="com.ict.admin.model.vo.ProductVO" alias="provo"/>
 		<typeAlias type="com.ict.admin.model.vo.ExchangeVO" alias="evo"/>
