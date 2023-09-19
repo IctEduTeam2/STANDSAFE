@@ -149,5 +149,7 @@ public interface BBS_Service {
 	
 	//리뷰리스트 찾기
 	public List<Review_comVO> getReviewcomList(String sessionid);
-	//public List<Review_comVO> getReviewprodList(List<Review_comVO> recom);
+	
+	//pay_t의 review_st 1로 변경하기
+	int updateReviewStonPayT(String review_prod);
 }

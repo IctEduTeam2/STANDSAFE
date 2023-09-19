@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -194,6 +195,8 @@ function review_cate() {
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">리뷰항목</td>
+								<c:choose>
+								<c:when test="${prod_st==0 }">
 								<td>
 									<label id="cate" for=review></label>
 										<select id="review" onchange="review_cate()">
@@ -203,7 +206,16 @@ function review_cate() {
    									<label id="cate2" for="list"></label>
     								<select id="list" name="review_prod"> 
     								</select>
-								</td>
+    							</td>
+								</c:when>
+								<c:when test="${prod_st==1 }">
+								 <td><input type="text" name="review_prod" size="20" autocomplete='off' value="${pvo.PROD_NUM}"/>
+								 	${pvo.PROD_NAME }
+								 </td>
+								
+								</c:when>
+								</c:choose>
+
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">작성자</td>

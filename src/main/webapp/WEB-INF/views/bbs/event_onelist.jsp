@@ -16,9 +16,11 @@
 
 <script type="text/javascript">
 	function go_event_list() {
-		location.href="/bbs_event_go.do;"
+		
+		location.href="/bbs_event_go.do";
 		/* 여기부분은 나중에 수정해야함, 목록 페이징, 게시글번호 들고 다녀야함. */
 	}
+
 </script>
 </head>
 <body onload="InitializeStaticMenu();">
@@ -74,7 +76,7 @@
 					</div> 
 					
 					<div class="in_btn_div">
-					<button class="in_btn" onclick="go_event_list()">목록</button>
+					<button class="in_btn" onclick="go_event_list()">목록으로</button>
 					</div>
 			</article>
 		</section>

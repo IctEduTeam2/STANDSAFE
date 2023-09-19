@@ -167,12 +167,6 @@ $(document).ready(function() {
         }
     }
 </script>
-<script type="text/javascript">
-var msg = "${msg}";
-if (msg && msg !== "") {
-    alert(msg);
-}
-</script>
 </head>
 <body onload="InitializeStaticMenu();">
 	<div id="mydiv">

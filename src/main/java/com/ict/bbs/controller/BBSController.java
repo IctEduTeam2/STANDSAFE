@@ -394,6 +394,7 @@ public class BBSController {
 		
 		mv.addObject("nvo", nvo);
 		mv.addObject("cPage", cPage);
+		
 
 		return mv;
 	}
@@ -414,7 +415,7 @@ public class BBSController {
 		
 		mv.addObject("evo", evo);
 		mv.addObject("cPage", cPage);
-
+		
 		return mv;
 	}
 	
@@ -437,6 +438,7 @@ public class BBSController {
 		
 		mv.addObject("favo", favo);
 		mv.addObject("cPage", cPage);
+		
 	
 
 		return mv;
@@ -460,6 +462,7 @@ public class BBSController {
 		
 		mv.addObject("qnavo", qnavo);
 		mv.addObject("cPage", cPage);
+	
 		
 		String c_num = (String) request.getSession().getAttribute("id");
 		System.out.println("로그인한 아이디의 번호: " + c_num);
@@ -508,6 +511,7 @@ public class BBSController {
 		
 		mv.addObject("repvo", repvo);
 		mv.addObject("cPage", cPage);
+		
 
 		String c_num = (String) request.getSession().getAttribute("id");
 		System.out.println("로그인한 아이디의 아이디: " + c_num);
@@ -543,6 +547,7 @@ public class BBSController {
 		
 		mv.addObject("reviewvo", reviewvo);
 		mv.addObject("cPage", cPage);
+	
 
 		String c_num = (String) request.getSession().getAttribute("id");
 		System.out.println("로그인한 아이디의 아이디: " + c_num);
@@ -593,8 +598,9 @@ public class BBSController {
 	}
 	@RequestMapping("/bbs_review_writeform.do")
 	public ModelAndView goBbsReviewtWriteForm(HttpServletRequest request,HttpSession session) {
-		
-		return new ModelAndView("bbs/review_writeform");
+		ModelAndView mv = new ModelAndView("bbs/review_writeform");
+		mv.addObject("prod_st", 0);
+		return mv;
 	}
 	
 	
@@ -813,7 +819,7 @@ public class BBSController {
 		
 		
 		String review_prod = request.getParameter("review_prod");
-		System.out.println("콤보선택한 물품의벨류값:" + review_prod);
+		System.out.println("구매가 확정된 물품의 리뷰를 쓸때의 물품번호:" + review_prod);
 		reviewvo.setPROD_NUM(review_prod);
 		
 		
@@ -829,21 +835,14 @@ public class BBSController {
 
 		int result = bbsService.getReviewWriteOk(reviewvo);
 		
-		
-		
-		
+	
 		String sessionid = (String) request.getSession().getAttribute("id");
 		
 		System.out.println("로그인한 아이디는(리뷰콤보): " + sessionid);
 		
 		
-		//pay_t 의 review_st 를 1 로 바꾸기위한 일처리
-		int changereview = bbsService.updateReviewStonPayT(sessionid);
-		
-		
-	
-			
-		
+		//pay_t 의 review_st 를 1 로 바꾸기위한 일처리, 콤보배류값인 물품번호를 가져가기. 
+		int changereview = bbsService.updateReviewStonPayT(review_prod);
 		
 		
 		if(result >0) {
@@ -1197,7 +1196,7 @@ public class BBSController {
 	
 	//==========================================================================================
 	//검색: 이벤트-검색
-	@PostMapping("/bbs_ev_search.do")
+	@RequestMapping("/bbs_ev_search.do")
 	public ModelAndView goEventSearch(HttpServletRequest request,
 			HttpSession session,
 			@ModelAttribute("word")String word,
@@ -1709,13 +1708,7 @@ public class BBSController {
         session.removeAttribute("qaonelist");
         session.removeAttribute("revonelist");
 
-	    if (start != null && !start.isEmpty() || word != null && !word.isEmpty() || end != null && !end.isEmpty()) {
-	        System.out.println("게시판종류:" + bbs_type);
-	        System.out.println("항목종류:" + s_type);
-	        System.out.println("검색단어:" + word);
-	        System.out.println("시작날짜:" + start);
-	        System.out.println("종료날짜:" + end);
-
+	   
 	        switch (bbs_type) {
 	            case "공지사항":
 	                List<NO_BBS_VO> s_result3 = bbsService.searchNotice(s_type, word, start, end);
@@ -1752,46 +1745,9 @@ public class BBSController {
 	                mv.addObject("word", word);
 	                mv.setViewName("bbs/review_result");
 	                break;
-	        }
-	    } else {
-	        // 하나라도 입력된 조건이 없을 때 알림창 처리 또는 다른 처리 수행
-	       String msg = "검색단어 입력하시거나, 날짜를 지정하여주세요.";
 
-	        switch (bbs_type) {
-	            case "공지사항":
-	            	mv.addObject("msg", msg);
-	                mv.addObject("bbs_type", bbs_type);
-	                mv.addObject("word", word);
-	                mv.setViewName("bbs/notice_result");
-	                break;
-	            case "이벤트":
-	            	mv.addObject("msg", msg);
-	                mv.addObject("word", word);
-	                mv.addObject("bbs_type", bbs_type);
-	                mv.setViewName("bbs/event_result");
-	                break;
-	            case "이용안내":
-	            	mv.addObject("msg", msg);
-	                mv.addObject("bbs_type", bbs_type);
-	                mv.addObject("word", word);
-	                mv.setViewName("bbs/faq_result");
-	                break;
-	            case "상품Q&A":
-	            	mv.addObject("msg", msg);
-	                mv.addObject("bbs_type", bbs_type);
-	                mv.addObject("word", word);
-	                mv.setViewName("bbs/qa_result");
-	                break;
-	            case "리뷰":
-	            	mv.addObject("msg", msg);
-	                mv.addObject("bbs_type", bbs_type);
-	                mv.addObject("word", word);
-	                mv.setViewName("bbs/review_result");
-	                break;
 	        }
-	       
-	    }
-
+	  
 	    return mv;
 	}
 	

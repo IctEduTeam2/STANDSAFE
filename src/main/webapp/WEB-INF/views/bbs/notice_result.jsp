@@ -133,12 +133,6 @@
     }
 
 </script>
-<script type="text/javascript">
-var msg = "${msg}";
-if (msg && msg !== "") {
-    alert(msg);
-}
-</script>
 </head>
 <body onload="InitializeStaticMenu();">
 	<div id="mydiv">
@@ -217,7 +211,7 @@ if (msg && msg !== "") {
 											</td>
 											<c:choose>
 												<c:when test="${k.NOTICE_ST ==1 }">
-													<td><a href="/bbs_notice_onelist.do?NOTICE_NUM=${k.NOTICE_NUM}&cPage=1">${k.NOTICE_SUBJECT}</a></td>				
+													<td><a href="/bbs_notice_onelist.do?NOTICE_NUM=${k.NOTICE_NUM}&cPage=1&wrod=${word}">${k.NOTICE_SUBJECT}</a></td>				
 												</c:when>
 											</c:choose>
 											<!--onelist 갈때 cPage 필요하다. 같이보내자. -->
@@ -225,7 +219,7 @@ if (msg && msg !== "") {
 											<td>${k.NOTICE_HIT}</td>
 											<td>${k.NOTICE_DATE.substring(0,10)}</td>
 										</tr>
-										
+										 <c:set var="index" value="${index - 1}" />
 									</c:forEach>
 								</c:otherwise>
 							</c:choose>

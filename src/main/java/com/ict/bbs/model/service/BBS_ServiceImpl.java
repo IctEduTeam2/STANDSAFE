@@ -287,8 +287,8 @@ public class BBS_ServiceImpl implements BBS_Service{
 		return bbsDAO.getReviewcomList(sessionid);
 	}
 	
-	/*public List<Review_comVO> getReviewprodList(List<Review_comVO> recom) {
-	    // recom 리스트를 사용하여 pay_t의 cart_num과 cart_t의 cart_num를 매칭하고 prod_num을 조회하는 메서드를 호출합니다.
-	    return bbsDAO.getReviewprodList(recom);
-	}*/
+	@Override
+	public int updateReviewStonPayT(String review_prod) {
+		return bbsDAO.updateReviewStonPayT(review_prod);
+	}
 }

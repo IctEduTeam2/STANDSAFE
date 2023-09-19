@@ -29,8 +29,6 @@ table td:nth-child(3) {
 }
 
 
-
-
 /* paging */
 
 table tfoot ol.paging {

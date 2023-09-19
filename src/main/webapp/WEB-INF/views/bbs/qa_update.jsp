@@ -24,13 +24,6 @@ label {
   padding: 0.2em 0.4em;
 }
 
-
-#text{
-
-	padding-left:45px;
-	float: none;
-	text-align: left;
-}
 [type="text"]{
 	width: 325px;
 	padding: 7px;
@@ -40,7 +33,7 @@ label {
 	float: left;
 }
 
-#type { color: black; text-align: left; padding-left: 50px;}
+
 #radio { color: black; text-align: left;}
 
 .in_btn{  
@@ -212,7 +205,7 @@ line-height: 2rem;
 									
 											  <c:choose>
 												  	<c:when test="${empty qnavo.BOARD_FILE}">
-												  		<td><input type="file" name="file"><br><b>이전 파일 없음</b></td>
+												  		<td><input type="file" name="file"><b>이전 파일 없음</b></td>
 												  		<input type="hidden" name="old_f_name" value="">
 												  	</c:when>
 												  	<c:otherwise>

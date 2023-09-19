@@ -74,6 +74,12 @@ table tfoot ol.paging li a:hover {
 	color: white;
 	font-weight: bold;
 }
+table td:nth-child(3) {
+  text-align: left;
+  padding-left: 70px;
+}
+
+
 
 </style> 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
