@@ -290,6 +290,12 @@
 		FROM PAYBACK_T
 		WHERE pay_oknum = #{pay_oknum}
 	</select>
+	
+		<!-- 결제 후 결제취소 - payback_t -->
+	 <insert id="paybackcanclereturn" parameterType="paybackVO">
+        INSERT INTO PAYBACK_T (PB_TITLE, PB_CONTENT, PB_DP, PB_FILE, PB_ST, CLIENT_NUM, PAY_OKNUM, PROD_NUM)
+        VALUES (#{pb_title}, #{pb_content}, #{pb_dp}, #{pb_file}, #{pb_st}, #{client_num}, #{pay_oknum}, #{prod_num})
+    </insert>
 </mapper>
 
 

@@ -1,5 +1,6 @@
 package com.ict.shopping.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -18,11 +20,13 @@ import org.checkerframework.checker.units.qual.g;
 import org.checkerframework.framework.qual.RequiresQualifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ict.shopping.model.service.ShoppingService;
@@ -597,15 +601,15 @@ public class ShoppingController {
 		}
 
 		DeliveryVO deliveryvo = shoppingService.getDeliverySelect(pay_oknum);
-		
+
 		try {
 			PayBackVO pbvo = shoppingService.getPayBackSelect(pay_oknum);
 			mv.addObject("pbvo", pbvo);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		
-		
+
+		mv.addObject("pay_oknum", pay_oknum);
 		mv.addObject("sum", sum);
 		mv.addObject("deliveryvo", deliveryvo);
 		mv.addObject("prodList", prodList);
@@ -615,6 +619,7 @@ public class ShoppingController {
 		return mv;
 	}
 
+	// 결제취소
 	@GetMapping("/Order.do")
 	public ModelAndView getOrder(@RequestParam("pay_oknum") String pay_oknum, @RequestParam("st") String st,
 			@RequestParam("client_num") String client_num, @RequestParam("pb_content") String pb_content,
@@ -630,6 +635,7 @@ public class ShoppingController {
 			PayBackVO pbvo = new PayBackVO();
 			pbvo.setClient_num(client_num);
 			pbvo.setPb_content(pb_content);
+			pbvo.setPb_title("구매취소");
 			pbvo.setPb_dp("0");
 			pbvo.setPb_st("8");
 			pbvo.setPay_oknum(pay_oknum);
@@ -649,18 +655,70 @@ public class ShoppingController {
 			shoppingService.getPointPlus(point);
 			session.removeAttribute("POINT_REM");
 			session.setAttribute("POINT_REM", pointService.getPointsByUserId(Integer.parseInt(client_num)));
-		} else if(st.equals("2")) {
+		} else if (st.equals("2")) {
 			// 구매 확정시
 			shoppingService.getDeliveryComfirm(pay_oknum);
 		}
 		return mv;
 	}
+
+	// 상품 하나 리뷰쓰기
 	@GetMapping("/reviewprodwriteform.do")
-	public ModelAndView getOrder(@RequestParam("prod_num")String prod_num) {
+	public ModelAndView getOrder(@RequestParam("prod_num") String prod_num) {
 		ModelAndView mv = new ModelAndView("bbs/review_writeform");
 		ProductVO pvo = shoppingService.getProductOne(prod_num);
 		mv.addObject("prod_st", 1);
 		mv.addObject("pvo", pvo);
+		return mv;
+	}
+
+	// 교환, 환불페이지 이동
+	@GetMapping("/productcancleform.do")
+	public ModelAndView getProductCancleForm(@RequestParam("client_num") String client_num,
+			@RequestParam("prod_num") String prod_num, @RequestParam("pay_oknum") String pay_oknum,
+			@RequestParam("st") String st) {
+		ModelAndView mv = new ModelAndView("order/cancle_writeform");
+
+		UserVO uvo = shoppingService.getUserInfo(client_num);
+		ProductVO pvo = shoppingService.getProductOne(prod_num);
+		mv.addObject("st", st);
+		mv.addObject("uvo", uvo);
+		mv.addObject("pvo", pvo);
+		mv.addObject("pay_oknum", pay_oknum);
+		return mv;
+	}
+
+	// 교환, 환불 기능
+	@PostMapping("/productcanclereturn.do")
+	public ModelAndView getPayBackCancleReturn(PayBackVO pbvo, HttpServletRequest request, @RequestParam("st")String st) {
+		ModelAndView mv = new ModelAndView();
+		try {
+			String path = request.getSession().getServletContext().getRealPath("resources/upload");
+
+			MultipartFile f_param = pbvo.getFile();
+
+			if (f_param.isEmpty()) {
+				pbvo.setPb_file("");
+			} else {
+				UUID uuid = UUID.randomUUID();
+				String f_name = uuid.toString() + "_" + pbvo.getFile().getOriginalFilename();
+				pbvo.setPb_file(f_name);
+
+				byte[] in = pbvo.getFile().getBytes();
+				File out = new File(path, f_name);
+
+				FileCopyUtils.copy(in, out);
+			}
+		} catch (Exception e) {
+		}
+		System.out.println("getfile" + pbvo.getFile());
+		System.out.println("getpbfile" + pbvo.getPb_file());
+		if(st.equals("0")) {
+			pbvo.setPb_st("4");			
+		} else if(st.equals("1")) {
+			pbvo.setPb_st("0");
+		}
+		shoppingService.getPayBackCancleReturn(pbvo);
 		return mv;
 	}
 }

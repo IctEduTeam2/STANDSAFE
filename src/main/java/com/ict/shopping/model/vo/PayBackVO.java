@@ -1,7 +1,34 @@
 package com.ict.shopping.model.vo;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class PayBackVO {
-	String pb_num, pb_content, pb_dp, pb_file, pb_date, pb_st, client_num, pay_oknum;
+	String pb_num, pb_title, pb_content, pb_dp, pb_file, pb_date, pb_st, client_num, pay_oknum, prod_num;
+	MultipartFile file;
+	
+	public MultipartFile getFile() {
+		return file;
+	}
+
+	public void setFile(MultipartFile file) {
+		this.file = file;
+	}
+
+	public String getPb_title() {
+		return pb_title;
+	}
+
+	public void setPb_title(String pb_title) {
+		this.pb_title = pb_title;
+	}
+
+	public String getProd_num() {
+		return prod_num;
+	}
+
+	public void setProd_num(String prod_num) {
+		this.prod_num = prod_num;
+	}
 
 	public String getPb_num() {
 		return pb_num;

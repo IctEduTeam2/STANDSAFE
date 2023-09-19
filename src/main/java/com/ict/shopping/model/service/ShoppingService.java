@@ -186,4 +186,9 @@ public class ShoppingService {
 		return shoppingDAO.getPayBackSelect(pay_oknum);
 	}
 
+	// 교환 환불
+	public void getPayBackCancleReturn(PayBackVO pbvo) {
+		shoppingDAO.getPayBackCancleReturn(pbvo);
+	}
+	
 }

@@ -161,18 +161,23 @@ var extraAddr = '';
             return;
         } else if(f.take_peo.value.trim()== null || f.take_peo.value.trim() == "") {
 	    	alert("받는분 성함을 입력해주세요.");
+			f.take_peo.focus();
 	    	return;
 	    } else if(f.postcode2.value.trim()== null || f.postcode2.value.trim() == "") {
 	    	alert("배송지를 입력해주세요.");
+			f.postcode2.focus();
 	    	return;
 	    } else if(f.address2.value.trim()== null || f.address2.value.trim() == "") {
 	    	alert("배송지를 입력해주세요.");
+			f.address2.focus();
 	    	return;
 	    } else if(f.phone.value.trim()== null || f.phone.value.trim() == "") {
 	    	alert("받는분 핸드폰 번호를 입력해주세요.");
+			f.phone.focus();
 	    	return;
 	    } else if(f.phone.value.trim().length < 11) {
 	    	alert("핸드폰 번호는 11글자로 입력해주세요.");
+			f.phone.focus();
 	    	return;
 	    } else if (inputValue < price) {
 	        alert("포인트가 부족합니다.");

@@ -184,5 +184,11 @@ public class ShoppingDAO {
 	// 페이백 조회
 	public PayBackVO getPayBackSelect(String pay_oknum) {
 		return sqlSessionTemplate.selectOne("shopping.paybackselect", pay_oknum);
+	}	
+	
+	// 교환 환불
+	public void getPayBackCancleReturn(PayBackVO pbvo) {
+		sqlSessionTemplate.insert("shopping.paybackcanclereturn", pbvo);
 	}
+	
 }

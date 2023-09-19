@@ -214,12 +214,12 @@ td {
 													<c:when test="${deliveryvo.deli_st == 0}">
 													</c:when>
 													<c:when test="${deliveryvo.deli_st == 1}">
-														<button>반품요청</button>
-														<button>교환요청</button>
+														<button onclick="location.href = '/productcancleform.do?client_num=${id}&prod_num=${b.prod_num }&pay_oknum=${pay_oknum }&st=0'">환불요청</button>
+														<button onclick="location.href = '/productcancleform.do?client_num=${id}&prod_num=${b.prod_num }&pay_oknum=${pay_oknum }&st=1'">교환요청</button>
 													</c:when>
 													<c:when test="${deliveryvo.deli_st == 2}">
-														<button>반품요청</button>
-														<button>교환요청</button>
+														<button onclick="location.href = '/productcancleform.do?client_num=${id}&prod_num=${b.prod_num }&pay_oknum=${pay_oknum }&st=0'">환불요청</button>
+														<button onclick="location.href = '/productcancleform.do?client_num=${id}&prod_num=${b.prod_num }&pay_oknum=${pay_oknum }&st=1'">교환요청</button>
 													</c:when>
 													<c:when test="${deliveryvo.deli_st == 3}">
 														<button onclick="location.href = '/productOneListform.do?prod_num=${b.prod_num }'">재구매</button>
