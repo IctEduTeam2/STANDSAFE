@@ -151,56 +151,74 @@ public class Admin_notice {
 	}
 
 	//게시물삭제검색버튼 
-	@RequestMapping("/admin_showdelbtn.do")
-	public ModelAndView AdminShowbtndel(@RequestParam("noticeNum") int noticeNum) {
-		System.out.println("1");
-		ModelAndView mv = new ModelAndView("admin_notice/notice");
-		List<NoticeVO> delNotibtn = notiService.getDeletedNoti(noticeNum);
-		mv.addObject("delNotibtn", delNotibtn);
-		System.out.println(mv);
-		return mv;
+	@RequestMapping(value = "/adnotice_deleted.do", produces = "text/html; charset=utf-8")
+	@ResponseBody
+	public String adNotiDeleted(HttpServletRequest request, HttpSession session) {
+	    // 여기에서 NOTICE_ST 값이 2인 데이터만 필터링하여 list를 가져옵니다.
+	    List<NoticeVO> list = notiService.getDeletedNoti();
+
+	    StringBuilder html = new StringBuilder();
+	    int no = list.size(); // 번호를 내림차순으로 출력하기 위해 리스트 크기로 초기화
+	    for (NoticeVO k : list) {
+	        html.append("<tr>");
+	        html.append("<td><input type='checkbox' name='chk' value='").append(k.getNOTICE_NUM()).append("' /></td>");
+	        html.append("<td>").append(no).append("</td>");  // 번호 추가
+	        html.append("<td>").append(k.getNOTICE_SUBJECT()).append("</td>");
+	        html.append("<td>").append(k.getNOTICE_CONTENT()).append("</td>");
+	        html.append("<td>").append(k.getNOTICE_FILE()).append("</td>");
+	        html.append("<td>").append(k.getNOTICE_HIT()).append("</td>");
+	        html.append("<td>").append(k.getNOTICE_DATE()).append("</td>");
+	        html.append("<td>").append(k.getNOTICE_UPDATE()).append("</td>");
+	        html.append("<td>").append(k.getNOTICE_WRITER()).append("</td>");
+	        html.append("<td>").append(k.getNOTICE_ST()).append("</td>");
+	        html.append("</tr>");
+	        no--;  // 번호 감소
+	    }
+	    return html.toString();
 	}
 	
-	
-	
-	
-	
-	
-	
-	// 검색버튼
-	@PostMapping("/adnotice_search.do")
-	public ModelAndView adNotiSearch(HttpServletRequest request, HttpSession session,
-			@ModelAttribute("searchKey") String searchKey, @ModelAttribute("searchText") String searchText,
-			@ModelAttribute("searchTitle") String searchTitle, @ModelAttribute("start1") String start1,
-			@ModelAttribute("close1") String close1, @ModelAttribute("mg_type") String mg_type
-			
-			
-	) {
-	
-	    
-		ModelAndView mv = new ModelAndView();
 
-		System.out.println("검색어선택: " + searchKey);
-		System.out.println("검색어 입력: " + searchText);
-		System.out.println("기간: " + searchTitle);
-		System.out.println("스타트: " + start1);
-		System.out.println("클로즈: " + close1);
-		System.out.println("타입: " + mg_type);
+	
+	//검색버튼
+	@RequestMapping(value = "/adnotice_search.do", produces = "text/html; charset=utf-8")
+	@ResponseBody
+	public String adNotiSearch(
+			@RequestParam(value = "searchKey", required = false) String searchKey,
+	        @RequestParam(value = "searchText", required = false) String searchText,
+	        @RequestParam(value = "searchTitle", required = false) String searchTitle,
+	        @RequestParam(value = "start1", required = false) String start1,
+	        @RequestParam(value = "close1", required = false) String close1,
+	        @RequestParam(value = "mg_type", required = false) String mg_type,
+	        HttpServletRequest request, HttpSession session) {
 
-		switch (mg_type) {
+		List<NoticeVO> list;	
+		
+	    // Step 1: 검색 조건 검증 (상태설정안하고 검색(전체리스트))
+	    if(searchText == null || searchText.trim().isEmpty()) {
+	    	list = notiService.getAllNotices();
+	    }else {
+	    	// Step 2: 검색 쿼리 실행
+	    	list = notiService.adNotiSearch(searchKey, searchText, searchTitle, start1, close1, mg_type);   	
+	    }
 
-		case "공지사항":
-			List<NoticeVO> list = notiService.adNotiSearch(searchKey, searchText, searchTitle, start1, close1);
-			mv.addObject("list", list);
-			System.out.println("list" + list);
-			mv.setViewName("admin_notice/notice");
-			break;
-
-		default:
-			// 전체
-			break;
-		}// 스위치 종료
-		return mv;
+	    // Step 3: 결과를 HTML 형태로 가공
+	    StringBuilder html = new StringBuilder();
+	    for (NoticeVO k : list) {
+	        html.append("<tr>");
+	        // 각 NoticeVO 객체에서 정보를 가져와 HTML을 구성합니다.
+	        html.append("<td><input type='checkbox' name='chk' value='").append(k.getNOTICE_NUM()).append("' /></td>");
+	        html.append("<td>").append(k.getNOTICE_NUM()).append("</td>");
+	        html.append("<td>").append(k.getNOTICE_SUBJECT()).append("</td>");
+	        html.append("<td>").append(k.getNOTICE_CONTENT()).append("</td>");
+	        html.append("<td>").append(k.getNOTICE_FILE()).append("</td>");
+	        html.append("<td>").append(k.getNOTICE_HIT()).append("</td>");
+	        html.append("<td>").append(k.getNOTICE_DATE()).append("</td>");
+	        html.append("<td>").append(k.getNOTICE_UPDATE()).append("</td>");
+	        html.append("<td>").append(k.getNOTICE_WRITER()).append("</td>");
+	        html.append("<td>").append(k.getNOTICE_ST()).append("</td>");
+	        html.append("</tr>");
+	    }
+	    return html.toString();
 	}
 
 	

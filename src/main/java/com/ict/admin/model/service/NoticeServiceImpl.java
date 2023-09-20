@@ -48,20 +48,20 @@ public class NoticeServiceImpl implements NoticeService{
 	
 	//삭제게시물 검색 버튼
 	@Override
-	public List<NoticeVO> getDeletedNoti(int noticeNum) {
-		return noticeDAO.getDeletedNoti(noticeNum);
+	public List<NoticeVO> getDeletedNoti() {
+		return noticeDAO.getDeletedNoti();
 		
 	}
-//	public int getDeletedNoti(String notice_num) {
-//		return noticeDAO.getDeletedNoti(notice_num);
-//	}
-//	
+
+	//검색(전체리스트)
+	public List<NoticeVO> getAllNotices() {
+		return noticeDAO.getAllNotices();
+	}
 	
 	
-	
-	//검색
+	//검색(특정 추출)
 	@Override
-	public List<NoticeVO> adNotiSearch(String searchKey,String searchText,String searchTitle,String start1,String close1) {
-		return noticeDAO.adNotiSearch(searchKey,searchText,searchTitle,start1,close1);
+	public List<NoticeVO> adNotiSearch(String searchKey,String searchText,String searchTitle,String start1,String close1,String mg_type) {
+		return noticeDAO.adNotiSearch(searchKey,searchText,searchTitle,start1,close1,mg_type);
 	}
 }

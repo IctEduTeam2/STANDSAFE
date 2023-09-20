@@ -147,32 +147,50 @@ function deleteRow(rowId) {
 	}
 }
 //삭제 게시물 검색
-function showDeletedNotices(noticeNum) {
-	var noticeNum = 2;
-	$.ajax({
-		url: '/admin_showdelbtn.do?noticeNum=' + noticeNum,
-		type: 'GET',
-		success: function(response) {
-			console.log("tlqkf3")
-			$('#table_wrap').append(response);
-			//기존의 모든 내용을 삭제한 후 새로운 내용을 추가합니다:
-			//$('#table_wrap').empty().append(response);
-			
-			//기존의 요소를 새로운 내용으로 완전히 대체합니다:
-			//$('#table_wrap').replaceWith(response);
-			
-			//#table_wrap 내의 특정 요소만 업데이트하고 싶다면, 더 세밀한 DOM 조작이 가능합니다:
-			//$('#table_wrap > tbody').append('<tr><td>New Row</td></tr>');
 
-			alert("성공 성공")
-		},
-		error: function(error) {
-			alert("에러 에러");
-		}
-	});
+
+//검색버튼
+$(document).ready(function() {
+    $("button.searchbtn").click(function(e) {
+        e.preventDefault(); // Prevent the form from being submitted
+        $.ajax({
+            url: '/adnotice_search.do',
+            type: 'POST',
+            data: $("#searchForm").serialize(),
+            success: function(response) {
+                $("#bal").html(response);
+            },
+            error: function(error) {
+                alert("Error occurred");
+            }
+        });
+    });
+});
+
+
+function searchDeletedNotices() {
+    $.ajax({
+        url: '/adnotice_deleted.do',
+        type: 'GET',
+        success: function(response) {
+            $("#bal").html(response);
+        },
+        error: function(error) {
+            alert("Error occurred");
+        }
+    });
 }
 
-
+// 문서가 준비되면 실행될 코드입니다.
+$(document).ready(function() {
+    // 여기에는 이미 작성한 기존의 JavaScript 코드가 있을 수 있습니다.
+    
+    // 새로 추가하는 부분: 삭제된 게시물만 보여주는 버튼에 대한 클릭 이벤트 핸들러
+    $("input[value='삭제게시물']").click(function(e) {
+        e.preventDefault();  // 폼 제출을 막습니다.
+        searchDeletedNotices();  // 삭제된 게시물만 검색합니다.
+    });
+});
 
 
 
@@ -263,12 +281,9 @@ function showDeletedNotices(noticeNum) {
 							style="float: right; margin-top: 50px; margin-left: 15px; margin-right: 30px;">
 							<input type="button" alt="삭제게시물" value="삭제게시물"
 							style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
-							onclick="showDeletedNotices(2)"></span> 
+							onclick="searchDeletedNotices()"></span> 
 							
-						<span style="float: right; margin-top: 50px; margin-left: 15px;">
-							<input type="button" alt="전체기간" value="전체기간"
-							style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
-							onclick="setAllDates()"></span> 
+						 
 						<span style="float: right; margin-top: 50px; margin-left: 15px;">
 							<input type="button" alt="일주일" value="일주일"
 							style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
@@ -282,11 +297,11 @@ function showDeletedNotices(noticeNum) {
 					<dl>
 						<dt>
 							<div>
-								<span style="float: right; margin-top: 130px; margin-right: -659px;">
+								<span style="float: right; margin-top: 130px; margin-right: -495px;">
 									<input type="button" alt="초기화" value="초기화"
 									style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
 									onclick="resetFields()"></span>
-								 <span style="float: right; margin-top: 130px; margin-right: -494px;">
+								 <span style="float: right; margin-top: 130px; margin-right: -328px;">
 								 <input type="hidden" value="공지사항" name="mg_type">
 									<button class="searchbtn" type="submit"
 									style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;">검색</button>
@@ -314,7 +329,6 @@ function showDeletedNotices(noticeNum) {
 				<col width="15%">
 				<col width="10%">
 				<col width="5%">
-				<col width="5%">
 				<col width="10%">
 				<col width="10%">
 				<col width="10%">
@@ -326,82 +340,24 @@ function showDeletedNotices(noticeNum) {
 					<td class="column_3">게시물 제목</td>
 					<td class="column_4">내용</td>
 					<td class="column_5">파일 이름</td>
-					<td class="column_6">삭제</td>
-					<td class="column_7">조회수</td>
-					<td class="column_8">작성일</td>
-					<td class="column_9">수정일</td>
-					<td class="column_10">작성자</td>
-					<td class="column_11">등록상태</td>
+					<td class="column_6">조회수</td>
+					<td class="column_7">작성일</td>
+					<td class="column_8">수정일</td>
+					<td class="column_9">작성자</td>
+					<td class="column_10">등록상태</td>
 				</tr>
 			</thead>
-
-			<!--  테이블 내용  -->
-			<tbody>
-				<c:choose>
-					<c:when test="${empty list}">
-						<tr>
-							<td colspan="11"><p>자료가 존재하지 않습니다.</p></td>
-						</tr>
-					</c:when>
-
-					<c:otherwise>
-						<c:forEach var="k" items="${list}" varStatus="vs">
-    <c:choose>
-        <c:when test="${k.NOTICE_ST == 2}">
-            <!-- NOTICE_ST가 2인 데이터만 표시합니다. -->
-            <tr>
-                <td class="column_1">선택</td>
-                <td class="column_2">NO.</td>
-                <td class="column_3">게시물 제목</td>
-                <td class="column_4">내용</td>
-                <td class="column_5">파일 이름</td>
-                <td class="column_6">삭제</td>
-                <td class="column_7">조회수</td>
-                <td class="column_8">작성일</td>
-                <td class="column_9">수정일</td>
-                <td class="column_10">작성자</td>
-                <td class="column_11">등록상태</td>
-            </tr>
-        </c:when>
-        <c:otherwise>
-            <tr id="row_${k.NOTICE_NUM}">
-                <td><input type="checkbox" name="chk" id="chkbox_${k.NOTICE_NUM}" />
-                <label for="chkbox_${k.NOTICE_NUM}"></label>
-                </td>
-                <td>${paging.totalRecord -((paging.nowPage-1)*paging.numPerPage + vs.index)}</td>
-                <td>${k.NOTICE_SUBJECT}</td>
-                <td>${k.NOTICE_CONTENT}</td>
-                <td>
-                    <c:choose>
-                        <c:when test="${empty k.NOTICE_FILE}">
-                            없음
-                        </c:when>
-                        <c:otherwise>
-                            있음
-                        </c:otherwise>
-                    </c:choose>
-                </td>
-                <!--onelist 갈때 cPage 필요하다. 같이보내자. -->
-                <!-- 게시글 삭제 버튼 -->
-                <td><input type="button" value="삭제" onclick="deleteRow(${k.NOTICE_NUM})"></td>
-                <td>${k.NOTICE_HIT}</td>
-                <td>${k.NOTICE_DATE.substring(0,10)}</td>
-                <td>${k.NOTICE_UPDATE.substring(0,10)}</td>
-                <td>${k.NOTICE_WRITER}</td>
-                <td>${k.NOTICE_ST}</td>
-               <!--  <td id="status_${k.NOTICE_NUM}">${k.NOTICE_ST}</td> -->
-            </tr>
-        </c:otherwise>
-    </c:choose>
-</c:forEach>
-
-					</c:otherwise>
-				</c:choose>
+			<tbody id="bal">
+			<%-- <c:set var="index" value="${s_result5.size()}" />
+				<tr>
+					<td colspan="10">검색내용을 입력하세요</td>
+				</tr>
+				<c:set var="index" value="${index - 1}" /> --%>
 			</tbody>
 	<!-- 페이지 번호 출력 부분 -->
 <tfoot>
     <tr>
-        <td colspan="11">
+        <td colspan="10">
             <ol class="paging">
                 <!-- 이전 버튼 -->
                 <c:if test="${paging.beginBlock > paging.pagePerBlock}">
@@ -457,4 +413,5 @@ function showDeletedNotices(noticeNum) {
 
 	<jsp:include page="../Semantic/footer.jsp"></jsp:include>
 </body>
+
 </html>
