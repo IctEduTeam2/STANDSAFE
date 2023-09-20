@@ -56,7 +56,7 @@
 					style="text-align: center; font-size: 30px; margin-bottom: 20px;">회원가입</h1>
 				<form action="user_joinok.do" method="POST" id="userForm"
 					onsubmit="return checkAll()">
-					<table style="margin: auto;">
+					<table style="margin: auto; background-color: white;">
 						<tr>
 							<td>아이디<span class="required">*</span></td>
 							<td><input type="text" id="ID" name="ID"
@@ -157,8 +157,7 @@
 					<div style="width: 100%; text-align: center;">
 						<button type="submit" class="join-button" onclick="prepareAddr()"
 							id="signUpButton">회원가입</button>
-						<button type="button" class="cancel-button"
-							onclick="user_joincancel()">취소</button>
+						<button type="button" class="cancel-button" onclick="event.preventDefault(); user_joincancel();">취소</button>
 					</div>
 				</form>
 			</article>
@@ -167,6 +166,11 @@
 		<script src="resources/js/quick.js"></script>
 		<jsp:include page="../Semantic/footer.jsp"></jsp:include>
 	</div>
+	<script type="text/javascript">
+	function user_joincancel() {
+	    window.location.href = 'user_joinpage.do';
+	}
+	</script>
 	<script>
 		function execDaumPostcode() {
 			new daum.Postcode(

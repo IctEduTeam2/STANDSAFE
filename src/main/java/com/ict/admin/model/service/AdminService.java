@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ict.admin.model.vo.AdminVO;
 import com.ict.bbs.model.vo.QA_BBS_VO;
+import com.ict.user.model.vo.UserVO;
 
 public interface AdminService {
 

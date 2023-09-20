@@ -32,7 +32,7 @@
 </script>
 <style type="text/css">
 .menu>li:hover .submenu {
-	background-color: rgb(240, 240, 240);
+	/*background-color: rgb(240, 240, 240);*/
 	height: 350px; /*서브메뉴 li한개의 높이 50*5*/
 	transition-duration: 1s;
 }

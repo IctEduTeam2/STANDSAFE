@@ -42,7 +42,7 @@
 			<article>
 				<br>
 				<h1
-					style="text-align: center; font-size: 30px; margin-bottom: 20px;">회원정보</h1>
+					style="text-align: center; font-size: 30px; margin-bottom: 20px;">관리자 정보</h1>
 
 				<form action="admin_fixok.do" method="POST" id="userForm">
 					<table style="margin: auto;">

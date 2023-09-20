@@ -67,9 +67,9 @@
     margin: 10px;
 }
 .social-login {
-    display: flex;
+    /*display: flex;
     justify-content: space-between;
-    width: auto; 
+    width: auto; */
     margin-top: 10px;
 }
 /* 아이디찾기 */

@@ -51,9 +51,10 @@
 					</p>
 					|
 					<p>
-						<a href="adminlogin.do">(임시)관리자 로그인</a>
+						<a href="admin.do">(임시)관리자 로그인</a>
 					</p>
 				</div>
+			</article>
 				<div class="social-login">
 					<p class=>
 						<c:set var="REST_API_KEY" value="1b5cf56e8cc2a06876bd756e6307c0ad" />
@@ -64,14 +65,7 @@
 							<img src="/resources/images/kakao_login.png">
 						</a>
 					</p>
-					<!-- <p>
-						<img src="/resources/images/naver_login.png">
-					</p>
-					<p>
-						<img src="/resources/images/google_login.png">
-					</p> -->
 				</div>
-			</article>
 		</section>
 		<jsp:include page="../Semantic/quickmenu.jsp"></jsp:include>
 		<script src="resources/js/quick.js"></script>

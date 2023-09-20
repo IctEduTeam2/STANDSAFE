@@ -24,7 +24,18 @@
 	min-height: 60px;
 	text-align: center; /* 글자를 가로로 중앙 정렬 */
 }
+.btn {
+	padding: 5px 10px;
+	margin: 2px;
+	color: white;
+	background-color: navy;
+}
 
+.light-blue {
+	background-color: lightblue;
+	border: none;
+	color: white;
+}
 .box2 {
 	display: inline-block;
 	border: 1px solid #ccc;
@@ -243,7 +254,7 @@ table tfoot ol.paging li a:hover {
 				<tbody>
 					<c:if test="${empty adminList}">
 						<tr>
-							<td colspan="8" class="empty-text">삭제된 관리자가 없습니다.</td>
+							<td colspan="8" class="empty-text">검색된 결과가 없습니다.</td>
 							<!-- 'colspan'의 값을 테이블의 열 수에 맞게 조절해야 합니다. -->
 						</tr>
 					</c:if>
@@ -290,7 +301,7 @@ table tfoot ol.paging li a:hover {
 									</c:when>
 									<c:otherwise>
 										<li><a
-											href="/bbs_list.do?cPage=${paging.beginBlock-paging.pagePerBlock }">이전으로</a></li>
+											href="/adminManagement.do?cPage=${paging.beginBlock-paging.pagePerBlock }">이전으로</a></li>
 									</c:otherwise>
 								</c:choose>
 
@@ -327,7 +338,6 @@ table tfoot ol.paging li a:hover {
 								</div>
 							</ol>
 						</td>
-
 					</tr>
 				</tfoot>
 			</table>
