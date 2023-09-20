@@ -13,7 +13,7 @@
 	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
 <!-- Link Swiper's CSS -->
 
-
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://underscorejs.org/underscore-min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70.0-2014.11.23/jquery.blockUI.min.js"></script>
@@ -298,10 +298,15 @@ tr td:nth-child(2) {
 		closeModal();
 	}
 </script>
- <script type="text/javascript">
+<script type="text/javascript">
+
+</script>
+</head>
+
+<body onload="InitializeStaticMenu();"> <script type="text/javascript">
  let totalData; //총 데이터 수
  let dataPerPage; //한 페이지에 나타낼 글 수
- let pageCount = 2; //페이징에 나타낼 페이지 수
+ let pageCount = 5; //페이징에 나타낼 페이지 수
  let globalCurrentPage=1; //현재 페이지
  let dataList; //표시하려하는 데이터 리스트
 
@@ -374,26 +379,26 @@ tr td:nth-child(2) {
 	  let pageHtml = "";
 
 	  if (prev > 0) {
-	    pageHtml += "<li><a href='#' id='prev'> 이전 </a></li>";
+	    pageHtml += "<li><a href='' id='prev'> 이전 </a></li>";
 	  }
 
 	 //페이징 번호 표시 
 	  for (var i = first; i <= last; i++) {
 	    if (currentPage == i) {
 	      pageHtml +=
-	        "<li class='on'><a href='#' id='" + i + "'>" + i + "</a></li>";
+	        "<li class='on'><a href='' id='" + i + "'>" + i + "</a></li>";
 	    } else {
-	      pageHtml += "<li><a href='#' id='" + i + "'>" + i + "</a></li>";
+	      pageHtml += "<li><a href='' id='" + i + "'>" + i + "</a></li>";
 	    }
 	  }
 
 	  if (last < totalPage) {
-	    pageHtml += "<li><a href='#' id='next'> 다음 </a></li>";
+	    pageHtml += "<li><a href='' id='next'> 다음 </a></li>";
 	  }
 
 	  $("#pagingul").html(pageHtml);
 	  let displayCount = "";
-	  displayCount = "현재 1 - " + totalPage + " 페이지 / " + totalData + "건";
+	  displayCount = "총 리뷰수: " + totalData;
 	  $("#displayCount").text(displayCount);
 
 
@@ -421,9 +426,6 @@ tr td:nth-child(2) {
 	    displayData(globalCurrentPage, dataPerPage);
 	 });
  </script>
-</head>
-
-<body onload="InitializeStaticMenu();">
 	<script type="text/javascript">
 		var alertMessage = "${alertMessage}";
 		if (alertMessage) {
@@ -532,8 +534,7 @@ tr td:nth-child(2) {
 					<hr>
 					<div class="review b">
 						<h1 style="text-align: center; margin: 80px 0; font-size: 60px;">Review</h1>    <div class="app">
-						<input type="hidden" value="1" id="dataPerPage">
-						<span id="displayCount"></span>
+						<input type="hidden" value="5" id="dataPerPage">
 						<table id="dataTableBody">
 						</table>
 						<ul id="pagingul">

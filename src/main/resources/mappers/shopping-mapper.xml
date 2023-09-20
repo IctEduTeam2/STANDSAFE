@@ -325,7 +325,7 @@
 		WHERE PROD_NUM = #{prod_num}
 		AND RE_ST = #{re_st}
 		AND RE_LOCK = #{re_lock}
-		ORDER BY RE_DATE DESC;
+		ORDER BY RE_DATE DESC limit #{limit} offset #{offset};
 	</select>
 	
 	<!-- 리뷰 개수조회 -->

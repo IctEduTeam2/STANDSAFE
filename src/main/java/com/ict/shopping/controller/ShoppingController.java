@@ -53,6 +53,8 @@ public class ShoppingController {
 	private ShoppingService shoppingService;
 	@Autowired
 	private PointService pointService;
+	@Autowired
+	private Paging paging;
 
 	@GetMapping("/")
 	public ModelAndView getMain() {
@@ -83,8 +85,48 @@ public class ShoppingController {
 			rvo.setProd_num(prod_num);
 			rvo.setRe_st("1");
 			rvo.setRe_lock("0");
-			List<ReviewVO> rvolist = shoppingService.getReviewList(rvo);
-			mv.addObject("rvolist", rvolist);
+			paging.setNumPerPage(5);
+			
+			//페이징을 위해 게시물의 전체글 구하기
+			int count = shoppingService.getTotalReviewCount(rvo);
+			System.out.println(count);
+			paging.setTotalRecord(count);
+			//페이징처리
+			if(paging.getTotalRecord() <= paging.getNumPerPage()) {
+				paging.setTotalPage(1);
+			}else {
+				paging.setTotalPage(paging.getTotalRecord()/paging.getNumPerPage());
+				if(paging.getTotalRecord()%paging.getNumPerPage() != 0) {
+					paging.setTotalPage(paging.getTotalPage() +1);
+				}
+			}
+			
+			String cPage = request.getParameter("cPage");
+			if(cPage==null) {
+				paging.setNowPage(1);
+			}else {
+				paging.setNowPage(Integer.parseInt(cPage));
+				mv.addObject("test", 1);
+			}
+			
+			paging.setOffset(paging.getNumPerPage()*(paging.getNowPage()-1));
+			
+			paging.setBeginBlock((int)((paging.getNowPage()-1)/paging.getPagePerBlock())
+					*paging.getPagePerBlock()+1);
+			
+			paging.setEndBlock(paging.getBeginBlock()+paging.getPagePerBlock()-1);
+			
+			if(paging.getEndBlock() > paging.getTotalPage()) {
+				paging.setEndBlock(paging.getTotalPage());
+			}
+			
+			rvo.setOffset(paging.getOffset());
+			rvo.setLimit(paging.getNumPerPage());
+			
+			List<ReviewVO> list = shoppingService.getReviewList(rvo);
+			mv.addObject("list", list);
+			mv.addObject("prod_num", prod_num);
+			mv.addObject("paging", paging);
 		} catch (Exception e) {
 			System.out.println(e);
 			return new ModelAndView("shopping/error");
@@ -92,22 +134,6 @@ public class ShoppingController {
 		return mv;
 	}
 	
-	@ResponseBody
-	@RequestMapping(value = "/reqAjax2", method = RequestMethod.GET)
-	public List<ReviewVO> reqAjax2(String prod_num) {
-		System.out.println(prod_num);
-	    List<ReviewVO> dataList = new ArrayList<>();
-	    ReviewVO rvo = new ReviewVO();
-	    rvo.setProd_num(prod_num);
-	    rvo.setRe_st("1");
-	    rvo.setRe_lock("0");
-	    List<ReviewVO> rvolist = shoppingService.getReviewList(rvo);
-	    for (ReviewVO review : rvolist) {
-	        dataList.add(review);
-	    }
-	    
-	    return dataList;
-	}
 	
 	// 메인화면 장바구니 담기
 	@GetMapping("/basketAdd.do")

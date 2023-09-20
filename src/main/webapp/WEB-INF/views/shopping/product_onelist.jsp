@@ -13,7 +13,7 @@
 	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
 <!-- Link Swiper's CSS -->
 
-
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://underscorejs.org/underscore-min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70.0-2014.11.23/jquery.blockUI.min.js"></script>
@@ -184,6 +184,47 @@ tr td:nth-child(2) {
     background-color: #c0392b;
 }
 
+/* paging */
+
+table tfoot ol.paging {
+    list-style: none;
+    text-align: center; /* 가운데 정렬을 위한 변경 */
+}
+table tfoot ol.paging li {
+    display: inline-block; /* 가로 정렬을 위해 float 제거하고 inline-block으로 변경 */
+     margin-right: 8px; 
+}
+
+
+table tfoot ol.paging li a {
+	display: block;
+	padding: 3px 7px;
+	border: 1px solid #6c98c2;
+	color: #2f313e;
+	 font-weight: bold; 
+}
+
+table tfoot ol.paging li a:hover {
+	background: #6c98c2;
+	color: white;
+	font-weight: bold;
+}
+
+
+
+.disable {
+	padding: 3px 7px;
+	border: 1px solid silver;
+	color: silver;
+}
+
+.now {
+	padding: 3px 7px;
+	border: 1px solid #1b5ac2;
+	background: #1b5ac2;
+	color: white;
+	font-weight: bold;
+}
 </style>
 <script>
 	function goToScroll(name) {
@@ -298,136 +339,22 @@ tr td:nth-child(2) {
 		closeModal();
 	}
 </script>
+<script type="text/javascript">
 
+</script>
 </head>
-
-<body onload="InitializeStaticMenu();"> <script type="text/javascript">
- let totalData; //총 데이터 수
- let dataPerPage; //한 페이지에 나타낼 글 수
- let pageCount = 5; //페이징에 나타낼 페이지 수
- let globalCurrentPage=1; //현재 페이지
- let dataList; //표시하려하는 데이터 리스트
-
- $(document).ready(function () {
-  //dataPerPage 선택값 가져오기
-  dataPerPage = $("#dataPerPage").val();
-  var prod_num = 10;
-  $.ajax({ // ajax로 데이터 가져오기
- 	method: "GET",
- 	url: "reqAjax2",
- 	dataType: "json",
- 	data: { prod_num: prod_num },
- 	success: function (d) {
- 		console.log(d);
- 	   //totalData(총 데이터 수) 구하기
- 	   totalData = d.length;
-            //데이터 대입
-            dataList=d;
-  //글 목록 표시 호출 (테이블 생성)
-  displayData(1, dataPerPage);
-  
-  //페이징 표시 호출
-  paging(totalData, dataPerPage, pageCount, 1);
- 	}
-  	});
- });
- 
-//현재 페이지(currentPage)와 페이지당 글 개수(dataPerPage) 반영
- function displayData(currentPage, dataPerPage) {
-
-   let chartHtml = "";
-
- //Number로 변환하지 않으면 아래에서 +를 할 경우 스트링 결합이 되어버림.. 
-   currentPage = Number(currentPage);
-   dataPerPage = Number(dataPerPage);
-   
-   for (
-     var i = (currentPage - 1) * dataPerPage;
-     i < (currentPage - 1) * dataPerPage + dataPerPage;
-     i++
-   ) {
-     chartHtml +=
-       "<tr><td>" +
-       dataList[i].re_content +
-       "</td></tr>";
-   } //dataList는 임의의 데이터임.. 각 소스에 맞게 변수를 넣어주면 됨...
-   $("#dataTableBody").html(chartHtml);
- }
- 
- function paging(totalData, dataPerPage, pageCount, currentPage) {
-	  console.log("currentPage : " + currentPage);
-
-	  totalPage = Math.ceil(totalData / dataPerPage); //총 페이지 수
-	  
-	  if(totalPage<pageCount){
-	    pageCount=totalPage;
-	  }
-	  
-	  let pageGroup = Math.ceil(currentPage / pageCount); // 페이지 그룹
-	  let last = pageGroup * pageCount; //화면에 보여질 마지막 페이지 번호
-	  
-	  if (last > totalPage) {
-	    last = totalPage;
-	  }
-
-	  let first = last - (pageCount - 1); //화면에 보여질 첫번째 페이지 번호
-	  let next = last + 1;
-	  let prev = first - 1;
-
-	  let pageHtml = "";
-
-	  if (prev > 0) {
-	    pageHtml += "<li><a href='#' id='prev'> 이전 </a></li>";
-	  }
-
-	 //페이징 번호 표시 
-	  for (var i = first; i <= last; i++) {
-	    if (currentPage == i) {
-	      pageHtml +=
-	        "<li class='on'><a href='#' id='" + i + "'>" + i + "</a></li>";
-	    } else {
-	      pageHtml += "<li><a href='#' id='" + i + "'>" + i + "</a></li>";
-	    }
-	  }
-
-	  if (last < totalPage) {
-	    pageHtml += "<li><a href='#' id='next'> 다음 </a></li>";
-	  }
-
-	  $("#pagingul").html(pageHtml);
-	  let displayCount = "";
-	  displayCount = "총 리뷰수: " + totalData;
-	  $("#displayCount").text(displayCount);
-
-
-	  //페이징 번호 클릭 이벤트 
-	  $("#pagingul li a").click(function () {
-	    let $id = $(this).attr("id");
-	    selectedPage = $(this).text();
-
-	    if ($id == "next") selectedPage = next;
-	    if ($id == "prev") selectedPage = prev;
-	    
-	    //전역변수에 선택한 페이지 번호를 담는다...
-	    globalCurrentPage = selectedPage;
-	    //페이징 표시 재호출
-	    paging(totalData, dataPerPage, pageCount, selectedPage);
-	    //글 목록 표시 재호출
-	    displayData(selectedPage, dataPerPage);
-	  });
-	}
- 
- $("#dataPerPage").change(function () {
-	    dataPerPage = $("#dataPerPage").val();
-	    //전역 변수에 담긴 globalCurrent 값을 이용하여 페이지 이동없이 글 표시개수 변경 
-	    paging(totalData, dataPerPage, pageCount, globalCurrentPage);
-	    displayData(globalCurrentPage, dataPerPage);
-	 });
- </script>
 	<script type="text/javascript">
 		var alertMessage = "${alertMessage}";
 		if (alertMessage) {
 			alert(alertMessage);
+		}
+		var test = "${test}";
+		if(test==1) {
+				var location = document.querySelector("." + b).offsetTop;
+				window.scrollTo({
+					top : location,
+					behavior : 'smooth'
+				});
 		}
 	</script>
 	<div id="mydiv">
@@ -531,14 +458,64 @@ tr td:nth-child(2) {
 					</div>
 					<hr>
 					<div class="review b">
-						<h1 style="text-align: center; margin: 80px 0; font-size: 60px;">Review</h1>    <div class="app">
-						<input type="hidden" value="5" id="dataPerPage">
-						<span id="displayCount"></span>
-						<table id="dataTableBody">
-						</table>
-						<ul id="pagingul">
-						</ul>
-				</div>
+						<h1 style="text-align: center; margin: 80px 0; font-size: 60px;">Review</h1>  
+						<table class="m_table">				
+						<tbody class="mb_table">		
+							<c:choose>
+								<c:when test="${empty list}">
+									<tr>
+										<td colspan="2"><p>리뷰가 없습니다.</p></td>
+									</tr>
+								</c:when>
+								
+								<c:otherwise>
+									<c:forEach var="k" items="${list}" varStatus="vs">
+										<tr>
+											<td style="width: 50px; height: 100px;">${k.re_writer }</td>
+											<td style="text-align: left;">${k.re_content}</td>
+										</tr>
+									</c:forEach>
+								</c:otherwise>
+							</c:choose>					
+						</tbody>
+						<tfoot>
+								<tr>
+									<td colspan="2">
+										<ol class="paging">
+											<!-- 이전버튼 : 첫블럭이면 비활성화-->
+											<c:choose>
+												<c:when test="${paging.beginBlock <= paging.pagePerBlock }">
+													<li class="disable">이전으로</li>
+												</c:when>
+												<c:otherwise>
+													<li><a href="/productOneListform.do?prod_num=${prod_num }&cPage=${paging.beginBlock-paging.pagePerBlock }">이전으로</a></li>
+												</c:otherwise>
+											</c:choose>	
+											<c:forEach begin="${paging.beginBlock }" end="${paging.endBlock }" step="1" var="k">
+												<c:if test="${k == paging.nowPage }">
+													<!--현재페이지와 같으면  -->
+													<li class="now">${k }</li>
+												</c:if>
+												<c:if test="${k != paging.nowPage }">
+													<li><a href="/productOneListform.do?prod_num=${prod_num }&cPage=${k }"> ${k }</a></li>
+												</c:if>
+											</c:forEach>
+															
+											<!-- 이후버튼  -->	
+											<c:choose>
+												<c:when test="${paging.endBlock >= paging.totalPage }">
+													<li class="disable">
+					다음으로</li>
+												</c:when>
+												<c:otherwise>
+													<li><a href="/productOneListform.do?prod_num=${prod_num }&cPage=${paging.beginBlock+paging.pagePerBlock }">다음으로</a></li>
+												</c:otherwise>
+											</c:choose>					
+										</ol>
+									</td>
+								</tr>
+						</tfoot>
+					</table>
 					</div>
 					<hr>
 					<div class="faq c">

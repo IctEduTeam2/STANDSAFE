@@ -2,7 +2,23 @@ package com.ict.shopping.model.vo;
 
 public class ReviewVO {
 	private String re_num, re_subject, re_writer, re_content, re_file, re_type, re_hit, re_lock, re_st, re_date, re_update, prod_num, client_num;
+	private int offset, limit;
 
+	public int getOffset() {
+		return offset;
+	}
+
+	public void setOffset(int offset) {
+		this.offset = offset;
+	}
+
+	public int getLimit() {
+		return limit;
+	}
+
+	public void setLimit(int limit) {
+		this.limit = limit;
+	}
 
 	public String getRe_num() {
 		return re_num;
