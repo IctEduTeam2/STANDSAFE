@@ -2,7 +2,7 @@ package com.ict.shopping.model.vo;
 
 public class PayVO {
 	private String pay_num, take_peo, take_addr, take_phone, take_memo, pay_type, pay_card, pay_ok, prod_img, pay_oknum, pay_st, cart_num, client_num, paymentKey;
-	private int pay_money;
+	private int pay_money, limit, offset;
 	
 	public int getPay_money() {
 		return pay_money;
@@ -14,6 +14,22 @@ public class PayVO {
 
 	public String getPay_num() {
 		return pay_num;
+	}
+
+	public int getLimit() {
+		return limit;
+	}
+
+	public void setLimit(int limit) {
+		this.limit = limit;
+	}
+
+	public int getOffset() {
+		return offset;
+	}
+
+	public void setOffset(int offset) {
+		this.offset = offset;
 	}
 
 	public String getProd_img() {

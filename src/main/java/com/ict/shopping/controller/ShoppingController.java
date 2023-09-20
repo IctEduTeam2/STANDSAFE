@@ -627,9 +627,55 @@ public class ShoppingController {
 
 	// 주문조회 리스트
 	@GetMapping("/orderlistform.do")
-	public ModelAndView getOrderListForm(@RequestParam("client_num") String client_num) {
+	public ModelAndView getOrderListForm(HttpServletRequest request, @RequestParam("client_num") String client_num) {
 		ModelAndView mv = new ModelAndView("shopping/orderlist");
+		
+		paging.setNumPerPage(5);
+		
+		//페이징을 위해 게시물의 전체글 구하기
+		int count = shoppingService.getTotalOrderCount(client_num);
+		System.out.println(count);
+		paging.setTotalRecord(count);
+		//페이징처리
+		if(paging.getTotalRecord() <= paging.getNumPerPage()) {
+			paging.setTotalPage(1);
+		}else {
+			paging.setTotalPage(paging.getTotalRecord()/paging.getNumPerPage());
+			if(paging.getTotalRecord()%paging.getNumPerPage() != 0) {
+				paging.setTotalPage(paging.getTotalPage() +1);
+			}
+		}
+		
+		String cPage = request.getParameter("cPage");
+		if(cPage==null) {
+			paging.setNowPage(1);
+		}else {
+			paging.setNowPage(Integer.parseInt(cPage));
+			mv.addObject("test", 1);
+		}
+		
+		paging.setOffset(paging.getNumPerPage()*(paging.getNowPage()-1));
+		
+		paging.setBeginBlock((int)((paging.getNowPage()-1)/paging.getPagePerBlock())
+				*paging.getPagePerBlock()+1);
+		
+		paging.setEndBlock(paging.getBeginBlock()+paging.getPagePerBlock()-1);
+		
+		if(paging.getEndBlock() > paging.getTotalPage()) {
+			paging.setEndBlock(paging.getTotalPage());
+		}
+		
+
+		PayVO pvo = new PayVO();
+		pvo.setClient_num(client_num);
+		pvo.setOffset(paging.getOffset());
+		pvo.setLimit(paging.getNumPerPage());
+		
 		List<PayVO> paylist = shoppingService.getPayList(client_num);
+		List<PayVO> list = shoppingService.getPayList(pvo);
+		
+		mv.addObject("list", list);
+		mv.addObject("paging", paging);
 		mv.addObject("paylist", paylist);
 		return mv;
 	}

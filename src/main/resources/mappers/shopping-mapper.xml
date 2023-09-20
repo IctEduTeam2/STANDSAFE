@@ -325,7 +325,7 @@
 		WHERE PROD_NUM = #{prod_num}
 		AND RE_ST = #{re_st}
 		AND RE_LOCK = #{re_lock}
-		ORDER BY RE_DATE DESC limit #{limit} offset #{offset};
+		ORDER BY RE_DATE DESC limit #{limit} offset #{offset}
 	</select>
 	
 	<!-- 리뷰 개수조회 -->
@@ -336,6 +336,43 @@
 		WHERE PROD_NUM = #{prod_num}
 		AND RE_ST = #{re_st}
 		AND RE_LOCK = #{re_lock}
+	</select>
+	
+	<!-- 주문 개수조회 -->
+	<select id="totalordercount" resultType="int" parameterType="payVO">
+		SELECT COUNT(*)
+		FROM PAY_T
+		WHERE client_num = #{client_num} 
+	</select>
+	
+		<!-- 주문조회 리스트 -->
+	<select id="paylist2" resultType="payVO" parameterType="payVO">
+		SELECT
+		P.PROD_IMG,
+		PAY.pay_num,
+		PAY.take_peo,
+		PAY.take_addr,
+		PAY.take_phone,
+		PAY.take_memo,
+		PAY.pay_type,
+		PAY.pay_card,
+		DATE_FORMAT(PAY.pay_ok,
+		'%Y-%m-%d') AS pay_ok,
+		PAY.pay_oknum,
+		PAY.pay_st,
+		PAY.cart_num,
+		PAY.client_num,
+		PAY.paymentkey,
+		PAY.pay_money
+		FROM PAY_T AS PAY
+		JOIN
+		CART_T AS C ON PAY.cart_num = C.cart_num
+		JOIN PRODUCT_T AS P ON
+		C.prod_num = P.prod_num
+		WHERE PAY.client_num = #{client_num}
+		GROUP BY
+		PAY.pay_oknum
+		ORDER BY PAY.pay_ok DESC limit #{limit} offset #{offset}
 	</select>
 </mapper>
 

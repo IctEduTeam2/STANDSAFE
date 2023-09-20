@@ -132,6 +132,10 @@ public class ShoppingDAO {
 	// 주문리스트
 	public List<PayVO> getPayList(String client_num) {
 		return sqlSessionTemplate.selectList("shopping.paylist", client_num);
+	}	
+	// 주문리스트
+	public List<PayVO> getPayList(PayVO pvo) {
+		return sqlSessionTemplate.selectList("shopping.paylist2", pvo);
 	}
 
 	// 주문상세내역
@@ -207,5 +211,10 @@ public class ShoppingDAO {
 	// 상품리뷰 개수조회
 	public int getTotalReviewCount(ReviewVO rvo) {
 		return sqlSessionTemplate.selectOne("shopping.totalreviewcount", rvo);
+	}	
+	
+	// 주문개수
+	public int getTotalOrderCount(String client_num) {
+		return sqlSessionTemplate.selectOne("shopping.totalordercount", client_num);
 	}
 }

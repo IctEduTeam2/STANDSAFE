@@ -131,6 +131,10 @@ public class ShoppingService {
 	public List<PayVO> getPayList(String client_num) {
 		return shoppingDAO.getPayList(client_num);
 	}
+	// 주문리스트
+	public List<PayVO> getPayList(PayVO pvo) {
+		return shoppingDAO.getPayList(pvo);
+	}
 	
 	// 주문상세내역
 	public List<PayVO> getOrderOneList(String pay_oknum) {
@@ -205,5 +209,10 @@ public class ShoppingService {
 	// 상품리뷰 몇개?
 	public int getTotalReviewCount(ReviewVO rvo) {
 		return shoppingDAO.getTotalReviewCount(rvo);
+	}
+	
+	// 주문개수
+	public int getTotalOrderCount(String client_num) {
+		return shoppingDAO.getTotalOrderCount(client_num);
 	}
 }
