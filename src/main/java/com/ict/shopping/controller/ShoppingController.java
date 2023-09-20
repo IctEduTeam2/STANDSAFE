@@ -89,7 +89,6 @@ public class ShoppingController {
 			
 			//페이징을 위해 게시물의 전체글 구하기
 			int count = shoppingService.getTotalReviewCount(rvo);
-			System.out.println(count);
 			paging.setTotalRecord(count);
 			//페이징처리
 			if(paging.getTotalRecord() <= paging.getNumPerPage()) {
@@ -283,7 +282,7 @@ public class ShoppingController {
 			String regEx = "(\\d{3})(\\d{3,4})(\\d{4})";
 			String chPhone = phone.replaceAll(regEx, "$1-$2-$3");
 			List<BasketVO> bvolist = shoppingService.getBasketList(client_num);
-			for(int i=1; i<bvolist.size(); i++) {
+			for(int i=0; i<bvolist.size(); i++) {
 				PayVO pvo = new PayVO();
 				pvo.setTake_peo(take_peo);
 				pvo.setTake_addr(address);
@@ -311,7 +310,7 @@ public class ShoppingController {
 			return mv;
 		}
 
-		// 바로구매 온라인결제시
+		// 장바구니 온라인결제시
 		@GetMapping("/basketordercard.do")
 		// String take_peo, String address, String extraAddress, String detailAddress,
 		// String phone, String memo, String order_num, String prod_num, String
@@ -479,7 +478,6 @@ public class ShoppingController {
 		ModelAndView mv = new ModelAndView("redirect:/wishlistform.do?client_num=" + client_num);
 		String[] valuesArray = selectedProducts.split(",");
 		for (int i = 0; i < valuesArray.length; i++) {
-			System.out.println(valuesArray[i]);
 			BasketVO bvo = new BasketVO();
 			bvo.setProd_num(valuesArray[i]);
 
@@ -536,7 +534,6 @@ public class ShoppingController {
 	public ModelAndView deleteSelectedProducts(@RequestParam("selectedProducts") String selectedProducts,
 			@RequestParam("client_num") String client_num) {
 		ModelAndView mv = new ModelAndView("shopping/basket");
-		System.out.println(selectedProducts);
 		if (selectedProducts == null || selectedProducts.equals("")) {
 		} else {
 			String[] valuesArray = selectedProducts.split(",");
@@ -570,7 +567,6 @@ public class ShoppingController {
 	// 수량증가
 	@PostMapping("/updateamount.do")
 	public ModelAndView getUpdateAmount(BasketVO bvo, String st) {
-		System.out.println(st);
 		if (st.equals("-")) {
 			bvo.setCart_amount(Integer.toString(Integer.parseInt(bvo.getCart_amount()) - 1));
 		} else {
@@ -721,7 +717,6 @@ public class ShoppingController {
 		
 		//페이징을 위해 게시물의 전체글 구하기
 		int count = shoppingService.getTotalOrderCount(client_num);
-		System.out.println(count);
 		paging.setTotalRecord(count);
 		//페이징처리
 		if(paging.getTotalRecord() <= paging.getNumPerPage()) {
@@ -902,8 +897,6 @@ public class ShoppingController {
 			}
 		} catch (Exception e) {
 		}
-		System.out.println("getfile" + pbvo.getFile());
-		System.out.println("getpbfile" + pbvo.getPb_file());
 		if(st.equals("0")) {
 			pbvo.setPb_st("4");			
 		} else if(st.equals("1")) {

@@ -144,7 +144,6 @@ td {
 
 <body onload="InitializeStaticMenu();">
 <script type="text/javascript">
-alert('합 ${sum}'+'페이머니 ${paylist[0].pay_money}');</script>
 	<div id="mydiv">
 		<jsp:include page="../Semantic/header.jsp"></jsp:include>
 		<section id="contents" style="border: 0px solid black;">
@@ -335,7 +334,7 @@ alert('합 ${sum}'+'페이머니 ${paylist[0].pay_money}');</script>
 									<tr>
 										<td>할인금액:</td>
 										<td><b style="color: orangered;">-</b>
-										<fmt:formatNumber value="${paylist[0].pay_money-sum}" type="number"
+										<fmt:formatNumber value="${sum-paylist[0].pay_money}" type="number"
 									pattern="#,### 원" /></td>
 									</tr>
 									<tr>

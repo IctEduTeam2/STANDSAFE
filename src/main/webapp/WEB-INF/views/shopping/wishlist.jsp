@@ -228,6 +228,14 @@ function basketSelectedProducts() {
 
 			<div
 				style="width: 60%; margin: auto; height: auto; margin-top: 60px;">
+					<c:choose>
+						<c:when test="${empty wishlist }">
+							<div
+								style="float: left; margin: auto; text-align: center; border: 1px solid black; width: 100%; height: 600px; margin-top: 50px;">
+								<h1 style="text-align: center;">찜한 상품이 존재하지 않습니다.</h1>
+							</div>
+						</c:when>
+						<c:otherwise>
 				<div
 					style="width: 100%; height: auto; margin-top: 100px; float: left;">
 					<div style="float: left; text-align: center; margin: 0;">
@@ -243,14 +251,6 @@ function basketSelectedProducts() {
 					</div>
 				</div>
 				<div class="baskets">
-					<c:choose>
-						<c:when test="${empty wishlist }">
-							<div
-								style="float: left; margin: auto; text-align: center; border: 1px solid black; width: 100%; height: 600px; margin-top: 50px;">
-								<h1 style="text-align: center;">찜한 상품이 존재하지 않습니다.</h1>
-							</div>
-						</c:when>
-						<c:otherwise>
 							<!-- 제품 한개-->
 							<c:forEach var="a" items="${prodlist }">
 								<form id="productWishDelForm" method="post"
@@ -304,9 +304,9 @@ function basketSelectedProducts() {
 								</div>
 							</c:forEach>
 							<!-- 제품한개 끝태그 -->
+				</div>
 						</c:otherwise>
 					</c:choose>
-				</div>
 			</div>
 		</section>
 		<jsp:include page="../Semantic/quickmenu.jsp"></jsp:include>
