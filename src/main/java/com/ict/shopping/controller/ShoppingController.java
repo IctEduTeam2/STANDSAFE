@@ -228,6 +228,129 @@ public class ShoppingController {
 		return mv;
 	}
 
+	// 주문페이지로 이동
+	@GetMapping("/orderform.do")
+	public ModelAndView getOrderForm(@RequestParam("client_num") String client_num) {
+		ModelAndView mv = new ModelAndView("shopping/order2");
+		UserVO uvo = shoppingService.getUserInfo(client_num);
+		List<BasketVO> bvolist = shoppingService.getBasketList(client_num);
+		List<ProductVO> productList = new ArrayList();
+		String order_num = "";
+		String possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+		for (var i = 0; i < 15; i++) {
+			order_num += possible.charAt((int) Math.floor(Math.random() * possible.length()));
+		}
+		int price_sum = 0;
+		for (BasketVO basket : bvolist) {
+			price_sum += Integer.parseInt(basket.getCart_price());
+			ProductVO product = shoppingService.getProductOne(basket.getProd_num());
+			productList.add(product);
+		}
+
+		String ordername = null;
+		if (productList.size() == 0) {
+			ordername = productList.get(0).getProd_name();
+		} else {
+			ordername = productList.get(0).getProd_name() + " 외 " + productList.size() + "건";
+
+		}
+		PointVO pointVO = shoppingService.getPoint(client_num);
+
+		mv.addObject("pointvo", pointVO);
+		mv.addObject("client_num", client_num);
+		mv.addObject("ordername", ordername);
+		mv.addObject("price_sum", price_sum);
+		mv.addObject("order_num", order_num);
+		mv.addObject("pvolist", productList);
+		mv.addObject("bvolist", bvolist);
+		mv.addObject("uvo", uvo);
+		return mv;
+	}
+	
+	// 장바구니 포인트 구매시
+		@PostMapping("/basketorderpoint.do")
+		// String take_peo, String address, String extraAddress, String detailAddress,
+		// String phone, String memo, String order_num, String prod_num, String
+		// client_num
+		public ModelAndView getBasketOrderPoint(int point, String take_peo, @RequestParam("address") String address,
+				@RequestParam("paytype") String paytype, String detailAddress2, String phone, String memo, String order_num,
+				String client_num, @RequestParam("price") int price, String amount, HttpSession session) {
+
+			ModelAndView mv = new ModelAndView(
+					"redirect:/orderOneListform.do?pay_oknum=" + order_num + "&client_num=" + client_num);
+			
+
+			String regEx = "(\\d{3})(\\d{3,4})(\\d{4})";
+			String chPhone = phone.replaceAll(regEx, "$1-$2-$3");
+			List<BasketVO> bvolist = shoppingService.getBasketList(client_num);
+			for(int i=1; i<bvolist.size(); i++) {
+				PayVO pvo = new PayVO();
+				pvo.setTake_peo(take_peo);
+				pvo.setTake_addr(address);
+				pvo.setTake_phone(chPhone);
+				pvo.setTake_memo(memo);
+				pvo.setPay_type(paytype);
+				pvo.setPay_oknum(order_num);
+				pvo.setCart_num(bvolist.get(i).getCart_num());
+				pvo.setPay_money(price);
+				pvo.setClient_num(client_num);
+				shoppingService.getPayInsert(pvo);
+			}
+			for(BasketVO bvo : bvolist) {
+				shoppingService.getBasketProductDel(bvo);
+				shoppingService.getProductSub(bvo);
+			}
+			PointVO pointVO = new PointVO();
+			pointVO.setPOINT_USE(price);
+			pointVO.setPOINT_REM(point - price);
+			pointVO.setCLIENT_NUM(Integer.parseInt(client_num));
+			shoppingService.getPointSub(pointVO);
+			shoppingService.getDeliveryAdd(order_num);
+			session.removeAttribute("POINT_REM");
+			session.setAttribute("POINT_REM", pointService.getPointsByUserId(Integer.parseInt(client_num)));
+			return mv;
+		}
+
+		// 바로구매 온라인결제시
+		@GetMapping("/basketordercard.do")
+		// String take_peo, String address, String extraAddress, String detailAddress,
+		// String phone, String memo, String order_num, String prod_num, String
+		// client_num
+		public ModelAndView gerBasketOrderCard(@RequestParam Map<String, Object> map) {
+			ModelAndView mv = new ModelAndView("redirect:/orderOneListform.do?pay_oknum=" + (String) (map.get("pay_oknum"))
+					+ "&client_num=" + (String) (map.get("client_num")));
+			BasketVO bvo2 = new BasketVO();
+			bvo2.setCart_price((String) (map.get("cart_price")));
+			bvo2.setProd_num((String) (map.get("prod_num")));
+			bvo2.setClient_num((String) (map.get("client_num")));
+			bvo2.setCart_amount((String) (map.get("cart_amount")));
+			bvo2.setCart_st("1");
+
+			// 카트키 가져오기
+			String key = shoppingService.getBasket(bvo2);
+
+			PayVO pvo = new PayVO();
+			pvo.setTake_peo((String) (map.get("take_peo")));
+			pvo.setTake_addr((String) (map.get("take_addr")));
+
+			String regEx = "(\\d{3})(\\d{3,4})(\\d{4})";
+			String phone = (String) map.get("take_phone");
+			String chPhone = phone.replaceAll(regEx, "$1-$2-$3");
+
+			pvo.setTake_phone(chPhone);
+			pvo.setTake_memo((String) (map.get("take_memo")));
+			pvo.setPay_type((String) (map.get("pay_type")));
+			pvo.setPay_money(Integer.parseInt((String) (map.get("cart_price"))));
+			pvo.setPay_oknum((String) (map.get("pay_oknum")));
+			pvo.setPaymentKey((String) (map.get("paymentKey")));
+			pvo.setCart_num(key);
+			pvo.setClient_num((String) (map.get("client_num")));
+			shoppingService.getProductSub(bvo2);
+			shoppingService.getPayInsert(pvo);
+			shoppingService.getDeliveryAdd((String) map.get("pay_oknum"));
+			// 카트키 가져오기
+			return mv;
+		}
 	// 상품상세 장바구니 담기
 	@RequestMapping("/cartadd.do")
 	public ModelAndView getCartAdd(@RequestParam("prod_num") String prod_num,
@@ -465,44 +588,8 @@ public class ShoppingController {
 		return new ModelAndView("redirect:/basketform.do?client_num=" + bvo.getClient_num());
 	}
 
-	// 주문페이지로 이동
-	@GetMapping("/orderform.do")
-	public ModelAndView getOrderForm(@RequestParam("client_num") String client_num) {
-		ModelAndView mv = new ModelAndView("shopping/order2");
-		UserVO uvo = shoppingService.getUserInfo(client_num);
-		List<BasketVO> bvolist = shoppingService.getBasketList(client_num);
-		List<ProductVO> productList = new ArrayList();
-		String order_num = "";
-		String possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-		for (var i = 0; i < 15; i++) {
-			order_num += possible.charAt((int) Math.floor(Math.random() * possible.length()));
-		}
-		int price_sum = 0;
-		for (BasketVO basket : bvolist) {
-			price_sum += Integer.parseInt(basket.getCart_price());
-			ProductVO product = shoppingService.getProductOne(basket.getProd_num());
-			productList.add(product);
-		}
 
-		String ordername = null;
-		if (productList.size() == 0) {
-			ordername = productList.get(0).getProd_name();
-		} else {
-			ordername = productList.get(0).getProd_name() + " 외 " + productList.size() + "건";
-
-		}
-		mv.addObject("client_num", client_num);
-		mv.addObject("ordername", ordername);
-		mv.addObject("price_sum", price_sum);
-		mv.addObject("order_num", order_num);
-
-		mv.addObject("pvolist", productList);
-		mv.addObject("bvolist", bvolist);
-		mv.addObject("uvo", uvo);
-		return mv;
-	}
-
-	// 포인트 구매시
+	// 바로구매 포인트 구매시
 	@PostMapping("/ordercom.do")
 	// String take_peo, String address, String extraAddress, String detailAddress,
 	// String phone, String memo, String order_num, String prod_num, String
@@ -551,7 +638,7 @@ public class ShoppingController {
 		return mv;
 	}
 
-	// 온라인결제시
+	// 바로구매 온라인결제시
 	@GetMapping("/ordercom2.do")
 	// String take_peo, String address, String extraAddress, String detailAddress,
 	// String phone, String memo, String order_num, String prod_num, String
