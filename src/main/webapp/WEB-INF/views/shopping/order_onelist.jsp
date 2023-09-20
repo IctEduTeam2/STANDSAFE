@@ -232,7 +232,7 @@ td {
 												<c:choose>
 										            <c:when test="${paylist[0].pay_st == 1 }">
 										            </c:when>
-										            <c:when test="${pbvo.pb_st == 0 }">
+										            <c:when test="${pbvo.pb_st == 0  }">
 										            	<button onclick="cancle(0, ${b.prod_num})">교환 접수중</button>
 										            </c:when>
 										            <c:when test="${pbvo.pb_st == 1 }">
