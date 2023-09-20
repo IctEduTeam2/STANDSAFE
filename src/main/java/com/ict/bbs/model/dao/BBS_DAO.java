@@ -309,6 +309,9 @@ public class BBS_DAO {
 		params.put("s_type", s_type);
 		params.put("word", word);
 		params.put("start", start);
+		
+		
+		
 		params.put("end", end);
 		
 		return sqlSessionTemplate.selectList("bbs.searchEvent", params);

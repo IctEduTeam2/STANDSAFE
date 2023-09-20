@@ -26,43 +26,51 @@
  		update NOTICE_T set NOTICE_HIT = NOTICE_HIT +1 where NOTICE_NUM = #{NOTICE_NUM}
  	</update>
  	
- 	
- 	<!-- 삭제된 게시물 보기  -->
-
- 	
  	<!-- 검색  -->
- 	<select id="adsearchnoti" resultType="nvo">
- 		select * from NOTICE_T where NOTICE_ST = 1 OR NOTICE_ST = 0
- 		
- 	<!-- 항목 종류 검색  -->
-	<if test="searchKey != null and mg_type != ''">
+<select id="adsearchnoti" resultType="nvo">
+    select * from NOTICE_T 
+    <where>
+        <!-- 기본 조건 -->
+        (NOTICE_ST = 1 OR NOTICE_ST = 0)
+        
+        <!-- 항목 종류 검색  -->
+        <if test="searchKey != null and searchText != ''">
             <choose>
-                <when test="searchKey == '게시물제목'">
+                <when test="searchKey == '제목'">
                     AND NOTICE_SUBJECT LIKE  CONCAT('%', #{searchText}, '%') 
                 </when>
                 <when test="searchKey == '작성자'">
                     AND NOTICE_WRITER LIKE CONCAT('%', #{searchText}, '%') 
                 </when>
-             
                 <when test="searchKey == '내용'">
                     AND NOTICE_CONTENT LIKE CONCAT('%', #{searchText}, '%') 
                 </when>
             </choose>
         </if>
 
-	<!-- 시작 날짜 검색 조건 -->
-    <if test="start1 != null and start1 != ''">
-        AND NOTICE_DATE &gt;= #{start1}
-    </if>
+        <!-- 시작 날짜 검색 조건 -->
+        <if test="start1 != null and start1 != ''">
+            AND NOTICE_DATE &gt;= #{start1}
+        </if>
 
-    <!-- 종료 날짜 검색 조건 -->
-    <if test="close1 != null and close1 != ''">
-        AND NOTICE_DATE &lt;= #{close1}
-    </if> 
-  order by NOTICE_NUM desc
-    
+        <!-- 종료 날짜 검색 조건 -->
+        <if test="close1 != null and close1 != ''">
+            AND NOTICE_DATE &lt;= #{close1}
+        </if>
+    </where>
+    order by NOTICE_NUM desc
+</select>
+
+ 	
+ 	
+ 	<!-- 테이블 삭제 버튼 -->
+	<update id="noticeupdate" parameterType="String">
+		UPDATE NOTICE_T SET NOTICE_ST = 2 WHERE NOTICE_NUM = #{NOTICE_NUM};
+	</update> 	
+
+ 	<!-- 삭제게시물 검색 버튼 -->
+ 	<select id="seldelbtn" resultType="nvo">
+ 		SELECT * FROM NOTICE_T WHERE NOTICE_ST = 2
  	</select>
- 	
- 	
  	
  </mapper>

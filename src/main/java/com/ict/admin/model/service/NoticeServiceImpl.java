@@ -42,16 +42,20 @@ public class NoticeServiceImpl implements NoticeService{
 	
 	//테이블 삭제 버튼
 	@Override
-	public int getAdNotiUpdateRow(String notice_num) {
-		return noticeDAO.getAdNotiUpdateRow(notice_num);
+	public int getupdateNoticeById(String notice_num) {
+		return noticeDAO.getupdateNoticeById(notice_num);
 	}
 	
-	
-	
-	
+	//삭제게시물 검색 버튼
+	@Override
+	public List<NoticeVO> getDeletedNoti(int noticeNum) {
+		return noticeDAO.getDeletedNoti(noticeNum);
+		
+	}
+
 	//검색
 	@Override
-	public List<NoticeVO> adNotiSearch(String searchKey,String searchText,String start1,String close1) {
-		return noticeDAO.adNotiSearch(searchKey,searchText,start1,close1);
+	public List<NoticeVO> adNotiSearch(String searchKey,String searchText,String searchTitle,String start1,String close1,String mg_type) {
+		return noticeDAO.adNotiSearch(searchKey,searchText,searchTitle,start1,close1,mg_type);
 	}
 }

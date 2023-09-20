@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -88,7 +89,28 @@
 	
 	}
 </style>
+<script type="text/javascript">
+<script>
+// 슬라이드 쇼를 시작할 때 호출되는 함수
+function startSlideshow() {
+    var tableRows = document.querySelectorAll("#slideshow table tbody tr");
+    var currentRow = 0;
 
+    // 테이블 행을 순차적으로 표시하는 함수
+    function showNextRow() {
+        tableRows[currentRow].style.display = "none";
+        currentRow = (currentRow + 1) % tableRows.length;
+        tableRows[currentRow].style.display = "table-row";
+    }
+
+    // 3초마다 다음 행을 표시
+    setInterval(showNextRow, 3000);
+}
+
+// 페이지 로드 시 슬라이드 쇼 시작
+window.onload = startSlideshow;
+</script>
+</script>
 </head>
 <body onload="InitializeStaticMenu();">
 	<div id="mydiv">
@@ -121,6 +143,24 @@
 		<hr id="hr2">
 		<h3 style="text-align: left">■ 날씨정보</h3>
 		<br><br>
+		<!--여기에 갖고온 데이터들 나와야함.  -->
+		<div id="slideshow">
+				<table>
+					<thead>
+						<tr><td>상태</td><td>경도</td><td>위도</td><td>수치</td></tr>
+					</thead>
+					<tbody>
+    <c:forEach items="${list}" var="k">
+        <tr onclick="showNextRow(this)">
+            <td>${k.category}</td>
+            <td>${k.nx}</td>
+            <td>${k.ny}</td>
+            <td>${k.obsrValue}</td>
+        </tr>
+    </c:forEach>
+</tbody>
+				</table>	
+		</div>
 
 		
 		

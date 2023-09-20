@@ -47,20 +47,33 @@ public class NoticeDAO {
 	
 	
 	//테이블 삭제 버튼
-	public int getAdNotiUpdateRow(String notice_num) {
-		return sqlSessionTemplate.delete("notice.noticeupdate", notice_num);
+	public int getupdateNoticeById(String notice_num) {
+		return sqlSessionTemplate.update("notice.noticeupdate", notice_num);
 	}
+	
+	//삭제게시물 검색 버튼
+	public List<NoticeVO> getDeletedNoti(int noticeNum) {
+		
+		return sqlSessionTemplate.selectList("notice.seldelbtn");
+		
+	}
+//	public int getDeletedNoti(String notice_num) {
+//		return sqlSessionTemplate.selectOne("notice.seldelbtn", notice_num);
+//	}
+	
 	
 	
 	//검색
 	//공지사항
-	public List<NoticeVO> adNotiSearch(String searchKey,String searchText,String start1,String close1) {
+	public List<NoticeVO> adNotiSearch(String searchKey,String searchText,String searchTitle,String start1,String close1,String mg_type) {
 		Map<String, Object> params = new HashMap<>();
 		
 		params.put("searchKey", searchKey);
 		params.put("searchText", searchText);
+		params.put("searchTitle", searchTitle);
 		params.put("start1", start1);
 		params.put("close1", close1);
+		params.put("mg_type", mg_type);
 		
 		return sqlSessionTemplate.selectList("notice.adsearchnoti", params);
 		
