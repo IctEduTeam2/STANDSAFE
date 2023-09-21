@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jaenan">
+
+<select id="arealist" parameterType="String" resultType="areavo">
+	SELECT DISTINCT step2 FROM weather_area
+	where step1 = #{selectStep1}
+</select>
+ 
+ 
+ <select id="countylist" parameterType="String" resultType="areavo">
+	SELECT DISTINCT step3 FROM weather_area
+	where step2 = #{selectStep2}
+</select>
+
+<select id="weatherone" resultType="weathervo" parameterType="String">
+	select * from weather_area
+	where step1 = '서울특별시'
+
+</select>
+ 	
+</mapper>
+
+
