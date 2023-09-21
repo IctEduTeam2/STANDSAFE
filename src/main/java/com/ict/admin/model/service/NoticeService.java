@@ -37,4 +37,6 @@ public interface NoticeService {
 	//searchKey,searchText,searchTitle,start1,close1
 	public List<NoticeVO> adNotiSearch(String searchKey,String searchText,String searchTitle,String start1,String close1,String mg_type);
 
+	//int getRecordByStatus(int statusCode);
+
 }

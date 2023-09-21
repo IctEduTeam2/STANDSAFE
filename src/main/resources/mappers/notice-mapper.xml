@@ -5,6 +5,9 @@
  <mapper namespace="notice">
  
  	<!-- 공지사항  -->
+ 	<!-- 등록한 공지사항 게시글 수 -->
+
+ 	
  	<!--  페이징을 위한 시작,끝 리스트 출력  -->
  	<select id="noticelist" parameterType="Map" resultType="nvo">
  		select * from NOTICE_T where NOTICE_ST = 1

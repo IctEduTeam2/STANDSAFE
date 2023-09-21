@@ -14,6 +14,11 @@ public class NoticeServiceImpl implements NoticeService{
 	@Autowired
 	private NoticeDAO noticeDAO;
 	
+//	@Override
+//	public int getRecordByStatus(int statusCode) {
+//		return noticeDAO.getRecordByStatus(statusCode);
+//	}
+	
 	//공지사항
 	@Override
 	public List<NoticeVO> getadnoticelist(){

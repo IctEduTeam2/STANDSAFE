@@ -20,6 +20,11 @@ public class NoticeDAO {
 	@Autowired
 	SqlSessionTemplate sqlSessionTemplate;
 	
+	//등록한 공지사항 게시글 수
+//	public int getRecordByStatus(int statusCode) {
+//		return sqlSessionTemplate.selectOne("notice.getrecordbystatus", statusCode);
+//	}
+	
 	//공지사항 
 	public List<NoticeVO> getadnoticelist() {
 		List<NoticeVO> list = sqlSessionTemplate.selectList("notice.noticelist");

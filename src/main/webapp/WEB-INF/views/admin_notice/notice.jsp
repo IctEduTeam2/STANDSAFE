@@ -73,6 +73,7 @@ function setTodayDate() {
     // 오늘 날짜를 기간 검색 필드에 설정합니다.
     document.getElementById('start1').value = year + '-' + month + '-' + day;
     document.getElementById('close1').value = year + '-' + month + '-' + day;
+
 	}
 //기간검색-일주일 
 function setOneWeekDate() {
@@ -92,26 +93,20 @@ function setOneWeekDate() {
     // 오늘 날짜를 기간 검색 필드에 설정합니다.
     document.getElementById('start1').value = oneWeekAgoYear + '-' + oneWeekAgoMonth + '-' + oneWeekAgoDay;
     document.getElementById('close1').value = year + '-' + month + '-' + day;
+
+
 	}
-//기간검색-전체기간(수정해야함 )
-function setAllDates() {
-    // "전체기간" 버튼을 눌렀을 때, 모든 기간을 표시하도록 설정합니다.
-    // 여기서는 작성일 열을 업데이트합니다.
-    var rows = document.querySelectorAll(".table_a tbody tr"); // 모든 행을 가져옵니다.
-    for (var i = 0; i < rows.length; i++) {
-        var row = rows[i];
-        var dateCell = row.cells[7]; // 작성일 열(0부터 시작)을 선택합니다.
-        // 여기서 dateCell.textContent를 수정하여 작성일을 표시합니다.
-        // 예를 들어 작성일이 서버에서 가져온 데이터로 있다고 가정합니다.
-        var writtenDate = row.cells[7].textContent; //여기를 실제 작성일로 대체해야 합니다.
-        dateCell.textContent = writtenDate; // 작성일을 업데이트합니다.
-    }
-    document.getElementById('searchTitle').value = ""; // 검색 제목을 '작성일'로 설정
-    document.getElementById('startDate').value = ""; // 'start' 필드 초기화
-    document.getElementById('close').value = ""; // 'close' 필드 초기화
-}
+
     
 //초기화 
+function resetTableAndFields() {
+    // 테이블 내용 지우기
+    $("#bal").html("");
+    
+    // 검색 필드 초기화
+    resetFields();
+}
+
 function resetFields() {
     document.getElementById('searchKey').value = "제목"; // 검색어 필드 초기화 
     document.getElementById('searchTitleSelect').value = "기간"; // 검색어 필드 초기화 
@@ -124,41 +119,20 @@ function setStartField() {
     return true; // 폼 제출을 진행하도록 true 반환
 }
     
-// 테이블 게시물 삭제버튼
-function deleteRow(rowId) {
-	var checkbox = document.getElementById("chkbox_" + rowId);
-	if(checkbox.checked) {
-		$.ajax({
-			url: '/admin_Updaterow.do',
-			type: 'POST',
-			data: {rowId: rowId},
-			success: function(response){
-				var row = document.getElementById("row_" + rowId);
-				row.style.display = "none";		
-			},
-			error: function(erroe){
-				alert("Error occurred");
-			}
-		})
-		
-	} else {
-		alert("체크박스가 선택되지 않았습니다.");
-		
-	}
-}
-//삭제 게시물 검색
 
 
 //검색버튼
 $(document).ready(function() {
     $("button.searchbtn").click(function(e) {
         e.preventDefault(); // Prevent the form from being submitted
+
         $.ajax({
             url: '/adnotice_search.do',
             type: 'POST',
             data: $("#searchForm").serialize(),
             success: function(response) {
                 $("#bal").html(response);
+                
             },
             error: function(error) {
                 alert("Error occurred");
@@ -166,6 +140,9 @@ $(document).ready(function() {
         });
     });
 });
+
+
+
 
 
 function searchDeletedNotices() {
@@ -209,16 +186,14 @@ $(document).ready(function() {
 		<div
 			style="float: left; margin-left: 205px; margin-top: 5%; margin-right: 20px; border: 1px solid black; width: 20%; height: 400px;">
 			<p style="margin-top: 130px;">
-			<h1 style="text-align: center; font-size: 18px;">전체 공지사항 게시글 :
-				125개</h1>
+			<h1 style="text-align: center; font-size: 18px;">전체 공지사항 게시글 : ${totalNotices}개</h1>
 			</p>
 			<br>
-			<h1 style="text-align: center; font-size: 18px;">등록한 공지사항 게시글 :
-				125개</h1>
+			<h1 style="text-align: center; font-size: 18px;">등록한 공지사항 게시글 : ${registeredNotices}개</h1>
 			</p>
 			<br>
 			<p>
-			<h1 style="text-align: center; font-size: 18px;">삭제한 게시글 : 5개</h1>
+			<h1 style="text-align: center; font-size: 18px;">삭제한 게시글 : ${deletedNotices}개</h1>
 			</p>
 		</div>
 
@@ -263,14 +238,18 @@ $(document).ready(function() {
     								<option value="dateCreated1">작성일</option>
     								<option value="dateCreated2">수정일</option>
 								</select>
-
-								</span> <span style="margin-left: 10px;">
+								</span>
+								
+								
+								
+								 <span style="margin-left: 10px;">
 								 <!-- 달력 --> 
 								 <input
 									type="date" id="start1" name="start1"
 									style="height: 40px; width: 300px;" />
-								</span> <span> <input type="date" id="close1" name="close1"
-									style="height: 40px; width: 300px;" />
+								</span>
+								<span><input type="date" id="close1" name="close1"
+									style="height: 40px; width: 300px;"/>
 								</span>
 							</p>
 						</dd>
@@ -300,7 +279,7 @@ $(document).ready(function() {
 								<span style="float: right; margin-top: 130px; margin-right: -495px;">
 									<input type="button" alt="초기화" value="초기화"
 									style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
-									onclick="resetFields()"></span>
+									onclick="resetTableAndFields()"></span>
 								 <span style="float: right; margin-top: 130px; margin-right: -328px;">
 								 <input type="hidden" value="공지사항" name="mg_type">
 									<button class="searchbtn" type="submit"
@@ -399,15 +378,23 @@ $(document).ready(function() {
 			<button type="button" alt="공지사항" value="공지사항"
 				style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
 				onclick="location.href='/ad_allnotice.do'">공지사항❐</button>
-		</span> <span style="float: right; margin-top: 25px; margin-right: 50px;">
+		</span>
+		<span style="float: right; margin-top: 25px; margin-right: 50px;">
+			<button type="button" alt="삭제" value="삭제"
+				style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
+				onclick="">삭제</button>
+		</span> 
+		<span style="float: right; margin-top: 25px; margin-right: 50px;">
 			<button type="button" alt="글쓰기" value="글쓰기"
 				style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
 				onclick="location.href='/ad_noticeform.do'">글쓰기</button>
-		</span> <span style="float: right; margin-top: 25px; margin-right: 50px;">
+		</span> 
+		<span style="float: right; margin-top: 25px; margin-right: 50px;">
 			<button type="button" alt="홈페이지 등록" value="홈페이지 등록"
 				style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
 				onclick="location.href='/'">홈페이지 등록</button>
 		</span>
+		
 	</div>
 
 

@@ -35,6 +35,13 @@ public class Admin_notice {
 		// 페이징 처리를 위한 로직 추가
 		int totalRecord = notiService.getTotalRecord(); // 전체 공지사항 레코드 수
 		paging.setTotalRecord(totalRecord);
+		
+//		//총 고지사항 게시글 수
+//		int totalNotices = totalRecord; //이미 계산된 값
+//		// 등록한 공지사항 게시글 수
+//	    int registeredNotices = notiService.getRecordByStatus(1);
+//	    //삭제한 게시글 수
+//	    int deletedNotices = notiService.getRecordByStatus(2);
 
 		if (totalRecord <= paging.getNumPerPage()) {
 			paging.setTotalPage(1);
@@ -63,6 +70,12 @@ public class Admin_notice {
 
 		List<NoticeVO> list = notiService.getadnoticelist(paging.getOffset(), paging.getNumPerPage());
 
+		//게시글 수
+//		mv.addObject("totalNotices", totalNotices);
+//		mv.addObject("registeredNotices", registeredNotices);
+//		mv.addObject("deletedNotices", deletedNotices);
+//		
+		
 		mv.addObject("list", list);
 		mv.addObject("paging", paging);
 		return mv;
@@ -143,8 +156,10 @@ public class Admin_notice {
 
 	// 테이블 삭제버튼
 	@RequestMapping("/admin_Updaterow.do")
-	public ModelAndView AdminUpdaterow(@RequestParam("rowId") int rowId) {
-		notiService.getupdateNoticeById(Integer.toString(rowId));
+	public ModelAndView AdminUpdaterow(
+			@ModelAttribute("checkboxes")String checkboxes
+			) {
+		System.out.println("갖고온체크번호"+ checkboxes);
 		ModelAndView mv = new ModelAndView("admin_notice/notice");
 		mv.addObject("result", "success");
 		return mv;
@@ -190,7 +205,7 @@ public class Admin_notice {
 	        @RequestParam(value = "close1", required = false) String close1,
 	        @RequestParam(value = "mg_type", required = false) String mg_type,
 	        HttpServletRequest request, HttpSession session) {
-
+		
 		List<NoticeVO> list;	
 		
 	    // Step 1: 검색 조건 검증 (상태설정안하고 검색(전체리스트))
@@ -198,15 +213,19 @@ public class Admin_notice {
 	    	list = notiService.getAllNotices();
 	    }else {
 	    	// Step 2: 검색 쿼리 실행
-	    	list = notiService.adNotiSearch(searchKey, searchText, searchTitle, start1, close1, mg_type);   	
+	    	list = notiService.adNotiSearch(searchKey, searchText, searchTitle, start1,close1, mg_type);   	
 	    }
 
 	    // Step 3: 결과를 HTML 형태로 가공
 	    StringBuilder html = new StringBuilder();
+	    int no = list.size(); // 번호를 내림차순으로 출력하기 위해 리스트 크기로 초기화
 	    for (NoticeVO k : list) {
 	        html.append("<tr>");
 	        // 각 NoticeVO 객체에서 정보를 가져와 HTML을 구성합니다.
-	        html.append("<td><input type='checkbox' name='chk' value='").append(k.getNOTICE_NUM()).append("' /></td>");
+	        //html.append("<td><input type='checkbox' name='chk' value='").append(k.getNOTICE_NUM()).append("' /></td>");
+	        html.append("<td><input type='checkbox' id ='checkvalue' name='chk' value='").append(k.getNOTICE_NUM()).append("' /></td>");
+	        html.append("<input type='hidden' id ='checknum' name='checknum' value='").append(k.getNOTICE_NUM()).append("' />");   
+	        System.out.println("게시글번호"+ k.getNOTICE_NUM());
 	        html.append("<td>").append(k.getNOTICE_NUM()).append("</td>");
 	        html.append("<td>").append(k.getNOTICE_SUBJECT()).append("</td>");
 	        html.append("<td>").append(k.getNOTICE_CONTENT()).append("</td>");
@@ -217,6 +236,7 @@ public class Admin_notice {
 	        html.append("<td>").append(k.getNOTICE_WRITER()).append("</td>");
 	        html.append("<td>").append(k.getNOTICE_ST()).append("</td>");
 	        html.append("</tr>");
+	        no--;  // 번호 감소
 	    }
 	    return html.toString();
 	}
