@@ -1,8 +1,11 @@
 package com.ict.shopping.controller;
 
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URI;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -318,34 +321,33 @@ public class ShoppingController {
 		public ModelAndView gerBasketOrderCard(@RequestParam Map<String, Object> map) {
 			ModelAndView mv = new ModelAndView("redirect:/orderOneListform.do?pay_oknum=" + (String) (map.get("pay_oknum"))
 					+ "&client_num=" + (String) (map.get("client_num")));
-			BasketVO bvo2 = new BasketVO();
-			bvo2.setCart_price((String) (map.get("cart_price")));
-			bvo2.setProd_num((String) (map.get("prod_num")));
-			bvo2.setClient_num((String) (map.get("client_num")));
-			bvo2.setCart_amount((String) (map.get("cart_amount")));
-			bvo2.setCart_st("1");
 
-			// 카트키 가져오기
-			String key = shoppingService.getBasket(bvo2);
-
-			PayVO pvo = new PayVO();
-			pvo.setTake_peo((String) (map.get("take_peo")));
-			pvo.setTake_addr((String) (map.get("take_addr")));
+			List<BasketVO> bvolist = shoppingService.getBasketList((String)(map.get("client_num")));
 
 			String regEx = "(\\d{3})(\\d{3,4})(\\d{4})";
 			String phone = (String) map.get("take_phone");
 			String chPhone = phone.replaceAll(regEx, "$1-$2-$3");
 
+			for(int i=0; i<bvolist.size(); i++) {
+				System.out.println(Integer.parseInt((String) (map.get("cart_price"))));
+			PayVO pvo = new PayVO();
+			pvo.setTake_peo((String) (map.get("take_peo")));
+			pvo.setTake_addr((String) (map.get("take_addr")));
 			pvo.setTake_phone(chPhone);
 			pvo.setTake_memo((String) (map.get("take_memo")));
 			pvo.setPay_type((String) (map.get("pay_type")));
 			pvo.setPay_money(Integer.parseInt((String) (map.get("cart_price"))));
 			pvo.setPay_oknum((String) (map.get("pay_oknum")));
+			pvo.setCart_num(bvolist.get(i).getCart_num());
 			pvo.setPaymentKey((String) (map.get("paymentKey")));
-			pvo.setCart_num(key);
 			pvo.setClient_num((String) (map.get("client_num")));
-			shoppingService.getProductSub(bvo2);
 			shoppingService.getPayInsert(pvo);
+		}
+
+			for(BasketVO bvo : bvolist) {
+				shoppingService.getBasketProductDel(bvo);
+				shoppingService.getProductSub(bvo);
+			}
 			shoppingService.getDeliveryAdd((String) map.get("pay_oknum"));
 			// 카트키 가져오기
 			return mv;
@@ -648,7 +650,7 @@ public class ShoppingController {
 		bvo2.setClient_num((String) (map.get("client_num")));
 		bvo2.setCart_amount((String) (map.get("cart_amount")));
 		bvo2.setCart_st("1");
-
+		
 		// 카트키 가져오기
 		String key = shoppingService.getBasket(bvo2);
 
@@ -788,12 +790,12 @@ public class ShoppingController {
 		DeliveryVO deliveryvo = shoppingService.getDeliverySelect(pay_oknum);
 
 		try {
-			PayBackVO pbvo = shoppingService.getPayBackSelect(pay_oknum);
-			mv.addObject("pbvo", pbvo);
+			List<PayBackVO> pbvolist = shoppingService.getPayBackSelect(pay_oknum);
+			mv.addObject("pbvo", pbvolist);
+			mv.addObject("size", pbvolist.size());
 		} catch (Exception e) {
-			// TODO: handle exception
+			System.out.println(e);
 		}
-
 		mv.addObject("pay_oknum", pay_oknum);
 		mv.addObject("sum", sum);
 		mv.addObject("deliveryvo", deliveryvo);

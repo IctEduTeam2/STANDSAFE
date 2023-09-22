@@ -143,7 +143,6 @@ td {
 </head>
 
 <body onload="InitializeStaticMenu();">
-<script type="text/javascript">
 	<div id="mydiv">
 		<jsp:include page="../Semantic/header.jsp"></jsp:include>
 		<section id="contents" style="border: 0px solid black;">
@@ -168,117 +167,165 @@ td {
 					<div style="width: 100%; float: left;">
 						<p>
 							<b style="font-size: 18px;">주문내역 - </b> <b
-								style="font-size: 12px;">${paylist[0].pay_oknum } 
-        <c:choose>
-            <c:when test="${paylist[0].pay_st == 1 }">
-            	(결제취소 - ${pbvo.pb_date })
+								style="font-size: 12px;">${paylist[0].pay_oknum } <c:choose>
+									<c:when test="${paylist[0].pay_st == 1 }">
+            	(결제취소 - ${pbvolist[0].pb_date })
             </c:when>
-            <c:when test="${deliveryvo.deli_st == 0}">
+									<c:when test="${deliveryvo.deli_st == 0}">
                 (배송준비중 - ${deliveryvo.deli_date })
                 		<c:choose>
-            				<c:when test="${paylist[0].pay_type == 1}">
-						<button style="float: right; margin: 0" onclick="Order1(1)">결제취소</button>
-             				</c:when>
-            				<c:when test="${paylist[0].pay_type == 0}">
-						<button style="float: right; margin: 0" onclick="Order1(0)">결제취소</button>
-             				</c:when>
-                		</c:choose>
-            </c:when>
-            <c:when test="${deliveryvo.deli_st == 1}">
+											<c:when test="${paylist[0].pay_type == 1}">
+												<button style="float: right; margin: 0" onclick="Order1(1)">결제취소</button>
+											</c:when>
+											<c:when test="${paylist[0].pay_type == 0}">
+												<button style="float: right; margin: 0" onclick="Order1(0)">결제취소</button>
+											</c:when>
+										</c:choose>
+									</c:when>
+									<c:when test="${deliveryvo.deli_st == 1}">
                 (배송중 - ${deliveryvo.deli_date })
             </c:when>
-            <c:when test="${deliveryvo.deli_st == 2}">
+									<c:when test="${deliveryvo.deli_st == 2}">
                 (배송완료 - ${deliveryvo.deli_date })
 						<button style="float: right; margin: 0" onclick="Order1(2)">구매확정</button>
-            </c:when>
-            <c:when test="${deliveryvo.deli_st == 3}">
+									</c:when>
+									<c:when test="${deliveryvo.deli_st == 3}">
                 (구매확정 - ${deliveryvo.deli_date })
             </c:when>
-            <c:otherwise>
+									<c:otherwise>
                 (알 수 없는 상태- 관리자에게 문의하세요.)
             </c:otherwise>
-        </c:choose></b>
-						</p>
+								</c:choose></b>
 					</div>
 					<!--주문내역-->
 					<div
 						style="width: 100%; float: left; border: 1px solid black; margin-top: 30px;">
 						<!--물품하나 시작태그-->
-					<c:forEach var="a" items="${cartList}">
+						<c:forEach var="a" items="${cartList}">
 							<c:forEach var="b" items="${prodList}">
 								<c:choose>
-									<c:when test="${a.prod_num == b.prod_num }">
+									<c:when test="${a.prod_num == b.prod_num}">
 										<div style="width: 100%; float: left; padding: 20px;">
 											<div style="float: left;">
-<a href="/productOneListform.do?prod_num=${b.prod_num }">
-												<img src="resources/images/products/${b.prod_img }"
-													style="width: 160px; height: 200px;"></a>
+												<a href="/productOneListform.do?prod_num=${b.prod_num }">
+													<img src="resources/images/products/${b.prod_img }"
+													style="width: 160px; height: 200px;">
+												</a>
 											</div>
 											<div style="float: left; margin-left: 30px;">
 												<p style="color: gray; opacity: 0.5;">${paylist[0].pay_ok }
 													결제</p>
 												<p style="font-size: 14px; margin-top: 10px;">
-<a href="/productOneListform.do?prod_num=${b.prod_num }">${b.prod_name}</a></p>
+													<a href="/productOneListform.do?prod_num=${b.prod_num }">${b.prod_name}</a>
+												</p>
 												<p style="font-size: 20px; margin-top: 10px;">
-													<b><fmt:formatNumber
-															value="${a.cart_price/a.cart_amount}" type="number"
-															pattern="#,### 원" /> x ${a.cart_amount } = <fmt:formatNumber
-															value="${a.cart_price }" type="number" pattern="#,### 원" /></b>
+													<b> <c:choose>
+															<c:when test="${b.prod_sale == '0'}">
+															</c:when>
+															<c:otherwise>
+																<p>
+																	<del>
+																		<fmt:formatNumber value="${b.prod_price}"
+																			type="number" pattern="#,### 원" />
+																	</del>
+																	▶ <b style="color: red; font-size: 14px;"><fmt:formatNumber
+																			value="${b.prod_sale}" type="number"
+																			pattern="#,### 원" /></b>
+																<b style="font-size: 14px;"> (${((b.prod_price - b.prod_sale) / b.prod_price * 100).intValue()}%↓)</b>
+																</p><br>
+															</c:otherwise>
+														</c:choose> <fmt:formatNumber value="${a.cart_price/a.cart_amount}"
+															type="number" pattern="#,### 원" /> x ${a.cart_amount } =
+														<fmt:formatNumber value="${a.cart_price }" type="number"
+															pattern="#,### 원" /></b>
 												</p>
 											</div>
 											<div
 												style="float: right; margin-right: 20px; margin-top: 160px;">
-												<!-- 구매완료시 반품요청 / 배송준비시 환불요청-->
 												<c:choose>
-										            <c:when test="${paylist[0].pay_st == 1 }">
-										            </c:when>
-										            <c:when test="${pbvo.pb_st == 0  }">
-										            	<button onclick="cancle(0, ${b.prod_num})">교환 접수중</button>
-										            </c:when>
-										            <c:when test="${pbvo.pb_st == 1 }">
-										            	<button onclick="cancle(2, ${b.prod_num})">교환 접수완료</button>
-										            </c:when>
-										            <c:when test="${pbvo.pb_st == 2 }">
-										            	<button onclick="cancle(2, ${b.prod_num})">교환 회수완료</button>
-										            </c:when>
-										            <c:when test="${pbvo.pb_st == 3 }">
-										            	<button onclick="cancle(2, ${b.prod_num})">교환 완료</button>
-										            </c:when>
-										            <c:when test="${pbvo.pb_st == 4 }">
-										            	<button onclick="cancle(1, ${b.prod_num})")">반품 접수중</button>
-										            </c:when>
-										            <c:when test="${pbvo.pb_st == 5 }">
-										            	<button onclick="cancle(3, ${b.prod_num})">반품 접수완료</button>
-										            </c:when>
-										            <c:when test="${pbvo.pb_st == 6 }">
-										            	<button onclick="cancle(3, ${b.prod_num})">반품 회수완료</button>
-										            </c:when>
-										            <c:when test="${pbvo.pb_st == 7 }">
-										            	<button onclick="cancle(3, ${b.prod_num})">반품 완료</button>
-										            </c:when>
-													<c:when test="${deliveryvo.deli_st == 0}">
+													<c:when test="${size eq 0}">
+														<c:choose>
+															<c:when test="${deliveryvo.deli_st == 1}">
+																<button
+																	onclick="location.href = '/productcancleform.do?client_num=${id}&prod_num=${b.prod_num }&pay_oknum=${pay_oknum }&st=0'">환불요청</button>
+																<button
+																	onclick="location.href = '/productcancleform.do?client_num=${id}&prod_num=${b.prod_num }&pay_oknum=${pay_oknum }&st=1'">교환요청</button>
+															</c:when>
+															<c:when test="${deliveryvo.deli_st == 2}">
+																<button
+																	onclick="location.href = '/productcancleform.do?client_num=${id}&prod_num=${b.prod_num }&pay_oknum=${pay_oknum }&st=0'">환불요청</button>
+																<button
+																	onclick="location.href = '/productcancleform.do?client_num=${id}&prod_num=${b.prod_num }&pay_oknum=${pay_oknum }&st=1'">교환요청</button>
+															</c:when>
+															<c:when test="${deliveryvo.deli_st == 3}">
+																<button
+																	onclick="location.href = '/productOneListform.do?prod_num=${b.prod_num }'">재구매</button>
+																<button
+																	onclick="location.href = '/reviewprodwriteform.do?prod_num=${b.prod_num }'">리뷰쓰기</button>
+															</c:when>
+														</c:choose>
 													</c:when>
-													<c:when test="${deliveryvo.deli_st == 1}">
-														<button onclick="location.href = '/productcancleform.do?client_num=${id}&prod_num=${b.prod_num }&pay_oknum=${pay_oknum }&st=0'">환불요청</button>
-														<button onclick="location.href = '/productcancleform.do?client_num=${id}&prod_num=${b.prod_num }&pay_oknum=${pay_oknum }&st=1'">교환요청</button>
-													</c:when>
-													<c:when test="${deliveryvo.deli_st == 2}">
-														<button onclick="location.href = '/productcancleform.do?client_num=${id}&prod_num=${b.prod_num }&pay_oknum=${pay_oknum }&st=0'">환불요청</button>
-														<button onclick="location.href = '/productcancleform.do?client_num=${id}&prod_num=${b.prod_num }&pay_oknum=${pay_oknum }&st=1'">교환요청</button>
-													</c:when>
-													<c:when test="${deliveryvo.deli_st == 3}">
-														<button onclick="location.href = '/productOneListform.do?prod_num=${b.prod_num }'">재구매</button>
-														<button onclick="location.href = '/reviewprodwriteform.do?prod_num=${b.prod_num }'">리뷰쓰기</button>
-													</c:when>
+													<c:otherwise>
+														<!-- 구매완료시 반품요청 / 배송준비시 환불요청-->
+														<c:forEach var="pbvo" items="${pbvo}">
+															<c:choose>
+																<c:when test="${paylist[0].pay_st == 1 }">
+																</c:when>
+																<c:when
+																	test="${pbvo.pb_st == 0 && pbvo.prod_num == b.prod_num }">
+																	<button onclick="cancle(0, ${b.prod_num})">교환
+																		접수중</button>
+																</c:when>
+																<c:when
+																	test="${pbvo.pb_st == 0 && pbvo.prod_num != b.prod_num}">
+																	<button
+																		onclick="location.href = '/productcancleform.do?client_num=${id}&prod_num=${b.prod_num }&pay_oknum=${pay_oknum }&st=0'">환불요청</button>
+																	<button
+																		onclick="location.href = '/productcancleform.do?client_num=${id}&prod_num=${b.prod_num }&pay_oknum=${pay_oknum }&st=1'">교환요청</button>
+
+																</c:when>
+																<c:when test="${pbvo.pb_st == 1 }">
+																	<button onclick="cancle(2, ${b.prod_num})">교환
+																		접수완료</button>
+																</c:when>
+																<c:when test="${pbvo.pb_st == 2 }">
+																	<button onclick="cancle(2, ${b.prod_num})">교환
+																		회수완료</button>
+																</c:when>
+																<c:when test="${pbvo.pb_st == 3 }">
+																	<button onclick="cancle(2, ${b.prod_num})">교환
+																		완료</button>
+																</c:when>
+																<c:when test="${pbvo.pb_st == 4 }">
+																	<button onclick="cancle(1, ${b.prod_num})">반품
+																		접수중</button>
+																</c:when>
+																<c:when test="${pbvo.pb_st == 5 }">
+																	<button onclick="cancle(3, ${b.prod_num})">반품
+																		접수완료</button>
+																</c:when>
+																<c:when test="${pbvo.pb_st == 6 }">
+																	<button onclick="cancle(3, ${b.prod_num})">반품
+																		회수완료</button>
+																</c:when>
+																<c:when test="${pbvo.pb_st == 7 }">
+																	<button onclick="cancle(3, ${b.prod_num})">반품
+																		완료</button>
+																</c:when>
+																<c:when test="${deliveryvo.deli_st == 0}">
+																</c:when>
+															</c:choose>
+														</c:forEach>
+													</c:otherwise>
 												</c:choose>
+
 											</div>
 										</div>
 										<hr style="width: 100%;">
 									</c:when>
 								</c:choose>
 							</c:forEach>
-							<!--물품하나 끝태크-->
-					</c:forEach>
+						</c:forEach>
 						<!-- 배송내용-->
 						<div style="float: left; width: 100%; padding: 20px;">
 							<table>
@@ -300,16 +347,17 @@ td {
 										<td>배송지:</td>
 										<td>${paylist[0].take_addr}</td>
 									</tr>
-									
+
 									<c:choose>
-									<c:when test="${paylist[0].take_memo == null || paylist[0].take_memo == ''}">
-									</c:when>
-									<c:otherwise>
-									<tr>
-										<td>배송메모:</td>
-										<td>${paylist[0].take_memo}</td>
-									</tr>
-									</c:otherwise>
+										<c:when
+											test="${paylist[0].take_memo == null || paylist[0].take_memo == ''}">
+										</c:when>
+										<c:otherwise>
+											<tr>
+												<td>배송메모:</td>
+												<td>${paylist[0].take_memo}</td>
+											</tr>
+										</c:otherwise>
 									</c:choose>
 								</tbody>
 							</table>
@@ -328,14 +376,14 @@ td {
 								<tbody>
 									<tr>
 										<td>상품금액:</td>
-										<td><b style="color: blue;">+ </b><fmt:formatNumber value="${sum}" type="number"
-									pattern="#,### 원" /></td>
+										<td><b style="color: blue;">+ </b> <fmt:formatNumber
+												value="${sum}" type="number" pattern="#,### 원" /></td>
 									</tr>
 									<tr>
 										<td>할인금액:</td>
-										<td><b style="color: orangered;">-</b>
-										<fmt:formatNumber value="${sum-paylist[0].pay_money}" type="number"
-									pattern="#,### 원" /></td>
+										<td><b style="color: orangered;">-</b> <fmt:formatNumber
+												value="${sum-paylist[0].pay_money}" type="number"
+												pattern="#,### 원" /></td>
 									</tr>
 									<tr>
 										<td>배송비:</td>
@@ -343,8 +391,9 @@ td {
 									</tr>
 									<tr>
 										<td>결제금액:</td>
-										<td><c:set var="totalPay" value="${paylist[0].pay_money + 3000}" />
-<fmt:formatNumber value="${totalPay}" type="number" pattern="#,### 원" /></td>
+										<td><c:set var="totalPay"
+												value="${paylist[0].pay_money + 3000}" /> <fmt:formatNumber
+												value="${totalPay}" type="number" pattern="#,### 원" /></td>
 									</tr>
 								</tbody>
 							</table>
@@ -360,40 +409,34 @@ td {
 										<th style="text-align: left;">결제 방법</th>
 									</tr>
 								</thead>
-								
-								 <c:choose>
-            						<c:when test="${paylist[0].pay_type == 0}">
-								<tbody>
-									<tr>
-										<td>결제방법:</td>
-										<td>신용카드</td>
-									</tr>
-									<tr>
-										<td>할부:</td>
-										<td>(무이자) 3개월</td>
-									</tr>
-									<tr>
-										<td>카드번호:</td>
-										<td>154,593 원</td>
-									</tr>
-								</tbody>
-								</c:when>
-								<c:otherwise>
-								<tbody>
-									<tr>
-										<td>결제방법:</td>
-										<td>포인트</td>
-									</tr>
-								</tbody></c:otherwise>
+
+								<c:choose>
+									<c:when test="${paylist[0].pay_type == 0}">
+										<tbody>
+											<tr>
+												<td>결제방법:</td>
+												<td>신용카드</td>
+											</tr>
+										</tbody>
+									</c:when>
+									<c:otherwise>
+										<tbody>
+											<tr>
+												<td>결제방법:</td>
+												<td>포인트</td>
+											</tr>
+										</tbody>
+									</c:otherwise>
 								</c:choose>
 							</table>
-								 <c:choose>
-            						<c:when test="${paylist[0].pay_type == 0}">
-							<p style="opacity: 0.5; margin-top: 50px;">
-								무이자 적용 여부는 카드사로 문의하시면 정확하게 확인 할 수 있습니다. <br>
-								<br> 배송중으로 된 상태에서는 결제취소가 어렵습니다. 반품 후 취소/환불신청을 통해 해주세요.
-							</p>
-							</c:when></c:choose>
+							<c:choose>
+								<c:when test="${paylist[0].pay_type == 0}">
+									<p style="opacity: 0.5; margin-top: 50px;">
+										무이자 적용 여부는 카드사로 문의하시면 정확하게 확인 할 수 있습니다. <br> <br>
+										배송중으로 된 상태에서는 결제취소가 어렵습니다. 취소/환불신청을 통해 해주세요.
+									</p>
+								</c:when>
+							</c:choose>
 						</div>
 						<!-- 명세서 끝-->
 					</div>

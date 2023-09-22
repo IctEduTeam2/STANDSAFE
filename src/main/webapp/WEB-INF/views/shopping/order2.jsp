@@ -668,7 +668,7 @@ $(document).ready(function() {
     // 비회원 결제에는 customerKey 대신 ANONYMOUS를 사용하세요.
     const paymentWidget = PaymentWidget(clientKey, customerKey) // 회원 결제
     // const paymentWidget = PaymentWidget(clientKey, PaymentWidget.ANONYMOUS) // 비회원 결제
-   	var pay = '${price_sum}'
+	 var pay = parseFloat('${price_sum}');
     // ------  결제위젯 렌더링 ------ 
     // 결제수단 UI를 렌더링할 위치를 지정합니다. `#payment-method`와 같은 CSS 선택자와 결제 금액 객체를 추가하세요.
     // DOM이 생성된 이후에 렌더링 메서드를 호출하세요.
@@ -705,12 +705,6 @@ $(document).ready(function() {
 	      var address = '(' + take_addr1 + ') ' + take_addr2 + " " + take_addr3 + " " +take_addr4;
 	      var prod_num = '${pvo.prod_num}';
 	      var cart_amount = '${bvo.cart_amount}';
-	     	var pay = 0;
-	        if('${pvo.prod_sale}'== "0") {
-	        	pay = '${pvo.prod_price * bvo.cart_amount}';
-	        } else {
-	        	pay = '${pvo.prod_sale * bvo.cart_amount}';
-	        }
 	        var agreeRadio = document.getElementById("agreeRadio");
 		    var disagreeRadio = document.getElementById("disagreeRadio");
 		    if (!agreeRadio.checked) {
@@ -735,7 +729,7 @@ $(document).ready(function() {
       paymentWidget.requestPayment({
         orderId: orderid,            // 주문 ID(직접 만들어주세요)
         orderName: ordername,                 // 주문명
-        successUrl:  "http://localhost:8090/ordercom2.do?take_peo=" + encodeURIComponent(take_peo) + "&take_addr=" + encodeURIComponent(address) + "&take_phone=" + encodeURIComponent(take_phone) + "&take_memo=" + encodeURIComponent(take_memo) + "&pay_type=0&pay_oknum=" + encodeURIComponent(orderid) + "&client_num=" + encodeURIComponent(client_num) + "&cart_price=" + encodeURIComponent(pay) + "&prod_num=" + encodeURIComponent(prod_num) + "&cart_amount=" + encodeURIComponent(cart_amount),
+        successUrl:  "http://localhost:8090/basketordercard.do?take_peo=" + encodeURIComponent(take_peo) + "&take_addr=" + encodeURIComponent(address) + "&take_phone=" + encodeURIComponent(take_phone) + "&take_memo=" + encodeURIComponent(take_memo) + "&pay_type=0&pay_oknum=" + encodeURIComponent(orderid) + "&client_num=" + encodeURIComponent(client_num) + "&cart_price=" + encodeURIComponent(pay) + "&prod_num=" + encodeURIComponent(prod_num) + "&cart_amount=" + encodeURIComponent(cart_amount),
         failUrl: "http://localhost:8090/error.do",        // 결제에 실패하면 이동하는 페이지(직접 만들어주세요)
         customerEmail: email,
         customerName: name

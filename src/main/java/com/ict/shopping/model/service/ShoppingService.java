@@ -187,7 +187,7 @@ public class ShoppingService {
 	}
 	
 	// 페이백 조회
-	public PayBackVO getPayBackSelect(String pay_oknum) {
+	public List<PayBackVO> getPayBackSelect(String pay_oknum) {
 		return shoppingDAO.getPayBackSelect(pay_oknum);
 	}
 
