@@ -111,7 +111,7 @@ import com.ict.jaenan.model.vo.WeatherVO;
 	@ResponseBody
 	@RequestMapping(value= "/get_weather.do",produces="application/json; charset=utf-8")
 	public List<WeatherVO> getWeatherInfo(
-			 @RequestParam("dateInput") String dateInput,
+			 	@RequestParam("dateInput") String dateInput,
 		        @RequestParam("areacode") String areacode,
 		        @RequestParam("step1") String step1,
 		        @RequestParam("step2") String step2

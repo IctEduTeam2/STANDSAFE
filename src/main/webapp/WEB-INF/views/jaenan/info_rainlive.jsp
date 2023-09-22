@@ -248,8 +248,7 @@
 		            data:data,
 		            success: function (res) {
 		            	console.log(res)
-		            	 displayWeatherData(res);
-		                
+ 
 		            },
 		            error: function () {
 		                alert("읽기 실패");
@@ -257,49 +256,7 @@
 		        });
 		    }
 	
-	  function displayWeatherData(data) {
-	        // 기온 데이터
-	        var tempData = data.filter(function(item) {
-	            return item.category === 'T1H';
-	        })[0];
-	        
-	        // 강수량 데이터
-	        var rainData = data.filter(function(item) {
-	            return item.category === 'RN1';
-	        })[0];
-	        
-	        //하늘상태
-	        var skyData = data.filter(function(item) {
-	            return item.category === 'SKY';
-	        })[0];
-	        
-	        //강수형태
-	        var rainStData= data.filter(function(item) {
-	            return item.category === 'PTY';
-	        })[0];
-	      
-	        
-	        // 기온 데이터 출력
-	        if (tempData) {
-	            document.getElementById("temperatureValue").innerText = tempData.fcstValue + "°C";
-	        }
-	        
-	        // 강수량 데이터 출력
-	        if (rainData) {
-	            document.getElementById("precipitationValue").innerText = rainData.fcstValue + "mm";
-	        }
-	        
-	        //하늘상태
-	        if (skyData) {
-	            document.getElementById("skyValue").innerText = skyData.fcstValue ;
-	        }
-	        
-	        if (rainStData) {
-	            document.getElementById("rainStatusValue").innerText = rainStData.fcstValue ;
-	        }
-	        
-	       
-	    }
+	
 </script>
 </head>
 <body onload="InitializeStaticMenu();">
