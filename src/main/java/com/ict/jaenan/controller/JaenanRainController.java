@@ -141,13 +141,32 @@ import com.ict.jaenan.model.vo.WeatherVO;
 			String nx = weathervo.getGridX();  //x좌표
 			String[] parts = dateInput.split("[\\s:]+");
 	        String base_date = parts[0].replace("-", "");
-	        String base_time = parts[1] + parts[2]; // 시간과 분을 합침
+	        String gettime = parts[1] + parts[2]; // 시간과 분을 합침
+	        
+	        
+	        int hour = Integer.parseInt(gettime.substring(0, 2));
+            int minute = Integer.parseInt(gettime.substring(2));
 
+            // 분이 30 미만인 경우, 시간에서 1을 빼고 분을 30으로 설정
+            if (minute < 30) {
+                if (hour == 0) {
+                    hour = 23; // 자정 이전인 경우, 시간을 23으로 설정
+                } else {
+                    hour--; // 그 외의 경우 1 시간 빼기
+                }
+                minute = 30;
+            } else {
+                // 분이 30 이상인 경우, 분을 0으로 설정
+                minute = 30;
+            }
+            
+            String base_time = String.format("%02d%02d", hour, minute);
+            System.out.println("Formatted Time: " + base_time);
 
 			System.out.println("ny좌표:" + ny);
 			System.out.println("nx좌표:" +nx);
 			System.out.println("날짜:" +base_date);
-			System.out.println("날짜:" +base_time);
+			System.out.println("30분단위 시분:" +base_time);
 			
 			
 		try {
@@ -200,6 +219,7 @@ import com.ict.jaenan.model.vo.WeatherVO;
 		    	}
   
 		        System.out.println("리스트는:" + list);
+		        
 		        return list;
 		        
 		    } catch (Exception e) {

@@ -217,7 +217,7 @@
 </script>
 <script type="text/javascript">
 	function getWeather(){
-
+		$(".weather_data").empty();
 		var areacode="";
 		var step1 = document.getElementById("step1").value;
 		var step2 = document.getElementById("step2").value;
@@ -232,31 +232,38 @@
 			areacode = step3;
 		}
 		
-		 var data = {
+		 var form = {
 		            areacode: areacode,
 		            dateInput: dateInput,
 		            step2: step2,
 		            step1: step1
 		        };
 	
-		 
 		        $.ajax({
 		            url: "/get_weather.do",
 		            dataType: "JSON",
 		            method: "POST",
 		            async :false,
-		            data:data,
-		            success: function (res) {
-		            	console.log(res)
- 
+		            data: form,
+		            success: function (data) {
+		            	console.log(data)
+		            	var p = "<p>";
+		            	p +="<p>온도</p>"
+		            	$.each(data, function(k,v){
+		            		p += "<p>" + v["fcstValue"] + "</p>";	//잘못파싱된거같지만, 이게 시간
+		            		p += "<p>" + v["fcstDate"] + "</p>";	//잘못파싱된거같지만, 이게 카테고리 
+		            		p += "<p>" + v["fcstTime"] + "</p>";	//잘못파싱된거같지만 이게 각 카테고리의 값
+		            	});
+		            	p += "</p>"
+		            	$(".weather_data").append(p);
+	
 		            },
-		            error: function () {
+		            error: function (xhr, status, error) {
 		                alert("읽기 실패");
 		            }
 		        });
 		    }
-	
-	
+
 </script>
 </head>
 <body onload="InitializeStaticMenu();">
@@ -338,34 +345,32 @@
 		    
 			    <!-- 날씨 정보를 표시할 요소 -->
 			    <div class="weather_data">
-			    
-			        <!-- 예시: 기온 데이터 출력 -->
+    			</div>
+    			
+    			 <!-- 예시: 기온 데이터 출력 
 			        <div id="tempData" class="weather-box">
 			            <h3>기온</h3>
 			            <p id="temperatureValue"></p>
 			     	</div>
 		
-		       		<!-- 예시: 강수량 데이터 출력 -->
+		       		예시: 강수량 데이터 출력
 		        	<div id="rainData" class="weather-box">
 		           		<h3>강수량</h3>
 		          	  	<p id="precipitationValue"></p>
       				</div>
       			  
-      			   <!-- 예시: 강수량 데이터 출력 -->
+      			   예시: 강수량 데이터 출력
 		       		<div id="skyData" class="weather-box">
 		           		<h3>하늘상태</h3>
 		          	  	<p id="skyValue"></p>
       			 	</div>
       			  
       			  
-      			   <!-- 예시: 강수량 데이터 출력 -->
+      			 예시: 강수량 데이터 출력
 		        	<div id="rainStData" class="weather-box">
 		           		<h3>강수형태</h3>
 		          	  	<p id="rainStatusValue"></p>
-      			  	</div>
-
-       
-    			</div>
+      			  	</div>-->
 	
 	</div>
 			
