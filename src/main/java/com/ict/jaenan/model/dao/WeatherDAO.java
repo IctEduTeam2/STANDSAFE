@@ -1,5 +1,6 @@
 package com.ict.jaenan.model.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +25,12 @@ public class WeatherDAO {
 		return sqlSessionTemplate.selectList("jaenan.countylist", selectStep2);
 	}
 	
-	public List<WeatherVO> getWeather() {
-		return sqlSessionTemplate.selectOne("jaenan.weatherone");
+	public List<WeatherVO> getWeatherlocation(String areacode, String step1, String step2) {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("areacode", areacode);
+		map.put("step1", step1);
+		map.put("step2", step2);
+		
+		return sqlSessionTemplate.selectList("jaenan.weatherloc", map);
 	}
 }

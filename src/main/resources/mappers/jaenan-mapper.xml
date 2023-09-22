@@ -16,10 +16,12 @@
 	where step2 = #{selectStep2}
 </select>
 
-<select id="weatherone" resultType="weathervo" parameterType="String">
-	select * from weather_area
-	where step1 = '서울특별시'
-
+<select id="weatherloc" resultType="weathervo" parameterType="Map">
+	select * 
+	from weather_area 
+	where step3 = #{areacode}
+	AND step1 = #{step1}
+	AND step2 = #{step2}
 </select>
  	
 </mapper>

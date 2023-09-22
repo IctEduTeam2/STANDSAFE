@@ -107,6 +107,7 @@
                 url: "/get_areacity.do?selectStep1=" + selectStep1,
                 method: "post",
                 dataType: "text",
+                async :false,
                 success: function (data) {
                     console.log(data);
                     selectStep2.innerHTML = "";
@@ -132,6 +133,7 @@
                 url: "/get_areacity.do?selectStep2=" + selectStep2,
                 method: "post",
                 dataType: "text",
+                async :false,
                 success: function (data) {
                     console.log(data);
                     selectStep3.innerHTML = "";
@@ -146,12 +148,13 @@
 </script>
 <script type="text/javascript">
 	function getWeather(){
+
 		var areacode="";
-		var citys = document.getElementById("citys").value;
-		var counties = document.getElementById("counties").value;
-		var town = document.getElementById("town").value;
+		var step1 = document.getElementById("step1").value;
+		var step2 = document.getElementById("step2").value;
+		var step3 = document.getElementById("step3").value;
 		var dateInput = document.getElementById("dateInput").value;
-		
+				
 		if(step3 == '' && step2 == '') {
 			areacode = step1;
 		}else if (step3 == '' && step2 != '') {
@@ -160,21 +163,27 @@
 			areacode = step3;
 		}
 		
-		$.ajax({
-			url : "/get_weather.do",
-			dataType: "JSON",
-			method: "POST",
-			success : function(res) {
-				console.log(res);
-				
-				
-			},
-			error : function() {
-				alert("읽기실패");
-			}
-		});
-			
-	}//끝괄호
+		 var data = {
+		            areacode: areacode,
+		            dateInput: dateInput,
+		            step2: step2,
+		            step1: step1
+		        };
+
+		        $.ajax({
+		            url: "/get_weather.do",
+		            dataType: "JSON",
+		            method: "POST",
+		            async :false,
+		            data:data,
+		            success: function (res) {
+		                console.log(res);
+		            },
+		            error: function () {
+		                alert("읽기 실패");
+		            }
+		        });
+		    }
 </script>
 </head>
 <body onload="InitializeStaticMenu();">
@@ -287,9 +296,9 @@
      // 현재 날짜를 설정합니다.
      dateInput.value = getCurrentDate();
 
-     // 10일 이후의 날짜를 계산합니다.
+     // 3일 이후의 날짜를 계산합니다.
      const maxDate = new Date();
-     maxDate.setDate(maxDate.getDate() + 10);
+     maxDate.setDate(maxDate.getDate() + 3);
 
      // 최대 선택 가능한 날짜를 설정합니다.
      dateInput.max = maxDate.toISOString().slice(0, 10); // YYYY-MM-DD 형식으로 설정

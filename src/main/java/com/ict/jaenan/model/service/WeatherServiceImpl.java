@@ -27,7 +27,7 @@ public class WeatherServiceImpl implements WeatherService {
 	}
 	
 	@Override
-	public List<WeatherVO> getWeather() {
-		return weatherDAO.getWeather();
+	public List<WeatherVO> getWeatherlocation(String areacode, String step1, String step2) {
+		return weatherDAO.getWeatherlocation(areacode,step1,step2);
 	}
 }
