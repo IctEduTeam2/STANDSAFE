@@ -1,11 +1,19 @@
 package com.ict.jaenan.model.vo;
 
 public class WeatherVO {
-	 private String baseDate,baseTime,category,nx,ny,obsrValue,fcstDate,fcstTime;
+	 private String baseDate,baseTime,category,nx,ny,fcstValue,fcstDate,fcstTime;
 	 private String gridX ,gridY ;
 
 	 
 	 
+	public String getFcstValue() {
+		return fcstValue;
+	}
+
+	public void setFcstValue(String fcstValue) {
+		this.fcstValue = fcstValue;
+	}
+
 	public String getFcstDate() {
 		return fcstDate;
 	}
@@ -78,26 +86,19 @@ public class WeatherVO {
 		this.ny = ny;
 	}
 
-	public String getObsrValue() {
-		return obsrValue;
-	}
 
-	public void setObsrValue(String obsrValue) {
-		this.obsrValue = obsrValue;
-	}
 
-	public WeatherVO(String baseDate, String baseTime, String category, String nx, String ny, String obsrValue,
+	public WeatherVO( String category,  String fcstValue,
 			String fcstDate, String fcstTime) {
 
-		this.baseDate = baseDate;
-		this.baseTime = baseTime;
+	
 		this.category = category;
-		this.nx = nx;
-		this.ny = ny;
-		this.obsrValue = obsrValue;
+		this.fcstValue = fcstValue;
 		this.fcstDate = fcstDate;
 		this.fcstTime = fcstTime;
 	}
+	
+	
 
 	public WeatherVO() {
 		// TODO Auto-generated constructor stub

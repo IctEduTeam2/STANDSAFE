@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale.Category;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpSession;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,7 +110,7 @@ import com.ict.jaenan.model.vo.WeatherVO;
 	
 	@ResponseBody
 	@RequestMapping(value= "/get_weather.do",produces="application/json; charset=utf-8")
-	public String getWeatherInfo(
+	public List<WeatherVO> getWeatherInfo(
 			 @RequestParam("dateInput") String dateInput,
 		        @RequestParam("areacode") String areacode,
 		        @RequestParam("step1") String step1,
@@ -127,8 +129,8 @@ import com.ict.jaenan.model.vo.WeatherVO;
 		List<WeatherVO> weatherloc = weatherService.getWeatherlocation(areacode, step1,step2);
 		
 		for (WeatherVO k : weatherloc) {
-			System.out.println("nx좌표:" + k.getGridX());
-			System.out.println("ny좌표:" +k.getGridY());
+			System.out.println("x좌표:" + k.getGridX());
+			System.out.println("y좌표:" +k.getGridY());
 			weathervo.setGridX(k.getGridX());
 			weathervo.setGridY(k.getGridY());
 			
@@ -137,23 +139,27 @@ import com.ict.jaenan.model.vo.WeatherVO;
 	
 			String ny = weathervo.getGridY();  //y좌표
 			String nx = weathervo.getGridX();  //x좌표
-			String base_date  = dateInput.replace("-", "");
+			String[] parts = dateInput.split("[\\s:]+");
+	        String base_date = parts[0].replace("-", "");
+	        String base_time = parts[1] + parts[2]; // 시간과 분을 합침
+
 
 			System.out.println("ny좌표:" + ny);
 			System.out.println("nx좌표:" +nx);
 			System.out.println("날짜:" +base_date);
+			System.out.println("날짜:" +base_time);
 			
 			
 		try {
-				StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst"); /*URL*/
-		        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=U5K8ToP0OjUZWoCAD2t5c39BAudQefSGjnRhVZzlgmDMrYsxypjhEicS2%2FgRc%2BqJzx5WJMWLTv0sF7LEzgEn7A%3D%3D"); /*Service Key*/
-		        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
-		        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("1000", "UTF-8")); /*한 페이지 결과 수*/
-		        urlBuilder.append("&" + URLEncoder.encode("dataType","UTF-8") + "=" + URLEncoder.encode("JSON", "UTF-8")); /*요청자료형식(XML/JSON) Default: XML*/
-		        urlBuilder.append("&" + URLEncoder.encode("base_date","UTF-8") + "=" + URLEncoder.encode(base_date, "UTF-8")); /*‘21년 6월 28일발표*/
-		        urlBuilder.append("&" + URLEncoder.encode("base_time","UTF-8") + "=" + URLEncoder.encode("0500", "UTF-8")); /*05시 발표*/
-		        urlBuilder.append("&" + URLEncoder.encode("nx","UTF-8") + "=" + URLEncoder.encode(nx, "UTF-8")); /*예보지점의 X 좌표값*/
-		        urlBuilder.append("&" + URLEncoder.encode("ny","UTF-8") + "=" + URLEncoder.encode(ny, "UTF-8")); /*예보지점의 Y 좌표값*/
+				StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst"); 
+		        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=U5K8ToP0OjUZWoCAD2t5c39BAudQefSGjnRhVZzlgmDMrYsxypjhEicS2%2FgRc%2BqJzx5WJMWLTv0sF7LEzgEn7A%3D%3D"); 
+		        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8"));
+		        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("1000", "UTF-8")); 
+		        urlBuilder.append("&" + URLEncoder.encode("dataType","UTF-8") + "=" + URLEncoder.encode("JSON", "UTF-8")); 
+		        urlBuilder.append("&" + URLEncoder.encode("base_date","UTF-8") + "=" + URLEncoder.encode(base_date, "UTF-8")); 
+		        urlBuilder.append("&" + URLEncoder.encode("base_time","UTF-8") + "=" + URLEncoder.encode(base_time, "UTF-8")); 
+		        urlBuilder.append("&" + URLEncoder.encode("nx","UTF-8") + "=" + URLEncoder.encode(nx, "UTF-8")); 
+		        urlBuilder.append("&" + URLEncoder.encode("ny","UTF-8") + "=" + URLEncoder.encode(ny, "UTF-8")); 
 		        
 		        URL url = new URL(urlBuilder.toString());
 		        URLConnection conn = url.openConnection();
@@ -164,35 +170,44 @@ import com.ict.jaenan.model.vo.WeatherVO;
 		    	   sb.append(msg);
 		       }
 		       
+		       System.out.println(sb.toString());
+		       
+		       
+		       /////////////////////////////////////////////////////////
 		       JSONParser jsonParser = new JSONParser();
 		       JSONObject arr = (JSONObject) jsonParser.parse(sb.toString());
+		       JSONObject response = (JSONObject) arr.get("response"); // JSON 데이터 구조에 맞게 필요한 키를 가져옵니다.
+		       
+		      
+		       // 이제 response 객체 안의 다른 키를 사용하여 데이터를 가져올 수 있습니다.
+		      
+		       JSONObject body = (JSONObject) response.get("body");
+		       JSONObject items = (JSONObject) body.get("items");
+		       JSONArray itemList = (JSONArray) items.get("item");
+		       
 		       List<WeatherVO> list = new ArrayList<WeatherVO>();
 		      
-		       for (int i = 0; i < arr.size(); i++) {
-		    	   JSONObject jobt = (JSONObject) arr.get(i);
-		    	   String baseDate = (String) jobt.get("baseDate");
-		    	   String baseTime = (String) jobt.get("baseTime");
-		    	   String category = (String) jobt.get("category");
-		    	   String fcstDate = (String) jobt.get("fcstDate");
-		    	   String fcstTime = (String) jobt.get("fcstTime");
-		    	   String fcstValue = (String) jobt.get("fcstValue");
-		    	   
-		    	   WeatherVO wvo = new WeatherVO(baseDate,baseTime,category,fcstDate,fcstTime,fcstValue,nx,ny);
-		    	   list.add(wvo);	
-			}
-		        System.out.println("리스트는:" + list.toString());
-		        return list.toString();
+		       for (Object item : itemList) {
+		    	    JSONObject weatherItem = (JSONObject) item;
+		    	
+		    	    String category = (String) weatherItem.get("category");
+		    	    String fcstValue = (String) weatherItem.get("fcstValue");
+		    	    String fcstDate = (String) weatherItem.get("fcstDate");
+		    	    String fcstTime = (String) weatherItem.get("fcstTime");
+
+		    	    WeatherVO wvo = new WeatherVO(fcstDate, fcstTime,category,  fcstValue);  
+		    	    list.add(wvo);
+		    	}
+  
+		        System.out.println("리스트는:" + list);
+		        return list;
 		        
 		    } catch (Exception e) {
 				System.out.println("오류는 : " + e);
 				return null;
 			}
 	}
-		
-		
-		
-		
-		
+
 	
 	
 	

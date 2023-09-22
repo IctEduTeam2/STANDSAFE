@@ -88,6 +88,75 @@
     cursor: pointer;
     height: 40px; 
 }
+#w_noti{
+	color: red;
+	font-size: 14px;
+	font-weight: bold;
+}
+.weather_div {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin: 20px;
+    max-width: 400px;
+    text-align: center;
+    background-color: #f5f5f5;
+}
+
+.weather-_data {
+    margin-top: 20px;
+}
+
+.weather-_data .weather_item {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+   /* 각 카테고리를 감싸는 박스 스타일 */
+    .weather-box {
+        width: 250px;
+        height: 120px;
+        border: 1px solid #ccc;
+        margin: 10px;
+        display: inline-block;
+    }
+    
+    /* 카테고리 아이콘 스타일 */
+    .weather-box .weather-icon {
+        float: left;
+        width: 100px;
+        height: 100px;
+    }
+    
+    /* 카테고리 아이콘 이미지 스타일 */
+    .weather-box .weather-icon img {
+        width: 100%;
+        height: 100%;
+    }
+    
+    /* 카테고리 정보 스타일 */
+    .weather-box .weather-info {
+        float: left;
+        width: 140px;
+        height: 100px;
+        padding: 10px;
+    }
+    
+    /* 카테고리 정보 제목 스타일 */
+    .weather-box .weather-info h3 {
+        font-size: 18px;
+        margin: 0;
+    }
+    
+    /* 카테고리 정보 값 스타일 */
+    .weather-box .weather-info p {
+        font-size: 24px;
+        margin: 0;
+    }
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <script type="text/javascript">
@@ -169,7 +238,8 @@
 		            step2: step2,
 		            step1: step1
 		        };
-
+	
+		 
 		        $.ajax({
 		            url: "/get_weather.do",
 		            dataType: "JSON",
@@ -177,13 +247,59 @@
 		            async :false,
 		            data:data,
 		            success: function (res) {
-		                console.log(res);
+		            	console.log(res)
+		            	 displayWeatherData(res);
+		                
 		            },
 		            error: function () {
 		                alert("읽기 실패");
 		            }
 		        });
 		    }
+	
+	  function displayWeatherData(data) {
+	        // 기온 데이터
+	        var tempData = data.filter(function(item) {
+	            return item.category === 'T1H';
+	        })[0];
+	        
+	        // 강수량 데이터
+	        var rainData = data.filter(function(item) {
+	            return item.category === 'RN1';
+	        })[0];
+	        
+	        //하늘상태
+	        var skyData = data.filter(function(item) {
+	            return item.category === 'SKY';
+	        })[0];
+	        
+	        //강수형태
+	        var rainStData= data.filter(function(item) {
+	            return item.category === 'PTY';
+	        })[0];
+	      
+	        
+	        // 기온 데이터 출력
+	        if (tempData) {
+	            document.getElementById("temperatureValue").innerText = tempData.fcstValue + "°C";
+	        }
+	        
+	        // 강수량 데이터 출력
+	        if (rainData) {
+	            document.getElementById("precipitationValue").innerText = rainData.fcstValue + "mm";
+	        }
+	        
+	        //하늘상태
+	        if (skyData) {
+	            document.getElementById("skyValue").innerText = skyData.fcstValue ;
+	        }
+	        
+	        if (rainStData) {
+	            document.getElementById("rainStatusValue").innerText = rainStData.fcstValue ;
+	        }
+	        
+	       
+	    }
 </script>
 </head>
 <body onload="InitializeStaticMenu();">
@@ -201,18 +317,20 @@
 			<button onclick="location.href='/jaenan_fire.do'" class="top_btn">화재</button>
 			<button onclick="location.href='/jaenan_jijinlive.do'" class="top_btn" >지진</button>
 			<button onclick="location.href='/jaenan_rainlive.do'" class="top_btn" style="background-color: #1b5ac2">강수</button>
-		</div>
+			</div>
 		<hr id="hr1">
 		<div class="top_tab">
 			<a href="/jaenan_rainlive.do" style="color: #1b5ac2; font-weight: bold" >실시간 날씨 </a> |
 			<a href="/jaenan_rainnotice.do">홍수예보 발령자료</a>
-			
+	
 		</div>		
 		<hr id="hr2">
 		<h3 style="text-align: left">■ 날씨정보</h3>
 		<br><br>
 		<!--여기에 갖고온 데이터들 나와야함.  -->
-		<div id="slideshow">
+		<div>
+		 <p id="w_noti">날씨는 현재시간기준으로 6시간 이내의 날씨정보만 조회됩니다. </p><br><br>
+		</div>
 
 	<!-- <form class="form-horizontal" method="post" action="/get_weather.do"> -->
 	<form class="form-horizontal" >
@@ -248,20 +366,50 @@
 				<option id="town" value="">시/군/구 를 선택하세요</option>
 			</select>
 
-			 <label for="dateInput">날짜 선택:</label>
-			 <input type="date" id="dateInput"  name="dateInput">
-
-		
-	
+			 <label for="dateInput">현재 날짜 및 시간</label>
+			 <input type="text" id="dateInput" name="dateInput" readonly>
 			<!-- <button type="submit" class="go_btn"> -->
 			<button type="button" class="go_btn" onclick="getWeather()">
 				<span>검색</span>
 			</button>
+			
 		</div>
 	</form>
-			<div>
-				<table id="resultWeather" class="table"></table>
-			</div>
+	
+			<div class="weather_div">
+		    <h2>날씨정보</h2>
+		    
+			    <!-- 날씨 정보를 표시할 요소 -->
+			    <div class="weather_data">
+			    
+			        <!-- 예시: 기온 데이터 출력 -->
+			        <div id="tempData" class="weather-box">
+			            <h3>기온</h3>
+			            <p id="temperatureValue"></p>
+			     	</div>
+		
+		       		<!-- 예시: 강수량 데이터 출력 -->
+		        	<div id="rainData" class="weather-box">
+		           		<h3>강수량</h3>
+		          	  	<p id="precipitationValue"></p>
+      				</div>
+      			  
+      			   <!-- 예시: 강수량 데이터 출력 -->
+		       		<div id="skyData" class="weather-box">
+		           		<h3>하늘상태</h3>
+		          	  	<p id="skyValue"></p>
+      			 	</div>
+      			  
+      			  
+      			   <!-- 예시: 강수량 데이터 출력 -->
+		        	<div id="rainStData" class="weather-box">
+		           		<h3>강수형태</h3>
+		          	  	<p id="rainStatusValue"></p>
+      			  	</div>
+
+       
+    			</div>
+	
 	</div>
 			
 
@@ -272,52 +420,30 @@
 	</div>
 	
 	 <script>
-	 // 현재 날짜를 가져오는 함수
-     function getCurrentDate() {
-         const today = new Date();
-         const yyyy = today.getFullYear();
-         let mm = today.getMonth() + 1;
-         let dd = today.getDate();
+	// 현재 날짜와 시간을 가져오는 함수
+	 function getCurrentDateTime() {
+	   const today = new Date();
+	   const yyyy = today.getFullYear();
+	   let mm = today.getMonth() + 1;
+	   let dd = today.getDate();
+	   let hh = today.getHours();
+	   let min = today.getMinutes();
 
-         // 월과 일을 두 자리 숫자로 만듭니다.
-         if (mm < 10) {
-             mm = '0' + mm;
-         }
-         if (dd < 10) {
-             dd = '0' + dd;
-         }
+	   // 월, 일, 시간, 분을 두 자리 숫자로 만듭니다.
+	   mm = mm < 10 ? '0' + mm : mm;
+	   dd = dd < 10 ? '0' + dd : dd;
+	   hh = hh < 10 ? '0' + hh : hh;
+	   min = min < 10 ? '0' + min : min;
 
-         return yyyy + '-' + mm + '-' + dd; // YYYY-MM-DD 형식으로 반환
-     }
+	   return yyyy + '-' + mm + '-' + dd + ' ' + hh + ':' + min; // YYYY-MM-DD HH:MM 형식으로 반환
+	 }
 
-     // input 요소를 가져옵니다.
-     const dateInput = document.getElementById("dateInput");
+	 // input 요소를 가져옵니다.
+	 const dateInput = document.getElementById("dateInput");
 
-     // 현재 날짜를 설정합니다.
-     dateInput.value = getCurrentDate();
-
-     // 3일 이후의 날짜를 계산합니다.
-     const maxDate = new Date();
-     maxDate.setDate(maxDate.getDate() + 3);
-
-     // 최대 선택 가능한 날짜를 설정합니다.
-     dateInput.max = maxDate.toISOString().slice(0, 10); // YYYY-MM-DD 형식으로 설정
-
-     // input 요소에서 날짜가 변경될 때 실행되는 함수
-     dateInput.addEventListener("change", function () {
-         const selectedDate = dateInput.value;
-
-         // 선택한 날짜를 Date 객체로 변환합니다.
-         const selectedDateObj = new Date(selectedDate);
-
-         // 현재 시점 이전의 날짜인 경우 메시지 창을 표시합니다.
-         const currentDate = new Date();
-         if (selectedDateObj < currentDate) {
-             alert("과거 날짜는 조회할 수 없습니다.");
-             dateInput.value = getCurrentDate(); // 날짜를 현재 날짜로 리셋합니다.
-         }
-     });
-     
+	 // 현재 날짜 및 시간을 설정하고 수정할 수 없게 만듭니다.
+	 dateInput.value = getCurrentDateTime();
+	 dateInput.setAttribute("readonly", "readonly");
     </script>
 </body>
 </html>
