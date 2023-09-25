@@ -153,7 +153,7 @@
         }
     }
 </script>
-<!-- <script type="text/javascript">
+<script type="text/javascript">
 	function getWeather(){
 		$("#weather_div").empty();
 		var areacode="";
@@ -179,13 +179,13 @@
 	
 		        $.ajax({
 		            url: "/get_weather.do",
-		            dataType: "JSON",
+		            dataType: "XML",
 		            method: "POST",
 		            async :false,
 		            data: form,
 		            success: function (data) {
 		            	console.log(data)
-		            	var table = "<table>";
+		            	/* var table = "<table>";
 		            	table += "<thead><tr>";
 		            	table += "<td>날짜</td><td>조회시간</td><td>카테고리</td><td>예보날짜</td><td>예보시간</td><td>수치(상태)</td></tr></thead>";
 		            	table += "<tbody>";
@@ -203,23 +203,23 @@
 		            	table += "</tbody></table>";
 		            	$("#weather_div").append(table);
 		            	
-		            	console.log(table);
+		            	console.log(table); */
 		            
 	
 		            },
-		            error: function (xhr, status, error) {
+		            error: function () {
 		                alert("일시적 오류입니다. 다음에 다시 시도하십시오.");
 		            }
 		        });
 		    }
 
-</script> -->
-<script type="text/javascript">
+</script> 
+<!-- <script type="text/javascript">
 	function getWeather(f) {
 		f.action="/get_weather.do"
 		f.submit();
 	}
-</script>
+</script> -->
 </head>
 <body onload="InitializeStaticMenu();">
 
@@ -295,25 +295,16 @@
 		</div>
 	</form>
 	
-			<div id="weather_div">
 		    <h2>날씨정보</h2>
-		    <table>
+			<div id="weather_div">
+		   <!--  <table>
 			<thead>
 				<tr><td>날짜</td><td>조회시간</td><td>카테고리</td><td>예보날짜</td><td>예보시간</td><td>수치(상태)</td></tr>
 			</thead>
 			<tbody>
-				<c:forEach items="${list }" var="k">
-					<tr>
-						<td>${k.baseDate }</td>
-						<td>${k.baseTime}</td>
-						<td>${k.category}</td>
-						<td>${k.fcstDate}</td>
-						<td>${k.fcstTime} </td>
-						<td>${k.fcstValue} </td>
-					</tr>
-				</c:forEach>
+				
 			</tbody>
-			</table>
+			</table> -->
 			
 	
 			</div>

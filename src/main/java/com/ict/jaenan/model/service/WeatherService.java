@@ -11,5 +11,5 @@ public interface WeatherService {
 	
 	public List<AreaVO> getCounties(String selectStep2);
 	
-	public List<WeatherVO> getWeatherlocation(String areacode, String step1, String step2);
+	public List<WeatherVO> getWeatherlocation(String town, String citys, String counties);
 }

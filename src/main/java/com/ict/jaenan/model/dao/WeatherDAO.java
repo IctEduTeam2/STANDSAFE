@@ -25,11 +25,11 @@ public class WeatherDAO {
 		return sqlSessionTemplate.selectList("jaenan.countylist", selectStep2);
 	}
 	
-	public List<WeatherVO> getWeatherlocation(String areacode, String step1, String step2) {
+	public List<WeatherVO> getWeatherlocation(String town, String citys, String counties) {
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("areacode", areacode);
-		map.put("step1", step1);
-		map.put("step2", step2);
+		map.put("town", town);
+		map.put("citys", citys);
+		map.put("counties", counties);
 		
 		return sqlSessionTemplate.selectList("jaenan.weatherloc", map);
 	}

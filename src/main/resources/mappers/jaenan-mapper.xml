@@ -19,11 +19,11 @@
 <select id="weatherloc" resultType="weathervo" parameterType="Map">
 	select * 
 	from weather_area 
-	where step3 = #{areacode}
-	AND step1 = #{step1}
-	AND step2 = #{step2}
+	where step3 = #{town}
+	AND step1 = #{citys}
+	AND step2 = #{counties}
 </select>
- 	
+
 </mapper>
 
 
