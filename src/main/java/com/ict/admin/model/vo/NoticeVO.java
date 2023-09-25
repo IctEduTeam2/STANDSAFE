@@ -5,8 +5,32 @@ import org.springframework.web.multipart.MultipartFile;
 public class NoticeVO {
 
 	private String NOTICE_NUM, NOTICE_SUBJECT, NOTICE_TYPE, NOTICE_WRITER, NOTICE_CONTENT, NOTICE_HIT,
-					NOTICE_DATE, NOTICE_UPDATE, NOTICE_ST, NOTICE_FILE, ADMIN_NUM;
+					NOTICE_DATE, NOTICE_UPDATE, NOTICE_ST, NOTICE_FILE, ADMIN_NUM, allcount, delcount, regcount;
 	
+	public String getAllcount() {
+		return allcount;
+	}
+
+	public void setAllcount(String allcount) {
+		this.allcount = allcount;
+	}
+
+	public String getDelcount() {
+		return delcount;
+	}
+
+	public void setDelcount(String delcount) {
+		this.delcount = delcount;
+	}
+
+	public String getRegcount() {
+		return regcount;
+	}
+
+	public void setRegcount(String regcount) {
+		this.regcount = regcount;
+	}
+
 	private MultipartFile file;
 
 	public MultipartFile getFile() {

@@ -26,6 +26,21 @@ public class NoticeDAO {
 //	}
 	
 	//공지사항 
+	//공지사항 실시간 게시물
+	//전체 게시물
+	public int getTotalNotices() {
+		return sqlSessionTemplate.selectOne("notice.getTotalNotices");
+	}
+	//등록된 게시물
+	public int getRegisteredNotices() {
+		return sqlSessionTemplate.selectOne("notice.getRegisteredNotices");
+	}
+	//삭제된 게시물
+	public int getDeletedNotices() {
+		return sqlSessionTemplate.selectOne("notice.getDeletedNotices");
+	}
+	
+	
 	public List<NoticeVO> getadnoticelist() {
 		List<NoticeVO> list = sqlSessionTemplate.selectList("notice.noticelist");
 		return list;

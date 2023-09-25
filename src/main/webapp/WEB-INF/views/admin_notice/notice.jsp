@@ -20,7 +20,6 @@
 }
 
 /* paging */
-
 table tfoot ol.paging {
     list-style: none;
     text-align: center; /* 가운데 정렬을 위한 변경 */
@@ -42,7 +41,6 @@ table tfoot ol.paging li a {
 table tfoot ol.paging li a:hover {
     background: #6c98c2;
     color: white;
-    /* font-weight: bold; */
 }
 
 .disable {
@@ -93,10 +91,7 @@ function setOneWeekDate() {
     // 오늘 날짜를 기간 검색 필드에 설정합니다.
     document.getElementById('start1').value = oneWeekAgoYear + '-' + oneWeekAgoMonth + '-' + oneWeekAgoDay;
     document.getElementById('close1').value = year + '-' + month + '-' + day;
-
-
 	}
-
     
 //초기화 
 function resetTableAndFields() {
@@ -118,8 +113,6 @@ function setStartField() {
     document.getElementById('start').value = startDate;
     return true; // 폼 제출을 진행하도록 true 반환
 }
-    
-
 
 //검색버튼
 $(document).ready(function() {
@@ -140,10 +133,6 @@ $(document).ready(function() {
         });
     });
 });
-
-
-
-
 
 function searchDeletedNotices() {
     $.ajax({
@@ -181,7 +170,7 @@ $(document).ready(function() {
 
 	<jsp:include page="header.jsp"></jsp:include>
 
-	<!--실시간 현황  -->
+	<!--실시간 게시글 현황  -->
 	<div class="search_wrap">
 		<div
 			style="float: left; margin-left: 205px; margin-top: 5%; margin-right: 20px; border: 1px solid black; width: 20%; height: 400px;">
@@ -196,9 +185,8 @@ $(document).ready(function() {
 			<h1 style="text-align: center; font-size: 18px;">삭제한 게시글 : ${deletedNotices}개</h1>
 			</p>
 		</div>
-
+		
 		<!-- 검색 영역 -->
-
 		<form id="searchForm" action="/adnotice_search.do" method="post" onsubmit="setStartField()">
 		
 			<div
@@ -216,7 +204,6 @@ $(document).ready(function() {
 										<option value="제목">제목</option>
 										<option value="작성자">작성자</option>
 										<option value="내용">내용</option>
-										
 								</select>
 								<!-- 검색어 입력창  -->
 								</span> <span style="margin-left: 10px;"> <input type="text"
@@ -239,9 +226,7 @@ $(document).ready(function() {
     								<option value="dateCreated2">수정일</option>
 								</select>
 								</span>
-								
-								
-								
+																
 								 <span style="margin-left: 10px;">
 								 <!-- 달력 --> 
 								 <input
@@ -261,8 +246,6 @@ $(document).ready(function() {
 							<input type="button" alt="삭제게시물" value="삭제게시물"
 							style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
 							onclick="searchDeletedNotices()"></span> 
-							
-						 
 						<span style="float: right; margin-top: 50px; margin-left: 15px;">
 							<input type="button" alt="일주일" value="일주일"
 							style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"

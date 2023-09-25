@@ -36,13 +36,6 @@ public class Admin_notice {
 		int totalRecord = notiService.getTotalRecord(); // 전체 공지사항 레코드 수
 		paging.setTotalRecord(totalRecord);
 		
-//		//총 고지사항 게시글 수
-//		int totalNotices = totalRecord; //이미 계산된 값
-//		// 등록한 공지사항 게시글 수
-//	    int registeredNotices = notiService.getRecordByStatus(1);
-//	    //삭제한 게시글 수
-//	    int deletedNotices = notiService.getRecordByStatus(2);
-
 		if (totalRecord <= paging.getNumPerPage()) {
 			paging.setTotalPage(1);
 		} else {
@@ -69,15 +62,20 @@ public class Admin_notice {
 		}
 
 		List<NoticeVO> list = notiService.getadnoticelist(paging.getOffset(), paging.getNumPerPage());
+		
+		//전체 공지사항, 등록된 공지사항, 삭제된 공지사항, 삭제된 공지사항의 개수 가져오기
+		int totalNotices = notiService.getTotalNotices();
+		int registeredNotices = notiService.getRegisteredNotices();
+		int deletedNotices = notiService.getDeletedNotices();
 
-		//게시글 수
-//		mv.addObject("totalNotices", totalNotices);
-//		mv.addObject("registeredNotices", registeredNotices);
-//		mv.addObject("deletedNotices", deletedNotices);
-//		
 		
 		mv.addObject("list", list);
 		mv.addObject("paging", paging);
+		
+		mv.addObject("totalNotices", totalNotices);
+		mv.addObject("registeredNotices", registeredNotices);
+		mv.addObject("deletedNotices", deletedNotices);
+		
 		return mv;
 	}
 
@@ -185,7 +183,16 @@ public class Admin_notice {
 	        html.append("<td>").append(k.getNOTICE_DATE()).append("</td>");
 	        html.append("<td>").append(k.getNOTICE_UPDATE()).append("</td>");
 	        html.append("<td>").append(k.getNOTICE_WRITER()).append("</td>");
-	        html.append("<td>").append(k.getNOTICE_ST()).append("</td>");
+	        //html.append("<td>").append(k.getNOTICE_ST()).append("</td>");
+	        html.append("<td>");
+	        if (k.getNOTICE_ST().equals("1")) {
+	            html.append("[등록]");
+	        } else if (k.getNOTICE_ST().equals("2")) {
+	            html.append("[삭제]");
+	        } else {
+	            html.append("[미등록]");
+	        }
+	        html.append("</td>");
 	        html.append("</tr>");
 	        no--;  // 번호 감소
 	    }
@@ -234,7 +241,16 @@ public class Admin_notice {
 	        html.append("<td>").append(k.getNOTICE_DATE()).append("</td>");
 	        html.append("<td>").append(k.getNOTICE_UPDATE()).append("</td>");
 	        html.append("<td>").append(k.getNOTICE_WRITER()).append("</td>");
-	        html.append("<td>").append(k.getNOTICE_ST()).append("</td>");
+	        //html.append("<td>").append(k.getNOTICE_ST()).append("</td>");
+	        html.append("<td>");
+	        if (k.getNOTICE_ST().equals("1")) {
+	            html.append("[등록]");
+	        } else if (k.getNOTICE_ST().equals("2")) {
+	            html.append("[삭제]");
+	        } else {
+	            html.append("[미등록]");
+	        }
+	        html.append("</td>");
 	        html.append("</tr>");
 	        no--;  // 번호 감소
 	    }

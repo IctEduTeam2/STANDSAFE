@@ -6,7 +6,14 @@ import com.ict.admin.model.vo.NoticeVO;
 
 public interface NoticeService {
 	
-	//공지사
+	//공지사항
+	//공지사항 실시간 게시물
+	int getTotalNotices();
+	// 등록된 공지사항 게시물
+	int getRegisteredNotices();
+	// 삭제된 공지사항 게시물
+	int getDeletedNotices();
+	
 	//전체보기
 	List<NoticeVO> getadnoticelist();
 	

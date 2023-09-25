@@ -20,6 +20,22 @@ public class NoticeServiceImpl implements NoticeService{
 //	}
 	
 	//공지사항
+	//공지사항 실시간 게시글
+	@Override
+	public int getTotalNotices() {
+		return noticeDAO.getTotalNotices();
+	}
+	@Override
+	public int getRegisteredNotices() {
+		return noticeDAO.getRegisteredNotices();
+	}
+	@Override
+	public int getDeletedNotices() {
+		return noticeDAO.getDeletedNotices();
+	}
+	
+	
+	
 	@Override
 	public List<NoticeVO> getadnoticelist(){
 		return noticeDAO.getadnoticelist();
