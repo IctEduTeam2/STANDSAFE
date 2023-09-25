@@ -14,6 +14,11 @@ public class NoticeServiceImpl implements NoticeService{
 	@Autowired
 	private NoticeDAO noticeDAO;
 	
+//	@Override
+//	public int getRecordByStatus(int statusCode) {
+//		return noticeDAO.getRecordByStatus(statusCode);
+//	}
+	
 	//공지사항
 	@Override
 	public List<NoticeVO> getadnoticelist(){
@@ -40,13 +45,28 @@ public class NoticeServiceImpl implements NoticeService{
 		return noticeDAO.getAdNoticeOneList(notice_num);
 	}
 	
-	//검색 
+	//테이블 삭제 버튼
+	@Override
+	public int getupdateNoticeById(String notice_num) {
+		return noticeDAO.getupdateNoticeById(notice_num);
+	}
 	
-	
-	//삭제된 게시물보기   
-	public List<NoticeVO> getDeletedNotices(){
-		return noticeDAO.getDeletedNotices();
+	//삭제게시물 검색 버튼
+	@Override
+	public List<NoticeVO> getDeletedNoti() {
+		return noticeDAO.getDeletedNoti();
+		
+	}
+
+	//검색(전체리스트)
+	public List<NoticeVO> getAllNotices() {
+		return noticeDAO.getAllNotices();
 	}
 	
 	
+	//검색(특정 추출)
+	@Override
+	public List<NoticeVO> adNotiSearch(String searchKey,String searchText,String searchTitle,String start1,String close1,String mg_type) {
+		return noticeDAO.adNotiSearch(searchKey,searchText,searchTitle,start1,close1,mg_type);
+	}
 }
