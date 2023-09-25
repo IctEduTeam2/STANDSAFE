@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -93,70 +94,7 @@
 	font-size: 14px;
 	font-weight: bold;
 }
-.weather_div {
-    border: 1px solid #ccc;
-    padding: 20px;
-    margin: 20px;
-    max-width: 400px;
-    text-align: center;
-    background-color: #f5f5f5;
-}
 
-.weather-_data {
-    margin-top: 20px;
-}
-
-.weather-_data .weather_item {
-    display: inline-block;
-    margin: 10px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    background-color: #fff;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-
-   /* 각 카테고리를 감싸는 박스 스타일 */
-    .weather-box {
-        width: 250px;
-        height: 120px;
-        border: 1px solid #ccc;
-        margin: 10px;
-        display: inline-block;
-    }
-    
-    /* 카테고리 아이콘 스타일 */
-    .weather-box .weather-icon {
-        float: left;
-        width: 100px;
-        height: 100px;
-    }
-    
-    /* 카테고리 아이콘 이미지 스타일 */
-    .weather-box .weather-icon img {
-        width: 100%;
-        height: 100%;
-    }
-    
-    /* 카테고리 정보 스타일 */
-    .weather-box .weather-info {
-        float: left;
-        width: 140px;
-        height: 100px;
-        padding: 10px;
-    }
-    
-    /* 카테고리 정보 제목 스타일 */
-    .weather-box .weather-info h3 {
-        font-size: 18px;
-        margin: 0;
-    }
-    
-    /* 카테고리 정보 값 스타일 */
-    .weather-box .weather-info p {
-        font-size: 24px;
-        margin: 0;
-    }
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <script type="text/javascript">
@@ -215,9 +153,9 @@
         }
     }
 </script>
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 	function getWeather(){
-		$(".weather_data").empty();
+		$("#weather_div").empty();
 		var areacode="";
 		var step1 = document.getElementById("step1").value;
 		var step2 = document.getElementById("step2").value;
@@ -247,23 +185,40 @@
 		            data: form,
 		            success: function (data) {
 		            	console.log(data)
-		            	var p = "<p>";
-		            	p +="<p>온도</p>"
+		            	var table = "<table>";
+		            	table += "<thead><tr>";
+		            	table += "<td>날짜</td><td>조회시간</td><td>카테고리</td><td>예보날짜</td><td>예보시간</td><td>수치(상태)</td></tr></thead>";
+		            	table += "<tbody>";
 		            	$.each(data, function(k,v){
-		            		p += "<p>" + v["fcstValue"] + "</p>";	//잘못파싱된거같지만, 이게 시간
-		            		p += "<p>" + v["fcstDate"] + "</p>";	//잘못파싱된거같지만, 이게 카테고리 
-		            		p += "<p>" + v["fcstTime"] + "</p>";	//잘못파싱된거같지만 이게 각 카테고리의 값
+		            		table += "<tr>";
+		            		table += "<td>" + v["baseDate"] + "</td>";
+		            		table += "<td>" + v["baseTime"] + "</td>";
+		            		table += "<td>" + v["category"] + "</td>";
+		            		table += "<td>" + v["fcstDate"] + "</td>";
+		            		table += "<td>" + v["fcstTime"] + "</td>";
+		            		table += "<td>" + v["fcstValue"] + "</td>";
+		            		table += "</tr>";
 		            	});
-		            	p += "</p>"
-		            	$(".weather_data").append(p);
+		            	
+		            	table += "</tbody></table>";
+		            	$("#weather_div").append(table);
+		            	
+		            	console.log(table);
+		            
 	
 		            },
 		            error: function (xhr, status, error) {
-		                alert("읽기 실패");
+		                alert("일시적 오류입니다. 다음에 다시 시도하십시오.");
 		            }
 		        });
 		    }
 
+</script> -->
+<script type="text/javascript">
+	function getWeather(f) {
+		f.action="/get_weather.do"
+		f.submit();
+	}
 </script>
 </head>
 <body onload="InitializeStaticMenu();">
@@ -296,8 +251,8 @@
 		 <p id="w_noti">날씨는 현재시간기준으로 6시간 이내의 날씨정보만 조회됩니다. </p><br><br>
 		</div>
 
-	<!-- <form class="form-horizontal" method="post" action="/get_weather.do"> -->
-	<form class="form-horizontal" >
+	<form class="form-horizontal" method="post" >
+	<!-- <form class="form-horizontal" > -->
 		<div class="form-group">
 			<select id="step1" name="citys"  class="citys" title="시/도" onchange="selectArea()">
 				<option id="city" value="">시/도</option>
@@ -332,47 +287,36 @@
 
 			 <label for="dateInput">현재 날짜 및 시간</label>
 			 <input type="text" id="dateInput" name="dateInput" readonly>
-			<!-- <button type="submit" class="go_btn"> -->
-			<button type="button" class="go_btn" onclick="getWeather()">
+			<button type="submit" class="go_btn" onclick="getWeather(this.form)">
+			<!-- <button type="button" class="go_btn" onclick="getWeather()"> -->
 				<span>검색</span>
 			</button>
 			
 		</div>
 	</form>
 	
-			<div class="weather_div">
+			<div id="weather_div">
 		    <h2>날씨정보</h2>
-		    
-			    <!-- 날씨 정보를 표시할 요소 -->
-			    <div class="weather_data">
-    			</div>
-    			
-    			 <!-- 예시: 기온 데이터 출력 
-			        <div id="tempData" class="weather-box">
-			            <h3>기온</h3>
-			            <p id="temperatureValue"></p>
-			     	</div>
-		
-		       		예시: 강수량 데이터 출력
-		        	<div id="rainData" class="weather-box">
-		           		<h3>강수량</h3>
-		          	  	<p id="precipitationValue"></p>
-      				</div>
-      			  
-      			   예시: 강수량 데이터 출력
-		       		<div id="skyData" class="weather-box">
-		           		<h3>하늘상태</h3>
-		          	  	<p id="skyValue"></p>
-      			 	</div>
-      			  
-      			  
-      			 예시: 강수량 데이터 출력
-		        	<div id="rainStData" class="weather-box">
-		           		<h3>강수형태</h3>
-		          	  	<p id="rainStatusValue"></p>
-      			  	</div>-->
+		    <table>
+			<thead>
+				<tr><td>날짜</td><td>조회시간</td><td>카테고리</td><td>예보날짜</td><td>예보시간</td><td>수치(상태)</td></tr>
+			</thead>
+			<tbody>
+				<c:forEach items="${list }" var="k">
+					<tr>
+						<td>${k.baseDate }</td>
+						<td>${k.baseTime}</td>
+						<td>${k.category}</td>
+						<td>${k.fcstDate}</td>
+						<td>${k.fcstTime} </td>
+						<td>${k.fcstValue} </td>
+					</tr>
+				</c:forEach>
+			</tbody>
+			</table>
+			
 	
-	</div>
+			</div>
 			
 
 		</section>
