@@ -16,69 +16,9 @@
 
 <link rel="stylesheet" href="resources/css/slide.css" />
 <link rel="stylesheet" href="resources/css/basis.css" />
+<link rel="stylesheet" href="resources/css/weather.css" />
 
 <style type="text/css">
-.menu {
-	margin-bottom: 50px;
-}
-
-#small_news {
-	background-color: black;
-	color: yellow;
-}
-
-.top_btn {
-	margin-top: 20px;
-	width: 130px;
-	height: 50px;
-	font-size: 16px;
-	background-color: gray;
-	color: white;
-	border: none;
-	padding: 10px 20px;
-	cursor: pointer;
-	transition: background-color 0.3s, color 0.3s;
-}
-
-.top_btn:hover {
-	background-color: #1b5ac2;
-	color: white;
-}
-
-.top_btn:active {
-	background-color: #1b5ac2;
-	color: white;
-}
-
-#hr1 {
-	width: 100%;
-	border: 0px;
-	height: 4px;
-	background: gray;
-	margin-top: 50px;
-}
-
-#hr2 {
-	width: 100%;
-	border: 0px;
-	height: 4px;
-	background: black;
-	margin-top: 30px;
-	margin-bottom: 30px;
-}
-
-.top_tab {
-	margin-top: 20px;
-	border: 1px solid black;
-	padding: 10px;
-	text-align: left;
-}
-
-.top_location {
-	margin-top: 20px;
-	float: right;
-	margin-bottom: 30px;
-}
 
 #step1, #step2, #step3, #dateInput {
 	width: 250px; /* 원하는 너비로 조정 */

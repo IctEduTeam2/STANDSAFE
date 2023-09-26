@@ -465,16 +465,11 @@ public class BBSController {
 	
 		
 		String c_num = (String) request.getSession().getAttribute("id");
-		System.out.println("로그인한 아이디의 번호: " + c_num);
 		String dbnum = qnavo.getCLIENT_NUM();
-		System.out.println("게시물번호로 조회하여 갖고온 멤버번호:" + dbnum);
 		String lock = qnavo.getBOARD_LOCK();
-		System.out.println("비밀글여부 확인 1은 비밀, 0은 일반 : " + lock);
 		String p_num = qnavo.getPROD_NUM();
-		System.out.println("물품번호는 : " + p_num);
 		
 		String prod_name = bbsService.getProdName(p_num);
-		System.out.println("물품이름은" + prod_name);
 		qnavo.setPROD_NAME(prod_name);
 		
 
@@ -514,10 +509,8 @@ public class BBSController {
 		
 
 		String c_num = (String) request.getSession().getAttribute("id");
-		System.out.println("로그인한 아이디의 아이디: " + c_num);
 		String dbnum = repvo.getCLIENT_NUM();
-		System.out.println("게시물번호로 조회하여 갖고온 멤버번호:" + dbnum);
-
+		
 
 			if(!dbnum.equals(c_num)) {
 				session.setAttribute("reponelist", "not");
@@ -550,16 +543,11 @@ public class BBSController {
 	
 
 		String c_num = (String) request.getSession().getAttribute("id");
-		System.out.println("로그인한 아이디의 아이디: " + c_num);
 		String dbnum = reviewvo.getCLIENT_NUM();
-		System.out.println("게시물번호로 조회하여 갖고온 멤버번호:" + dbnum);
 		String lock = reviewvo.getRE_LOCK();
-		System.out.println("비밀글여부 확인 1은 비밀, 0은 일반 : " + lock);
 		String p_num = reviewvo.getPROD_NUM();
-		System.out.println("물품번호는 : " + p_num);
 		
 		String prod_name = bbsService.getProdName(p_num);
-		System.out.println("물품이름은" + prod_name);
 		reviewvo.setPROD_NAME(prod_name);
 
 		
@@ -630,17 +618,11 @@ public class BBSController {
 				FileCopyUtils.copy(in, out);
 			}
 			
-			//회원닉네임 갖고오기 - 작성자에 자동 뜨고 저장하기위함
+	
 			String nick = (String) request.getSession().getAttribute("nick");
-			System.out.println("로그인한 닉넴 : " + nick); 
-			
-			//제리똥나온다. vo저장후 맵퍼에 보내자. 저장하라고
 			qnavo.setBOARD_WRITER(nick);
-			
-			//회원client_num 갖고오자. 디비에 넣어야한다. 
 			String num = (String) request.getSession().getAttribute("id");
-			System.out.println("닉네임의 번호:" + num);
-			//맞는 17번 나온다, 저장하자, 혜인님이만든 유저 vo의 클라인트넘버는 인트로, 나는 스트링으로 바꿔주는 작업
+
 			qnavo.setCLIENT_NUM(num);
 
 			//라디오체크박스 값을 맴퍼에 보내기위해 가지고오기
@@ -652,10 +634,7 @@ public class BBSController {
 			
 			//비밀글 체크시 제목앞에 붙이기.
 			String lock =  request.getParameter("secret_flag");
-			System.out.println("비밀글여부  : " + lock);  //1이 비밀글 0은 일반
-			
 			String prod_num = request.getParameter("prod_num");
-			System.out.println("물품번호" + prod_num);
 			qnavo.setPROD_NUM(prod_num);
 			
 			//[비밀] 을 붙일 제목가져오기
@@ -710,9 +689,7 @@ public class BBSController {
 			
 			//회원닉네임 갖고오기 - 작성자에 자동 뜨고 저장하기위함
 			String nick = (String) request.getSession().getAttribute("nick");
-			System.out.println("로그인한 닉넴 : " + nick); 
-		
-			
+
 			String maskNick;
 			
 			if(nick.length() <2) {
@@ -729,15 +706,11 @@ public class BBSController {
 				maskName.append(lastChar);
 				maskNick = maskName.toString();
 			}
-			System.out.println("가려진 닉넴" + maskNick);
-			
-			
+	
 			
 
 			//회원client_num 갖고오자. 디비에 넣어야한다. 
 			String num = (String) request.getSession().getAttribute("id");
-			System.out.println("닉네임의 번호:" + num);
-			//맞는 17번 나온다, 저장하자, 혜인님이만든 유저 vo의 클라인트넘버는 인트로, 나는 스트링으로 바꿔주는 작업
 			repvo.setCLIENT_NUM(num);
 
 			//라디오체크박스 값을 맴퍼에 보내기위해 가지고오기
@@ -793,17 +766,13 @@ public class BBSController {
 			FileCopyUtils.copy(in, out);
 		}
 		
-		//회원닉네임 갖고오기 - 작성자에 자동 뜨고 저장하기위함
+
 		String nick = (String) request.getSession().getAttribute("nick");
-		System.out.println("로그인한 닉넴 : " + nick); 
-		
-		//제리똥나온다. vo저장후 맵퍼에 보내자. 저장하라고
+
 		reviewvo.setRE_WRITER(nick);
 		
 		//회원client_num 갖고오자. 디비에 넣어야한다. 
 		String num = (String) request.getSession().getAttribute("id");
-		System.out.println("닉네임의 번호:" + num);
-		//맞는 17번 나온다, 저장하자, 혜인님이만든 유저 vo의 클라인트넘버는 인트로, 나는 스트링으로 바꿔주는 작업
 		reviewvo.setCLIENT_NUM(num);
 
 		//라디오체크박스 값을 맴퍼에 보내기위해 가지고오기
@@ -815,11 +784,7 @@ public class BBSController {
 		
 		//비밀글 체크시 제목앞에 붙이기.
 		String lock =  request.getParameter("secret_flag");
-		System.out.println("비밀글여부  : " + lock);  //1이 비밀글 0은 일반
-		
-		
 		String review_prod = request.getParameter("review_prod");
-		System.out.println("구매가 확정된 물품의 리뷰를 쓸때의 물품번호:" + review_prod);
 		reviewvo.setPROD_NUM(review_prod);
 		
 		
@@ -837,11 +802,6 @@ public class BBSController {
 		
 	
 		String sessionid = (String) request.getSession().getAttribute("id");
-		
-		System.out.println("로그인한 아이디는(리뷰콤보): " + sessionid);
-		
-		
-		//pay_t 의 review_st 를 1 로 바꾸기위한 일처리, 콤보배류값인 물품번호를 가져가기. 
 		int changereview = bbsService.updateReviewStonPayT(review_prod);
 		
 		
@@ -892,18 +852,11 @@ public class BBSController {
 		
 		//로그인한 세션에 저장된 client_num 갖고오기.
 		String num = (String) request.getSession().getAttribute("id");
-		System.out.println("닉네임의 번호:" + num);
-		//로그인정보랑 맞게나온다.. 저장하자, 혜인님이만든 유저 vo의 클라인트넘버는 인트로, 나는 스트링으로 바꿔주는 작업
-		//로그인한정보와 맞는 번호임. 
-		
+
 		
 		//로그인한 회원의 비번갖고오기. 입력한 비번과 비교하기위함 
 		String dbpw = (String) request.getSession().getAttribute("dbpw");
-		System.out.println("디비비번은:" + dbpw);
-		
-		//입력한 번호출력해보기.
-		System.out.println("입력한번호는:" + pwd);
-		
+	
 		if( !passwordEncoder.matches(pwd, dbpw)) {
 			System.out.println("틀린암호");
 			mv.setViewName("bbs/qa_delete");
@@ -935,18 +888,12 @@ public class BBSController {
 		
 		//로그인한 세션에 저장된 client_num 갖고오기.
 		String num = (String) request.getSession().getAttribute("id");
-		System.out.println("닉네임의 번호:" + num);
-		//로그인정보랑 맞게나온다.. 저장하자, 혜인님이만든 유저 vo의 클라인트넘버는 인트로, 나는 스트링으로 바꿔주는 작업
-		//로그인한정보와 맞는 번호임. 
-		
+	
 		
 		//로그인한 회원의 비번갖고오기. 입력한 비번과 비교하기위함 
 			String dbpw = (String) request.getSession().getAttribute("dbpw");
-			System.out.println("디비비번은:" + dbpw);
 		
-		//입력한 번호출력해보기.
-		System.out.println("입력한번호는:" + pwd);
-		
+	
 		if( !passwordEncoder.matches(pwd, dbpw)) {
 			System.out.println("틀린암호");
 			mv.setViewName("bbs/review_delete");
@@ -978,10 +925,8 @@ public class BBSController {
 		
 		QA_BBS_VO qnavo = bbsService.getQnaOneList(BOARD_NUM);
 		String p_num = qnavo.getPROD_NUM();
-		System.out.println("물품번호는 : " + p_num);
-		
+	
 		String prod_name = bbsService.getProdName(p_num);
-		System.out.println("물품이름은" + prod_name);
 		qnavo.setPROD_NAME(prod_name);
 		
 		mv.addObject("qnavo", qnavo);
@@ -1000,10 +945,8 @@ public class BBSController {
 		
 		RE_BBS_VO reviewvo = bbsService.getReviewOneList(RE_NUM);
 		String p_num = reviewvo.getPROD_NUM();
-		System.out.println("물품번호는 : " + p_num);
-		
+	
 		String prod_name = bbsService.getProdName(p_num);
-		System.out.println("물품이름은" + prod_name);
 		reviewvo.setPROD_NAME(prod_name);
 		
 		mv.addObject("reviewvo", reviewvo);
@@ -1041,15 +984,12 @@ public class BBSController {
 			
 			//회원닉네임 갖고오기 - 작성자에 자동 뜨고 저장하기위함
 			String nick = (String) request.getSession().getAttribute("nick");
-			System.out.println("로그인한 닉넴 : " + nick); 
-			
-			//제리똥나온다. vo저장후 맵퍼에 보내자. 저장하라고
+
 			qnavo.setBOARD_WRITER(nick);
 			
 			//회원client_num 갖고오자. 디비에 넣어야한다. 
 			String num = (String) request.getSession().getAttribute("id");
-			System.out.println("닉네임의 번호:" + num);
-			
+
 			qnavo.setCLIENT_NUM(num);
 		
 			//라디오체크박스 값을 맴퍼에 보내기위해 가지고오기
@@ -1059,7 +999,6 @@ public class BBSController {
 			qnavo.setBOARD_TYPE(type);
 			
 			String p_num = request.getParameter("PROD_NUM");
-			System.out.println("수정하기의 물품번호:" + p_num);
 			if(p_num.equals("")) {
 				qnavo.setPROD_NUM(null);
 			}else {
@@ -1070,9 +1009,7 @@ public class BBSController {
 			
 			//비밀글 체크시 제목앞에 붙이기.
 			String lock =  request.getParameter("secret_flag");
-			System.out.println("비밀글여부  : " + lock);  //1이 비밀글 0은 일반
-			
-			
+
 			//[비밀] 을 붙일 제목가져오기
 			String sub = qnavo.getBOARD_SUBJECT();
 			System.out.println(sub);
@@ -1133,14 +1070,12 @@ public class BBSController {
 			
 			//회원닉네임 갖고오기 - 작성자에 자동 뜨고 저장하기위함
 			String nick = (String) request.getSession().getAttribute("nick");
-			System.out.println("로그인한 닉넴 : " + nick); 
-			
-			//제리똥나온다. vo저장후 맵퍼에 보내자. 저장하라고
+
 			reviewvo.setRE_WRITER(nick);
 			
 			//회원client_num 갖고오자. 디비에 넣어야한다. 
 			String num = (String) request.getSession().getAttribute("id");
-			System.out.println("닉네임의 번호:" + num);
+	
 			//맞는 17번 나온다, 저장하자, 혜인님이만든 유저 vo의 클라인트넘버는 인트로, 나는 스트링으로 바꿔주는 작업
 			reviewvo.setCLIENT_NUM(num);
 		
@@ -1151,7 +1086,7 @@ public class BBSController {
 			reviewvo.setRE_TYPE(type);
 			
 			String p_num = request.getParameter("PROD_NUM");
-			System.out.println("수정하기의 물품번호:" + p_num);
+	
 			if(p_num.equals("")) {
 				reviewvo.setPROD_NUM(null);
 			}else {
@@ -1160,7 +1095,6 @@ public class BBSController {
 			
 			//비밀글 체크시 제목앞에 붙이기.
 			String lock =  request.getParameter("secret_flag");
-			System.out.println("비밀글여부  : " + lock);  //1이 비밀글 0은 일반
 			
 			
 			//[비밀] 을 붙일 제목가져오기
@@ -1207,9 +1141,7 @@ public class BBSController {
 		session.removeAttribute("reponelist");
         session.removeAttribute("qaonelist");
         session.removeAttribute("revonelist");
-		System.out.println("검색눌러서 불러온 단어: " + word);
-		System.out.println("검색눌러서 불러온 검색조건타입 : " + searchType);
-		
+	
 		List<EV_BBS_VO> s_result2 = new ArrayList<>();
 		
 		
@@ -1225,17 +1157,7 @@ public class BBSController {
 			
 			if(! s_result2.isEmpty()) {//갖고온 리스트가 비어있지않다면 출력해보자. 
 				
-				for (EV_BBS_VO k : s_result2) { //잘갖고왔는지 뽑아내어 보기위함
-					System.out.println("갖고온 번호: " + k.getEVENT_NUM());
-					System.out.println("갖고온 제목: "+k.getEVENT_SUBJECT());
-					System.out.println("갖고온 파일: "+k.getEVENT_FILE());
-					System.out.println("갖고온 내용: "+k.getEVENT_CONTENT());
-					System.out.println("갖고온 작성자: "+k.getEVENT_WRITER());
-					System.out.println("갖고온 날짜: "+k.getEVENT_DATE());
-					System.out.println("갖고온 조회수: "+k.getEVENT_HIT());
 
-
-				} //결과가 잘나오나 뽑아보았다.
 				mv.addObject("s_result2", s_result2);
 				mv.addObject("bbs_type", bbs_type);
 				mv.setViewName("bbs/event_result");
@@ -1251,22 +1173,11 @@ public class BBSController {
 
 		}else if (searchType.equals("제목")) {
 			s_result2 = bbsService.EvSearchResultBySub(word);
-			
-			System.out.println("맞는내용을 검색하여 갖고배열: " + s_result2);
-		
-			
+	
 			
 			if(! s_result2.isEmpty()) { //갖고온 리스트가 비어있지않다면 출력해보자. 
 				
-				for (EV_BBS_VO k : s_result2) {//잘갖고왔는지 뽑아내어 보기위함
-					System.out.println("갖고온 번호: " + k.getEVENT_NUM());
-					System.out.println("갖고온 제목: "+k.getEVENT_SUBJECT());
-					System.out.println("갖고온 파일: "+k.getEVENT_FILE());
-					System.out.println("갖고온 내용: "+k.getEVENT_CONTENT());
-					System.out.println("갖고온 작성자: "+k.getEVENT_WRITER());
-					System.out.println("갖고온 날짜: "+k.getEVENT_DATE());
-					System.out.println("갖고온 조회수: "+k.getEVENT_HIT());
-				}
+		
 				mv.addObject("s_result2", s_result2);
 				mv.addObject("bbs_type", bbs_type);
 				mv.setViewName("bbs/event_result");
@@ -1313,17 +1224,7 @@ public class BBSController {
 				
 				
 				if(! s_result1.isEmpty()) {//갖고온 리스트가 비어있지않다면 출력해보자. 
-					
-					for (FA_BBS_VO k : s_result1) { //잘갖고왔는지 뽑아내어 보기위함
-						System.out.println("갖고온 번호: " + k.getFA_NUM());
-						System.out.println("갖고온 제목: "+k.getFA_SUBJECT());
-						System.out.println("갖고온 타입: "+k.getFA_TYPE());
-						System.out.println("갖고온 답변: "+k.getFA_ANSWER());
-						System.out.println("갖고온 작성자: "+k.getFA_WRITER());
-						System.out.println("갖고온 날짜: "+k.getFA_DATE());
 
-
-					} //결과가 잘나오나 뽑아보았다.
 					mv.addObject("s_result1", s_result1);
 					mv.addObject("bbs_type", bbs_type);
 					mv.setViewName("bbs/faq_result");
@@ -1344,15 +1245,7 @@ public class BBSController {
 				
 				
 				if(! s_result1.isEmpty()) { //갖고온 리스트가 비어있지않다면 출력해보자. 
-					
-					for (FA_BBS_VO k : s_result1) {//잘갖고왔는지 뽑아내어 보기위함
-						System.out.println("갖고온 번호: " + k.getFA_NUM());
-						System.out.println("갖고온 제목: "+k.getFA_SUBJECT());
-						System.out.println("갖고온 타입: "+k.getFA_TYPE());
-						System.out.println("갖고온 답변: "+k.getFA_ANSWER());
-						System.out.println("갖고온 작성자: "+k.getFA_WRITER());
-						System.out.println("갖고온 날짜: "+k.getFA_DATE());
-					}
+
 					mv.addObject("s_result1", s_result1);
 					mv.addObject("bbs_type", bbs_type);
 					mv.setViewName("bbs/faq_result");
@@ -1402,18 +1295,7 @@ public class BBSController {
 				
 				
 				if(! s_result3.isEmpty()) {//갖고온 리스트가 비어있지않다면 출력해보자. 
-					
-					for (NO_BBS_VO k : s_result3) { //잘갖고왔는지 뽑아내어 보기위함
-						System.out.println("갖고온 번호: " + k.getNOTICE_NUM());
-						System.out.println("갖고온 제목: "+k.getNOTICE_SUBJECT());
-						System.out.println("갖고온 파일: "+k.getNOTICE_FILE());
-						System.out.println("갖고온 내용: "+k.getNOTICE_CONTENT());
-						System.out.println("갖고온 작성자: "+k.getNOTICE_WRITER());
-						System.out.println("갖고온 날짜: "+k.getNOTICE_DATE());
-						System.out.println("갖고온 조회수: "+k.getNOTICE_HIT());
 
-
-					} //결과가 잘나오나 뽑아보았다.
 					mv.addObject("s_result3", s_result3);
 					mv.addObject("bbs_type", bbs_type);
 					mv.setViewName("bbs/notice_result");
@@ -1435,16 +1317,7 @@ public class BBSController {
 				
 				
 				if(! s_result3.isEmpty()) { //갖고온 리스트가 비어있지않다면 출력해보자. 
-					
-					for (NO_BBS_VO k : s_result3) {//잘갖고왔는지 뽑아내어 보기위함
-						System.out.println("갖고온 번호: " + k.getNOTICE_NUM());
-						System.out.println("갖고온 제목: "+k.getNOTICE_SUBJECT());
-						System.out.println("갖고온 파일: "+k.getNOTICE_FILE());
-						System.out.println("갖고온 내용: "+k.getNOTICE_CONTENT());
-						System.out.println("갖고온 작성자: "+k.getNOTICE_WRITER());
-						System.out.println("갖고온 날짜: "+k.getNOTICE_DATE());
-						System.out.println("갖고온 조회수: "+k.getNOTICE_HIT());
-					}
+
 					mv.addObject("s_result3", s_result3);
 					mv.addObject("bbs_type", bbs_type);
 					mv.setViewName("bbs/notice_result");
@@ -1473,8 +1346,7 @@ public class BBSController {
 			session.removeAttribute("reponelist");
 	        session.removeAttribute("qaonelist");
 	        session.removeAttribute("revonelist");
-			System.out.println("검색눌러서 불러온 단어: " + word);
-			System.out.println("검색눌러서 불러온 검색조건타입 : " + searchType);
+		
 			
 			List<QA_BBS_VO> s_result4 = new ArrayList<>();
 			
@@ -1491,18 +1363,7 @@ public class BBSController {
 				
 				
 				if(! s_result4.isEmpty()) {//갖고온 리스트가 비어있지않다면 출력해보자. 
-					
-					for (QA_BBS_VO k : s_result4) { //잘갖고왔는지 뽑아내어 보기위함
-						System.out.println("갖고온 번호: " + k.getBOARD_NUM());
-						System.out.println("갖고온 제목: "+k.getBOARD_SUBJECT());
-						System.out.println("갖고온 파일: "+k.getBOARD_FILE());
-						System.out.println("갖고온 내용: "+k.getBOARD_CONTENT());
-						System.out.println("갖고온 작성자: "+k.getBOARD_WRITER());
-						System.out.println("갖고온 날짜: "+k.getBOARD_DATE());
-						System.out.println("갖고온 조회수: "+k.getBOARD_TYPE());
-
-
-					} //결과가 잘나오나 뽑아보았다.
+	
 					mv.addObject("s_result4", s_result4);
 					mv.addObject("bbs_type", bbs_type);
 					mv.setViewName("bbs/qa_result");
@@ -1524,15 +1385,7 @@ public class BBSController {
 				
 				if(! s_result4.isEmpty()) { //갖고온 리스트가 비어있지않다면 출력해보자. 
 					
-					for (QA_BBS_VO k : s_result4) {//잘갖고왔는지 뽑아내어 보기위함
-						System.out.println("갖고온 번호: " + k.getBOARD_NUM());
-						System.out.println("갖고온 제목: "+k.getBOARD_SUBJECT());
-						System.out.println("갖고온 파일: "+k.getBOARD_FILE());
-						System.out.println("갖고온 내용: "+k.getBOARD_CONTENT());
-						System.out.println("갖고온 작성자: "+k.getBOARD_WRITER());
-						System.out.println("갖고온 날짜: "+k.getBOARD_DATE());
-						System.out.println("갖고온 조회수: "+k.getBOARD_TYPE());
-					}
+
 					mv.addObject("s_result4", s_result4);
 					mv.addObject("bbs_type", bbs_type);
 					mv.setViewName("bbs/qa_result");
@@ -1550,16 +1403,7 @@ public class BBSController {
 				System.out.println("맞는내용을 검색하여 갖고배열: " + s_result4);
 				
 				if(! s_result4.isEmpty()) { //갖고온 리스트가 비어있지않다면 출력해보자. 
-					
-					for (QA_BBS_VO k : s_result4) {//잘갖고왔는지 뽑아내어 보기위함
-						System.out.println("갖고온 번호: " + k.getBOARD_NUM());
-						System.out.println("갖고온 제목: "+k.getBOARD_SUBJECT());
-						System.out.println("갖고온 파일: "+k.getBOARD_FILE());
-						System.out.println("갖고온 내용: "+k.getBOARD_CONTENT());
-						System.out.println("갖고온 작성자: "+k.getBOARD_WRITER());
-						System.out.println("갖고온 날짜: "+k.getBOARD_DATE());
-						System.out.println("갖고온 조회수: "+k.getBOARD_TYPE());
-					}
+		
 					mv.addObject("s_result4", s_result4);
 					mv.addObject("bbs_type", bbs_type);
 					mv.setViewName("bbs/qa_result");
@@ -1589,10 +1433,7 @@ public class BBSController {
 			session.removeAttribute("reponelist");
 	        session.removeAttribute("qaonelist");
 	        session.removeAttribute("revonelist");
-			System.out.println("검색눌러서 불러온 단어: " + word);
-			System.out.println("검색눌러서 불러온 검색조건타입 : " + searchType);
-			
-			List<RE_BBS_VO> s_result5 = new ArrayList<>();
+	        List<RE_BBS_VO> s_result5 = new ArrayList<>();
 			
 			
 			
@@ -1608,17 +1449,7 @@ public class BBSController {
 				
 				if(! s_result5.isEmpty()) {//갖고온 리스트가 비어있지않다면 출력해보자. 
 					
-					for (RE_BBS_VO k : s_result5) { //잘갖고왔는지 뽑아내어 보기위함
-						System.out.println("갖고온 번호: " + k.getRE_NUM());
-						System.out.println("갖고온 제목: "+k.getRE_SUBJECT());
-						System.out.println("갖고온 파일: "+k.getRE_FILE());
-						System.out.println("갖고온 내용: "+k.getRE_CONTENT());
-						System.out.println("갖고온 작성자: "+k.getRE_WRITER());
-						System.out.println("갖고온 날짜: "+k.getRE_DATE());
-						System.out.println("갖고온 조회수: "+k.getRE_HIT());
 
-
-					} //결과가 잘나오나 뽑아보았다.
 					mv.addObject("s_result5", s_result5);
 					mv.addObject("bbs_type", bbs_type);
 					mv.setViewName("bbs/review_result");
@@ -1639,16 +1470,7 @@ public class BBSController {
 				
 				
 				if(! s_result5.isEmpty()) { //갖고온 리스트가 비어있지않다면 출력해보자. 
-					
-					for (RE_BBS_VO k : s_result5) {//잘갖고왔는지 뽑아내어 보기위함
-						System.out.println("갖고온 번호: " + k.getRE_NUM());
-						System.out.println("갖고온 제목: "+k.getRE_SUBJECT());
-						System.out.println("갖고온 파일: "+k.getRE_FILE());
-						System.out.println("갖고온 내용: "+k.getRE_CONTENT());
-						System.out.println("갖고온 작성자: "+k.getRE_WRITER());
-						System.out.println("갖고온 날짜: "+k.getRE_DATE());
-						System.out.println("갖고온 조회수: "+k.getRE_HIT());
-					}
+	
 					mv.addObject("s_result5", s_result5);
 					mv.addObject("bbs_type", bbs_type);
 					mv.setViewName("bbs/review_result");
@@ -1664,16 +1486,7 @@ public class BBSController {
 				System.out.println("맞는내용을 검색하여 갖고배열: " + s_result5);
 				
 				if(! s_result5.isEmpty()) { //갖고온 리스트가 비어있지않다면 출력해보자. 
-					
-					for (RE_BBS_VO k : s_result5) {//잘갖고왔는지 뽑아내어 보기위함
-						System.out.println("갖고온 번호: " + k.getRE_NUM());
-						System.out.println("갖고온 제목: "+k.getRE_SUBJECT());
-						System.out.println("갖고온 파일: "+k.getRE_FILE());
-						System.out.println("갖고온 내용: "+k.getRE_CONTENT());
-						System.out.println("갖고온 작성자: "+k.getRE_WRITER());
-						System.out.println("갖고온 날짜: "+k.getRE_DATE());
-						System.out.println("갖고온 조회수: "+k.getRE_HIT());
-					}
+		
 					mv.addObject("bbs_type", bbs_type);
 					mv.addObject("s_result5", s_result5);
 					mv.setViewName("bbs/review_result");
@@ -1777,7 +1590,7 @@ public class BBSController {
 				 * getProd_num()).append("\">");
 				 */
 			}
-			System.out.println("물품 배열 리스트:" + pro_list1);
+	
 			
 			html.append("</select>");		
 			System.out.println("html:"+html);
@@ -1797,7 +1610,7 @@ public class BBSController {
 				 * getProd_num()).append("\">");
 				 */
 			}
-			System.out.println("물품 배열 리스트:" + pro_list1);
+	
 			html.append("</select>");		
 			System.out.println("html:"+html);
 			
@@ -1817,7 +1630,7 @@ public class BBSController {
 				 * getProd_num()).append("\">");
 				 */
 			}
-			System.out.println("물품 배열 리스트:" + pro_list1);
+		
 			html.append("</select>");		
 			System.out.println("html:"+html);
 			
@@ -1837,7 +1650,7 @@ public class BBSController {
 				 * getProd_num()).append("\">");
 				 */
 			}
-			System.out.println("물품 배열 리스트:" + pro_list1);
+		
 			html.append("</select>");		
 			System.out.println("html:"+html);
 			
