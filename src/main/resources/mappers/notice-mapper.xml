@@ -32,7 +32,6 @@
 			SELECT COUNT(*) FROM NOTICE_T
 	</select>
  	
- 	
  	<!-- 상세보기  --> 
  	<select id="noticeonelist" parameterType="String" resultType="nvo">
  		select * from NOTICE_T where NOTICE_NUM = #{NOTICE_NUM}
@@ -84,8 +83,6 @@
     order by NOTICE_NUM desc
 </select>
 
- 	
- 	
  	<!-- 테이블 삭제 버튼 -->
 	<update id="noticeupdate" parameterType="String">
 		UPDATE NOTICE_T SET NOTICE_ST = 2 WHERE NOTICE_NUM = #{NOTICE_NUM};
@@ -95,5 +92,7 @@
  	<select id="seldelbtn" resultType="nvo">
  		SELECT * FROM NOTICE_T WHERE NOTICE_ST = 2
  	</select>
+ 	
+ 	<!-- 홈페이지 등록 -->
  	
  </mapper>

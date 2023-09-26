@@ -1,6 +1,6 @@
 package com.ict.admin.controller;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,8 +8,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -153,15 +151,7 @@ public class Admin_notice {
 	}
 
 	// 테이블 삭제버튼
-	@RequestMapping("/admin_Updaterow.do")
-	public ModelAndView AdminUpdaterow(
-			@ModelAttribute("checkboxes")String checkboxes
-			) {
-		System.out.println("갖고온체크번호"+ checkboxes);
-		ModelAndView mv = new ModelAndView("admin_notice/notice");
-		mv.addObject("result", "success");
-		return mv;
-	}
+	
 
 	//게시물삭제검색버튼 
 	@RequestMapping(value = "/adnotice_deleted.do", produces = "text/html; charset=utf-8")
@@ -198,9 +188,7 @@ public class Admin_notice {
 	    }
 	    return html.toString();
 	}
-	
 
-	
 	//검색버튼
 	@RequestMapping(value = "/adnotice_search.do", produces = "text/html; charset=utf-8")
 	@ResponseBody
@@ -257,6 +245,8 @@ public class Admin_notice {
 	    return html.toString();
 	}
 
+	//홈페이지 등록 버튼
+	
 	
 	
 	

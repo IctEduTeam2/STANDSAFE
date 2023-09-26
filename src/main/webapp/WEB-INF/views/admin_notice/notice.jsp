@@ -158,6 +158,8 @@ $(document).ready(function() {
     });
 });
 
+//테이블 삭제 버튼
+
 
 
 </script>
@@ -310,11 +312,7 @@ $(document).ready(function() {
 				</tr>
 			</thead>
 			<tbody id="bal">
-			<%-- <c:set var="index" value="${s_result5.size()}" />
-				<tr>
-					<td colspan="10">검색내용을 입력하세요</td>
-				</tr>
-				<c:set var="index" value="${index - 1}" /> --%>
+	
 			</tbody>
 	<!-- 페이지 번호 출력 부분 -->
 <tfoot>
@@ -365,7 +363,7 @@ $(document).ready(function() {
 		<span style="float: right; margin-top: 25px; margin-right: 50px;">
 			<button type="button" alt="삭제" value="삭제"
 				style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
-				onclick="">삭제</button>
+				onclick="deltabledel()">삭제</button>
 		</span> 
 		<span style="float: right; margin-top: 25px; margin-right: 50px;">
 			<button type="button" alt="글쓰기" value="글쓰기"
@@ -375,7 +373,7 @@ $(document).ready(function() {
 		<span style="float: right; margin-top: 25px; margin-right: 50px;">
 			<button type="button" alt="홈페이지 등록" value="홈페이지 등록"
 				style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
-				onclick="location.href='/'">홈페이지 등록</button>
+				onclick="locantion.href='/ad_noticehomereg'">홈페이지 등록</button>
 		</span>
 		
 	</div>

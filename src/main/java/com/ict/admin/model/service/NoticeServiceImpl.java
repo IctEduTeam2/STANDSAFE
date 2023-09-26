@@ -33,9 +33,7 @@ public class NoticeServiceImpl implements NoticeService{
 	public int getDeletedNotices() {
 		return noticeDAO.getDeletedNotices();
 	}
-	
-	
-	
+
 	@Override
 	public List<NoticeVO> getadnoticelist(){
 		return noticeDAO.getadnoticelist();
@@ -62,16 +60,12 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 	
 	//테이블 삭제 버튼
-	@Override
-	public int getupdateNoticeById(String notice_num) {
-		return noticeDAO.getupdateNoticeById(notice_num);
-	}
+	
 	
 	//삭제게시물 검색 버튼
 	@Override
 	public List<NoticeVO> getDeletedNoti() {
-		return noticeDAO.getDeletedNoti();
-		
+		return noticeDAO.getDeletedNoti();	
 	}
 
 	//검색(전체리스트)
@@ -79,10 +73,13 @@ public class NoticeServiceImpl implements NoticeService{
 		return noticeDAO.getAllNotices();
 	}
 	
-	
 	//검색(특정 추출)
 	@Override
 	public List<NoticeVO> adNotiSearch(String searchKey,String searchText,String searchTitle,String start1,String close1,String mg_type) {
 		return noticeDAO.adNotiSearch(searchKey,searchText,searchTitle,start1,close1,mg_type);
 	}
+	
+	//홈페이지 등록
+	
+
 }

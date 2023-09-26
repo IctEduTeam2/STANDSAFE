@@ -65,24 +65,18 @@ public class NoticeDAO {
 		return sqlSessionTemplate.selectOne("notice.noticeonelist", notice_num);
 	}
 	
-	
 	//테이블 삭제 버튼
-	public int getupdateNoticeById(String notice_num) {
-		return sqlSessionTemplate.update("notice.noticeupdate", notice_num);
-	}
+	
 	
 	//삭제게시물 검색 버튼
-	public List<NoticeVO> getDeletedNoti() {
-		
-		return sqlSessionTemplate.selectList("notice.seldelbtn");
-		
+	public List<NoticeVO> getDeletedNoti() {	
+		return sqlSessionTemplate.selectList("notice.seldelbtn");	
 	}
 
 	//검색(전체리스트)
 	public List<NoticeVO> getAllNotices() {
 		return sqlSessionTemplate.selectList("notice.allsel");
 	}
-	
 	
 	//검색
 	//공지사항
@@ -97,8 +91,9 @@ public class NoticeDAO {
 		params.put("mg_type", mg_type);
 		
 		return sqlSessionTemplate.selectList("notice.adsearchnoti", params);
-		
 	}
 	
+	//홈페이지 등록
+	 
 	
 }

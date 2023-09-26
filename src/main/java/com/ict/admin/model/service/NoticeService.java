@@ -30,7 +30,7 @@ public interface NoticeService {
 	public NoticeVO getAdNoticeOneList(String notice_num);
 	
 	//테이블 삭제 버튼
-	int getupdateNoticeById(String notice_num);
+	
 	
 	//삭제게시물 검색 버튼
 	List<NoticeVO> getDeletedNoti();
@@ -44,6 +44,9 @@ public interface NoticeService {
 	//searchKey,searchText,searchTitle,start1,close1
 	public List<NoticeVO> adNotiSearch(String searchKey,String searchText,String searchTitle,String start1,String close1,String mg_type);
 
-	//int getRecordByStatus(int statusCode);
+	//홈페이지 등록
+	
+	
+	
 
 }
