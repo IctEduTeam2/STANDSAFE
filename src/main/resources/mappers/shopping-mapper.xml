@@ -160,6 +160,18 @@
 		<if test="paymentKey != null">
 			, paymentKey
 		</if>
+		<if test="pay_method != null">
+			, pay_method
+		</if>
+		<if test="pay_card_type != null">
+			, pay_card_type
+		</if>
+		<if test="pay_card != null">
+			, pay_card
+		</if>
+		<if test="pay_installmentPlanMonths != null">
+			, pay_installmentPlanMonths
+		</if>
 		)
 		VALUES
 		(#{take_peo}, #{take_addr}, #{take_phone}, #{take_memo},
@@ -167,6 +179,18 @@
 		#{cart_num}, #{client_num}, #{pay_money}
 		<if test="paymentKey != null">
 			, #{paymentKey}
+		</if>
+		<if test="pay_method != null">
+			, #{pay_method}
+		</if>
+		<if test="pay_card_type != null">
+			, #{pay_card_type}
+		</if>
+		<if test="pay_card != null">
+			, #{pay_card}
+		</if>
+		<if test="pay_installmentPlanMonths != null">
+			, #{pay_installmentPlanMonths}
 		</if>
 		)
 	</insert>

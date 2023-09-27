@@ -1,9 +1,36 @@
 package com.ict.shopping.model.vo;
 
 public class PayVO {
-	private String pay_num, take_peo, take_addr, take_phone, take_memo, pay_type, pay_card, pay_ok, prod_img, pay_oknum, pay_st, cart_num, client_num, paymentKey;
+	private String pay_method, pay_card_type, pay_num, take_peo, take_addr, take_phone, take_memo, pay_type, pay_card, pay_ok, prod_img, pay_oknum, pay_st, cart_num, client_num, paymentKey;
 	private int pay_money, limit, offset;
+	private long pay_installmentPlanMonths;
 	
+	
+	public String getPay_method() {
+		return pay_method;
+	}
+
+	public void setPay_method(String pay_method) {
+		this.pay_method = pay_method;
+	}
+
+	public String getPay_card_type() {
+		return pay_card_type;
+	}
+
+	public void setPay_card_type(String pay_card_type) {
+		this.pay_card_type = pay_card_type;
+	}
+
+
+	public long getPay_installmentPlanMonths() {
+		return pay_installmentPlanMonths;
+	}
+
+	public void setPay_installmentPlanMonths(long pay_installmentPlanMonths) {
+		this.pay_installmentPlanMonths = pay_installmentPlanMonths;
+	}
+
 	public int getPay_money() {
 		return pay_money;
 	}
