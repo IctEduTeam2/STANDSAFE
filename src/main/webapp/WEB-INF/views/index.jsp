@@ -10,6 +10,8 @@
 <title>STANDSAFE</title>
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+	<link rel="icon" type="image/x-icon" href="/resources/images/favicon.ico">
+	
 <!-- Link Swiper's CSS -->
 <script type="text/javascript">
 function addToCart(button) {
