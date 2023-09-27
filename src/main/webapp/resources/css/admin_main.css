@@ -43,9 +43,6 @@
 	text-align: center;
 }
 
-.post-table th {
-	background-color: #f5f5f5;
-}
 .new-posts{
 	margin-top: 20px;
 }
@@ -82,4 +79,35 @@
 
 .product-graph {
     width: 69%; /* 상품별 매출 그래프 박스의 너비 (1%는 박스 사이의 간격을 위해 남깁니다.) */
+}
+/* 테이블 기본 스타일 */
+table {
+	width: 100%;
+	border-collapse: collapse; /* 셀 사이의 테두리를 합침 */
+	margin: 25px 0;
+	font-size: 18px;
+	text-align: left;
+}
+
+/* 테이블 헤더 스타일 */
+table thead th {
+	background-color: #1b5ac2;
+	color: white;
+	padding: 10px;
+	border: 1px solid #ddd;
+}
+
+/* 테이블 셀 스타일 */
+table th, table td {
+	padding: 10px 10px;
+}
+
+/* 테이블 row에 대한 호버 효과 */
+table tbody tr:hover {
+	background-color: #f5f5f5;
+}
+
+/* 짝수 번째 row의 배경색 */
+table tbody tr:nth-child(even) {
+	background-color: #f3f3f3;
 }

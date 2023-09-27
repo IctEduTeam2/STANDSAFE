@@ -38,7 +38,11 @@
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-
+	<!-- 경로문제 추가 -->
+	<context-param>
+	<param-name>spring.profiles.active</param-name>
+	<param-value>local</param-value>
+	</context-param>
 
 
 	<!-- 한글 처리 -->

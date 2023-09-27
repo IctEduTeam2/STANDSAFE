@@ -19,6 +19,9 @@
 		<typeAlias type="com.ict.user.model.vo.UserVO" alias="uVO" /><!-- memberT -->
 		<typeAlias type="com.ict.user.model.vo.PointVO" alias="pVO" /><!-- pointT -->
 		<typeAlias type="com.ict.admin.model.vo.AdminVO" alias="adVO"/><!--  adminT  -->
+		<typeAlias type="com.ict.statistics.model.vo.VisitorVO" alias="visitorVO"/><!--  visitorT  -->
+		<typeAlias type="com.ict.statistics.model.vo.SalesSummaryVO" alias="salesSVO"/><!--  sumaT  -->
+		<typeAlias type="com.ict.statistics.model.vo.PostVO" alias="postVO"/><!--  sumaT  -->
 		
 		<typeAlias type="com.ict.admin.model.vo.NoticeVO" alias="nvo"/>
 		
@@ -45,6 +48,8 @@
 		<mapper resource="mappers/member-mapper.xml" /><!-- memberT -->
 		<mapper resource="mappers/point-mapper.xml" /><!-- memberT -->
 		<mapper resource="mappers/admin-mapper.xml"/><!--  adminT  -->
+		<mapper resource="mappers/visitor-mapper.xml"/><!--  adminT  -->
+		<mapper resource="mappers/statistics-mapper.xml"/><!--  adminT  -->
 		<mapper resource="mappers/shopping-mapper.xml" /><!-- memberT -->
 		<mapper resource="mappers/bbs-mapper.xml" />
 		<mapper resource="mappers/notice-mapper.xml" />

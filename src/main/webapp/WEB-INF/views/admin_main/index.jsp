@@ -1,5 +1,9 @@
+<%@ page import="com.ict.statistics.model.vo.SalesSummaryVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +12,10 @@
 <title>STANDSAFE</title>
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- Link Swiper's CSS -->
 
 <link rel="stylesheet" href="resources/css/slide.css" />
@@ -15,16 +23,59 @@
 <link rel="stylesheet" href="resources/css/admin_main.css" />
 
 </head>
-<body onload="InitializeStaticMenu();">
+<body onload="">
+	<!-- InitializeStaticMenu(); -->
 	<div id="mydiv">
 		<jsp:include page="../admin_main/header.jsp"></jsp:include>
 		<section id="contents">
-		<!-- 여기에 컨텐츠 넣으시면 됩니다. -->
-		<article>
+			<!-- 여기에 컨텐츠 넣으시면 됩니다. -->
+			<article>
 				<div class="info-boxes">
 					<div class="info-box graph">
 						<h2>방문자 접속 그래프</h2>
-						<!-- 그래프 표시 (예: Chart.js 또는 Google Charts 사용) -->
+						<canvas id="visitChart" width="200" height="100"></canvas>
+						<script>
+function formatDate(inputDate) {
+    var options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+    var date = new Date(inputDate);
+    var resultDate = date.toLocaleDateString('ko-KR', options);
+    return resultDate.split(' ').slice(0, 3).join(' ');
+}
+
+$(document).ready(function(){
+    $.ajax({
+        url: "getWeeklyVisitData",
+        type: "GET",
+        dataType: "json",
+        success: function(response){
+            var ctx = document.getElementById('visitChart').getContext('2d');
+            var visitChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: response.weeklyVisitData.map(data => formatDate(data.VISIT_DATE)),
+                    datasets: [{
+                        label: 'Daily Visits',
+                        data: response.weeklyVisitData.map(data => data.VISIT_COUNT),
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        fill: false
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        },
+        error: function(error){
+            console.error("데이터 로딩 중 오류 발생: ", error);
+        }
+    });
+});
+</script>
+
 					</div>
 					<div class="info-box summary">
 						<h2>판매 요약</h2>
@@ -40,23 +91,7 @@
 									<th>후기</th>
 								</tr>
 							</thead>
-							<tbody>
-								<!-- 10개의 행을 추가 -->
-								<%
-								for (int i = 0; i < 10; i++) {
-								%>
-								<tr>
-									<td id="dayCount<%=i%>">0</td>
-									<td id="orderCount<%=i%>">0</td>
-									<td id="revenue<%=i%>">0</td>
-									<td id="visitorCount<%=i%>">0</td>
-									<td id="signUpCount<%=i%>">0</td>
-									<td id="inquiryCount<%=i%>">0</td>
-									<td id="reviewCount<%=i%>">0</td>
-								</tr>
-								<%
-								}
-								%>
+							<tbody id="salesSummaryTbody">
 							</tbody>
 						</table>
 					</div>
@@ -82,109 +117,225 @@
 							</tr>
 						</thead>
 						<tbody>
-							<!-- 예시 게시글 -->
-							<tr>
-								<td>8</td>
-								<td>Q&A</td>
-								<td>질문 있습니다.</td>
-								<td>2023-08-24</td>
-							</tr>
-							<tr>
-								<td>7</td>
-								<td>리뷰</td>
-								<td>상품 리뷰입니다.</td>
-								<td>2023-08-23</td>
-							</tr>
-							<tr>
-								<td>6</td>
-								<td>Q&A</td>
-								<td>질문 있습니다.</td>
-								<td>2023-08-23</td>
-							</tr>
-							<tr>
-								<td>5</td>
-								<td>리뷰</td>
-								<td>상품 리뷰입니다.</td>
-								<td>2023-08-22</td>
-							</tr>
-							<tr>
-								<td>4</td>
-								<td>Q&A</td>
-								<td>질문 있습니다.</td>
-								<td>2023-08-24</td>
-							</tr>
-							<tr>
-								<td>3</td>
-								<td>리뷰</td>
-								<td>상품 리뷰입니다.</td>
-								<td>2023-08-23</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>Q&A</td>
-								<td>질문 있습니다.</td>
-								<td>2023-08-23</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>리뷰</td>
-								<td>상품 리뷰입니다.</td>
-								<td>2023-08-22</td>
-							</tr>
-							<!-- ... -->
 						</tbody>
 					</table>
 				</div>
 			</article>
+
 			<article>
-            <div class="graph-boxes">
-                <div class="box top-products">
-                    <h3>상위 5 상품</h3>
-                    <!-- 예제 상품 항목 -->
-                    <div class="product-item">
-                        <img src="resources/images/products/product1.jpg" alt="상품 이미지">
-                        <div class="product-info">
-                            <span class="product-name">상품 이름1</span>
-                            <span class="product-revenue">₩매출액</span>
-                        </div>
-                    </div>
-                    <div class="product-item">
-                        <img src="resources/images/products/product1.jpg" alt="상품 이미지">
-                        <div class="product-info">
-                            <span class="product-name">상품 이름2</span>
-                            <span class="product-revenue">₩매출액</span>
-                        </div>
-                    </div>
-                    <div class="product-item">
-                        <img src="resources/images/products/product1.jpg" alt="상품 이미지">
-                        <div class="product-info">
-                            <span class="product-name">상품 이름3</span>
-                            <span class="product-revenue">₩매출액</span>
-                        </div>
-                    </div>
-                    <div class="product-item">
-                        <img src="resources/images/products/product1.jpg" alt="상품 이미지">
-                        <div class="product-info">
-                            <span class="product-name">상품 이름4</span>
-                            <span class="product-revenue">₩매출액</span>
-                        </div>
-                    </div>
-                    <div class="product-item">
-                        <img src="resources/images/products/product1.jpg" alt="상품 이미지">
-                        <div class="product-info">
-                            <span class="product-name">상품 이름5</span>
-                            <span class="product-revenue">₩매출액</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="box product-graph">
-                    <h3>상품별 매출 그래프</h3>
-                    <!-- 그래프 코드. 예: Chart.js 또는 Google Charts 등을 사용 -->
-                </div>
-            </div>
-        </article>
+				<div class="graph-boxes">
+					<div class="box top-products">
+						<h3>상위 5 상품</h3>
+						<div class="product-item"></div>
+					</div>
+					<div class="box product-graph">
+						<h3>상품별 매출 그래프</h3>
+						<canvas id="productCategorySalesChart" width="200" height="100"></canvas>
+						<script type="text/javascript">
+						function getLast7Days() {
+						    const result = [];
+						    for (let i = 6; i >= 0; i--){
+						        const d = new Date();
+						        d.setDate(d.getDate() - i);
+						        result.push(formatDate(d));
+						    }
+						    return result;
+						}
+
+						function drawProductSalesChart(productCategorySales) {
+						    const last7Days = getLast7Days();
+						    
+						    const category1Sales = last7Days.map(date => {
+						        const item = productCategorySales.find(x => x.productCategory === 1 && formatDate(x.salesDate) === date);
+						        return item ? item.dailyRevenue : 0;
+						    });
+						    
+						    const category2Sales = last7Days.map(date => {
+						        const item = productCategorySales.find(x => x.productCategory === 2 && formatDate(x.salesDate) === date);
+						        return item ? item.dailyRevenue : 0;
+						    });
+
+						    const category3Sales = last7Days.map(date => {
+						        const item = productCategorySales.find(x => x.productCategory === 3 && formatDate(x.salesDate) === date);
+						        return item ? item.dailyRevenue : 0;
+						    });
+        
+
+        const ctx = document.getElementById('productCategorySalesChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: last7Days,
+                datasets: [{
+                    label: '소방/안전',
+                    data: category1Sales,
+                    borderColor: 'red',
+                    fill: false
+                }, {
+                    label: '재난/응급/긴급',
+                    data: category2Sales,
+                    borderColor: 'green',
+                    fill: false
+                }, {
+                    label: '일상/기타',
+                    data: category3Sales,
+                    borderColor: 'blue',
+                    fill: false
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        $.ajax({
+            type: "GET",
+            url: "/getProductCategorySales",
+            success: function(response) {
+                if (response && Array.isArray(response.productCategorySales)) {
+                    drawProductSalesChart(response.productCategorySales);
+                } else {
+                    console.error("서버 응답이 배열이 아닙니다:", response);
+                }
+            },
+            error: function(error) {
+                console.log("Error fetching product category sales:", error);
+            }
+        });
+    });
+</script>
+
+					</div>
+
+				</div>
+			</article>
 		</section>
 		<jsp:include page="../Semantic/footer.jsp"></jsp:include>
 	</div>
+	<!-- 동적 데이터 로딩 스크립트 -->
+	<script>
+$(document).ready(function() {
+	function formatDate(inputDate) {
+	    var options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+	    var date = new Date(inputDate);
+	    var resultDate = date.toLocaleDateString('ko-KR', options);
+	    return resultDate.split(' ').slice(0, 3).join(' ');
+	}
+
+    $.ajax({
+        url: 'salesSummaryData',
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            var tbody = $('#salesSummaryTbody');
+            $.each(data, function(index, salesSummary) {
+                var formattedDate = formatDate(salesSummary.report_date);
+                var row = '<tr>' +
+                          '<td>' + formattedDate + '</td>' +
+                          '<td style="text-align: right;">' + salesSummary.order_count + ' 건</td>' +
+                          '<td style="text-align: right;">' + salesSummary.total_revenue.toLocaleString() + ' 원</td>' +
+                          '<td style="text-align: right;">' + salesSummary.visitor_count + ' 명</td>' +
+                          '<td style="text-align: right;">' + salesSummary.join_count + ' 명</td>' +
+                          '<td style="text-align: right;">' + salesSummary.inquiry_count + ' 건</td>' +
+                          '<td style="text-align: right;">' + salesSummary.review_count + ' 건</td>' +
+                          '</tr>';
+                tbody.append(row);
+            });
+        },
+        error: function(err) {
+            console.log('Error:', err);
+        }
+    });
+});
+</script>
+	<script>
+$(document).ready(function(){
+    // 초기 로딩 시, 전체 데이터를 불러옵니다.
+    loadData("all");
+
+    // 라디오 버튼에 클릭 이벤트 리스너 추가
+    $("input[name='postType']").click(function() {
+        var selectedType = $(this).val();
+        loadData(selectedType);
+    });
+});
+function formatDate(inputDate) {
+    // 주어진 날짜 문자열을 Date 객체로 변환
+    var date = new Date(inputDate);
+    
+    // 원하는 형식으로 날짜를 변환
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1; // 월은 0부터 시작하므로 1을 더해줌
+    var day = date.getDate();
+    
+    return year + "년 " + month + "월 " + day + "일";
+}
+
+function loadData(postType) {
+    var apiEndpoint = "/top10";
+
+    $.ajax({
+        url: "/top10?category=" + postType, // 여기를 수정합니다.
+        type: "GET",
+        dataType: "json",
+        success: function(response){
+            var tbody = $(".post-table tbody");
+            tbody.empty(); // 기존 데이터 삭제
+
+            $.each(response, function(index, post) {
+            	var formattedDate = formatDate(post.DATE); // 날짜 변환
+                var row = '<tr>' +
+                          '<td>' + post.ID + '</td>' +
+                          '<td>' + post.TYPE + '</td>' +
+                          '<td>' + post.SUBJECT + '</td>' +
+                          '<td>' + formattedDate + '</td>' +
+                          '</tr>';
+                tbody.append(row);
+            });
+        },
+        error: function(error){
+            console.error("데이터 로딩 중 오류 발생: ", error);
+        }
+    });
+}
+</script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+$(document).ready(function() {
+    loadTop5Products();
+});
+
+function loadTop5Products() {
+    $.ajax({
+        type: "GET",
+        url: "/top5",
+        dataType: "json",
+        success: function(data) {
+            $(".product-item").remove(); // 기존 상품 항목 제거
+            data.forEach(function(product) {
+                var productItem = '<div class="product-item">' +
+                                  '<img src="' + product.PROD_IMG + '" alt="상품 이미지">' +
+                                  '<div class="product-info">' +
+                                  '<span class="product-name">' + product.PROD_NAME + '</span> <span class="product-revenue">₩' + product.REVENUE + '</span>' +
+                                  '</div></div>';
+                $(".top-products").append(productItem);
+            });
+        },
+        error: function(error) {
+            console.log("Error fetching top 5 products:", error);
+        }
+    });
+}
+</script>
+
 </body>
 </html>

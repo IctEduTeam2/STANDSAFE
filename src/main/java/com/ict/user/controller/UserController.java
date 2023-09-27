@@ -27,6 +27,8 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.UUID;
 
+import com.ict.statistics.model.service.VisitorService;
+import com.ict.statistics.model.vo.VisitorVO;
 import com.ict.user.model.service.MailService;
 import com.ict.user.model.service.PointService;
 import com.ict.user.model.service.UserService;
@@ -41,6 +43,8 @@ public class UserController {
 	private PointService pointService;
 	@Autowired
 	private MailService mailService;
+	@Autowired
+    private VisitorService visitorService; 
 
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -97,6 +101,7 @@ public class UserController {
 	        if (isTempPasswordMatch || isOriginalPasswordMatch) {
 	            // 로그인 성공 처리
 	        	int POINT_REM = pointService.getPointsByUserId(uvo.getCLIENT_NUM());
+	        	
 	            session.setAttribute("uvo", uvo);
 	            session.setAttribute("id", Integer.toString(uvo.getCLIENT_NUM()));
 	            session.setAttribute("dbpw", uvo.getPW());
@@ -105,6 +110,13 @@ public class UserController {
 	            session.setAttribute("POINT_REM", POINT_REM);
 	           //mv.addObject("POINT_REM", pointService.getPointsByUserId(uvo.getCLIENT_NUM()));
 	            session.setAttribute("loginChk", "ok");
+	            
+	         // 방문자 정보 추가
+	            VisitorVO visitorVO = new VisitorVO();
+	            visitorVO.setID(session.getId());  // 현재 로그인한 사용자의 ID
+	            visitorVO.setVISIT_DATE(new Date());  // 현재 날짜
+	            visitorService.addVisitor(visitorVO);  // 방문자 정보를 DB에 추가
+
 	            mv.setViewName("redirect:/");
 	        } else {
 	            // 로그인 실패 처리
