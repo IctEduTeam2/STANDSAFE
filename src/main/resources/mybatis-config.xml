@@ -31,6 +31,7 @@
 		<typeAlias type="com.ict.bbs.model.vo.Review_comVO" alias="recomvo"/> <!--조인으로인한VO  -->
 		<typeAlias type="com.ict.jaenan.model.vo.AreaVO" alias="areavo"/> 
 		<typeAlias type="com.ict.jaenan.model.vo.WeatherVO" alias="weathervo"/> 
+		<typeAlias type="com.ict.jaenan.model.vo.RadarVO" alias="radarvo"/> 
 		
 		<typeAlias type="com.ict.shopping.model.vo.PopUpVO" alias="popupVO" /><!-- 슬라이드/팝업 -->
 		<typeAlias type="com.ict.shopping.model.vo.ProductVO" alias="productVO" /><!-- 상품 -->

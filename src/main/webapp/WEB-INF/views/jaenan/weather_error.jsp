@@ -34,7 +34,7 @@
 				</div>
 			</div>
 			<div style="width: 122px; margin: auto; margin-top: 30px;">
-				<a href="/jaenan_rainlive.do"
+				<a href="/"
 					style="padding: 20px 40px; background-color: rgba(27, 90, 194, 0.8); color: white; border: 0; border-radius: 5px;">홈으로</a>
 			</div>
 		</section>

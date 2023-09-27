@@ -195,7 +195,7 @@
 			<div class="top_tab">
 				<a href="/jaenan_rainlive.do"
 					style="color: #1b5ac2; font-weight: bold">실시간 날씨 </a> | <a
-					href="/jaenan_rainnotice.do">홍수예보 발령자료</a>
+					href="/jaenan_rainnotice.do">실시간 레이더 영상</a>
 
 			</div>
 			<hr id="hr2">
