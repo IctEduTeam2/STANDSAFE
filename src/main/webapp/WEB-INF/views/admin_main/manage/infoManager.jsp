@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,7 +21,19 @@
 <link rel="stylesheet" href="resources/css/slide.css" />
 <link rel="stylesheet" href="resources/css/basis.css" />
 <link rel="stylesheet" href="resources/css/userinfo.css" />
+<script type="text/javascript">
+    window.onload = function() {
+        // message 속성이 있는지 확인하고 알림 표시
+        <c:if test="${not empty sessionScope.message}">
+            alert('${sessionScope.message}');
+        </c:if>
 
+        // error 속성이 있는지 확인하고 알림 표시
+        <c:if test="${not empty sessionScope.error}">
+            alert('${sessionScope.error}');
+        </c:if>
+    }
+</script>
 </head>
 <body onload="InitializeStaticMenu();">
 	<div id="mydiv">
@@ -28,52 +42,57 @@
 			<article>
 				<br>
 				<h1
-					style="text-align: center; font-size: 30px; margin-bottom: 20px;">회원정보</h1>
-				<form action="user_fixok.do" method="POST" id="userForm">
+					style="text-align: center; font-size: 30px; margin-bottom: 20px;">관리자 정보</h1>
+
+				<form action="admin_fixok.do" method="POST" id="userForm">
 					<table style="margin: auto;">
 						<tr>
-							<td>회원 아이디</td>
-							<td><a type="text" id="ID" name="ID" style="color: grey;">${uVO.ID}</a><input
-								type="hidden" name="ID" value="${uVO.ID}"></td>
+							<td>관리자 아이디</td>
+							<td><a type="text" id="ADMIN_ID" name="ADMIN_ID"
+								style="color: grey;">${adVO.ADMIN_ID}</a><input type="hidden"
+								name="ADMIN_ID" value="${adVO.ADMIN_ID}"></td>
+						</tr>
+						<tr>
+							<td>비밀번호</td>
+							<td><input type="password" id="password" name="ADMIN_PW"
+								placeholder="새 비밀번호" maxlength="18" onkeyup="validatePassword()"
+								autocomplete="current-password"> <span
+								id="password_result"></span></td>
 						</tr>
 						<tr>
 							<td>별명<span class="required">*</span></td>
-							<td><input type="text" id="NICKNAME" name="NICKNAME"
-								placeholder="내용 입력" value="${uVO.NICKNAME}">
-								<button type="button" onclick="checkUserNickDuplicate()">중복검사</button> <span id="nickname_result"></span></td>
+							<td><input type="text" id="ADMIN_NICK" name="ADMIN_NICK"
+								placeholder="내용 입력" value="${adVO.ADMIN_NICK}">
+								<button type="button" onclick="checkAdminNickDuplicate()">중복
+									검사</button> <span id="nickname_result"></span></td>
 						</tr>
 						<tr>
 							<td>이름</td>
-							<td><a type="text" id="M_NAME" name="M_NAME"
-								style="color: grey;">${uVO.m_NAME}</a> <input type="hidden"
-								name="CLIENT_NUM" value="${uVO.CLIENT_NUM}"></td>
+							<td><a type="text" id="ADMIN_NAME" name="ADMIN_NAME"
+								style="color: grey;">${adVO.ADMIN_NAME}</a>
+								<input type="hidden" name="ADMIN_NUM" value="${adVO.ADMIN_NUM}"></td>
 						</tr>
 						<tr>
 							<td>생년월일</td>
-							<td><input type="date" id="BIRTH" name="BIRTH"
-								value="${uVO.BIRTH}"></td>
+							<td><input type="date" id="ADMIN_BIRTH" name="ADMIN_BIRTH"
+								value="${adVO.ADMIN_BIRTH}"></td>
 						</tr>
 						<tr>
 							<td>전화번호</td>
-							<td><input type="text" id="PHONE" name="PHONE"
+							<td><input type="text" id="ADMIN_PHONE" name="ADMIN_PHONE"
 								placeholder="'-'없이 작성하세요" maxlength="11"
-								onkeyup="validatePhone()" value="${uVO.PHONE}"> <span
+								onkeyup="validatePhone()" value="${adVO.ADMIN_PHONE}"> <span
 								id="phone_result"></span></td>
 						</tr>
 						<tr>
 							<td>이메일<span class="required">*</span></td>
-							<td><input type="text" id="MAIL" name="MAIL"
-								placeholder="email@standsafe.com" value="${uVO.MAIL}"
+							<td><input type="text" id="ADMIN_MAIL" name="ADMIN_MAIL"
+								placeholder="email@standsafe.com" value="${adVO.ADMIN_MAIL}"
 								onkeyup="checkEmail()"> <span id="email_result"></span></td>
-						</tr>
-
-						<tr>
-							<td>이메일 수신여부</td>
-							<td>${user.EMAIL_ST == 1 ? 'Y' : 'N'}</td>
 						</tr>
 						<tr>
 							<td>주소</td>
-							<c:set var="addressParts" value="${uVO.ADDR.split(',')}" />
+							<c:set var="addressParts" value="${adVO.ADMIN_ADDR.split(',')}" />
 
 							<td><input type="text" name="postcode" id="postcode"
 								placeholder="우편번호"
@@ -89,14 +108,9 @@
 								id="detailAddress" placeholder="상세주소"
 								value="${fn:length(addressParts) > 3 ? addressParts[3] : ''}">
 								<span id="guide" style="color: #999; display: none"></span> <input
-								type="hidden" id="ADDR" name="ADDR" value="${uVO.ADDR}"></td>
+								type="hidden" id="ADMIN_ADDR" name="ADMIN_ADDR"
+								value="${adVO.ADMIN_ADDR}"></td>
 						</tr>
-						<tr>
-						<tr>
-							<td>적립금</td>
-							<td>${point}포인트</td>
-						</tr>
-						<tr>
 					</table>
 					<div style="width: 100%; text-align: center;">
 						<button type="submit" class="save-button"
@@ -110,10 +124,35 @@
 		<jsp:include page="../../Semantic/footer.jsp"></jsp:include>
 	</div>
 	<script defer type="text/javascript">
-	// 별명 유효성 검사
-	function checkUserNickDuplicate() {
+	//비밀번호 유효성 검사
+		function validatePassword() {
+			const password = document.getElementById("password").value;
+			const resultSpan = document.getElementById("password_result");
+			
+			// 새 비밀번호 필드가 비어 있는 경우 검사를 수행하지 않음
+		    if (password === "") {
+		        resultSpan.textContent = ""; // 결과 메시지 초기화
+		        return true; // 검사를 수행하지 않으므로 항상 true 반환
+		    }
+			
+			const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/;
+
+			if (!passwordRegex.test(password)) {
+				resultSpan.textContent = "비밀번호는 최소 8자리, 하나 이상의 문자, 하나 이상의 숫자, 하나 이상의 특수 문자가 필요합니다.";
+				resultSpan.style.color = "red";
+				console.log("비밀번호 검증 실패");
+				return false;
+			} else {
+				resultSpan.textContent = "유효한 비밀번호입니다.";
+				resultSpan.style.color = "green";
+				console.log("비밀번호 검증 성공");
+				return true;
+			}
+		}
+		// 별명 유효성 검사
+	function checkAdminNickDuplicate() {
     return new Promise((resolve, reject) => {
-        const nickname = document.getElementById("NICKNAME").value;
+        const nickname = document.getElementById("ADMIN_NICK").value;
         const resultSpan = document.getElementById("nickname_result");
 
         // 별명이 빈 문자열인 경우
@@ -126,10 +165,10 @@
         }
 
         $.ajax({
-            url: "/checkNickDuplicate.do",
+            url: "/checkAdminNickDuplicate.do",
             type: "POST",
             data: {
-                'NICKNAME': nickname
+                'ADMIN_NICK': nickname
             },
             success: function(result) {
                 if (result === "not_duplicate") {
@@ -156,7 +195,7 @@
 }
 	//전화번호 유효성 검사
 	function validatePhone() {
-		const phone = document.getElementById("PHONE").value;
+		const phone = document.getElementById("ADMIN_PHONE").value;
 		const resultSpan = document.getElementById("phone_result");
 		const phoneRegex = /^\d{11}$/;
 
@@ -184,7 +223,7 @@
 	}
 	//이메일 유효성 검사
 	function checkEmail() {
-		const email = document.getElementById("MAIL").value;
+		const email = document.getElementById("ADMIN_MAIL").value;
 		const resultSpan = document.getElementById("email_result");
 		const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -281,13 +320,13 @@ function prepareAddr() {
     var fullAddress = fullAddressParts.join(", ");
 
     console.log("Full Address:", fullAddress);
-    document.getElementById("ADDR").value = fullAddress.trim();
+    document.getElementById("ADMIN_ADDR").value = fullAddress.trim();
 }
 </script>
 	<script type="text/javascript">
 //페이지 로드 시 주소 분할 및 할당 코드
 document.addEventListener("DOMContentLoaded", function() {
-    var fullAddress = "${sessionScope.uVO.ADDR}";
+    var fullAddress = "${sessionScope.adVO.ADMIN_ADDR}";
     var addressParts = fullAddress.split(", ");
 
     if (addressParts[0] && addressParts[0].trim() !== "") {
@@ -309,13 +348,20 @@ document.addEventListener("DOMContentLoaded", function() {
 	<script type="text/javascript">
 	function user_infoFixCancel(event) {
 		event.preventDefault();
-		location.href = "userManagement.do";
+		location.href = "adminManagement.do";
+	}
+	</script>
+	<script type="text/javascript">
+	function deleteAdmin(event) {
+		event.preventDefault();
+		location.href = "deletemanager.do";
 	}
 	</script>
 	<script type="text/javascript">
 	function validateAll() {
 		console.log("validateAll 도착");
-		if (validateNickname() && validatePhone() && checkEmail() 
+		if (validateNickname() && validatePhone()
+			&& validatePassword() && checkEmail() 
 			&& validateEmail())) {
 			console.log("수정완료");
 			return true;
@@ -328,7 +374,7 @@ document.addEventListener("DOMContentLoaded", function() {
 function prepareAndSubmit() {
 	prepareAddr(); 
 	
-    const fields = [ "birth" ,"nickname", "phone", "email", "addr"]; // 여기에 모든 필드 이름을 추가하세요.
+    const fields = ["password", "birth" ,"nickname", "phone", "email", "addr"]; // 여기에 모든 필드 이름을 추가하세요.
 
 	
     fields.forEach(field => {

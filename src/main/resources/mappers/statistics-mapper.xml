@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="statistics">
+	<select id="selectSalesSummary" resultType="salesSVO">
+		SELECT * FROM
+		sales_summary
+	</select>
+	<select id="getTop5Products" resultType="salesSVO">
+		  SELECT
+            P.PROD_IMG AS "PROD_IMG",
+            P.PROD_NAME AS "PROD_NAME",
+            SUM(C.CART_PRICE) AS "REVENUE"
+        FROM
+            PRODUCT_T P
+        JOIN CART_T C ON P.PROD_NUM = C.PROD_NUM
+        WHERE
+            C.CART_ST = 1
+        GROUP BY
+            P.PROD_NUM, P.PROD_IMG, P.PROD_NAME
+        ORDER BY
+            SUM(C.CART_PRICE) DESC
+        LIMIT 5;
+	</select>
+	<select id="getProductCategorySales" resultType="salesSVO">
+      SELECT
+        DATE(P.PAY_OK) AS "salesDate", 
+        PR.PROD_HIGH AS "productCategory",
+        SUM(C.CART_PRICE) AS "dailyRevenue"
+    FROM
+        PRODUCT_T PR
+    JOIN CART_T C ON PR.PROD_NUM = C.PROD_NUM
+    JOIN PAY_T P ON C.CART_NUM = P.CART_NUM
+    WHERE
+        P.PAY_OK BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW()
+        AND C.CART_ST = 1
+    GROUP BY
+        DATE(P.PAY_OK),
+        PR.PROD_HIGH
+    ORDER BY
+        DATE(P.PAY_OK) DESC, 
+        SUM(C.CART_PRICE) DESC
+</select>
+	<select id="getAllTop10" resultType="postVO">
+    (SELECT BOARD_NUM AS ID, 'Q&amp;A' AS TYPE, BOARD_SUBJECT AS SUBJECT, BOARD_DATE AS DATE FROM QA_T ORDER BY BOARD_DATE DESC LIMIT 10)
+    UNION ALL
+    (SELECT REPORT_NUM AS ID, 'Report' AS TYPE, REPORT_SUBJECT AS SUBJECT, REPORT_DATE AS DATE FROM REPORT_T ORDER BY REPORT_DATE DESC LIMIT 10)
+    UNION ALL
+    (SELECT RE_NUM AS ID, 'Review' AS TYPE, RE_SUBJECT AS SUBJECT, RE_DATE AS DATE FROM REVIEW_T ORDER BY RE_DATE DESC LIMIT 10)
+    ORDER BY DATE DESC LIMIT 10
+</select>
+	<select id="getQATop10" resultType="postVO">
+		SELECT BOARD_NUM AS ID, 'Q&amp;A' AS TYPE, BOARD_SUBJECT AS SUBJECT, BOARD_DATE AS DATE FROM QA_T ORDER
+		BY BOARD_DATE DESC LIMIT 10
+	</select>
+	<select id="getReviewTop10" resultType="postVO">
+		SELECT RE_NUM AS ID, 'Review' AS TYPE, RE_SUBJECT AS SUBJECT, RE_DATE AS DATE FROM REVIEW_T ORDER BY RE_DATE
+		DESC LIMIT 10
+	</select>
+	<select id="getReportTop10" resultType="postVO">
+		SELECT REPORT_NUM AS ID, 'Report' AS TYPE, REPORT_SUBJECT AS SUBJECT, REPORT_DATE AS DATE FROM REPORT_T ORDER
+		BY REPORT_DATE DESC LIMIT 10
+	</select>
+
+</mapper>
+	
+
+
+
+
+
+
+
+
+

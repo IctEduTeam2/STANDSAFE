@@ -9,8 +9,8 @@
 <script src = "https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+<!-- <meta name="viewport"
+	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" /> -->
 <!-- Link Swiper's CSS -->
 <link rel="stylesheet" href="resources/css/slide.css" />
 <link rel="stylesheet" href="resources/css/basis.css" />
@@ -49,11 +49,8 @@
 					<p>
 						<a href="user_joinpage.do">가입하기</a>
 					</p>
-					|
-					<p>
-						<a href="adminlogin.do">(임시)관리자 로그인</a>
-					</p>
 				</div>
+			</article>
 				<div class="social-login">
 					<p class=>
 						<c:set var="REST_API_KEY" value="1b5cf56e8cc2a06876bd756e6307c0ad" />
@@ -64,14 +61,7 @@
 							<img src="/resources/images/kakao_login.png">
 						</a>
 					</p>
-					<!-- <p>
-						<img src="/resources/images/naver_login.png">
-					</p>
-					<p>
-						<img src="/resources/images/google_login.png">
-					</p> -->
 				</div>
-			</article>
 		</section>
 		<jsp:include page="../Semantic/quickmenu.jsp"></jsp:include>
 		<script src="resources/js/quick.js"></script>
