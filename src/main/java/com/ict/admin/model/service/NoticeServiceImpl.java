@@ -60,7 +60,19 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 	
 	//테이블 삭제 버튼
+	@Override
+	public int updateNoticeStatus(String notice_num) {
+	    return noticeDAO.updateNoticeStatus(notice_num);
+	}
 	
+	//홈페이지 등록 버튼
+	@Override
+    public boolean updateNoticeStatus(String notice_num, int notice_st) {
+        // 여기에서 데이터베이스 업데이트 로직을 수행합니다.
+        // noticeDAO를 이용하여 업데이트를 수행합니다.
+        int result = noticeDAO.updateNoticeStatus(notice_num, notice_st);
+        return result > 0; // 업데이트 성공 여부를 반환합니다.
+    }
 	
 	//삭제게시물 검색 버튼
 	@Override
@@ -79,7 +91,7 @@ public class NoticeServiceImpl implements NoticeService{
 		return noticeDAO.adNotiSearch(searchKey,searchText,searchTitle,start1,close1,mg_type);
 	}
 	
-	//홈페이지 등록
+	
 	
 
 }

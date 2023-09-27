@@ -1,13 +1,15 @@
 package com.ict.admin.controller;
 
-import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -151,7 +153,44 @@ public class Admin_notice {
 	}
 
 	// 테이블 삭제버튼
+	@RequestMapping("/addelete_notices.do")
+	public ModelAndView deleteNotice(@RequestParam("notice_num") String notice_num) {
+	    notiService.updateNoticeStatus(notice_num);
+	    ModelAndView mv = new ModelAndView("admin_notice/notice");
+	    return mv;
+	}
 	
+	//홈페이지 등록123
+//	@RequestMapping(value = "/update_adnoticestatus.do", method = RequestMethod.POST)
+//	@ResponseBody
+//	public String updateNoticeStatus(@RequestParam("notice_num") String notice_num, @RequestParam("notice_st") int notice_st) {
+//	    // 여기에서 noticeNum과 status를 사용하여 데이터베이스 업데이트 로직을 수행합니다.
+//	    
+//	    int result = notiService.UpNotiHome(notice_num, notice_st);
+//	    
+//	    if (result > 0) {
+//	        return "success"; // 업데이트 성공 시 "success" 반환
+//	    } else {
+//	        return "error"; // 업데이트 실패 시 "error" 반환
+//	    }
+//	}
+	
+	//홈페이지 등록 버튼
+	@RequestMapping("/update_adnoticestatus.do")
+    public ModelAndView updateNoticeStatus(@RequestParam("notice_num") String notice_num, @RequestParam("status") int notice_st) {
+        ModelAndView mv = new ModelAndView();
+        boolean updateResult = notiService.updateNoticeStatus(notice_num, notice_st);
+        if (updateResult) {
+            mv.addObject("message", "공지사항이 홈페이지에 등록되었습니다.");
+        } else {
+            mv.addObject("message", "공지사항 홈페이지 등록에 실패했습니다.");
+        }
+
+        mv.setViewName("admin_notice/notice"); // 결과를 표시할 뷰 설정
+        System.out.println(mv);
+        return mv;
+    }
+
 
 	//게시물삭제검색버튼 
 	@RequestMapping(value = "/adnotice_deleted.do", produces = "text/html; charset=utf-8")
@@ -201,6 +240,7 @@ public class Admin_notice {
 	        @RequestParam(value = "mg_type", required = false) String mg_type,
 	        HttpServletRequest request, HttpSession session) {
 		
+		
 		List<NoticeVO> list;	
 		
 	    // Step 1: 검색 조건 검증 (상태설정안하고 검색(전체리스트))
@@ -220,7 +260,7 @@ public class Admin_notice {
 	        //html.append("<td><input type='checkbox' name='chk' value='").append(k.getNOTICE_NUM()).append("' /></td>");
 	        html.append("<td><input type='checkbox' id ='checkvalue' name='chk' value='").append(k.getNOTICE_NUM()).append("' /></td>");
 	        html.append("<input type='hidden' id ='checknum' name='checknum' value='").append(k.getNOTICE_NUM()).append("' />");   
-	        System.out.println("게시글번호"+ k.getNOTICE_NUM());
+	        //System.out.println("게시글번호"+ k.getNOTICE_NUM());
 	        html.append("<td>").append(k.getNOTICE_NUM()).append("</td>");
 	        html.append("<td>").append(k.getNOTICE_SUBJECT()).append("</td>");
 	        html.append("<td>").append(k.getNOTICE_CONTENT()).append("</td>");
@@ -244,8 +284,6 @@ public class Admin_notice {
 	    }
 	    return html.toString();
 	}
-
-	//홈페이지 등록 버튼
 	
 	
 	

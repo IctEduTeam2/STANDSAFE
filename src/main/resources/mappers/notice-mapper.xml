@@ -84,15 +84,18 @@
 </select>
 
  	<!-- 테이블 삭제 버튼 -->
-	<update id="noticeupdate" parameterType="String">
+	<update id="deluptab" parameterType="String">
 		UPDATE NOTICE_T SET NOTICE_ST = 2 WHERE NOTICE_NUM = #{NOTICE_NUM};
 	</update> 	
+
+ 	<!-- 홈페이지 등록 -->
+	<update id="upnotihome" parameterType="Map">
+    	UPDATE NOTICE_T SET NOTICE_ST = #{NOTICE_ST} WHERE NOTICE_NUM = #{NOTICE_NUM};
+	</update>
 
  	<!-- 삭제게시물 검색 버튼 -->
  	<select id="seldelbtn" resultType="nvo">
  		SELECT * FROM NOTICE_T WHERE NOTICE_ST = 2
  	</select>
- 	
- 	<!-- 홈페이지 등록 -->
  	
  </mapper>

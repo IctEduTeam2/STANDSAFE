@@ -66,7 +66,9 @@ public class NoticeDAO {
 	}
 	
 	//테이블 삭제 버튼
-	
+	public int updateNoticeStatus(String notice_num) {
+	    return sqlSessionTemplate.update("notice.deluptab", notice_num);
+	}
 	
 	//삭제게시물 검색 버튼
 	public List<NoticeVO> getDeletedNoti() {	
@@ -94,6 +96,11 @@ public class NoticeDAO {
 	}
 	
 	//홈페이지 등록
-	 
+	public int updateNoticeStatus(String notice_num, int notice_st) {
+        // 여기에서 데이터베이스 업데이트 SQL을 실행합니다.
+        // UPDATE 쿼리를 사용하여 NOTICE_T 테이블에서 해당 공지사항의 상태를 업데이트합니다.
+        int result = sqlSessionTemplate.update("notice.upnotihome", notice_num);
+        return result;
+    }
 	
 }

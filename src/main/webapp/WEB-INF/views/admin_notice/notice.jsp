@@ -159,7 +159,71 @@ $(document).ready(function() {
 });
 
 //테이블 삭제 버튼
+function deleteSelectedItems() {
+    // 선택된 체크박스를 찾습니다.
+    var checkedCheckboxes = $("input[name='chk']:checked");
+    
+    if (checkedCheckboxes.length === 0) {
+        alert("선택된 항목이 없습니다.");
+        return;
+    }
+    
+    // 선택된 각 체크박스에 대해 처리합니다.
+    checkedCheckboxes.each(function() {
+        var row = $(this).closest("tr"); // 체크박스가 속한 행을 찾습니다.
+        var notice_num = row.find(".column_2").text(); // 게시물 번호 열의 텍스트를 가져옵니다.
+        
+        // AJAX를 사용하여 서버에 삭제 요청을 보냅니다.
+        $.ajax({
+            url: '/addelete_notices.do',
+            type: 'POST',
+            data: { notice_num: notice_num },
+            success: function(response) {
+                // 서버에서 성공적인 응답을 받았을 때 실행할 코드를 작성합니다.
+                // 여기에서는 행을 숨깁니다.
+                row.hide();
+            },
+            error: function(error) {
+                // 오류가 발생한 경우 처리할 코드를 작성합니다.
+                alert("오류가 발생했습니다.");
+            }
+        });
+    });
+}
 
+//홈페이지 등록
+function updateNoticeStatus() {
+    // 선택된 체크박스를 찾습니다.
+    var checkedCheckboxes = $("input[name='chk']:checked");
+
+    if (checkedCheckboxes.length === 0) {
+        alert("선택된 항목이 없습니다.");
+        return;
+    }
+
+    // 선택된 각 체크박스에 대해 처리합니다.
+    checkedCheckboxes.each(function () {
+        var row = $(this).closest("tr"); // 체크박스가 속한 행을 찾습니다.
+        var notice_num = row.find(".column_2").text(); // 게시물 번호 열의 텍스트를 가져옵니다.
+
+        // AJAX를 사용하여 서버에 상태 업데이트 요청을 보냅니다.
+        $.ajax({
+            url: '/update_adnoticestatus.do',
+            type: 'POST',
+            data: { notice_num: notice_num, status: 1 }, // status를 1로 변경하려면 여기서 지정합니다.
+            success: function (response) {
+            	alert("등록 되었습니다");
+                // 서버에서 성공적인 응답을 받았을 때 실행할 코드를 작성합니다.
+  
+            	location.reload();
+            },
+            error: function (error) {
+                // 오류가 발생한 경우 처리할 코드를 작성합니다.
+                alert("오류가 발생했습니다.");
+            }
+        });
+    });
+}
 
 
 </script>
@@ -350,7 +414,6 @@ $(document).ready(function() {
         </td>
     </tr>
 </tfoot>
-	
 	</table>
 	</div>
 	<!-- 하단 버튼 -->
@@ -361,10 +424,10 @@ $(document).ready(function() {
 				onclick="location.href='/ad_allnotice.do'">공지사항❐</button>
 		</span>
 		<span style="float: right; margin-top: 25px; margin-right: 50px;">
-			<button type="button" alt="삭제" value="삭제"
-				style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
-				onclick="deltabledel()">삭제</button>
-		</span> 
+    		<button type="button" alt="삭제" value="삭제"
+        	style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
+        	onclick="deleteSelectedItems()">삭제</button>
+		</span>
 		<span style="float: right; margin-top: 25px; margin-right: 50px;">
 			<button type="button" alt="글쓰기" value="글쓰기"
 				style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
@@ -373,13 +436,10 @@ $(document).ready(function() {
 		<span style="float: right; margin-top: 25px; margin-right: 50px;">
 			<button type="button" alt="홈페이지 등록" value="홈페이지 등록"
 				style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
-				onclick="locantion.href='/ad_noticehomereg'">홈페이지 등록</button>
+				onclick="updateNoticeStatus()">홈페이지 등록</button>
 		</span>
-		
 	</div>
-
 
 	<jsp:include page="../Semantic/footer.jsp"></jsp:include>
 </body>
-
 </html>
