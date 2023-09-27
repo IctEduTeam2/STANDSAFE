@@ -340,13 +340,13 @@ table tfoot ol.paging li a:hover {
 
 </script>
 </head>
-<body onload="InitializeStaticMenu();">
+
 	<script type="text/javascript">
 		var alertMessage = "${alertMessage}";
 		if (alertMessage) {
 			alert(alertMessage);
 		}
-		var test = "${test}";
+		var test ='${test}';
 		if(test==1) {
 				var location = document.querySelector("." + b).offsetTop;
 				window.scrollTo({
@@ -456,38 +456,26 @@ table tfoot ol.paging li a:hover {
 					</div>
 					<hr>
 					<div class="review b">
-						<h1 style="text-align: center; margin: 80px 0; font-size: 60px;">Review</h1>  	
+						<h1 style="text-align: center; margin: 80px 0; font-size: 60px;">Review</h1>  
+						<table class="m_table">				
+						<tbody class="mb_table">		
 							<c:choose>
-								<c:when test="${empty list}"><p>리뷰가 없습니다.</p>
+								<c:when test="${empty list}">
+									<tr>
+										<td colspan="2"><p>리뷰가 없습니다.</p></td>
+									</tr>
 								</c:when>
 								
 								<c:otherwise>
-								<div style="font-weight: 800; width: 90%; margin: auto;"><div style="float: right;">총리뷰수: ${paging.totalRecord }</div></div>
-								<div style="width: 90%; margin: auto;">
-                            		<hr style="margin-top:5px; margin-bottom: 20px;">
 									<c:forEach var="k" items="${list}" varStatus="vs">
-										<div class="review_box" style="width: 100%; float: left; ">
-								   			<div style=" width: 100%; float: left;"><div style="float: left; padding: 0 60px; margin: auto; font-weight: 800;">
-												${k.re_writer }
-                                        		</div>
-                                        		<div class="contentContainer" style="float: left; padding: 0 10px; word-break:break-all; width: 930px; border-left: 1px solid black;">
-													${k.re_content}
-                                        		</div><script>
-var contentElements = document.querySelectorAll(".contentContainer");
-contentElements.forEach(function(element) {
-    element.style.height = element.scrollHeight > 100 ? "auto" : "100px";
-});
-</script>
-                            					<hr style="margin: 20px 0;">
-											</div>
-										</div>
-									
+										<tr>
+											<td style="width: 50px; height: 100px;">${k.re_writer }</td>
+											<td style="text-align: left;">${k.re_content}</td>
+										</tr>
 									</c:forEach>
-									</div>
-									</c:otherwise>
-									</c:choose>
-					</div>		
-						<table class="m_table">				
+								</c:otherwise>
+							</c:choose>					
+						</tbody>
 						<tfoot>
 								<tr>
 									<td colspan="2">
@@ -529,8 +517,8 @@ contentElements.forEach(function(element) {
 					</div>
 					<hr>
 					<div class="faq c">
-						<h1 style="text-align: center; margin: 80px 0; font-size: 60px;">Q&A</h1>
-						
+						<h1 style="text-align: center; margin: 80px 0; font-size: 60px;">FAQ</h1>
+						faq
 					</div>
 				</div>
 			</div>

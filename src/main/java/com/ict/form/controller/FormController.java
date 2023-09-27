@@ -22,14 +22,6 @@ public class FormController {
 	public ModelAndView getRegisterForm() {
 		return new ModelAndView("user/joinpage");
 	}
-	@GetMapping("/orderlistform.do")
-	public ModelAndView getOrderListForm() {
-		return new ModelAndView("shopping/orderlist");
-	}
-	@GetMapping("/orderOneListform.do")
-	public ModelAndView getOrderOneListForm() {
-		return new ModelAndView("shopping/order_onelist");
-	}
 	@GetMapping("/mypageform.do")
 	public ModelAndView getMypageForm(@RequestParam("client_num")String client_num, HttpSession session, HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("user/mypage");

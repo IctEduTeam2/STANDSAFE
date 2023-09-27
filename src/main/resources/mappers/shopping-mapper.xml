@@ -29,7 +29,8 @@
 		SELECT * FROM PRODUCT_T
 		WHERE prod_st = 0 and prod_amount > 0
 		ORDER BY prod_regdate DESC
-		LIMIT 8;
+		LIMIT
+		8;
 	</select>
 
 	<!-- 상품 한개 -->
@@ -38,7 +39,7 @@
 		SELECT * FROM PRODUCT_T
 		WHERE PROD_NUM = #{PROD_NUM}
 	</select>
-	
+
 	<!-- 장바구니 추가 -->
 	<insert id="basket" parameterType="basketVO">
 		<selectKey keyProperty="cart_num" resultType="String"
@@ -72,7 +73,7 @@
 		#{wish_st}
 		WHERE client_num = #{client_num} AND prod_num = #{prod_num}
 	</update>
-	
+
 	<!-- 위시리스트 삭제 -->
 	<update id="wishdelete" parameterType="wishVO">
 		UPDATE WISH_T
@@ -103,6 +104,13 @@
 		SELECT * FROM CART_T
 		WHERE client_num = #{client_num} AND
 		prod_num = #{prod_num} and cart_st = 0
+	</select>
+
+	<!-- 장바구니 조회 -->
+	<select id="cartinfo" resultType="basketVO"
+		parameterType="String">
+		SELECT * FROM CART_T
+		WHERE cart_num = #{cart_num}
 	</select>
 
 	<!-- 장바구니 수량변경 -->
@@ -148,17 +156,41 @@
 		INSERT INTO PAY_T
 		(take_peo, take_addr, take_phone, take_memo,
 		pay_type, pay_oknum, cart_num,
-		client_num
+		client_num, pay_money
 		<if test="paymentKey != null">
 			, paymentKey
+		</if>
+		<if test="pay_method != null">
+			, pay_method
+		</if>
+		<if test="pay_card_type != null">
+			, pay_card_type
+		</if>
+		<if test="pay_card != null">
+			, pay_card
+		</if>
+		<if test="pay_installmentPlanMonths != null">
+			, pay_installmentPlanMonths
 		</if>
 		)
 		VALUES
 		(#{take_peo}, #{take_addr}, #{take_phone}, #{take_memo},
 		#{pay_type}, #{pay_oknum},
-		#{cart_num}, #{client_num}
+		#{cart_num}, #{client_num}, #{pay_money}
 		<if test="paymentKey != null">
 			, #{paymentKey}
+		</if>
+		<if test="pay_method != null">
+			, #{pay_method}
+		</if>
+		<if test="pay_card_type != null">
+			, #{pay_card_type}
+		</if>
+		<if test="pay_card != null">
+			, #{pay_card}
+		</if>
+		<if test="pay_installmentPlanMonths != null">
+			, #{pay_installmentPlanMonths}
 		</if>
 		)
 	</insert>
@@ -170,6 +202,202 @@
 		VALUES (#{POINT_USE}, #{POINT_REM},
 		#{CLIENT_NUM})
 	</insert>
+
+	<!-- 포인트 증가 -->
+	<insert id="pointplus" parameterType="pVO">
+		INSERT INTO POINT_T
+		(POINT_SAVE, POINT_REM, CLIENT_NUM)
+		VALUES (#{POINT_SAVE},
+		#{POINT_REM},
+		#{CLIENT_NUM})
+	</insert>
+
+	<!-- 재고량 차감 -->
+	<update id="productsub" parameterType="basketVO">
+		UPDATE PRODUCT_T
+		SET
+		prod_amount = prod_amount - #{cart_amount}
+		WHERE prod_num = #{prod_num}
+	</update>
+
+	<!-- 배송 추가 -->
+	<insert id="deliveryadd" parameterType="String">
+		INSERT INTO
+		DELIVERY_T(pay_oknum, deli_st) VALUES(
+		#{pay_oknum}, 0)
+	</insert>
+
+	<!-- 배송 조회 -->
+	<select id="deliveryselect" resultType="deliveryVO"
+		parameterType="String">
+		SELECT *
+		FROM DELIVERY_T
+		WHERE pay_oknum = #{pay_oknum}
+	</select>
+
+	<!-- 결제 후 결제취소 - pay_t -->
+	<update id="payupdatest" parameterType="String">
+		UPDATE PAY_T
+		SET pay_st =
+		1
+		WHERE pay_oknum = #{pay_oknum}
+	</update>
+
+	<!-- 결제 후 결제취소 - payback_t -->
+	<insert id="paybackinsert" parameterType="paybackVO">
+		INSERT INTO PAYBACK_T
+		(client_num, pb_content, pb_dp, pb_st, pay_oknum)
+		VALUES
+		(#{client_num}, #{pb_content}, #{pb_dp}, #{pb_st}, #{pay_oknum})
+	</insert>
+
+	<!-- 결제 취소 후 상품재고량 증가 -->
+	<update id="productplus" parameterType="String">
+		UPDATE PRODUCT_T AS P
+		INNER JOIN CART_T AS C ON P.prod_num = C.prod_num
+		INNER JOIN PAY_T AS
+		PAY ON C.cart_num = PAY.cart_num
+		SET P.prod_amount = P.prod_amount +
+		C.cart_amount
+		WHERE PAY.pay_oknum = #{pay_oknum}
+	</update>
+
+	<!-- 구매확정 -->
+	<update id="deliverycomfirm" parameterType="String">
+		UPDATE DELIVERY_T
+		SET
+		deli_st = 3, deli_date = CURRENT_TIMESTAMP
+		WHERE pay_oknum =
+		#{pay_oknum}
+	</update>
+
+	<!-- 주문조회 리스트 -->
+	<select id="paylist" resultType="payVO" parameterType="String">
+		SELECT
+		P.PROD_IMG,
+		PAY.pay_num,
+		PAY.take_peo,
+		PAY.take_addr,
+		PAY.take_phone,
+		PAY.take_memo,
+		PAY.pay_type,
+		PAY.pay_card,
+		DATE_FORMAT(PAY.pay_ok,
+		'%Y-%m-%d') AS pay_ok,
+		PAY.pay_oknum,
+		PAY.pay_st,
+		PAY.cart_num,
+		PAY.client_num,
+		PAY.paymentkey,
+		PAY.pay_money
+		FROM PAY_T AS PAY
+		JOIN
+		CART_T AS C ON PAY.cart_num = C.cart_num
+		JOIN PRODUCT_T AS P ON
+		C.prod_num = P.prod_num
+		WHERE PAY.client_num = #{client_num}
+		GROUP BY
+		PAY.pay_oknum
+		ORDER BY PAY.pay_ok DESC
+	</select>
+
+	<!-- 주문조회 리스트 -->
+	<select id="payselect" resultType="payVO" parameterType="payVO">
+		SELECT *
+		FROM PAY_T
+		WHERE client_num = #{client_num} AND pay_oknum =
+		#{pay_oknum}
+	</select>
+
+	<!-- 주문상세 -->
+	<select id="orderlist" resultType="payVO" parameterType="String">
+		SELECT *
+		FROM PAY_T
+		WHERE pay_oknum = #{pay_oknum}
+	</select>
+
+	<!-- 페이백 조회 -->
+	<select id="paybackselect" resultType="paybackVO"
+		parameterType="String">
+		SELECT *
+		FROM PAYBACK_T
+		WHERE pay_oknum = #{pay_oknum}
+	</select>
+
+	<!-- 교환 환불 -->
+	<insert id="paybackcanclereturn" parameterType="paybackVO">
+		INSERT INTO PAYBACK_T (PB_TITLE, PB_CONTENT, PB_DP, PB_FILE, PB_ST,
+		CLIENT_NUM, PAY_OKNUM, PROD_NUM)
+		VALUES (#{pb_title}, #{pb_content}, #{pb_dp}, #{pb_file}, #{pb_st},
+		#{client_num}, #{pay_oknum}, #{prod_num})
+	</insert>
+
+	<!-- 교환 환불를 취소 -->
+	<delete id="paybackcanclereturniscancle"
+		parameterType="paybackVO">
+		DELETE FROM PAYBACK_T
+		WHERE client_num = #{client_num}
+		AND pay_oknum = #{pay_oknum}
+		AND prod_num = #{prod_num}
+	</delete>
+
+	<!-- 리뷰리스트 -->
+	<select id="reviewlist" resultType="reviewVO"
+		parameterType="reviewVO">
+		SELECT *
+		FROM REVIEW_T
+		WHERE PROD_NUM = #{prod_num}
+		AND RE_ST = #{re_st}
+		AND RE_LOCK = #{re_lock}
+		ORDER BY RE_DATE DESC limit #{limit} offset #{offset}
+	</select>
+	
+	<!-- 리뷰 개수조회 -->
+	<select id="totalreviewcount" resultType="int"
+		parameterType="reviewVO">
+		SELECT COUNT(*)
+		FROM REVIEW_T
+		WHERE PROD_NUM = #{prod_num}
+		AND RE_ST = #{re_st}
+		AND RE_LOCK = #{re_lock}
+	</select>
+	
+	<!-- 주문 개수조회 -->
+	<select id="totalordercount" resultType="int" parameterType="payVO">
+		SELECT COUNT(*)
+		FROM PAY_T
+		WHERE client_num = #{client_num} 
+	</select>
+	
+		<!-- 주문조회 리스트 -->
+	<select id="paylist2" resultType="payVO" parameterType="payVO">
+		SELECT
+		P.PROD_IMG,
+		PAY.pay_num,
+		PAY.take_peo,
+		PAY.take_addr,
+		PAY.take_phone,
+		PAY.take_memo,
+		PAY.pay_type,
+		PAY.pay_card,
+		DATE_FORMAT(PAY.pay_ok,
+		'%Y-%m-%d') AS pay_ok,
+		PAY.pay_oknum,
+		PAY.pay_st,
+		PAY.cart_num,
+		PAY.client_num,
+		PAY.paymentkey,
+		PAY.pay_money
+		FROM PAY_T AS PAY
+		JOIN
+		CART_T AS C ON PAY.cart_num = C.cart_num
+		JOIN PRODUCT_T AS P ON
+		C.prod_num = P.prod_num
+		WHERE PAY.client_num = #{client_num}
+		GROUP BY
+		PAY.pay_oknum
+		ORDER BY PAY.pay_ok DESC limit #{limit} offset #{offset}
+	</select>
 </mapper>
 
 

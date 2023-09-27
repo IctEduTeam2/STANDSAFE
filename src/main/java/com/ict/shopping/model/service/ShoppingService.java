@@ -7,9 +7,12 @@ import org.springframework.stereotype.Service;
 
 import com.ict.shopping.model.dao.ShoppingDAO;
 import com.ict.shopping.model.vo.BasketVO;
+import com.ict.shopping.model.vo.DeliveryVO;
+import com.ict.shopping.model.vo.PayBackVO;
 import com.ict.shopping.model.vo.PayVO;
 import com.ict.shopping.model.vo.PopUpVO;
 import com.ict.shopping.model.vo.ProductVO;
+import com.ict.shopping.model.vo.ReviewVO;
 import com.ict.shopping.model.vo.WishVO;
 import com.ict.user.model.vo.PointVO;
 import com.ict.user.model.vo.UserVO;
@@ -109,6 +112,11 @@ public class ShoppingService {
 		shoppingDAO.getPointSub(pointvo);
 	}
 	
+	// 결제 후 상품재고량 수정
+	public void getProductSub(BasketVO bvo) {
+		shoppingDAO.getProductSub(bvo);
+	}
+	
 	// 상품리스트
 	public List<ProductVO> getProductList(ProductVO pvo) {
 		return shoppingDAO.getProductList(pvo);
@@ -117,5 +125,94 @@ public class ShoppingService {
 	// 위시리스트
 	public List<WishVO> getWishList(String client_num) {
 		return shoppingDAO.getWishList(client_num);
+	}
+	
+	// 주문리스트
+	public List<PayVO> getPayList(String client_num) {
+		return shoppingDAO.getPayList(client_num);
+	}
+	// 주문리스트
+	public List<PayVO> getPayList(PayVO pvo) {
+		return shoppingDAO.getPayList(pvo);
+	}
+	
+	// 주문상세내역
+	public List<PayVO> getOrderOneList(String pay_oknum) {
+		return shoppingDAO.getOrderOneList(pay_oknum);
+	}
+	
+	// 장바구니 조회
+	public BasketVO getCartInfo(String cart_num) {
+		return shoppingDAO.getCartInfo(cart_num);
+	}
+	
+	// 배송 추가
+	public void getDeliveryAdd(String pay_oknum) {
+		shoppingDAO.getDeliveryAdd(pay_oknum);
+	}
+
+	// 배송 조회
+	public DeliveryVO getDeliverySelect(String pay_oknum) {
+		return shoppingDAO.getDeliverySelect(pay_oknum);
+	}
+	
+	// 결제 후 결제취소 - pay_t
+	public void getPayUpdateST(String pay_oknum) {
+		shoppingDAO.getPayUpdateST(pay_oknum);
+	}
+	
+	// 결제 후 결제취소 - payback_t
+	public void getPayBackInsert(PayBackVO pbvo) {
+		shoppingDAO.getPayBackInsert(pbvo);
+	}
+	
+	// 결제취소 후 상품재고량 증가
+	public void getProductPlus(String pay_oknum) {
+		shoppingDAO.getProductPlus(pay_oknum);
+	}
+
+	//결제취소 후 포인트 증가
+	public void getPointPlus(PointVO pointvo) {
+		shoppingDAO.getPointPlus(pointvo);
+	}
+	
+	// 구매확정
+	public void getDeliveryComfirm(String pay_oknum) {
+		shoppingDAO.getDeliveryComfirm(pay_oknum);
+	}
+	
+	// 주문 조회
+	public List<PayVO> getPaySelect(PayVO pvo) {
+		return shoppingDAO.getPaySelect(pvo);
+	}
+	
+	// 페이백 조회
+	public List<PayBackVO> getPayBackSelect(String pay_oknum) {
+		return shoppingDAO.getPayBackSelect(pay_oknum);
+	}
+
+	// 교환 환불
+	public void getPayBackCancleReturn(PayBackVO pbvo) {
+		shoppingDAO.getPayBackCancleReturn(pbvo);
+	}
+
+	// 교환 환불 취소
+	public void getPayBackCancleReturnIsCancle(PayBackVO pbvo) {
+		shoppingDAO.getPayBackCancleReturnIsCancle(pbvo);
+	}
+
+	// 상품리뷰 조회
+	public List<ReviewVO> getReviewList(ReviewVO rvo) {
+		return shoppingDAO.getReviewList(rvo);
+	}
+	
+	// 상품리뷰 몇개?
+	public int getTotalReviewCount(ReviewVO rvo) {
+		return shoppingDAO.getTotalReviewCount(rvo);
+	}
+	
+	// 주문개수
+	public int getTotalOrderCount(String client_num) {
+		return shoppingDAO.getTotalOrderCount(client_num);
 	}
 }
