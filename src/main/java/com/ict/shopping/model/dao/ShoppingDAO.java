@@ -1,15 +1,20 @@
 package com.ict.shopping.model.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ict.shopping.model.vo.BasketVO;
+import com.ict.shopping.model.vo.DeliveryVO;
+import com.ict.shopping.model.vo.PayBackVO;
 import com.ict.shopping.model.vo.PayVO;
 import com.ict.shopping.model.vo.PopUpVO;
 import com.ict.shopping.model.vo.ProductVO;
+import com.ict.shopping.model.vo.ReviewVO;
 import com.ict.shopping.model.vo.WishVO;
 import com.ict.user.model.vo.PointVO;
 import com.ict.user.model.vo.UserVO;
@@ -109,6 +114,11 @@ public class ShoppingDAO {
 		sqlSessionTemplate.insert("shopping.pointsub", pointvo);
 	}
 
+	// 결제 후 상품재고량 수정
+	public void getProductSub(BasketVO bvo) {
+		sqlSessionTemplate.update("shopping.productsub", bvo);
+	}
+
 	// 상품리스트
 	public List<ProductVO> getProductList(ProductVO pvo) {
 		return sqlSessionTemplate.selectList("shopping.productlist", pvo);
@@ -117,5 +127,94 @@ public class ShoppingDAO {
 	// 위시리스트
 	public List<WishVO> getWishList(String client_num) {
 		return sqlSessionTemplate.selectList("shopping.wishlist", client_num);
+	}
+
+	// 주문리스트
+	public List<PayVO> getPayList(String client_num) {
+		return sqlSessionTemplate.selectList("shopping.paylist", client_num);
+	}	
+	// 주문리스트
+	public List<PayVO> getPayList(PayVO pvo) {
+		return sqlSessionTemplate.selectList("shopping.paylist2", pvo);
+	}
+
+	// 주문상세내역
+	public List<PayVO> getOrderOneList(String pay_oknum) {
+		return sqlSessionTemplate.selectList("shopping.orderlist", pay_oknum);
+	}
+
+	// 장바구니 조회
+	public BasketVO getCartInfo(String cart_num) {
+		return sqlSessionTemplate.selectOne("shopping.cartinfo", cart_num);
+	}
+
+	// 배송 추가
+	public void getDeliveryAdd(String pay_oknum) {
+		sqlSessionTemplate.insert("shopping.deliveryadd", pay_oknum);
+	}
+
+	// 배송 조회
+	public DeliveryVO getDeliverySelect(String pay_oknum) {
+		return sqlSessionTemplate.selectOne("shopping.deliveryselect", pay_oknum);
+	}
+
+	// 결제 후 결제취소 - pay_t
+	public void getPayUpdateST(String pay_oknum) {
+		sqlSessionTemplate.update("shopping.payupdatest", pay_oknum);
+	}	
+	
+	// 결제 후 결제취소 - payback_t
+	public void getPayBackInsert(PayBackVO pbvo) {
+		sqlSessionTemplate.insert("shopping.paybackinsert", pbvo);
+	}
+	
+	// 결제취소 후 상품재고량 증가
+	public void getProductPlus(String pay_oknum) {
+		sqlSessionTemplate.update("shopping.productplus", pay_oknum);
+	}
+
+	//결제취소 후 포인트 증가
+	public void getPointPlus(PointVO pointvo) {
+		sqlSessionTemplate.insert("shopping.pointplus", pointvo);
+	}
+	
+	// 구매확정
+	public void getDeliveryComfirm(String pay_oknum) {
+		sqlSessionTemplate.update("shopping.deliverycomfirm", pay_oknum);
+	}
+	
+	// 주문 조회
+	public List<PayVO> getPaySelect(PayVO pvo) {
+		return sqlSessionTemplate.selectList("shopping.payselect", pvo);
+	}	
+	
+	// 페이백 조회
+	public List<PayBackVO> getPayBackSelect(String pay_oknum) {
+		return sqlSessionTemplate.selectList("shopping.paybackselect", pay_oknum);
+	}	
+	
+	// 교환 환불
+	public void getPayBackCancleReturn(PayBackVO pbvo) {
+		sqlSessionTemplate.insert("shopping.paybackcanclereturn", pbvo);
+	}
+	
+	// 교환 환불 취소
+	public void getPayBackCancleReturnIsCancle(PayBackVO pbvo) {
+		sqlSessionTemplate.insert("shopping.paybackcanclereturniscancle", pbvo);
+	}
+
+	// 상품리뷰 조회
+	public List<ReviewVO> getReviewList(ReviewVO rvo) {
+		return sqlSessionTemplate.selectList("shopping.reviewlist", rvo);
+	}
+	
+	// 상품리뷰 개수조회
+	public int getTotalReviewCount(ReviewVO rvo) {
+		return sqlSessionTemplate.selectOne("shopping.totalreviewcount", rvo);
+	}	
+	
+	// 주문개수
+	public int getTotalOrderCount(String client_num) {
+		return sqlSessionTemplate.selectOne("shopping.totalordercount", client_num);
 	}
 }

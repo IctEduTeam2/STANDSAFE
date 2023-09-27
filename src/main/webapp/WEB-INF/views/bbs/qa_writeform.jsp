@@ -35,10 +35,6 @@ label {
 
 #radio { color: black; text-align: left;}
 
-.in_btn{  
-	margin-top: 50px;
-}
-
 
 #chkbox_div {
     display: flex;
@@ -78,9 +74,50 @@ label {
     color: #1b5ac2; /* 체크 색상 설정 */
     font-weight: bold; /* 글꼴 두껍게 설정 */
 }
+#High{
+	width: 225px;
+	padding: 7px;
+	margin-left : 30px;
+	border: 1px solid #1b5ac2;
+	outline: none;
+	float: left;
+}
+#Low{
+	width: 225px;
+	padding: 7px;
+	margin-left : 30px;
+	border: 1px solid #1b5ac2;
+	outline: none;
+	float: left;
+}
+#Prod{
+	width: 225px;
+	padding: 7px;
+	margin-left : 30px;
+	border: 1px solid #1b5ac2;
+	outline: none;
+	float: left;
+}
+#cate1{
+line-height: 2rem;
+  padding: 0.2em 0.4em;
+}
+#cate2{
+line-height: 2rem;
+  padding: 0.2em 0.4em;
+}
+#cate3{
+line-height: 2rem;
+  padding: 0.2em 0.4em;
+}
 
 
-
+.mf_table td{
+	border-bottom:none;
+	padding : 10px;
+	height: 30px;
+}
+#noti{color: red; font-size: 14px; text-align: left; }
 </style> 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <script type="text/javascript">
@@ -95,7 +132,6 @@ label {
 				f.BOARD_CONTENT.focus();
 				return;
 			}
-
 		 var checkbox = document.getElementById("chkbox");
 	        // 체크박스가 체크되었을 때
 	        if (checkbox.checked) {
@@ -112,6 +148,90 @@ label {
 		f.action="/bbs_qa_go.do";
 		f.submit();
 	}
+</script>
+<script type="text/javascript">
+function categoty() {
+		var highCategory = document.getElementById("High").value;
+	    var lowCategory = document.getElementById("Low");
+	    var prodCategory = document.getElementById("Prod");
+	    // 기존 Low 카테고리 옵션 제거
+	    lowCategory.innerHTML = "";
+
+	    // 선택한 High 카테고리에 따라 Low 카테고리 옵션 추가
+	    if (highCategory === "1") {
+	    	lowCategory.innerHTML += '<option value="0"> ====소분류==== </option>';
+	        lowCategory.innerHTML += '<option value="1"> 소화기 </option>';
+	        lowCategory.innerHTML += '<option value="2"> 화재 감지 | 대피 </option>';
+	        // 다른 옵션들도 추가
+	    } else if (highCategory === "2") {   
+	    	lowCategory.innerHTML += '<option value="0"> ====소분류==== </option>';
+	        lowCategory.innerHTML += '<option value="3"> 구급함 | 제세동기 </option>';
+	        lowCategory.innerHTML += '<option value="4"> 재난안전용품 </option>';
+	        lowCategory.innerHTML += '<option value="5"> 방역안전용품 </option>';
+	        // 다른 옵션들도 추가
+	    } else if (highCategory === "3") {
+	    	lowCategory.innerHTML += '<option value="0"> ====소분류==== </option>';
+	        lowCategory.innerHTML += '<option value="6"> 마스크 </option>';
+	        lowCategory.innerHTML += '<option value="7"> 위생장갑 </option>';
+	        lowCategory.innerHTML += '<option value="8"> 통조림 | 비상식량 </option>';
+	        // 다른 옵션들도 추가
+	    }else if(highCategory === "0"){
+	    	// High 카테고리가 0인 경우 "카테고리를 선택하세요" 옵션만 추가	
+	        lowCategory.innerHTML += '<option value="0">카테고리를 선택하세요</option>';
+	        prodCategory.innerHTML = "";
+	      
+	    }
+	}
+
+	function prod_combo() {
+	    // 선택한 High와 Low 카테고리를 사용하여 상품 목록을 생성하고 콤보 박스에 추가하는 코드를 작성
+	}
+</script>
+<script type="text/javascript">
+function updateProductList() {
+    var lowCategory = document.getElementById("Low").value;
+    var prodCategory = document.getElementById("Prod");
+    
+   
+   $.ajax({
+	   url : "/product_combo.do?lowCategory="+lowCategory,
+	   method: "post",
+	   dataType: "text",
+	   success: function(data) {
+		   console.log(data)
+		   
+		    // "prod" 콤보 박스 엘리먼트 가져오기
+		   var prodCategory = document.getElementById("Prod");
+
+		    // 받은 HTML을 "prod" 콤보 박스에 추가
+		    prodCategory.innerHTML = data;
+	   },
+	   error:function() {
+		   alert("읽기실패");
+	   }
+   });
+}
+// Low 카테고리 변경 시에도 물품 리스트 업데이트
+document.getElementById("Low").addEventListener("change", updateProductList)
+ //선택한물품의 번호
+    var selectedOption = prodCategory.options[prodCategory.selectedIndex];
+    var prodNum = selectedOption.value; 
+    console.log(prodNum);
+</script>
+<script type="text/javascript">
+
+function prod_combo() {
+	var lowCategory = document.getElementById("Low").value;
+    var prodCategory = document.getElementById("Prod");
+
+    // Low 카테고리 초기화
+    prodCategory.innerHTML = "";
+
+    if (lowCategory === "0" ) {
+        // High 카테고리가 0인 경우 "카테고리를 선택하세요" 옵션만 추가
+        prodCategory.innerHTML += '<option value="">카테고리를 선택하세요</option>';
+    } 
+}
 </script>
 </head>
 <body>
@@ -130,8 +250,8 @@ label {
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">문의 유형</td>
 									<td id="radio">
-										<input type="radio" name="BOARD_TYPE" value="배송문의" checked />
-										<span>배송문의</span>	
+										<input type="radio" name="BOARD_TYPE" value="상품문의" checked  />
+										<span>상품문의</span>	
 									
 										<input type="radio" name="BOARD_TYPE" value="결제/주문문의" />
 										<span>결제/주문문의</span>	
@@ -141,9 +261,31 @@ label {
 									</td>
 							</tr>
 							<tr align="center">
+								<td bgcolor="#1b5ac2" class="w_font">분류</td>
+								<td>
+									<label id="cate1" for=High></label>
+										<select id="High" onchange="categoty()">
+											<option value="0"> ====대분류==== </option>
+											<option value="1"> ■ 소방/안전 </option>
+											<option value="2"> ■ 재난/응급/긴급 </option>
+											<option value="3"> ■ 일상/기타 </option>
+										</select>
+									<label id="cate2" for="Low"></label>
+    								<select id="Low" onchange="updateProductList()">
+    									<!--처음 글쓰기들어왔을때, 초기값  -->
+    									<option value="0"> ====소분류==== </option>
+    								</select>
+    								<label id="cate3" for="Prod"></label>
+    								<select id="Prod" name="prod_num"> 
+    								<!--동적으로 자동으로 붙여질곳  -->
+    								</select>
+    								<span id="noti">상품문의가 아닌 일반 문의인 경우 선택하지않으셔도 됩니다.</span>
+								</td>
+							</tr>
+							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">작성자</td>
 								<!--이건 로그인한 사람이 자동으로 뜨게하기.  -->
-								<td><input type="text" name="BOARD_WRITER" size="20" autocomplete='off'value="${nick}"/></td>
+								<td><input type="text" name="BOARD_WRITER" size="20" autocomplete='off'value="${nick}" disabled/></td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font" >제목</td>
@@ -164,12 +306,12 @@ label {
 									</div>
 									</td>
 							</tr>
-							<tr align="center">
-								<td colspan="2">
+							<tr align="center" >
+								<td colspan="2" style="border-bottom: none;">
 									<textarea rows="10" cols="60" name="BOARD_CONTENT" id="content"></textarea>
 								</td>
 							</tr>
-							<tfoot>
+							<tfoot class="mf_table">
 								<tr align="center">
 									<td colspan="2">
 										<input type="button" value="작성" onclick="save_go(this.form)" class="in_btn"/>

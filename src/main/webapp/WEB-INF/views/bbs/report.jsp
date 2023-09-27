@@ -66,7 +66,7 @@ table tfoot ol.paging li a:hover {
 	color: white;
 	font-weight: bold;
 }
-table td:nth-child(4) {
+table td:nth-child(3) {
   text-align: left;
   padding-left: 70px;
 }
@@ -97,27 +97,11 @@ table td:nth-child(4) {
 		<jsp:include page="../Semantic/header.jsp"></jsp:include>
 		<section id="contents">
 			<article>
-						<div id="bbs_top" >		
+						
 						<div id="bbs_sub"><h1>신고합니다</h1>
 						<p id="noti">신고게시물은 작성자 이름이 보호되며, 무분별한 욕설과 타인을향한 비판은 관리자에 의해 삭제됩니다</p>
 						</div>			
-							<form action="/bbs_report_search.do" method="post">
-							    <fieldset>
-							        <label>
-							            <input type="radio" name="searchType" value="제목" id="type_title" checked />
-							            <span>제목</span>
-							        </label>
-							        <label>
-							            <input type="radio" name="searchType" value="내용" id="type_content" />
-							            <span>내용</span>
-							        </label>
-							        <div id="search_bar">
-							            <input type="text" id="s_bar" name="searchText" placeholder="검색어입력">
-							            <button id="s_btn" type="submit">검색</button>
-							        </div>
-							    </fieldset>
-							</form>
-						</div>  <!--  제목및 버튼검색창의 끝 -->
+					
 					<div>
 					<button class="btn" onclick="bbs_go_report_writeform()">글쓰기</button>		
 					</div>		
@@ -126,7 +110,7 @@ table td:nth-child(4) {
 					<table class="m_table">				
 						<thead class="mh_table">
 							 <tr>
-							 	<th id="th1">번호</th><th id="th4">파일첨부</th><th id="th5">유형</th><th id="th2">제목</th><th id="th3">작성자</th><th id="th6">날짜</th>
+							 	<th id="th1">번호</th><th id="th5">유형</th><th id="th2">제목</th><th id="th3">작성자</th><th id="th6">날짜</th><th id="th4">파일첨부</th>
 							 </tr>
 						</thead>
 						<tbody class="mb_table">		
@@ -141,6 +125,15 @@ table td:nth-child(4) {
 									<c:forEach var="k" items="${list}" varStatus="vs">
 										<tr>
 											<td>${paging.totalRecord -((paging.nowPage-1)*paging.numPerPage + vs.index) }</td>
+											
+											<td>${k.REPORT_TYPE }</td>
+												    <td>
+												      <a href="/bbs_report_onelist.do?REPORT_NUM=${k.REPORT_NUM}&cPage=${paging.nowPage}">
+												       [비밀]${k.REPORT_SUBJECT}
+												      </a>
+												    </td>
+									                <td>${k.REPORT_NICK}</td>
+											<td> ${k.REPORT_DATE.substring(0, 10)}</td>
 											<td>
 												<c:choose>
 													<c:when test="${empty k.REPORT_FILE}">
@@ -151,15 +144,6 @@ table td:nth-child(4) {
 													</c:otherwise>
 												</c:choose>				
 											</td>
-											<td>${k.REPORT_TYPE }</td>
-												    <td>
-												      <a href="/bbs_report_onelist.do?REPORT_NUM=${k.REPORT_NUM}&cPage=${paging.nowPage}">
-												       [비밀]${k.REPORT_SUBJECT}
-												      </a>
-												    </td>
-										 <td>${k.REPORT_WRITER}</td>
-
-											<td> ${k.REPORT_DATE.substring(0, 10)}</td>
 										</tr>
 									</c:forEach>
 								</c:otherwise>

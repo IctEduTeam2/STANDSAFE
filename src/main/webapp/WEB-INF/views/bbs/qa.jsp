@@ -23,12 +23,10 @@ fieldset {
   margin: 0;
   padding: 40px 20px;
 }
-table td:nth-child(4) {
+table td:nth-child(3) {
   text-align: left;
   padding-left: 70px;
 }
-
-
 
 
 /* paging */
@@ -93,14 +91,23 @@ table tfoot ol.paging li a:hover {
 	function bbs_go_qa_writeform() {
 		location.href="/bbs_qa_writeform.do";
 	}
-	function search_go() {
-		var searchText = document.getElementById("s_bar").value;
-		alert(searchText);
-		/* 이부분은 나중에 일처리해서 검색창화면으로 가게하기.  */
-		
-	}
-</script>
 
+	
+	
+	function wordchk() {
+    var word = document.getElementById("s_bar").value; // 검색어 필드의 값 가져오기
+
+    // 검색어가 비어 있으면 알림창 표시
+    if (!word || word.trim() === "") {
+        alert("검색어를 입력하세요.");
+        return false; // 폼 제출을 취소합니다.
+    }
+
+    // 검색어가 입력되었으면 폼 제출을 허용
+    return true;
+}
+
+</script>
 </head>
 <body onload="InitializeStaticMenu();">
 	<div id="mydiv">
@@ -109,7 +116,7 @@ table tfoot ol.paging li a:hover {
 			<article>
 						<div id="bbs_top" >		
 						<div id="bbs_sub"><h1>상품 Q&A</h1></div>			
-							<form action="/bbs_qa_search.do?cPage=${paging.nowPage}" method="post">
+							<form action="/bbs_qa_search.do" method="post"  onsubmit="return wordchk()">
 							    <fieldset>
 							        <label>
 							            <input type="radio" name="searchType" value="제목" id="type_title" checked />
@@ -124,7 +131,8 @@ table tfoot ol.paging li a:hover {
 							            <span>작성자</span>
 							        </label>
 							        <div id="search_bar">
-							            <input type="text" id="s_bar" name="searchText" placeholder="검색어입력">  
+							            <input type="text" id="s_bar" name="word" placeholder="검색어입력">  
+							            <input type="hidden" name="bbs_type" value="상품Q&A">
 							            <button id="s_btn" type="submit">검색</button>
 							            
 							        </div>
@@ -139,7 +147,7 @@ table tfoot ol.paging li a:hover {
 					<table class="m_table">				
 						<thead class="mh_table">
 							 <tr>
-							 	<th id="th1">번호</th><th id="th4">파일첨부</th><th id="th5">유형</th><th id="th2">제목</th><th id="th3">작성자</th><th id="th6">날짜</th>
+							 	<th id="th1">번호</th><th id="th5">유형</th><th id="th2">제목</th><th id="th3">작성자</th><th id="th6">날짜</th><th id="th4">파일첨부</th>
 							 </tr>
 						</thead>
 						<tbody class="mb_table">		
@@ -154,16 +162,7 @@ table tfoot ol.paging li a:hover {
 									<c:forEach var="k" items="${list}" varStatus="vs">
 										<tr>
 											<td>${paging.totalRecord -((paging.nowPage-1)*paging.numPerPage + vs.index) }</td>
-											<td>
-												<c:choose>
-													<c:when test="${empty k.BOARD_FILE}">
-														없음
-													</c:when>
-													<c:otherwise>
-														있음
-													</c:otherwise>
-												</c:choose>				
-											</td>
+											
 											<td>${k.BOARD_TYPE }</td>
 											<c:choose>
 												  <c:when test="${k.BOARD_ST == 0}">
@@ -190,6 +189,16 @@ table tfoot ol.paging li a:hover {
 											     <td> ${k.BOARD_DATE.substring(0, 10)}</td>
 											    </c:otherwise>
 											  </c:choose>
+											  <td>
+												<c:choose>
+													<c:when test="${empty k.BOARD_FILE}">
+														없음
+													</c:when>
+													<c:otherwise>
+														있음
+													</c:otherwise>
+												</c:choose>				
+											</td>
 										</tr>
 									</c:forEach>
 								</c:otherwise>

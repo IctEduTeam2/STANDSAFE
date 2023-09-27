@@ -1,5 +1,6 @@
 package com.ict.bbs.model.dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,8 @@ import com.ict.bbs.model.vo.NO_BBS_VO;
 import com.ict.bbs.model.vo.QA_BBS_VO;
 import com.ict.bbs.model.vo.REP_BBS_VO;
 import com.ict.bbs.model.vo.RE_BBS_VO;
+import com.ict.bbs.model.vo.Review_comVO;
+import com.ict.shopping.model.vo.ProductVO;
 
 @Repository
 public class BBS_DAO {
@@ -221,6 +224,9 @@ public class BBS_DAO {
 	}
 	
 	
+	
+	
+	//===============================================================
 	//검색  : 이벤트 - 검색
 	public List<EV_BBS_VO> EvSearchResultByCon(String searchText){
 		return sqlSessionTemplate.selectList("bbs.searchevscon", searchText);
@@ -268,17 +274,8 @@ public class BBS_DAO {
 	public List<RE_BBS_VO> RevSearchResultByWriter(String searchText){
 		return sqlSessionTemplate.selectList("bbs.searchreviewwriter",searchText );
 	}
-	//검색 : 신고- 검색
-	public List<REP_BBS_VO> RepSearchResultByCon(String searchText) {
-		return sqlSessionTemplate.selectList("bbs.searchreportcon",searchText );
-	}
 
-	public List<REP_BBS_VO> RepSearchResultBysub(String searchText) {
-		return sqlSessionTemplate.selectList("bbs.searchreportsub",searchText );
-	}
-	
-	
-	
+
 	
 	
 	
@@ -312,6 +309,9 @@ public class BBS_DAO {
 		params.put("s_type", s_type);
 		params.put("word", word);
 		params.put("start", start);
+		
+		
+		
 		params.put("end", end);
 		
 		return sqlSessionTemplate.selectList("bbs.searchEvent", params);
@@ -339,19 +339,30 @@ public class BBS_DAO {
 		return sqlSessionTemplate.selectList("bbs.searchReview", params);
 		
 	}
-	//신고하기
-	public List<REP_BBS_VO> searchReport(String s_type, String word, String start, String end) {
-		Map<String, Object> params = new HashMap<>();
-			
-		params.put("s_type", s_type);
-		params.put("word", word);
-		params.put("start", start);
-		params.put("end", end);
-			
-		return sqlSessionTemplate.selectList("bbs.searchReport", params);
-		
-	}
 
 	
 	
+	//콤보
+	public List<ProductVO> getProductList(String high, String low) {
+		Map<String, String> combo = new HashMap<>();
+		
+		combo.put("high", high);
+		combo.put("low", low);
+		return sqlSessionTemplate.selectList("bbs.productcombo", combo);
+	}
+	
+	
+	//물품번호
+	public String getProdName(String p_num) {
+		return sqlSessionTemplate.selectOne("bbs.productname", p_num);
+	}
+	
+	//리뷰리스트
+	public List<Review_comVO> getReviewcomList(String sessionid) {
+		return sqlSessionTemplate.selectList("bbs.reviewcomlist",sessionid);
+	}
+	
+	public int updateReviewStonPayT(String review_prod) {
+		return sqlSessionTemplate.update("bbs.updatereviewst",review_prod );
+	}
 }

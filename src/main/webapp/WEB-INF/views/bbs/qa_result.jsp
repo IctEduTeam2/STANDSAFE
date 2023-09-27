@@ -20,119 +20,66 @@
 	  padding: 40px 20px;
 	}
 
-
-    .custom-search {
-        width: 700px;
-        margin: 20px auto;
-        background-color: white;
-        padding: 50px;
-        border-radius: 10px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        height:250px;
-    }
-
     label {
         display: inline;
         text-align: center;
     }
 
-    .search-input select,
-    .search-input input[type="text"] {
-        margin-right: 10px;
-    }
+table td:nth-child(3) {
+  text-align: left;
+  padding-left: 70px;
+}
 
-    .button-container {
-        text-align: right; /* 오른쪽 정렬로 변경 */
-        margin-top: 10px;
-    }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<script>
+    function select_op(selectElement) {
+        var select_c = selectElement.value;
+        var type = document.getElementsByName("s_type")[0];
 
-    .button-container .search-button,
-    .button-container .search-button-alt {
-        width: 120px;
-        height: 40px;
-        font-size: 16px;
-        border: none;
-        border-radius: 5px;
-        color: white;
-        cursor: pointer;
-        margin: 5px;
-    }
+        // 모든 s_type 옵션을 초기화
+        type.innerHTML = "";
 
-    .button-container .search-button {
-        background-color: #505BBD;
+        // 선택한 bbs_type에 따라 적절한 s_type 옵션 추가
+        if (select_c === "공지사항" || select_c === "이벤트" || select_c === "이용안내") {
+        	type.options.add(new Option("제목", "제목"));
+        	type.options.add(new Option("내용", "내용"));
+        } else if (select_c === "상품Q&A" || select_c === "리뷰") {
+        	type.options.add(new Option("제목", "제목"));
+        	type.options.add(new Option("작성자", "작성자"));
+        	type.options.add(new Option("내용", "내용"));
+        }
     }
+</script>
+<script type="text/javascript">
+function checknick(lock, writer, nick) {
+    // 게시물이 비밀글이고 작성자가 현재 사용자와 다른 경우 알림창 표시
+    if (lock == 1 && writer !== nick) {
+        alert("이 게시물은 비밀글로 다른 사용자의 접근이 제한됩니다.");
+        event.preventDefault(); // 링크 이벤트 중단
+    }
+}
 
-    .button-container .search-button-alt {
-        background-color: #D3D3D3;
-    }
-
-    .search-input {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start; /* 왼쪽 정렬로 변경 */
-    }
-
-    .date-picker {
-        margin-top: 10px;
-    }
-    .searchKey{
-    margin-left: 50px; 
-    margin-right: 20px;
-    height:50px; 
-    width: 200px;
-    font-size: 16px;
-    padding: 0px;
-    }
-    #fromDate{
-    height:45px; 
-    width: 400px;
-    font-size: 16px;
-    padding: 0px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    margin-left: 50px; 
-    }
-    #start{
-    margin-left: 50px;
-    height:50px; 
-    width: 200px;
-    font-size: 16px;
-    padding: 0px;
-    }
-    #end{
-     height:50px; 
-    width: 200px;
-    font-size: 16px;
-    padding: 0px;
-    }
-    #h1{
-    padding-top: 200px;
-    }
-
-</style> 
+</script>
 </head>
 <body onload="InitializeStaticMenu();">
 	<div id="mydiv">
 		<jsp:include page="../Semantic/header.jsp"></jsp:include>
 		<div style="text-align: center; padding-bottom: 20px;" >
-		<h1 id="result">검색결과</h1> 
+		<h1 id="result">${bbs_type} 검색결과</h1> 
 		</div>
 	 <div class="custom-search"> 
         <!-- 검색 영역 -->
-        <form  method="post" action="/search.do?BOARD_NUM=${k.BOARD_NUM }&cPage=${paging.nowPage}">
+        <form  method="post" action="/bbs_search.do">
             <div class="search-input" >
             	<label for="searchKey">게시판</label>
-	                <select class="searchKey" name="bbs_type" title="게시판선택">
-	                    <option value="전체">전체게시판</option>
+	                <select class="searchKey" name="bbs_type" title="게시판선택" onchange="select_op(this)">
+	                    <option value="상품Q&A">상품Q&A</option>
+	       
 	                    <option value="공지사항">공지사항</option>
 	                    <option value="이벤트">이벤트</option>
 	                    <option value="이용안내">이용안내FAQ</option>
-	                    <option value="상품Q&A">상품Q&A</option>
 	                    <option value="리뷰">리뷰</option>
-	                    <option value="신고하기">신고하기</option>
 	                </select>
               <label for="searchKey" style="padding-left: 30px;">항목</label>
 	                <select class="searchKey" name="s_type" title="검색항목선택">
@@ -153,7 +100,6 @@
 		                <input type="date" id="end" name="end">
 		            </div>
 		            <div class="button-container">
-               		 <input type="button" alt="초기화" value="초기화" class="search-button">
 		              <button class="search-button" type="submit">검색</button>
 		                <br>
 		                 
@@ -161,11 +107,7 @@
    				 </form>
        		</div>
        </div>
-        
-        
-		<div>
-			<h3>■ (  ) 검색결과</h3>
-		</div>
+
 					<hr class="hr">
 					<!-- 메인 테이블 -->
 					<table class="m_table">				
@@ -178,17 +120,18 @@
 							<c:choose>
 								<c:when test="${empty s_result4}">
 									<tr>
-										<td colspan="6"><p>검색결과가 존재하지 않습니다.</p></td>
+										<td colspan="6"><p>"${word }" 의 검색결과가 존재하지 않습니다.</p></td>
 									</tr>
 								</c:when>
 								<c:otherwise>
+								<c:set var="index" value="${s_result4.size()}" />
 									<c:forEach var="k" items="${s_result4}" varStatus="vs">
 										<tr>
-											<td>${vs.index}</td>
+											<td>${index}</td>
 											<td>${k.BOARD_TYPE}</td>
 											
 												    <td>
-												      <a href="/bbs_qa_onelist.do?BOARD_NUM=${k.BOARD_NUM}&cPage=${paging.nowPage}">
+												      <a href="/bbs_qa_onelist.do?BOARD_NUM=${k.BOARD_NUM}&cPage=1" onclick="checknick('${k.BOARD_LOCK}', '${k.BOARD_WRITER}', '${nick}')">
 												        ${k.BOARD_LOCK == 1 ? '[비밀] ' : ''}${k.BOARD_SUBJECT}
 												      </a></td>
 											
@@ -206,6 +149,7 @@
 											    </c:otherwise>
 											  </c:choose>
 										</tr>
+										<c:set var="index" value="${index - 1}" />
 									</c:forEach>
 								</c:otherwise>
 							</c:choose>
@@ -214,6 +158,6 @@
 		<jsp:include page="../Semantic/quickmenu.jsp"></jsp:include>
 		<script src="resources/js/quick.js"></script>
 		<jsp:include page="../Semantic/footer.jsp"></jsp:include>
-</div>
+
 </body>
 </html>

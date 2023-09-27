@@ -41,14 +41,14 @@ fieldset {
 	float: left;
 }
 
-#radio { color: black; text-align: left;}
 
-.in_btn{  
-	margin-top: 50px;
+#noti{color: red; font-size: 14px; text-align: left; margin-left: 70px;}
+
+.mf_table td{
+	border-bottom:none;
+	padding : 10px;
+	height: 30px;
 }
-
-
-#noti{color: red; font-size: 14px; text-align: left; padding-left: 30px}
 
 </style> 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
@@ -96,15 +96,15 @@ fieldset {
 										<input type="radio" name="REPORT_TYPE" value="건의" />
 										<span>건의</span>	
 									</td>
-							</tr>
+							</tr>				
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">작성자</td>
 								<!--이건 로그인한 사람이 자동으로 뜨게하기.  -->
-								<td><input type="text" name="REPORT_WRITER" size="20" autocomplete='off' value="${nick}" /></td>
+								<td><input type="text" name="REPORT_WRITER" size="20" autocomplete='off' value="${nick}" disabled/></td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">제목</td>
-								<td><input type="text" name="REPORT_SUBJECT" size="20" autocomplete='off' placeholder="'신고할닉네임' 신고합니다"/></td>
+								<td><input type="text" name="REPORT_SUBJECT" size="20" autocomplete='off' placeholder="'신고할닉네임' 신고합니다 | '건의할 내용' 건의합니다."/></td>
 							</tr>
 							
 							<tr align="center">
@@ -116,11 +116,11 @@ fieldset {
 								<td id="noti"><p>신고 게시글은 모두 비밀글 처리 됩니다. 무방비한 작성과 타인을 향한 욕설은 관리자에 의해 강제 삭제됩니다.<p></td>
 							</tr>
 							<tr align="center">
-								<td colspan="2">
+								<td colspan="2" style="border-bottom: none;">
 									<textarea rows="10" cols="60" name="REPORT_CONTENT" id="content"></textarea>
 								</td>
 							</tr>
-							<tfoot>
+							<tfoot class="mf_table">
 								<tr align="center">
 									<td colspan="2">
 										<input type="button" value="작성" onclick="save_go(this.form)" class="in_btn"/>
