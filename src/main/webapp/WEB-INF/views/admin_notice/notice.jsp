@@ -20,7 +20,6 @@
 }
 
 /* paging */
-
 table tfoot ol.paging {
     list-style: none;
     text-align: center; /* 가운데 정렬을 위한 변경 */
@@ -42,7 +41,6 @@ table tfoot ol.paging li a {
 table tfoot ol.paging li a:hover {
     background: #6c98c2;
     color: white;
-    /* font-weight: bold; */
 }
 
 .disable {
@@ -59,8 +57,9 @@ table tfoot ol.paging li a:hover {
     font-weight: bold;
 }
 </style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-<script type="text/javascript">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
 //기간검색-오늘 
 function setTodayDate() {
     // 오늘 날짜를 구합니다.
@@ -72,6 +71,7 @@ function setTodayDate() {
     // 오늘 날짜를 기간 검색 필드에 설정합니다.
     document.getElementById('start1').value = year + '-' + month + '-' + day;
     document.getElementById('close1').value = year + '-' + month + '-' + day;
+
 	}
 //기간검색-일주일 
 function setOneWeekDate() {
@@ -92,168 +92,139 @@ function setOneWeekDate() {
     document.getElementById('start1').value = oneWeekAgoYear + '-' + oneWeekAgoMonth + '-' + oneWeekAgoDay;
     document.getElementById('close1').value = year + '-' + month + '-' + day;
 	}
-//기간검색-전체기간(수정해야함 )
-function setAllDates() {
-    // "전체기간" 버튼을 눌렀을 때, 모든 기간을 표시하도록 설정합니다.
-    // 여기서는 작성일 열을 업데이트합니다.
-    var rows = document.querySelectorAll(".table_a tbody tr"); // 모든 행을 가져옵니다.
-    for (var i = 0; i < rows.length; i++) {
-        var row = rows[i];
-        var dateCell = row.cells[7]; // 작성일 열(0부터 시작)을 선택합니다.
-        // 여기서 dateCell.textContent를 수정하여 작성일을 표시합니다.
-        // 예를 들어 작성일이 서버에서 가져온 데이터로 있다고 가정합니다.
-        var writtenDate = row.cells[7].textContent; //여기를 실제 작성일로 대체해야 합니다.
-        dateCell.textContent = writtenDate; // 작성일을 업데이트합니다.
-    }
-    document.getElementById('searchTitle').value = ""; // 검색 제목을 '작성일'로 설정
-    document.getElementById('startDate').value = ""; // 'start' 필드 초기화
-    document.getElementById('close').value = ""; // 'close' 필드 초기화
-}
     
 //초기화 
+function resetTableAndFields() {
+    // 테이블 내용 지우기
+    $("#bal").html("");
+    
+    // 검색 필드 초기화
+    resetFields();
+}
+
 function resetFields() {
     document.getElementById('searchKey').value = "제목"; // 검색어 필드 초기화 
     document.getElementById('searchTitleSelect').value = "기간"; // 검색어 필드 초기화 
     document.getElementById('start1').value = ""; // 'start' 필드 초기화
     document.getElementById('close1').value = ""; // 'close' 필드 초기화
 }
-/* function setStartField() {
+function setStartField() {
     var startDate = document.getElementById('startDate').value;
     document.getElementById('start').value = startDate;
     return true; // 폼 제출을 진행하도록 true 반환
-} */
-    
-// 테이블 게시물 삭제버튼
-function deleteRow(rowId) {
-	var checkbox = document.getElementById("chkbox_" + rowId);
-	if(checkbox.checked) {
-		$.ajax({
-			url: '/admin_Updaterow.do',
-			type: 'POST',
-			data: {rowId: rowId},
-			success: function(response){
-				var row = document.getElementById("row_" + rowId);
-				row.style.display = "none";		
-			},
-			error: function(erroe){
-				alert("Error occurred");
-			}
-		})
-		
-	} else {
-		alert("체크박스가 선택되지 않았습니다.");
-		
-	}
-}
-//삭제 게시물 검색
-function showDeletedNotices(noticeNum) {
-	var noticeNum = 2;
-	$.ajax({
-		url: '/admin_showdelbtn.do?noticeNum=' + noticeNum,
-		type: 'GET',
-		success: function(response) {
-			console.log("tlqkf3")
-			$('#table_wrap').append(response);
-			//기존의 모든 내용을 삭제한 후 새로운 내용을 추가합니다:
-			//$('#table_wrap').empty().append(response);
-			
-			//기존의 요소를 새로운 내용으로 완전히 대체합니다:
-			//$('#table_wrap').replaceWith(response);
-			
-			//#table_wrap 내의 특정 요소만 업데이트하고 싶다면, 더 세밀한 DOM 조작이 가능합니다:
-			//$('#table_wrap > tbody').append('<tr><td>New Row</td></tr>');
-
-			alert("성공 성공")
-		},
-		error: function(error) {
-			alert("에러 에러");
-		}
-	});
 }
 
 //검색버튼
-/*$(".searchbtn").on("click", function() {
-    $.ajax({
-        url: "/adnotice_search.do",
-        method: "post",
-        dataType: "xml",
-        success: function(xmlData) {
-            var rows = '';
+$(document).ready(function() {
+    $("button.searchbtn").click(function(e) {
+        e.preventDefault(); // Prevent the form from being submitted
 
-            // Parse the XML data
-            var notices = $(xmlData).find("Notice");
-            
-            if (notices.length === 0) {
-                rows += '<tr><td colspan="10"><p>자료가 존재하지 않습니다.</p></td></tr>';
-            } else {
-                notices.each(function(index, notice) {
-                    notice = $(notice);  // Convert to jQuery object for easier manipulation
-                    rows += '<tr>';
-                    rows += '<td><input type="checkbox" name="chk" value="' + notice.find("NOTICE_NUM").text() + '" /></td>';
-                    rows += '<td>' + (index + 1) + '</td>';
-                    rows += '<td>' + notice.find("NOTICE_SUBJECT").text() + '</td>';
-                    rows += '<td>' + notice.find("NOTICE_CONTENT").text() + '</td>';
-                    rows += '<td>' + notice.find("NOTICE_FILE").text() + '</td>';
-                    rows += '<td>' + notice.find("NOTICE_HIT").text() + '</td>';
-                    rows += '<td>' + notice.find("NOTICE_DATE").text() + '</td>';
-                    rows += '<td>' + notice.find("NOTICE_UPDATE").text() + '</td>';
-                    rows += '<td>' + notice.find("NOTICE_WRITER").text() + '</td>';
-                    rows += '<td>' + notice.find("NOTICE_ST").text() + '</td>';
-                    rows += '</tr>';
-                });
+        $.ajax({
+            url: '/adnotice_search.do',
+            type: 'POST',
+            data: $("#searchForm").serialize(),
+            success: function(response) {
+                $("#bal").html(response);
+                
+            },
+            error: function(error) {
+                alert("Error occurred");
             }
-            
-            // Append the rows to the table body
-            $("#bal").append(rows);
-        },
-        error: function() {
-            alert("Oop~! Sorry~♡♥");
-        }
-    });
-});*/
-
-//검색버튼
-$(".searchbtn").on("click", function() {
-	$("#bal").empty();
-	 
-    $.ajax({
-        url: "/adnotice_search.do",
-        method: "post",
-        dataType: "xml",
-        success: function(data) {
-        	console.log(data);
-        	alert("데이터갖고온다")
-        	var  table = "<table>";
-			table += "<thead><tr><th>선택</th><th>번호</th><th>제목</th><th>내용</th><th>파일</th><th>조회수</th><th>작성일</th><th>수정일</th><th>관리자</th><th>상태</th></tr></thead>";
-			table += "<tbody>";
-			$(data).find("notice").each(function() {
-				var subject = $(this).find("subject").text();
-				var content = $(this).find("content").text();
-				var  file = $(this).find("file").text();
-				var hit = $(this).find("hit").text();
-				var date = $(this).find("date").text();
-				var update = $(this).find("update").text();
-				var writer = $(this).find("writer").text();
-			
-				table += "<tr>";
-				table += "<td>" + subject+ "</td>";
-				table += "<td>" + content +"</td>";
-				table += "<td>" + file +"</td>";
-				table += "<td>" + hit +"</td>";
-				table += "<td>" + price +"</td>";
-				table += "<td>" + update +"</td>";
-				table += "<td>" + writer +"</td>";
-				table += "</tr>";
-			});
-			table += "</tbody>";
-			table += "</table>";
-			$("#bal").append(table);
-        },
-        error: function() {
-            alert("Oop~! Sorry~♡♥");
-        }
+        });
     });
 });
+
+function searchDeletedNotices() {
+    $.ajax({
+        url: '/adnotice_deleted.do',
+        type: 'GET',
+        success: function(response) {
+            $("#bal").html(response);
+        },
+        error: function(error) {
+            alert("Error occurred");
+        }
+    });
+}
+
+// 문서가 준비되면 실행될 코드입니다.
+$(document).ready(function() {
+    // 여기에는 이미 작성한 기존의 JavaScript 코드가 있을 수 있습니다.
+    
+    // 새로 추가하는 부분: 삭제된 게시물만 보여주는 버튼에 대한 클릭 이벤트 핸들러
+    $("input[value='삭제게시물']").click(function(e) {
+        e.preventDefault();  // 폼 제출을 막습니다.
+        searchDeletedNotices();  // 삭제된 게시물만 검색합니다.
+    });
+});
+
+//테이블 삭제 버튼
+function deleteSelectedItems() {
+    // 선택된 체크박스를 찾습니다.
+    var checkedCheckboxes = $("input[name='chk']:checked");
+    
+    if (checkedCheckboxes.length === 0) {
+        alert("선택된 항목이 없습니다.");
+        return;
+    }
+    
+    // 선택된 각 체크박스에 대해 처리합니다.
+    checkedCheckboxes.each(function() {
+        var row = $(this).closest("tr"); // 체크박스가 속한 행을 찾습니다.
+        var notice_num = row.find(".column_2").text(); // 게시물 번호 열의 텍스트를 가져옵니다.
+        
+        // AJAX를 사용하여 서버에 삭제 요청을 보냅니다.
+        $.ajax({
+            url: '/addelete_notices.do',
+            type: 'POST',
+            data: { notice_num: notice_num },
+            success: function(response) {
+                // 서버에서 성공적인 응답을 받았을 때 실행할 코드를 작성합니다.
+                // 여기에서는 행을 숨깁니다.
+                row.hide();
+            },
+            error: function(error) {
+                // 오류가 발생한 경우 처리할 코드를 작성합니다.
+                alert("오류가 발생했습니다.");
+            }
+        });
+    });
+}
+
+//홈페이지 등록
+function updateNoticeStatus() {
+    // 선택된 체크박스를 찾습니다.
+    var checkedCheckboxes = $("input[name='chk']:checked");
+
+    if (checkedCheckboxes.length === 0) {
+        alert("선택된 항목이 없습니다.");
+        return;
+    }
+
+    // 선택된 각 체크박스에 대해 처리합니다.
+    checkedCheckboxes.each(function () {
+        var row = $(this).closest("tr"); // 체크박스가 속한 행을 찾습니다.
+        var notice_num = row.find(".column_2").text(); // 게시물 번호 열의 텍스트를 가져옵니다.
+
+        // AJAX를 사용하여 서버에 상태 업데이트 요청을 보냅니다.
+        $.ajax({
+            url: '/update_adnoticestatus.do',
+            type: 'POST',
+            data: { notice_num: notice_num, status: 1 }, // status를 1로 변경하려면 여기서 지정합니다.
+            success: function (response) {
+            	alert("등록 되었습니다");
+                // 서버에서 성공적인 응답을 받았을 때 실행할 코드를 작성합니다.
+  
+            	location.reload();
+            },
+            error: function (error) {
+                // 오류가 발생한 경우 처리할 코드를 작성합니다.
+                alert("오류가 발생했습니다.");
+            }
+        });
+    });
+}
+
 
 </script>
 </head>
@@ -265,27 +236,24 @@ $(".searchbtn").on("click", function() {
 
 	<jsp:include page="header.jsp"></jsp:include>
 
-	<!--실시간 현황  -->
+	<!--실시간 게시글 현황  -->
 	<div class="search_wrap">
 		<div
 			style="float: left; margin-left: 205px; margin-top: 5%; margin-right: 20px; border: 1px solid black; width: 20%; height: 400px;">
 			<p style="margin-top: 130px;">
-			<h1 style="text-align: center; font-size: 18px;">전체 공지사항 게시글 :
-				125개</h1>
+			<h1 style="text-align: center; font-size: 18px;">전체 공지사항 게시글 : ${totalNotices}개</h1>
 			</p>
 			<br>
-			<h1 style="text-align: center; font-size: 18px;">등록한 공지사항 게시글 :
-				125개</h1>
+			<h1 style="text-align: center; font-size: 18px;">등록한 공지사항 게시글 : ${registeredNotices}개</h1>
 			</p>
 			<br>
 			<p>
-			<h1 style="text-align: center; font-size: 18px;">삭제한 게시글 : 5개</h1>
+			<h1 style="text-align: center; font-size: 18px;">삭제한 게시글 : ${deletedNotices}개</h1>
 			</p>
 		</div>
-
+		
 		<!-- 검색 영역 -->
-
-		<form id="searchForm" action="/adnotice_search.do" method="post">
+		<form id="searchForm" action="/adnotice_search.do" method="post" onsubmit="setStartField()">
 		
 			<div
 				style="float: left; margin-top: 5%; border: 1px solid black; width: 60%; height: 400px;">
@@ -302,7 +270,6 @@ $(".searchbtn").on("click", function() {
 										<option value="제목">제목</option>
 										<option value="작성자">작성자</option>
 										<option value="내용">내용</option>
-										
 								</select>
 								<!-- 검색어 입력창  -->
 								</span> <span style="margin-left: 10px;"> <input type="text"
@@ -324,14 +291,16 @@ $(".searchbtn").on("click", function() {
     								<option value="dateCreated1">작성일</option>
     								<option value="dateCreated2">수정일</option>
 								</select>
-
-								</span> <span style="margin-left: 10px;">
+								</span>
+																
+								 <span style="margin-left: 10px;">
 								 <!-- 달력 --> 
 								 <input
 									type="date" id="start1" name="start1"
 									style="height: 40px; width: 300px;" />
-								</span> <span> <input type="date" id="close1" name="close1"
-									style="height: 40px; width: 300px;" />
+								</span>
+								<span><input type="date" id="close1" name="close1"
+									style="height: 40px; width: 300px;"/>
 								</span>
 							</p>
 						</dd>
@@ -342,12 +311,7 @@ $(".searchbtn").on("click", function() {
 							style="float: right; margin-top: 50px; margin-left: 15px; margin-right: 30px;">
 							<input type="button" alt="삭제게시물" value="삭제게시물"
 							style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
-							onclick="showDeletedNotices(2)"></span> 
-							
-						<span style="float: right; margin-top: 50px; margin-left: 15px;">
-							<input type="button" alt="전체기간" value="전체기간"
-							style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
-							onclick="setAllDates()"></span> 
+							onclick="searchDeletedNotices()"></span> 
 						<span style="float: right; margin-top: 50px; margin-left: 15px;">
 							<input type="button" alt="일주일" value="일주일"
 							style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
@@ -361,15 +325,14 @@ $(".searchbtn").on("click", function() {
 					<dl>
 						<dt>
 							<div>
-								<span style="float: right; margin-top: 130px; margin-right: -659px;">
+								<span style="float: right; margin-top: 130px; margin-right: -495px;">
 									<input type="button" alt="초기화" value="초기화"
 									style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
-									onclick="resetFields()"></span>
-								 <span style="float: right; margin-top: 130px; margin-right: -494px;">
+									onclick="resetTableAndFields()"></span>
+								 <span style="float: right; margin-top: 130px; margin-right: -328px;">
 								 <input type="hidden" value="공지사항" name="mg_type">
-									<!-- <button class="searchbtn" type="submit"
-									style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;">검색</button> -->
-								<button style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;" class="searchbtn" type="button">검색</button>
+									<button class="searchbtn" type="submit"
+									style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;">검색</button>
 								</span>
 							</div>
 						</dt>
@@ -385,7 +348,7 @@ $(".searchbtn").on("click", function() {
 	</div>
 
 	<!--테이블  -->
-	<%-- <div class="table_wrap" style="clear: both; margin-right: 35px;">
+	<div class="table_wrap" style="clear: both; margin-right: 35px;">
 		<table class="table_a" style="width: 84%">
 			<colgroup>
 				<col width="5%">
@@ -413,9 +376,8 @@ $(".searchbtn").on("click", function() {
 				</tr>
 			</thead>
 			<tbody id="bal">
-			
-			</tbody> --%>
-			<div id="bal"></div>
+	
+			</tbody>
 	<!-- 페이지 번호 출력 부분 -->
 <tfoot>
     <tr>
@@ -452,7 +414,6 @@ $(".searchbtn").on("click", function() {
         </td>
     </tr>
 </tfoot>
-	
 	</table>
 	</div>
 	<!-- 하단 버튼 -->
@@ -461,17 +422,23 @@ $(".searchbtn").on("click", function() {
 			<button type="button" alt="공지사항" value="공지사항"
 				style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
 				onclick="location.href='/ad_allnotice.do'">공지사항❐</button>
-		</span> <span style="float: right; margin-top: 25px; margin-right: 50px;">
+		</span>
+		<span style="float: right; margin-top: 25px; margin-right: 50px;">
+    		<button type="button" alt="삭제" value="삭제"
+        	style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
+        	onclick="deleteSelectedItems()">삭제</button>
+		</span>
+		<span style="float: right; margin-top: 25px; margin-right: 50px;">
 			<button type="button" alt="글쓰기" value="글쓰기"
 				style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
 				onclick="location.href='/ad_noticeform.do'">글쓰기</button>
-		</span> <span style="float: right; margin-top: 25px; margin-right: 50px;">
+		</span> 
+		<span style="float: right; margin-top: 25px; margin-right: 50px;">
 			<button type="button" alt="홈페이지 등록" value="홈페이지 등록"
 				style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
-				onclick="location.href='/'">홈페이지 등록</button>
+				onclick="updateNoticeStatus()">홈페이지 등록</button>
 		</span>
 	</div>
-
 
 	<jsp:include page="../Semantic/footer.jsp"></jsp:include>
 </body>

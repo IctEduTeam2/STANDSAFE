@@ -7,6 +7,8 @@ public class NoticeVO {
 	private String NOTICE_NUM, NOTICE_SUBJECT, NOTICE_TYPE, NOTICE_WRITER, NOTICE_CONTENT, NOTICE_HIT,
 					NOTICE_DATE, NOTICE_UPDATE, NOTICE_ST, NOTICE_FILE, ADMIN_NUM;
 	
+	
+
 	private MultipartFile file;
 
 	public MultipartFile getFile() {

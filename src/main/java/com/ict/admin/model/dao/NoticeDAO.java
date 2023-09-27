@@ -20,7 +20,27 @@ public class NoticeDAO {
 	@Autowired
 	SqlSessionTemplate sqlSessionTemplate;
 	
+	//등록한 공지사항 게시글 수
+//	public int getRecordByStatus(int statusCode) {
+//		return sqlSessionTemplate.selectOne("notice.getrecordbystatus", statusCode);
+//	}
+	
 	//공지사항 
+	//공지사항 실시간 게시물
+	//전체 게시물
+	public int getTotalNotices() {
+		return sqlSessionTemplate.selectOne("notice.getTotalNotices");
+	}
+	//등록된 게시물
+	public int getRegisteredNotices() {
+		return sqlSessionTemplate.selectOne("notice.getRegisteredNotices");
+	}
+	//삭제된 게시물
+	public int getDeletedNotices() {
+		return sqlSessionTemplate.selectOne("notice.getDeletedNotices");
+	}
+	
+	
 	public List<NoticeVO> getadnoticelist() {
 		List<NoticeVO> list = sqlSessionTemplate.selectList("notice.noticelist");
 		return list;
@@ -45,23 +65,20 @@ public class NoticeDAO {
 		return sqlSessionTemplate.selectOne("notice.noticeonelist", notice_num);
 	}
 	
-	
 	//테이블 삭제 버튼
-	public int getupdateNoticeById(String notice_num) {
-		return sqlSessionTemplate.update("notice.noticeupdate", notice_num);
+	public int updateNoticeStatus(String notice_num) {
+	    return sqlSessionTemplate.update("notice.deluptab", notice_num);
 	}
 	
 	//삭제게시물 검색 버튼
-	public List<NoticeVO> getDeletedNoti(int noticeNum) {
-		
-		return sqlSessionTemplate.selectList("notice.seldelbtn");
-		
+	public List<NoticeVO> getDeletedNoti() {	
+		return sqlSessionTemplate.selectList("notice.seldelbtn");	
 	}
-//	public int getDeletedNoti(String notice_num) {
-//		return sqlSessionTemplate.selectOne("notice.seldelbtn", notice_num);
-//	}
-	
-	
+
+	//검색(전체리스트)
+	public List<NoticeVO> getAllNotices() {
+		return sqlSessionTemplate.selectList("notice.allsel");
+	}
 	
 	//검색
 	//공지사항
@@ -76,8 +93,14 @@ public class NoticeDAO {
 		params.put("mg_type", mg_type);
 		
 		return sqlSessionTemplate.selectList("notice.adsearchnoti", params);
-		
 	}
 	
+	//홈페이지 등록
+	public int updateNoticeStatus(String notice_num, int notice_st) {
+        // 여기에서 데이터베이스 업데이트 SQL을 실행합니다.
+        // UPDATE 쿼리를 사용하여 NOTICE_T 테이블에서 해당 공지사항의 상태를 업데이트합니다.
+        int result = sqlSessionTemplate.update("notice.upnotihome", notice_num);
+        return result;
+    }
 	
 }

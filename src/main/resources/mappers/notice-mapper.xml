@@ -5,16 +5,32 @@
  <mapper namespace="notice">
  
  	<!-- 공지사항  -->
+ 	<!-- 등록한 공지사항 게시글 수 -->
+	<!-- 전체 공지사항 게시글 -->
+		<select id="getTotalNotices" resultType="int">
+			SELECT COUNT(*) FROM NOTICE_T
+		</select>
+
+	<!-- 등록된 공지사항 게시글 -->
+		<select id="getRegisteredNotices" resultType="int">
+			SELECT COUNT(*) FROM NOTICE_T WHERE NOTICE_ST = 1
+		</select>
+
+	<!-- 삭제된 공지사항 게시글 -->
+		<select id="getDeletedNotices" resultType="int">
+			SELECT COUNT(*) FROM NOTICE_T WHERE NOTICE_ST = 2
+		</select>
+ 	
  	<!--  페이징을 위한 시작,끝 리스트 출력  -->
  	<select id="noticelist" parameterType="Map" resultType="nvo">
  		select * from NOTICE_T where NOTICE_ST = 1
  		order by NOTICE_NUM desc limit #{limit} offset #{offset}
  	</select>
  	
- 	<!--  게시글 개수 구하 -->
+ 	<!--  ?? -->
  	<select id="noticecount" resultType="int">
- 		select count(*) from NOTICE_T
- 	</select>
+			SELECT COUNT(*) FROM NOTICE_T
+	</select>
  	
  	<!-- 상세보기  --> 
  	<select id="noticeonelist" parameterType="String" resultType="nvo">
@@ -25,6 +41,12 @@
  	<update id="noticehitup" parameterType="String">
  		update NOTICE_T set NOTICE_HIT = NOTICE_HIT +1 where NOTICE_NUM = #{NOTICE_NUM}
  	</update>
+ 	
+ 	<!-- 공지사항 검색(전체리스트) -->
+ 	<select id="allsel" resultType="nvo">
+ 		select * from NOTICE_T where NOTICE_ST in (0, 1)
+ 	</select>
+ 	
  	
  	<!-- 검색  -->
 <select id="adsearchnoti" resultType="nvo">
@@ -61,12 +83,15 @@
     order by NOTICE_NUM desc
 </select>
 
- 	
- 	
  	<!-- 테이블 삭제 버튼 -->
-	<update id="noticeupdate" parameterType="String">
+	<update id="deluptab" parameterType="String">
 		UPDATE NOTICE_T SET NOTICE_ST = 2 WHERE NOTICE_NUM = #{NOTICE_NUM};
 	</update> 	
+
+ 	<!-- 홈페이지 등록 -->
+	<update id="upnotihome" parameterType="Map">
+    	UPDATE NOTICE_T SET NOTICE_ST = #{NOTICE_ST} WHERE NOTICE_NUM = #{NOTICE_NUM};
+	</update>
 
  	<!-- 삭제게시물 검색 버튼 -->
  	<select id="seldelbtn" resultType="nvo">

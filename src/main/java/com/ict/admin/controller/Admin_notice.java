@@ -1,15 +1,15 @@
 package com.ict.admin.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,7 +35,7 @@ public class Admin_notice {
 		// 페이징 처리를 위한 로직 추가
 		int totalRecord = notiService.getTotalRecord(); // 전체 공지사항 레코드 수
 		paging.setTotalRecord(totalRecord);
-
+		
 		if (totalRecord <= paging.getNumPerPage()) {
 			paging.setTotalPage(1);
 		} else {
@@ -62,9 +62,20 @@ public class Admin_notice {
 		}
 
 		List<NoticeVO> list = notiService.getadnoticelist(paging.getOffset(), paging.getNumPerPage());
+		
+		//전체 공지사항, 등록된 공지사항, 삭제된 공지사항, 삭제된 공지사항의 개수 가져오기
+		int totalNotices = notiService.getTotalNotices();
+		int registeredNotices = notiService.getRegisteredNotices();
+		int deletedNotices = notiService.getDeletedNotices();
 
+		
 		mv.addObject("list", list);
 		mv.addObject("paging", paging);
+		
+		mv.addObject("totalNotices", totalNotices);
+		mv.addObject("registeredNotices", registeredNotices);
+		mv.addObject("deletedNotices", deletedNotices);
+		
 		return mv;
 	}
 
@@ -142,80 +153,138 @@ public class Admin_notice {
 	}
 
 	// 테이블 삭제버튼
-	@RequestMapping("/admin_Updaterow.do")
-	public ModelAndView AdminUpdaterow(@RequestParam("rowId") int rowId) {
-		notiService.getupdateNoticeById(Integer.toString(rowId));
-		ModelAndView mv = new ModelAndView("admin_notice/notice");
-		mv.addObject("result", "success");
-		return mv;
+	@RequestMapping("/addelete_notices.do")
+	public ModelAndView deleteNotice(@RequestParam("notice_num") String notice_num) {
+	    notiService.updateNoticeStatus(notice_num);
+	    ModelAndView mv = new ModelAndView("admin_notice/notice");
+	    return mv;
 	}
+	
+	//홈페이지 등록123
+//	@RequestMapping(value = "/update_adnoticestatus.do", method = RequestMethod.POST)
+//	@ResponseBody
+//	public String updateNoticeStatus(@RequestParam("notice_num") String notice_num, @RequestParam("notice_st") int notice_st) {
+//	    // 여기에서 noticeNum과 status를 사용하여 데이터베이스 업데이트 로직을 수행합니다.
+//	    
+//	    int result = notiService.UpNotiHome(notice_num, notice_st);
+//	    
+//	    if (result > 0) {
+//	        return "success"; // 업데이트 성공 시 "success" 반환
+//	    } else {
+//	        return "error"; // 업데이트 실패 시 "error" 반환
+//	    }
+//	}
+	
+	//홈페이지 등록 버튼
+	@RequestMapping("/update_adnoticestatus.do")
+    public ModelAndView updateNoticeStatus(@RequestParam("notice_num") String notice_num, @RequestParam("status") int notice_st) {
+        ModelAndView mv = new ModelAndView();
+        boolean updateResult = notiService.updateNoticeStatus(notice_num, notice_st);
+        if (updateResult) {
+            mv.addObject("message", "공지사항이 홈페이지에 등록되었습니다.");
+        } else {
+            mv.addObject("message", "공지사항 홈페이지 등록에 실패했습니다.");
+        }
+
+        mv.setViewName("admin_notice/notice"); // 결과를 표시할 뷰 설정
+        System.out.println(mv);
+        return mv;
+    }
+
 
 	//게시물삭제검색버튼 
-	@RequestMapping("/admin_showdelbtn.do")
-	public ModelAndView AdminShowbtndel(@RequestParam("noticeNum") int noticeNum) {
-		System.out.println("1");
-		ModelAndView mv = new ModelAndView("admin_notice/notice");
-		List<NoticeVO> delNotibtn = notiService.getDeletedNoti(noticeNum);
-		mv.addObject("delNotibtn", delNotibtn);
-		System.out.println(mv);
-		return mv;
-	}
-	
-	
-	
-	
-	
-	
-	
-	// 검색버튼
+	@RequestMapping(value = "/adnotice_deleted.do", produces = "text/html; charset=utf-8")
 	@ResponseBody
-	@RequestMapping(value = "/adnotice_search.do", produces = "text/xml; charset=utf-8")
-	public String adNotiSearch(HttpServletRequest request, HttpSession session,
-			@ModelAttribute("searchKey") String searchKey, @ModelAttribute("searchText") String searchText,
-			@ModelAttribute("searchTitle") String searchTitle, @ModelAttribute("start1") String start1,
-			@ModelAttribute("close1") String close1, @ModelAttribute("mg_type") String mg_type
+	public String adNotiDeleted(HttpServletRequest request, HttpSession session) {
+	    // 여기에서 NOTICE_ST 값이 2인 데이터만 필터링하여 list를 가져옵니다.
+	    List<NoticeVO> list = notiService.getDeletedNoti();
 
-	) {
-
-		StringBuilder html = new StringBuilder();
-
-		System.out.println("검색어선택: " + searchKey);
-		System.out.println("검색어 입력: " + searchText);
-		System.out.println("기간: " + searchTitle);
-		System.out.println("스타트: " + start1);
-		System.out.println("클로즈: " + close1);
-		System.out.println("타입: " + mg_type);
-
-		
-			if(mg_type.equals("공지사항")) {
-			List<NoticeVO> list = notiService.adNotiSearch(searchKey, searchText, searchTitle, start1, close1, mg_type);
-			html.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-			html.append("<notices>");
-			
-			for (NoticeVO k : list) {
-				System.out.println("가지고온 배열 주소는:" + list);
-				html.append("<notice>");
-				html.append("<subject>"+k.getNOTICE_SUBJECT()+"</subject>");
-				html.append("<content>"+k.getNOTICE_CONTENT()+"</content>");
-				html.append("<file>"+k.getNOTICE_FILE()+"</file>");
-				html.append("<hit>"+k.getNOTICE_HIT()+"</hit>");
-				html.append("<date>"+k.getNOTICE_DATE()+"</date>");
-				html.append("<update>"+k.getNOTICE_UPDATE()+"</update>");
-				html.append("<writer>"+k.getNOTICE_WRITER()+"</writer>");
-				html.append("</notice>");
-				
-			}
-			html.append("</notices>");
-			System.out.println("html !!!!!!!:" + html);
-			return html.toString();
-			
-
-		}else {
-			System.out.println("else로 빠지니?");
-		}
-		return null;
+	    StringBuilder html = new StringBuilder();
+	    int no = list.size(); // 번호를 내림차순으로 출력하기 위해 리스트 크기로 초기화
+	    for (NoticeVO k : list) {
+	        html.append("<tr>");
+	        html.append("<td><input type='checkbox' name='chk' value='").append(k.getNOTICE_NUM()).append("' /></td>");
+	        html.append("<td>").append(no).append("</td>");  // 번호 추가
+	        html.append("<td>").append(k.getNOTICE_SUBJECT()).append("</td>");
+	        html.append("<td>").append(k.getNOTICE_CONTENT()).append("</td>");
+	        html.append("<td>").append(k.getNOTICE_FILE()).append("</td>");
+	        html.append("<td>").append(k.getNOTICE_HIT()).append("</td>");
+	        html.append("<td>").append(k.getNOTICE_DATE()).append("</td>");
+	        html.append("<td>").append(k.getNOTICE_UPDATE()).append("</td>");
+	        html.append("<td>").append(k.getNOTICE_WRITER()).append("</td>");
+	        //html.append("<td>").append(k.getNOTICE_ST()).append("</td>");
+	        html.append("<td>");
+	        if (k.getNOTICE_ST().equals("1")) {
+	            html.append("[등록]");
+	        } else if (k.getNOTICE_ST().equals("2")) {
+	            html.append("[삭제]");
+	        } else {
+	            html.append("[미등록]");
+	        }
+	        html.append("</td>");
+	        html.append("</tr>");
+	        no--;  // 번호 감소
+	    }
+	    return html.toString();
 	}
 
+	//검색버튼
+	@RequestMapping(value = "/adnotice_search.do", produces = "text/html; charset=utf-8")
+	@ResponseBody
+	public String adNotiSearch(
+			@RequestParam(value = "searchKey", required = false) String searchKey,
+	        @RequestParam(value = "searchText", required = false) String searchText,
+	        @RequestParam(value = "searchTitle", required = false) String searchTitle,
+	        @RequestParam(value = "start1", required = false) String start1,
+	        @RequestParam(value = "close1", required = false) String close1,
+	        @RequestParam(value = "mg_type", required = false) String mg_type,
+	        HttpServletRequest request, HttpSession session) {
+		
+		
+		List<NoticeVO> list;	
+		
+	    // Step 1: 검색 조건 검증 (상태설정안하고 검색(전체리스트))
+	    if(searchText == null || searchText.trim().isEmpty()) {
+	    	list = notiService.getAllNotices();
+	    }else {
+	    	// Step 2: 검색 쿼리 실행
+	    	list = notiService.adNotiSearch(searchKey, searchText, searchTitle, start1,close1, mg_type);   	
+	    }
+
+	    // Step 3: 결과를 HTML 형태로 가공
+	    StringBuilder html = new StringBuilder();
+	    int no = list.size(); // 번호를 내림차순으로 출력하기 위해 리스트 크기로 초기화
+	    for (NoticeVO k : list) {
+	        html.append("<tr>");
+	        // 각 NoticeVO 객체에서 정보를 가져와 HTML을 구성합니다.
+	        //html.append("<td><input type='checkbox' name='chk' value='").append(k.getNOTICE_NUM()).append("' /></td>");
+	        html.append("<td><input type='checkbox' id ='checkvalue' name='chk' value='").append(k.getNOTICE_NUM()).append("' /></td>");
+	        html.append("<input type='hidden' id ='checknum' name='checknum' value='").append(k.getNOTICE_NUM()).append("' />");   
+	        //System.out.println("게시글번호"+ k.getNOTICE_NUM());
+	        html.append("<td>").append(k.getNOTICE_NUM()).append("</td>");
+	        html.append("<td>").append(k.getNOTICE_SUBJECT()).append("</td>");
+	        html.append("<td>").append(k.getNOTICE_CONTENT()).append("</td>");
+	        html.append("<td>").append(k.getNOTICE_FILE()).append("</td>");
+	        html.append("<td>").append(k.getNOTICE_HIT()).append("</td>");
+	        html.append("<td>").append(k.getNOTICE_DATE()).append("</td>");
+	        html.append("<td>").append(k.getNOTICE_UPDATE()).append("</td>");
+	        html.append("<td>").append(k.getNOTICE_WRITER()).append("</td>");
+	        //html.append("<td>").append(k.getNOTICE_ST()).append("</td>");
+	        html.append("<td>");
+	        if (k.getNOTICE_ST().equals("1")) {
+	            html.append("[등록]");
+	        } else if (k.getNOTICE_ST().equals("2")) {
+	            html.append("[삭제]");
+	        } else {
+	            html.append("[미등록]");
+	        }
+	        html.append("</td>");
+	        html.append("</tr>");
+	        no--;  // 번호 감소
+	    }
+	    return html.toString();
+	}
+	
 	
 	
 	
