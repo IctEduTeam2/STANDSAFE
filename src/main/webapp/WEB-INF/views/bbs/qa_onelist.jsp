@@ -14,17 +14,15 @@
 <style type="text/css">
 
 .m_table{width: 80%;}
+.mf_table td{
+	border-bottom:none;
+	padding : 10px;
+	height: 30px;
+}
 
 label {
   line-height: 2rem;
   padding: 0.2em 0.4em;
-}
-
-
-#radio { color: black; text-align: left;}
-
-.in_btn{  
-	margin-top: 50px;
 }
 
 #chkbox_div {
@@ -66,14 +64,6 @@ label {
     font-weight: bold; /* 글꼴 두껍게 설정 */
 }
 
-
-#type { color: black; text-align: left; padding-left: 50px;}
-#content{
-	width: 100%;
-	height:800px;
-}
-
-
 </style> 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <script type="text/javascript">
@@ -101,6 +91,7 @@ label {
 		f.submit();
 	}
 
+	
 </script>
 
 </head>
@@ -119,23 +110,37 @@ label {
 							<tbody>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">문의 유형</td>
-									<td id="type">
+									<td>
 										<span>${qnavo.BOARD_TYPE}</span>	
 									</td>
 							</tr>
 							<tr align="center">
+							<td bgcolor="#1b5ac2" class="w_font">문의할 물품</td>
+							<c:choose>
+										<c:when test="${empty qnavo.PROD_NAME}">
+											<td style="color:gray; font-size:15px;">[선택물품없음]</td>
+										</c:when>
+										<c:otherwise>
+											<td>${qnavo.PROD_NAME}</td>
+										</c:otherwise>
+									</c:choose>
+							
+								
+							
+							</tr>
+							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">작성자</td>
 								<!--이건 로그인한 사람이 자동으로 뜨게하기.  -->
-								<td id="type">${qnavo.BOARD_WRITER }</td>
+								<td>${qnavo.BOARD_WRITER }</td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">제목</td>
-								<td id="type">${qnavo.BOARD_SUBJECT }</td>
+								<td>${qnavo.BOARD_SUBJECT }</td>
 							</tr>
 							
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font" width="200px;">첨부파일</td>
-								<td id="type">
+								<td>
 									<c:choose>
 										<c:when test="${empty qnavo.BOARD_FILE}">
 											<b>첨부 파일 없음</b>
@@ -166,27 +171,28 @@ label {
 							</tr>
 							<tr align="center">
 							
-								<td colspan="2" style="height: 800px;">
+								<td colspan="2" style="height: 800px; border-bottom: none;">
 									${qnavo.BOARD_CONTENT }							
 								</td>
 							</tr>
 							</tbody>
-							<tfoot>
+							<tfoot class="mf_table">
 								<tr align="center" >
 									<td colspan="2">
 									 <div id="viewok" style="display: none;">
 										<input type="button" value="수정" onclick="update_go(this.form)" class="in_btn"/>
 										<input type="hidden" value="${qnavo.BOARD_NUM}" name="BOARD_NUM">
+										<input type="hidden" value="${qnavo.PROD_NUM}" name="PROD_NUM">
 										<input type="hidden" value="${cPage}" name="cPage">
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										<input type="button" value="목록" onclick="list_go(this.form)" class="in_btn"/>
+										<input type="button" value="목록으로" onclick="list_go(this.form)" class="in_btn"/>
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										<input type="button" value="삭제"  onclick="delete_go(this.form)" class="in_btn"/>
 									</div>						
 									 <div id="viewno" >									
 										<input type="hidden" value="${qnavo.BOARD_NUM}" name="BOARD_NUM">
+										<input type="button" value="목록으로" onclick="list_go(this.form)" class="in_btn"/>
 										<input type="hidden" value="${cPage}" name="cPage">
-										<input type="button" value="목록" onclick="list_go(this.form)" class="in_btn"/>									
 									</div>
 									</td>
 								</tr>

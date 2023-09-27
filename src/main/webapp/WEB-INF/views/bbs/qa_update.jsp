@@ -23,13 +23,10 @@ label {
   line-height: 2rem;
   padding: 0.2em 0.4em;
 }
-
-
-#text{
-
-	padding-left:45px;
-	float: none;
-	text-align: left;
+.mf_table td{
+	border-bottom:none;
+	padding : 10px;
+	height: 30px;
 }
 [type="text"]{
 	width: 325px;
@@ -39,14 +36,6 @@ label {
 	outline: none;
 	float: left;
 }
-
-
-#radio { color: black; text-align: left;}
-
-.in_btn{  
-	margin-top: 50px;
-}
-
 
 #chkbox_div {
     display: flex;
@@ -88,7 +77,6 @@ label {
 }
 
 
-
 </style> 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
 <script type="text/javascript">
@@ -108,9 +96,7 @@ label {
 	     f.submit();
 	     }
 
-
 </script>
-
 <script type="text/javascript">
 
 	function list_go(f) {
@@ -146,71 +132,86 @@ label {
 									    <span>기타문의</span>
 
 									</td>
-							</tr>
-							<tr align="center">
-								<td bgcolor="#1b5ac2" class="w_font">작성자</td>
-								<!--이건 로그인한 사람이 자동으로 뜨게하기.  -->
-								<td id="text">${qnavo.BOARD_WRITER}</td>
-							</tr>
-							<tr align="center">
-								<td bgcolor="#1b5ac2" class="w_font">제목</td>
-								<td ><input type="text" name="BOARD_SUBJECT" size="20" autocomplete='off' value="${qnavo.BOARD_SUBJECT}" /></td>
-							</tr>
+									</tr>
+									<tr align="center">
+										<td bgcolor="#1b5ac2" class="w_font">물품</td>
+										<c:choose>
+										<c:when test="${empty qnavo.PROD_NAME}">
+											<td><input type="text" name="PROD_NAME" size="20" autocomplete='off' value="[선택물품없음]" disabled/></td>
+											
+										</c:when>
+										<c:otherwise>
+											<td><input type="text" name="PROD_NAME" size="20" autocomplete='off' value="${qnavo.PROD_NAME}" disabled/></td>
+										
+										</c:otherwise>
+									</c:choose>
+									</tr>
+										<tr align="center">
+											<td bgcolor="#1b5ac2" class="w_font">작성자</td>
+											<!--이건 로그인한 사람이 자동으로 뜨게하기.  -->
+			
+											<td><input type="text" name="BOARD_WRITER" size="20" autocomplete='off' value="${qnavo.BOARD_WRITER}" disabled/></td>
+										</tr>
+										<tr align="center">
+											<td bgcolor="#1b5ac2" class="w_font">제목</td>
+											<td ><input type="text" name="BOARD_SUBJECT" size="20" autocomplete='off' value="${qnavo.BOARD_SUBJECT}" /></td>
+										</tr>
+										
+										<tr align="center">
+											<td bgcolor="#1b5ac2" class="w_font"  width="200px">첨부파일</td>
+									
+											  <c:choose>
+												  	<c:when test="${empty qnavo.BOARD_FILE}">
+												  		<td><input type="file" name="file"><b>이전 파일 없음</b></td>
+												  		<input type="hidden" name="old_f_name" value="">
+												  	</c:when>
+												  	<c:otherwise>
+												  		<td><input type="file" name="file">이전 파일명(${qnavo.BOARD_FILE })</td>
+												  		<input type="hidden" name="old_f_name" value="${qnavo.BOARD_FILE }">
+												  	</c:otherwise>
+											 </c:choose>
 							
-							<tr align="center">
-								<td bgcolor="#1b5ac2" class="w_font"  width="200px">첨부파일</td>
-						
-								  <c:choose>
-									  	<c:when test="${empty qnavo.BOARD_FILE}">
-									  		<td><input type="file" name="file"><br><b>이전 파일 없음</b></td>
-									  		<input type="hidden" name="old_f_name" value="">
-									  	</c:when>
-									  	<c:otherwise>
-									  		<td><input type="file" name="file">이전 파일명(${qnavo.BOARD_FILE })</td>
-									  		<input type="hidden" name="old_f_name" value="${qnavo.BOARD_FILE }">
-									  	</c:otherwise>
-								 </c:choose>
-							
-							</tr>
-							<tr align="center">
-								<td bgcolor="#1b5ac2" class="w_font">비밀글여부</td>
-								<td>
-									<div id="chkbox_div">
-										<input type="checkbox" name="BOARD_LOCK" id="chkbox" ${qnavo.BOARD_LOCK eq '1' ? 'checked' : ""}/>
-										<label for="chkbox"></label>
-										비밀글여부
-									</div>
-							</tr>
-							<tr align="center">
-								<td colspan="2">
-									<textarea rows="10" cols="60" name="BOARD_CONTENT" id="content">
-									${qnavo.BOARD_CONTENT}
-									</textarea>
-								</td>
-							</tr>
-							<tfoot>
-								<tr align="center">
-									<td colspan="2">
-										<input type="button" value="작성" onclick="updateOk_go(this.form)" class="in_btn"/>
-										<input type="hidden" name="secret_flag" id="secret_flag" value="0" />
-										<input type="hidden" name="BOARD_NUM" value="${qnavo.BOARD_NUM}">
-										<input type="hidden" name="cPage" value="${cPage}">
-										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										<input type="button" value="목록" onclick="list_go(this.form)" class="in_btn"/>
-										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										<input type="reset" value="취소" class="in_btn" id="reset"/>
-									</td>
-								</tr>
-							</tfoot>
-						</table>
-						
-					</form>
-			</article>
-		</section>	
-		<script src="resources/js/quick.js"></script>
-		<jsp:include page="../Semantic/footer.jsp"></jsp:include>
-	</div>
-		
+										</tr>
+										<tr align="center">
+											<td bgcolor="#1b5ac2" class="w_font">비밀글여부</td>
+											<td>
+												<div id="chkbox_div">
+													<input type="checkbox" name="BOARD_LOCK" id="chkbox" ${qnavo.BOARD_LOCK eq '1' ? 'checked' : ""}/>
+													<label for="chkbox"></label>
+													비밀글여부
+												</div>
+										</tr>
+										<tr align="center">
+											<td colspan="2" style="border-bottom: none;">
+												<textarea rows="10" cols="60" name="BOARD_CONTENT" id="content">
+												${qnavo.BOARD_CONTENT}
+												</textarea>
+											</td>
+										</tr>
+										<tfoot class=mf_table>
+											<tr align="center">
+												<td colspan="2">
+													<input type="button" value="작성" onclick="updateOk_go(this.form)" class="in_btn"/>
+													<input type="hidden" name="secret_flag" id="secret_flag" value="0" />
+													<input type="hidden" name="BOARD_NUM" value="${qnavo.BOARD_NUM}">
+													<input type="hidden" name="PROD_NUM" value="${qnavo.PROD_NUM}">
+													<input type="hidden" name="cPage" value="${cPage}">
+													&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+													<input type="button" value="목록" onclick="list_go(this.form)" class="in_btn"/>
+													&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+													<input type="reset" value="취소" class="in_btn" id="reset"/>
+												</td>
+											</tr>
+										</tfoot>
+									</table>
+									
+								</form>
+						</article>
+					</section>	
+					<script src="resources/js/quick.js"></script>
+					<jsp:include page="../Semantic/footer.jsp"></jsp:include>
+				</div>
+					
     	<script src="resources/js/summernote-lite.js"></script>
     	<script src="resources/js/lang/summernote-ko-KR.js"></script>
     	<script type="text/javascript">

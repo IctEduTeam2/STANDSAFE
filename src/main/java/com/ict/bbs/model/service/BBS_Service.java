@@ -8,6 +8,8 @@ import com.ict.bbs.model.vo.NO_BBS_VO;
 import com.ict.bbs.model.vo.QA_BBS_VO;
 import com.ict.bbs.model.vo.REP_BBS_VO;
 import com.ict.bbs.model.vo.RE_BBS_VO;
+import com.ict.bbs.model.vo.Review_comVO;
+import com.ict.shopping.model.vo.ProductVO;
 
 
 public interface BBS_Service {
@@ -102,7 +104,7 @@ public interface BBS_Service {
 	
 	
 	
-	
+	//=========================================================================
 	//검색 이벤트 -검색
 	public List<EV_BBS_VO> EvSearchResultByCon(String searchText);
 	public List<EV_BBS_VO> EvSearchResultBySub(String searchText);
@@ -125,12 +127,8 @@ public interface BBS_Service {
 	public List<RE_BBS_VO> RevSearchResultBySub(String searchText);
 	public List<RE_BBS_VO> RevSearchResultByWriter(String searchText);
 	
-	//검색 신고 -검색
-	public List<REP_BBS_VO> RepSearchResultByCon(String searchText);
-	public List<REP_BBS_VO> RepSearchResultBySub(String searchText);
-	
-	
-	
+	//============================================================================
+
 	
 	//검색2 : 검색페이지에서 검색
 	public List<NO_BBS_VO> searchNotice(String s_type,String word,String start,String end);
@@ -138,6 +136,20 @@ public interface BBS_Service {
 	public List<EV_BBS_VO> searchEvent(String s_type,String word,String start,String end);
 	public List<QA_BBS_VO> searchQa(String s_type,String word,String start,String end);
 	public List<RE_BBS_VO> searchReview(String s_type,String word,String start,String end);
-	public List<REP_BBS_VO> searchReport(String s_type,String word,String start,String end);
 	
+	
+	
+	
+	//콤보
+	public List<ProductVO> getProductList(String high, String low);
+	
+	
+	//물품번호 찾기
+	public String getProdName(String p_num);
+	
+	//리뷰리스트 찾기
+	public List<Review_comVO> getReviewcomList(String sessionid);
+	
+	//pay_t의 review_st 1로 변경하기
+	int updateReviewStonPayT(String review_prod);
 }

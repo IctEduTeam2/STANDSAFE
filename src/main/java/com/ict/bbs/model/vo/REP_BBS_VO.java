@@ -7,7 +7,24 @@ public class REP_BBS_VO {
 		private String REPORT_NUM, REPORT_SUBJECT, REPORT_WRITER, REPORT_CONTENT, REPORT_FILE,
 		REPORT_TYPE, REPORT_DATE, REPORT_ST,PROD_NUM, CLIENT_NUM;
 		
+		private String REPORT_NICK;
 		
+		
+		
+		
+		
+
+
+		public String getREPORT_NICK() {
+			return REPORT_NICK;
+		}
+
+
+		public void setREPORT_NICK(String rEPORT_NICK) {
+			REPORT_NICK = rEPORT_NICK;
+		}
+
+
 		private MultipartFile file;
 
 

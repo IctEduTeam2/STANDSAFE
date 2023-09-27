@@ -12,6 +12,8 @@ import com.ict.bbs.model.vo.NO_BBS_VO;
 import com.ict.bbs.model.vo.QA_BBS_VO;
 import com.ict.bbs.model.vo.REP_BBS_VO;
 import com.ict.bbs.model.vo.RE_BBS_VO;
+import com.ict.bbs.model.vo.Review_comVO;
+import com.ict.shopping.model.vo.ProductVO;
 
 
 @Service
@@ -184,7 +186,7 @@ public class BBS_ServiceImpl implements BBS_Service{
 	}
 	
 	
-	
+	//====================================================================
 	//검색 : 이벤트- 검색
 	@Override
 	public List<EV_BBS_VO> EvSearchResultByCon(String searchText) {
@@ -239,18 +241,8 @@ public class BBS_ServiceImpl implements BBS_Service{
 		return bbsDAO.RevSearchResultByWriter(searchText);
 	}
 	
-	//검색 : 신고- 검색
-	@Override
-	public List<REP_BBS_VO> RepSearchResultByCon(String searchText) {
-		return bbsDAO.RepSearchResultByCon(searchText);
-	}
-	@Override
-	public List<REP_BBS_VO> RepSearchResultBySub(String searchText) {
-		return bbsDAO.RepSearchResultBysub(searchText);
-	}
-	
-	
-	
+	//============================================================================================
+
 
 	//검색2 : 검색페이지에서 검색
 	@Override
@@ -269,15 +261,34 @@ public class BBS_ServiceImpl implements BBS_Service{
 	public List<QA_BBS_VO> searchQa(String s_type, String word, String start, String end) {
 		return bbsDAO.searchQa(s_type,word,start,end);
 	}
-	@Override
-	public List<REP_BBS_VO> searchReport(String s_type, String word, String start, String end) {
-		return bbsDAO.searchReport(s_type,word,start,end);
-	}
+
 	@Override
 	public List<RE_BBS_VO> searchReview(String s_type, String word, String start, String end) {
 		return bbsDAO.searchReview(s_type,word,start,end);
 	}
 	
 	
+	//콤보
+	@Override
+	public List<ProductVO> getProductList(String high, String low) {
+		return bbsDAO.getProductList(high, low);
+	}
 	
+	
+	//물품찾기
+	@Override
+	public String getProdName(String p_num) {
+		return bbsDAO.getProdName(p_num);
+	}
+	
+	//리뷰리스트
+	@Override
+	public List<Review_comVO> getReviewcomList(String sessionid) {
+		return bbsDAO.getReviewcomList(sessionid);
+	}
+	
+	@Override
+	public int updateReviewStonPayT(String review_prod) {
+		return bbsDAO.updateReviewStonPayT(review_prod);
+	}
 }

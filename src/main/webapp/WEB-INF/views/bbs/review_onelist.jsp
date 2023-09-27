@@ -100,9 +100,7 @@ label {
 		f.action="/bbs_review_deleteform.do";
 		f.submit();
 	}
-	
-	
-	
+
 </script>
 </head>
 <body>
@@ -119,23 +117,37 @@ label {
 							<tbody>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">리뷰 유형</td>
-									<td id="type">
+									<td>
 										<span>${reviewvo.RE_TYPE}</span>	
 									</td>
 							</tr>
 							<tr align="center">
+							<td bgcolor="#1b5ac2" class="w_font">물품</td>
+							<c:choose>
+										<c:when test="${empty reviewvo.PROD_NAME}">
+											<td style="color:gray; font-size:15px;">[선택물품없음]</td>
+										</c:when>
+										<c:otherwise>
+											<td>${reviewvo.PROD_NAME}</td>
+										</c:otherwise>
+									</c:choose>
+							
+								
+							
+							</tr>
+							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">작성자</td>
 								<!--이건 로그인한 사람이 자동으로 뜨게하기.  -->
-								<td id="type">${reviewvo.RE_WRITER}</td>
+								<td>${reviewvo.RE_WRITER}</td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">제목</td>
-								<td id="type">${reviewvo.RE_SUBJECT}</td>
+								<td>${reviewvo.RE_SUBJECT}</td>
 							</tr>
 							
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font" width="200px;">첨부파일</td>
-								<td id="type">
+								<td>
 									<c:choose>
 										<c:when test="${empty reviewvo.RE_FILE}">
 											<b>첨부 파일 없음</b>
@@ -179,14 +191,14 @@ label {
 										<input type="hidden" value="${reviewvo.RE_NUM}" name="RE_NUM">
 										<input type="hidden" value="${cPage}" name="cPage">
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										<input type="button" value="목록" onclick="list_go(this.form)" class="in_btn"/>
+										<button class="in_btn" onclick="go_search_list(this.form)">검색으로</button>
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										<input type="button" value="삭제"  onclick="delete_go(this.form)" class="in_btn"/>
 									</div>			
 									<div id="viewno" >									
 										<input type="hidden" value="${reviewvo.RE_NUM}" name="RE_NUM">
 										<input type="hidden" value="${cPage}" name="cPage">
-										<input type="button" value="목록" onclick="list_go(this.form)" class="in_btn"/>									
+										<input type="button" value="목록으로" onclick="list_go(this.form)" class="in_btn"/>	
 									</div>
 									</td>
 								</tr>

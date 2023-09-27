@@ -50,8 +50,12 @@ public class ProductDAO {
 	public List<OrderVO> getOrderDetaileList(String client_num) {
 		return sqlSessionTemplate.selectList("mag.orderonelist", client_num);
 	}
-	public int getgetProductInsert(ProductVO provo) {
+	public int getProductInsert(ProductVO provo) {
 		return sqlSessionTemplate.insert("mag.productinsert", provo);
 	}
 	
+	
+	public int productUpdate(String select) {
+		return sqlSessionTemplate.update("mag.productupdate",select);
+	}
 }

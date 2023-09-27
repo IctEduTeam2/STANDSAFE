@@ -5,9 +5,19 @@ import org.springframework.web.multipart.MultipartFile;
 	public class RE_BBS_VO {
 	private String RE_NUM, RE_SUBJECT, RE_WRITER, RE_CONTENT, RE_FILE,
 	RE_TYPE, RE_HIT, RE_DATE, RE_UPDATE, RE_ST, RE_LOCK, PROD_NUM, CLIENT_NUM,
-	old_f_name;
+	old_f_name, PROD_NAME;
 	
 	private MultipartFile file;
+
+	
+	
+	public String getPROD_NAME() {
+		return PROD_NAME;
+	}
+
+	public void setPROD_NAME(String pROD_NAME) {
+		PROD_NAME = pROD_NAME;
+	}
 
 	public String getRE_NUM() {
 		return RE_NUM;

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -85,8 +86,32 @@ fieldset {
     font-weight: bold; /* 글꼴 두껍게 설정 */
 }
 
+#review{
+	width: 225px;
+	padding: 7px;
+	margin-left : 30px;
+	border: 1px solid #1b5ac2;
+	outline: none;
+	float: left;
+}
 
-
+#cate{
+line-height: 2rem;
+  padding: 0.2em 0.4em;
+}
+#cate2{
+line-height: 2rem;
+  padding: 0.2em 0.4em;
+}
+#list{
+	width: 225px;
+	padding: 7px;
+	margin-left : 30px;
+	border: 1px solid #1b5ac2;
+	outline: none;
+	float: left;
+}
+#noti{color: red; font-size: 14px; text-align: left;}
 
 </style> 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
@@ -120,6 +145,33 @@ fieldset {
 		f.submit();
 	}
 </script>
+<!-- 페이지 로드 시 자동으로 실행될 JavaScript 코드 -->
+<script type="text/javascript">
+function review_cate() {
+    var reviewCategory = document.getElementById("review").value;
+    var reviewcombo = document.getElementById("list");
+
+    $.ajax({
+        url: "/review_combo.do?reviewCategory="+reviewCategory,
+        method: "post",
+        dataType: "text",
+        success: function(data) {
+            console.log(data);
+            
+            var reviewcombo = document.getElementById("list");
+            // "list" 콤보 박스 초기화
+            reviewcombo.innerHTML = "";
+            
+            // 데이터를 줄 단위로 분할하고 각 줄을 옵션으로 추가
+            reviewcombo.innerHTML = data;
+        },
+        error: function() {
+            alert("읽기 실패");
+        }
+    });
+}
+</script>
+
 </head>
 <body>
 	<div id="mydiv"> 
@@ -144,9 +196,34 @@ fieldset {
 									</td>
 							</tr>
 							<tr align="center">
+								<td bgcolor="#1b5ac2" class="w_font">리뷰항목</td>
+								<c:choose>
+								<c:when test="${prod_st==0 }">
+								<td>
+									<label id="cate" for=review></label>
+										<select id="review" onchange="review_cate()">
+											<option value="0"> ====리뷰선택==== </option>				
+											<option value="1"> ====미작성=== </option>				
+    								</select>
+   									<label id="cate2" for="list"></label>
+    								<select id="list" name="review_prod"> 
+    								</select>
+    								<span id="noti">칭찬합시다로 작성시 분류 선택안하셔도 됩니다.</span>
+    							</td>
+								</c:when>
+								<c:when test="${prod_st==1 }">
+								 <td><input type="text" name="review_prod" size="20" autocomplete='off' value="${pvo.PROD_NUM}"/>
+								 	${pvo.PROD_NAME }
+								 </td>
+								
+								</c:when>
+								</c:choose>
+
+							</tr>
+							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">작성자</td>
 								<!--이건 로그인한 사람이 자동으로 뜨게하기.  -->
-								<td><input type="text" name="name" size="20" autocomplete='off' value="${nick}"/></td>
+								<td><input type="text" name="name" size="20" autocomplete='off' value="${nick}" disabled/></td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">제목</td>

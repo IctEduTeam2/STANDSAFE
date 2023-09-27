@@ -23,6 +23,7 @@ fieldset {
   margin: 0;
   padding: 40px 20px;
 }
+
 /* paging */
 table tfoot ol.paging {
     list-style: none;
@@ -64,7 +65,22 @@ table tfoot ol.paging li a:hover {
 	font-weight: bold;
 }
 
+
 </style> 
+<script type="text/javascript">
+	function wordchk() {
+    var word = document.getElementById("s_bar").value; // 검색어 필드의 값 가져오기
+
+    // 검색어가 비어 있으면 알림창 표시
+    if (!word || word.trim() === "") {
+        alert("검색어를 입력하세요.");
+        return false; // 폼 제출을 취소합니다.
+    }
+
+    // 검색어가 입력되었으면 폼 제출을 허용
+    return true;
+}
+</script>
 </head>
 <body onload="InitializeStaticMenu();">
 	<div id="mydiv">
@@ -73,7 +89,7 @@ table tfoot ol.paging li a:hover {
 			<article>
 				<div id="bbs_top" >					
 					<div id="bbs_sub"><h1>이벤트</h1></div>
-							<form action="/bbs_ev_search.do" method="post">
+							<form action="/bbs_ev_search.do" method="post" onsubmit="return wordchk()">
 							    <fieldset>
 							        <label>
 							            <input type="radio" name="searchType" value="제목" id="type_title" checked />
@@ -84,7 +100,8 @@ table tfoot ol.paging li a:hover {
 							            <span>내용</span>
 							        </label>
 							        <div id="search_bar">
-							            <input type="text" id="s_bar" name="searchText" placeholder="검색어입력">
+							            <input type="text" id="s_bar" name="word" placeholder="검색어입력">
+							            <input type="hidden" name="bbs_type" value="이벤트">
 							            <button id="s_btn" type="submit">검색</button>
 							        </div>
 							    </fieldset>
@@ -92,13 +109,13 @@ table tfoot ol.paging li a:hover {
 						</div>  <!--  제목및 버튼검색창의 끝 -->		
 					<hr class="hr">
 					<!-- 메인 테이블 -->
-					<table id="s_table" class="m_table">				
+					<table class="m_table">				
 						<thead class="mh_table">
 							 <tr>
-							 	<th id="th1">번호</th><th id="th4">파일첨부</th><th id="th2">제목</th><th id="th3">작성자</th><th id="th5">조회수</th><th id="th6">날짜</th>
+							 	<th id="th1">번호</th><th id="th2">제목</th><th id="th3">작성자</th><th id="th5">조회수</th><th id="th6">날짜</th><th id="th4">파일첨부</th>
 							 </tr>
 						</thead>
-						<tbody id="s_table" class="mb_table">	
+						<tbody class="mb_table">	
 							<c:choose>
 								<c:when test="${empty list}">
 									<tr>
@@ -109,16 +126,7 @@ table tfoot ol.paging li a:hover {
 									<c:forEach var="k" items="${list}" varStatus="vs">
 										<tr>
 											<td>${paging.totalRecord -((paging.nowPage-1)*paging.numPerPage + vs.index) }</td>
-											<td>
-												<c:choose>
-													<c:when test="${empty k.EVENT_FILE}">
-														없음
-													</c:when>
-													<c:otherwise>
-														있음
-													</c:otherwise>
-												</c:choose>				
-											</td>
+											
 											<c:choose>
 												<c:when test="${k.EVENT_ST ==2 }">
 													<td style="color:gray;">삭제된 게시물입니다.</td>
@@ -131,6 +139,16 @@ table tfoot ol.paging li a:hover {
 											<td>${k.EVENT_WRITER}</td>
 											<td>${k.EVENT_HIT}</td>
 											<td>${k.EVENT_DATE.substring(0,10)}</td>
+											<td>
+												<c:choose>
+													<c:when test="${empty k.EVENT_FILE}">
+														없음
+													</c:when>
+													<c:otherwise>
+														있음
+													</c:otherwise>
+												</c:choose>				
+											</td>
 										</tr>
 									</c:forEach>
 								</c:otherwise>
