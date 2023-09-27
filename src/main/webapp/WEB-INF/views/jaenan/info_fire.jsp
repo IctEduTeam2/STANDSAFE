@@ -200,7 +200,7 @@ $(function () {
 						dataType : "xml",
 						success : function(data) {
 							
-							var table = "<table>";
+							var table = "<table style='width: 80%;  margin: auto;'>";
 							table += "<thead>";
 							table += "<tr>";
 							table += "<th>소방서센터명</th>";
@@ -345,7 +345,7 @@ $(function () {
 			<br> <br>
 
 			<div class="top_location">
-				<label for="sido_nm">지역을 선택하세요:</label>
+				<label for="sido_nm">지역 상세정보 확인:</label>
 <select id="sido_nm" name="sido_nm">
     <option value="서울소방재난본부">서울특별시</option>
     <option value="부산소방재난본부">부산광역시</option>
@@ -372,7 +372,7 @@ $(function () {
 				<div id="date2"></div>
 			</h3>
 			<br> <br>
-			<div id="out2"></div>
+			<div id="out2" style="float: left; width: 100%;"></div>
 		</section>
 		<jsp:include page="../Semantic/quickmenu.jsp"></jsp:include>
 		<script src="resources/js/quick.js"></script>
