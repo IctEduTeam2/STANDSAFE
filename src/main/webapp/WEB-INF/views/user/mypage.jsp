@@ -6,8 +6,8 @@
 <meta charset="UTF-8">
 
 <title>STANDSAFE</title>
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+<!-- <meta name="viewport"
+	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" /> -->
 <!-- Link Swiper's CSS -->
 <script type="text/javascript">
 $(document).ready(function() {
@@ -78,9 +78,9 @@ $(document).ready(function() {
 				<button class="mypage-box" onclick="PointGo()">
 					<span class="mypage-text">내 포인트</span> <span class="mypage-arrow">>></span>
 				</button>
-				<button class="mypage-box" onclick="MyBoardGo()">
+				<!-- <button class="mypage-box" onclick="MyBoardGo()">
 					<span class="mypage-text">내 게시글 보기</span> <span
-						class="mypage-arrow">>></span>
+						class="mypage-arrow">>></span> -->
 				</button>
 				<button class="mypage-box" onclick="UserWithdrawal()">
 					<span class="mypage-text">회원탈퇴</span> <span class="mypage-arrow">>></span>

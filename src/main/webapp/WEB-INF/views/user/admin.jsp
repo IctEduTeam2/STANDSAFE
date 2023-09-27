@@ -6,8 +6,8 @@
 <meta charset="UTF-8">
 <title>STANDSAFE</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+<!-- <meta name="viewport"
+	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" /> -->
 <!-- Link Swiper's CSS -->
 
 <link rel="stylesheet" href="resources/css/slide.css" />
@@ -24,7 +24,7 @@
 			<article>
 				<div class="login-header">
 					<h1
-						style="text-align: center; font-size: 30px; margin-bottom: 20px; margin-top: 100px;">login</h1>
+						style="text-align: center; font-size: 30px; margin-bottom: 20px; margin-top: 100px;">Admin</h1>
 				</div>
 				<form action="/admin_loginok.do" method="post">
 					<div class="login-form">

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="visitor">
+	<!-- 방문 횟수를 업데이트 ID -->
+	<update id="recordVisitById">
+		UPDATE DAILY_VISITER
+		SET VISIT_COUNT = VISIT_COUNT + 1
+		WHERE ID = #{ID} AND VISIT_DATE = CURDATE()
+	</update>
+
+	<!-- 방문 횟수를 업데이트 VisitorVO -->
+	<update id="recordVisitByVO">
+		UPDATE DAILY_VISITER
+		SET VISIT_COUNT = VISIT_COUNT + 1
+		WHERE ID = #{ID} AND VISIT_DATE = #{VISIT_DATE}
+	</update>
+
+	<!-- 새로운 방문자 정보 추가 -->
+	<insert id="addVisitor">
+		INSERT INTO DAILY_VISITER (ID, VISIT_DATE, VISIT_COUNT)
+		VALUES (#{ID}, #{VISIT_DATE}, 1)
+		ON DUPLICATE KEY UPDATE VISIT_COUNT = VISIT_COUNT + 1
+	</insert>
+	
+	<!-- 일주일 리스트 -->
+	<select id="getVisitsForLastWeek" resultType="visitorVO">
+    SELECT SUM(VISIT_COUNT) AS VISIT_COUNT, VISIT_DATE 
+    FROM DAILY_VISITER 
+    WHERE VISIT_DATE BETWEEN DATE_SUB(CURDATE(), INTERVAL 6 DAY) AND CURDATE() 
+    GROUP BY VISIT_DATE
+</select>
+	<select id="getWeeklyVisitCounts" resultType="visitorVO">
+    SELECT SUM(VISIT_COUNT) AS VISIT_COUNT, VISIT_DATE 
+    FROM DAILY_VISITER 
+    WHERE VISIT_DATE BETWEEN DATE_SUB(CURDATE(), INTERVAL 6 DAY) AND CURDATE() 
+    GROUP BY VISIT_DATE
+</select>
+</mapper>
+	
+
+
+
+
+
+
+
+
+

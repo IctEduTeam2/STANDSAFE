@@ -182,20 +182,144 @@
 	</update>
 	<!-- 이름과 이메일로 아이디만 찾기 -->
 	<select id="getIdByNameAndMail" resultType="uVO">
-		SELECT ID FROM MEMBER_T WHERE MAIL = #{MAIL} AND M_NAME = #{M_NAME}
+		SELECT ID FROM
+		MEMBER_T WHERE MAIL = #{MAIL} AND M_NAME = #{M_NAME}
 	</select>
 	<!-- 이름과 아이디로 유저이메일만 찾기 -->
 	<select id="getMailByIdAndName" resultType="uVO">
-		SELECT MAIL FROM MEMBER_T WHERE ID = #{ID} AND MAIL = #{MAIL}
+		SELECT MAIL FROM
+		MEMBER_T WHERE ID = #{ID} AND MAIL = #{MAIL}
 	</select>
 	<!-- 유저의 TEMP_PW 필드 update! -->
 	<insert id="upsertTempPW">
-		UPDATE MEMBER_T SET TEMP_PW = #{TEMP_PW} WHERE ID = #{ID};
+		UPDATE MEMBER_T SET TEMP_PW = #{TEMP_PW} WHERE ID =
+		#{ID};
 	</insert>
 	<!-- 유저의 TEMP_PW 필드 비우기 -->
 	<update id="resetTempPW">
 		UPDATE MEMBER_T SET TEMP_PW = NULL WHERE ID = #{ID};
 	</update>
+	<!-- 관리자쪽 유저 검색 몇명인지 -->
+	<select id="countUsers" resultType="int">
+		SELECT COUNT(*) FROM MEMBER_T
+		WHERE OUT_ST != 0
+	</select>
+	<!-- 관리자쪽 유저 전체 검색 -->
+	<select id="userlist" parameterType="Map" resultType="uVO">
+		select *
+		from MEMBER_T where OUT_ST = 1
+		order by CLIENT_NUM desc limit #{limit}
+		offset #{offset}
+	</select>
+	<!-- 검색 -->
+	<select id="getUserlistByKeyword" parameterType="map"
+		resultType="uVO">
+		SELECT * FROM MEMBER_T
+		WHERE
+		<choose>
+			<when test="category == 'ID'">
+				ID LIKE CONCAT('%', #{keyword}, '%')
+			</when>
+			<when test="category == 'M_NAME'">
+				M_NAME LIKE CONCAT('%', #{keyword}, '%')
+			</when>
+			<when test="category == 'NICKNAME'">
+				NICKNAME LIKE CONCAT('%', #{keyword}, '%')
+			</when>
+			<when test="category == 'MAIL'">
+				MAIL LIKE CONCAT('%', #{keyword}, '%')
+			</when>
+			<when test="category == 'EMAIL_ST'">
+				EMAIL_ST LIKE CONCAT('%', #{keyword}, '%')
+			</when>
+			<when test="category == 'BIRTH'">
+				BIRTH LIKE CONCAT('%', #{keyword}, '%')
+			</when>
+			<when test="category == 'PHONE'">
+				PHONE LIKE CONCAT('%', #{keyword}, '%')
+			</when>
+			<when test="category == 'ADDR'">
+				ADDR LIKE CONCAT('%', #{keyword}, '%')
+			</when>
+			<when test="category == 'IN_TIME'">
+				IN_TIME LIKE CONCAT('%', #{keyword}, '%')
+			</when>
+			<when test="category == 'OUT_TIME'">
+				OUT_TIME LIKE CONCAT('%', #{keyword}, '%')
+			</when>
+			<otherwise>
+				1=1
+			</otherwise>
+		</choose>
+		<if test="startDate != null and endDate != null">
+			<choose>
+				<when test="dateCategory == 'IN_TIME'">
+					AND JOIN_TIME >= #{startDate} AND JOIN_TIME <![CDATA[ <= ]]>
+					#{endDate}
+				</when>
+				<when test="dateCategory == 'OUT_TIME'">
+					AND OUT_TIME >= #{startDate} AND OUT_TIME <![CDATA[ <= ]]>
+					#{endDate}
+				</when>
+			</choose>
+		</if>
+		LIMIT #{offset}, #{limit}
+	</select>
+	<!-- 삭제된 유저 검색 -->
+	<select id="getDeactivatedUserlist" parameterType="Map"
+		resultType="uVO">
+		select * from MEMBER_T where OUT_ST = 0
+		order by CLIENT_NUM
+		desc limit #{limit} offset #{offset}
+	</select>
+	<!-- 1사람 결과 -->
+	<select id="userDetail" parameterType="int" resultType="uVO">
+		SELECT *
+		FROM MEMBER_T WHERE CLIENT_NUM = #{CLIENT_NUM}
+	</select>
+	<!-- 관리자의 상태를 비활성화로 업데이트하는 쿼리 -->
+	<update id="deactivateUsers" parameterType="list">
+		UPDATE MEMBER_T
+		SET OUT_ST = 0
+		WHERE CLIENT_NUM IN
+		<foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+			#{item, jdbcType=INTEGER}
+		</foreach>
+	</update>
+	<!-- 삭제된 관리자 검색 몇명인지 -->
+	<select id="countDeactivatedUsers" resultType="int">
+		SELECT COUNT(*)
+		FROM MEMBER_T
+		WHERE out_st != 1
+	</select>
+	<!-- Get total active users -->
+	<select id="getTotalActiveUsers" resultType="int">
+		SELECT COUNT(*) FROM
+		MEMBER_T WHERE OUT_ST = 1
+	</select>
+
+	<!-- Get total deactivated users -->
+	<select id="getTotalDeactivatedUsers" resultType="int">
+		SELECT COUNT(*)
+		FROM MEMBER_T WHERE OUT_ST = 0
+	</select>
+	<!-- 가입일 범위에 따른 사용자 검색 -->
+<select id="getUsersByJoinDateRange" parameterType="map" resultType="uVO">
+    SELECT *
+    FROM MEMBER_T
+    WHERE IN_TIME >= #{startDate} AND <![CDATA[IN_TIME < DATE_ADD]]>(#{endDate}, INTERVAL 1 DAY)
+    LIMIT #{offset}, #{limit}
+</select>
+
+<!-- 탈퇴일 범위에 따른 사용자 검색 -->
+<select id="getUsersByDeactivationDateRange" parameterType="map" resultType="uVO">
+    SELECT *
+    FROM MEMBER_T
+    WHERE OUT_TIME >= #{startDate} AND <![CDATA[OUT_TIME < DATE_ADD]]>(#{endDate}, INTERVAL 1 DAY)
+    LIMIT #{offset}, #{limit}
+</select>
+	
 </mapper>
 
 
