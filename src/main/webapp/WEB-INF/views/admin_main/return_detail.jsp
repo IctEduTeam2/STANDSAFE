@@ -32,15 +32,19 @@ function selectAll(selectAll)  {
 	    checkbox.checked = selectAll.checked
 	  })
 	}
+function st_update(){
+	var frm = document.getElementById("frm");
+	document.getElementById("pb_st").value = document.getElementById("searchKey").value;
+	location.href="/return_Update.do";
+	document.getElementById('frm').submit();
+}	
+	
 </script>
 </head>
 <body>
 <jsp:include page="header.jsp"></jsp:include>
 	
-				
-	</table>
-	</form>
-</div>
+
 	<div class="admin_content_wrap" style=" width:100%; ">
 		<div class="admin_content_subject" style="width: 80%; margin: auto;">
 			<div style="width: 98%; background-color: #1b5ac2; color: white;  margin: 30px 0;  padding-left: 2%; padding-top: 50px; padding-bottom: 50px; float: left; font-size: 32px;">반품상세내역 - 주문번호나옴</div>
@@ -48,6 +52,9 @@ function selectAll(selectAll)  {
 		<div class="author_table_wrap" style="width: 80%; margin: auto;">
 			<!-- 게시물 O -->
 			<c:if test="${listCheck != 'empty' }">
+			<form id="frm" name="frm" method="post" action="/return_Update.do">
+			<input type ="hidden" id="pb_num" name="pb_num" value="${rvo2.PB_NUM}"/>
+			<input type="hidden" id="pb_st" name="pb_st" value="${rvo2.PB_ST }" />
 				<table class="order_table">
 					<colgroup>
 						<col width="5%"> 
@@ -56,10 +63,6 @@ function selectAll(selectAll)  {
 						<col width="10%">
 						<col width="10%">
 						<col width="10%">
-						<col width="5%"> 
-						<col width="15%"> 
-						<col width="10%"> 
-						<col width="10%"> 
 					</colgroup>
 					<thead>
 						<tr>
@@ -81,26 +84,25 @@ function selectAll(selectAll)  {
 								<fmt:parseDate value="${rvo2.PB_DATE}" var="regdate" pattern="yyyy-MM-dd HH:mm:ss" />
                                 <fmt:formatDate value="${regdate}" pattern="yyyy-MM-dd" />
 								</td>
-								<td>${rvo2.PB_ST }</td>
+								<td>
+								 <c:choose>
+       								 <c:when test="${rvo2.PB_ST == '4'}">반품 접수 완료</c:when>
+       								 <c:when test="${rvo2.PB_ST == '5'}">반품 회수 완료</c:when>
+       								 <c:when test="${rvo2.PB_ST == '6'}">반품 완료</c:when>
+      								 <c:otherwise>${rvo2.PB_ST}</c:otherwise>
+   								 </c:choose>
+								</td>
 	                      </tr>
 
 					</tbody>
 				</table>
-
+				</form>
 			</c:if>
-
-			<!-- 게시물 x -->
-			<%-- 	<c:if test="${listCheck == 'empty'}">
-                			<div class="table_empty">
-                				등록된 작가가 없습니다.
-                			</div>
-                		</c:if> 	 --%>
-
 		</div>
 		<!-- 하단 버튼 -->
 		<div style="width: 80%; margin: auto;">
 			<span style="float: right; margin-top: 80px;">
-				<button type="button" value="삭제" style="width: 250px; height: 60px; font-size: 25px; background-color: #505BBD; color: white; border: none;">확인</button>
+				<button type="button" value="삭제" style="width: 250px; height: 60px; font-size: 25px; background-color: #505BBD; color: white; border: none;" onclick="st_update()">확인</button>
 			</span> 
 			<span style="float: right; margin-top: 80px; margin-right: 100px;">
 				<button type="button" value="삭제" style="width: 250px; height: 60px; font-size: 25px; background-color: #505BBD; color: white; border: none;" onclick="location.href='return_list.do'">목록</button>
@@ -108,9 +110,9 @@ function selectAll(selectAll)  {
 			<span style="float: right; margin-top: 80px; margin-right: 100px;">
 				<select id="searchKey" name="searchKey" title="검색항목" class="select_option" style="width: 300px; height: 60px; font-size: 20px; text-align: center;">
 					<option value="">===== 상태 선택 =====</option>
-					<option value="producNm">반품 접수 완료₩	</option>
-					<option value="content">반품 회수 완료</option>
-					<option value="createName">반품 완료</option>
+					<option value="4">반품 접수 완료	</option>
+					<option value="5">반품 회수 완료</option>
+					<option value="6">반품 완료</option>
 				</select>
 			</span>
 		</div>

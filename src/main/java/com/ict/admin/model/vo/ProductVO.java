@@ -8,6 +8,8 @@ public class ProductVO {
 	
 	private MultipartFile file;
 
+	
+
 	public String getPROD_NUM() {
 		return PROD_NUM;
 	}

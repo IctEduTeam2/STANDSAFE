@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,6 +24,11 @@ body {
 }
 </style>
 <script type="text/javascript">
+function searchList(){
+	location.href="/exchangeSearchList.do";
+    document.getElementById('searchForm').submit();
+	
+}
 function selectAll(selectAll)  {
 	  const checkboxes 
 	     = document.querySelectorAll('input[type="checkbox"]');
@@ -38,58 +45,55 @@ function selectAll(selectAll)  {
 	<div style="width: 100%;">
 	<table style="float: left; margin-left: 10%; margin-top: 10%; border: 1px solid black; width: 20%; height: 400px;">
 		<tr>
-			<th>전체 주문 건수:</th>
-			<td>100개</td>
+			<th>오늘 교환 건수:</th>
+			<td><c:out value= "${today_Exchange }" /></td>
 		</tr>
 		<tr>
-			<th>오늘 주문 건수:</th>
-			<td>100개</td>
+			<th>오늘 반품 건수:</th>
+			<td><c:out value= "${today_return }" /></td>
 		</tr>
 	</table>
 	<!-- 검색 영역 -->
 	<!--  <div class="search_wrap"> -->
-	<form id="searchForm" action="/admin/orderList" method="get">
-	<table style="float: left; margin-left: 5%; margin-top: 10%; border: 1px solid black; width: 55%; height: 400px;">
+	<form id="searchForm" name="searchForm"
+	action="/exchangeSearchList.do" method="get">
+	<input type="hidden" name="cPage" value="1" />
+	<input type="hidden" name="pageSize" value="10" />
+	<table
+					style="float: right; margin-left: 2%; margin-top: 10%; border: 1px solid black; width: 60%; height: 400px; margin-right: 3%">
 					<tr>
-						<th style="width: 200px;">구분</th>
-							<td>
-							<select id="searchKey" name="searchKey" title="검색항목" class="select_option" style="width: 300px; height: 40px; font-size: 20px;">
-									<option value="">검색조건</option>
-									<option value="producNm">상품명</option>
-									<option value="content">주문번호</option>
-									<option value="createName">등록자명</option>
-							</select>
-							</td>
-							<td colspan="3">
-							<input type="text" id="proNm" name="proName" value="" title="상품명검색" style="width: 300px; height: 40px;">
-							</td>
-					</tr>
-						<tr>
-						<th style="width: 200px;">주문 날짜</th>
-							<td>
-							<input type="date" style="height: 40px; width: 300px;">
-							</td>
-							<td>
-							<input type="date" style="height: 40px; width: 300px;">
-							</td>
-					</tr>
-						
+					<th style="width: 200px;">주문번호</th>
+					<td colspan="3"><input type="text" id="searchText" name="searchText"
+						value="" title="상품명검색" style="width: 300px; height: 40px;">
+					</td>
+				</tr>
+				<tr>
+					<th style="width: 200px;">요청 날짜</th>
+					<td><input type="date" id="stDate" name="stDate" 
+					value="${param.stDate}" style="height: 40px; width: 300px;">
+					</td>
+					<td><input type="date" id="endDate" name="endDate" 
+					value="${param.endDate}" style="height: 40px; width: 300px;">
+					</td>
+				</tr>
+
 					<tr>
 						<td colspan="2"></td>
-						<td>
-							<input type="button" alt="검색" value="검색" style="width: 200px; height: 60px; font-size: 25px; border-radius: 10px; background-color: #505BBD; color: white; border: none; float: right;">
+						<td><input type="button" alt="검색" value="검색" id="searchBtn"
+							name="searchBtn" onclick="searchList();"
+							style="width: 200px; height: 60px; font-size: 25px; border-radius: 10px; background-color: #505BBD; color: white; border: none; float: right;">
 						</td>
-						<td>
-							<input type="button" alt="초기화" value="초기화" style="width: 200px; height: 60px; font-size: 25px; border-radius: 10px; background-color: #B5B5B5; color: white; border: none;  float: right; margin-right: 20px;">
-						</td>	
+						<td><input type="button" alt="초기화" value="초기화"
+							style="width: 200px; height: 60px; font-size: 25px; border-radius: 10px; background-color: #B5B5B5; color: white; border: none; float: right; margin-right: 20px;">
+						</td>
 					</tr>
-				
-	</table>
-	</form>
-</div>
+
+				</table>
+			</form>
+	</div>
 	<div class="admin_content_wrap" style="margin: auto; width: 100%;">
 		<div style="width: 80%; margin: auto;">
-			<div style="width: 98%; background-color: #1b5ac2; color: white;  margin: 30px 0;  padding-left: 2%; padding-top: 50px; padding-bottom: 50px; float: left; font-size: 32px;">교환 목록</div>
+			<div style="width: 98%; background-color: #1b5ac2; color: white;  margin: 30px 0;  padding-left: 2%; padding-top: 50px; padding-bottom: 50px; float: left; font-size: 32px;">교환  / 반품 목록</div>
 		</div>
 		<div class="author_table_wrap" style="width: 80%; margin: auto;">
 			<!-- 게시물 O -->
@@ -115,16 +119,17 @@ function selectAll(selectAll)  {
 						</tr>
 					</thead>
 					<tbody>
+					<c:forEach items="${list}" var="pvo">
 						<tr>
 							<td><input type="checkbox" name="th_column_1"></td>
-							<td><a href="/exchange_detail.do">20230828k</a></td>
-							<td>사용자1</td>
-							<td>2023-01-01</td>
-							<td>2023-01-01</td>
-							<td>상품 준비중</td>
-							<td>admin</td>
+							<td><a href="/exchange_detail.do?payOkNum=${pvo.PAY_OKNUM}">${pvo.PAY_OKNUM} </a></td>
+							<td>${pvo.CLIENT_NUM }</td>
+							<td>${pvo.PB_DATE }</td>
+							<td>처리 날짜 디비 컬럼 없음 </td>
+							<td>${pvo.PB_ST }</td>
+							<td>${pvo.CONFIRM_ID }</td>
                         </tr>
-
+					</c:forEach>
 					</tbody>
 				</table>
 

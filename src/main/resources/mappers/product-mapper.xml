@@ -2,45 +2,260 @@
 <!DOCTYPE mapper
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
- <mapper namespace="mag">
- 	<select id="productlist" resultType="provo">
- 		select * from PRODUCT_T order by PROD_NUM desc
- 	</select>
- 	<select id="exchangelist" resultType="evo">
- 		select * from PAYBACK_T order by PAY_NUM desc
- 	</select>
- 	<select id="returnlist" resultType="rvo">
- 		select * from PAYBACK_T order by PAY_NUM desc
- 	</select>
- 	<select id="orderlist" resultType="ovo">
- 		select * from PAY_T order by PAY_OKNUM desc
- 	</select>
- 	<select id="orderonelist" parameterType="String" resultType="ovo">
- 		select * from PAY_T where PAY_OKNUM = #{pay_oknum} order by PAY_OKNUM desc LIMIT 1
- 	</select>
- 	<select id="inventorylist" resultType="invo">
- 		select * from PRODUCT_T where PROD_AMOUNT > 0 order by PROD_NUM desc 
- 	</select>
- 	<select id="exchangeonelist" parameterType="String" resultType="evo">
- 		select * from PAYBACK_T where PB_NUM = #{pb_num}
- 	</select>
- 	<select id="returnonelist" parameterType="String" resultType="rvo">
- 		select * from PAYBACK_T where PB_NUM = #{pb_num}
- 	</select>
- 	  <!-- 상품 등록 -->
-    <insert id="productinsert" parameterType="provo">
-        INSERT INTO PRODUCT_T (PROD_NAME, PROD_IMG, PROD_PRICE, PROD_SALE, PROD_AMOUNT,
-        PROD_REGDATE, PROD_DETAIL, PROD_HIGH, PROD_LOW, PROD_ST)
-        VALUES (#{PROD_NAME}, #{PROD_IMG}, #{PROD_PRICE}, #{PROD_SALE}, #{PROD_AMOUNT}, 
-        sysdate(), #{PROD_DETAIL}, #{PROD_HIGH}, #{PROD_LOW}, #{PROD_ST})
-    </insert>
+<mapper namespace="mag">
+	<!-- <select id="productlist" resultType="provo"> select * from PRODUCT_T 
+		order by PROD_NUM desc </select> -->
+	<!-- 페이징을 위한 시작과 끝구하고, 리스트 출력 -->
+	<select id="productlist" parameterType="Map" resultType="provo">
+		select * from PRODUCT_T
+		order by PROD_NUM desc limit #{limit} offset #{offset}
+	</select>
+	<!--게시글 갯수구하기 -->
+	<select id="productcount" resultType="int">
+		select count(*) from PRODUCT_T
+	</select>
+		
+	<!-- 상품목록 검색  -->
+	<select id="getProductSearchList" parameterType="Map" resultType="provo">
+		select * from PRODUCT_T 
+		where 1=1
+		    <if test='PROD_NAME != null and PROD_NAME.trim() != "" '>
+        		AND PROD_NAME LIKE CONCAT('%', #{PROD_NAME}, '%')
+    		</if>
+   			<if test='PROD_ST != null and PROD_ST.trim() != "" '>
+        		AND PROD_ST = CAST(#{PROD_ST} AS UNSIGNED INTEGER)
+    		</if>
+    		<if test='stDate != null and stDate.trim() !="" and endDate != null and endDate.trim() !="" '>
+       	 		AND PROD_REGDATE BETWEEN #{stDate} AND #{endDate}
+    		</if>
+    	order by PROD_NUM desc limit #{limit} offset #{offset}
+	</select> 
+	
+	<!-- 상품 검색 게시글 갯수 구하기  -->
+	<select id="getTotalCountSearchList" parameterType="Map" resultType="int">
+		select count(*) from PRODUCT_T 
+		where 1=1
+		    <if test='PROD_NAME != null and PROD_NAME.trim() != "" '>
+        		AND PROD_NAME LIKE CONCAT('%', #{PROD_NAME}, '%')
+    		</if>
+   			<if test='PROD_ST != null and PROD_ST.trim() != "" '>
+        		AND PROD_ST = CAST(#{PROD_ST} AS UNSIGNED INTEGER)
+    		</if>
+    		<if test='stDate != null and stDate.trim() !="" and endDate != null and endDate.trim() !="" '>
+       	 		AND PROD_REGDATE BETWEEN #{stDate} AND #{endDate}
+    		</if>
+    	order by PROD_NUM desc 
+	</select> 
+	
+	<select id="exchangelist" resultType="evo">
+		select * from PAYBACK_T
+		order by PAY_OKNUM desc
+	</select>
+	<!-- 교환/반품 상세보기  -->
+	<select id="exchangeonelist" parameterType="String" resultType="evo" resultMap="exchangeMap">
+    	select * 
+		from PAYBACK_T t1
+		join PRODUCT_T t2 on t1.PROD_NUM = t2.PROD_NUM
+		join PAY_T t3 on t1.PAY_OKNUM = t3.PAY_OKNUM
+    	where t1.PAY_OKNUM = #{payOkNum} limit 1
+	</select>
+	<resultMap id="exchangeMap" type="com.ict.admin.model.vo.ExchangeVO">
+    	<result column="PB_NUM" property="PB_NUM" />
+    	<result column="PB_TITLE" property="PB_TITLE" />
+    	<result column="PB_CONTENT" property="PB_CONTENT" />
+    	<result column="PB_DP" property="PB_DP" />
+    	<result column="PB_FILE" property="PB_FILE" />
+    	<result column="PB_DATE" property="PB_DATE" />
+    	<result column="PB_ST" property="PB_ST" />
+    	<result column="CLIENT_NUM" property="CLIENT_NUM" />
+    	<result column="PAY_OKNUM" property="PAY_OKNUM" />
+    	<result column="PROD_NUM" property="PROD_NUM" />
+    	<result column="CONFIRM_ID" property="CONFIRM_ID" />
+    	<result column="PAY_MONEY" property="PAY_MONEY" />
     
+    	<association property="productVO" javaType="com.ict.admin.model.vo.ProductVO">
+        	<result column="PROD_NUM" property="PROD_NUM"/>
+        	<result column="PROD_NAME" property="PROD_NAME"/>
+        	<result column="PROD_IMG" property="PROD_IMG"/>
+        	<result column="PROD_DETAIL" property="PROD_DETAIL"/>
+        	<result column="PROD_AMOUNT" property="PROD_AMOUNT"/>
+        	<result column="PROD_PRICE" property="PROD_PRICE"/>
+        	<result column="PROD_SALE" property="PROD_SALE"/>
+        	<result column="PROD_HIGH" property="PROD_HIGH"/>
+        	<result column="PROD_LOW" property="PROD_LOW"/>
+        	<result column="PROD_REGDATE" property="PROD_REGDATE"/>
+        	<result column="PROD_ST" property="PROD_ST"/>
+        	<result column="PROD_MODIFYDATE" property="PROD_MODIFYDATE"/>
+    	</association>
+	</resultMap>
+	<!-- 교환 / 반품 상태 업데이트 -->
+	<update id="exchangestateupdate" parameterType="evo">
+		update PAYBACK_T
+		set PB_ST = #{PB_ST}
+		where PB_NUM = #{PB_NUM}
+	</update>
+	<select id="returnlist" resultType="rvo">
+		select * from PAYBACK_T order
+		by PAY_OKNUM desc
+	</select>
+	
+	<select id="orderonelist" parameterType="String"
+		resultType="ovo">
+		select * from PAY_T where PAY_OKNUM = #{pay_oknum} order by
+		PAY_OKNUM desc
+		LIMIT 1
+	</select>
+	
+	<!-- 페이징을 위한 시작과 끝구하고, 리스트 출력 -->
+	<select id="inventorymanagement" parameterType="Map" resultType="invo">
+		select * from PRODUCT_T
+		order by PROD_NUM desc limit #{limit} offset #{offset}
+	</select>
+	<!--게시글 갯수구하기 -->
+	<select id="inventorycount" resultType="int">
+		select count(*) from PRODUCT_T
+	</select>
+	<!-- 재고관리 목록 검색  -->
+	<select id="getInventorySearchList" parameterType="Map" resultType="invo">
+		select * from PRODUCT_T 
+		where 1=1
+		    <if test='PROD_NAME != null and PROD_NAME.trim() != "" '>
+        		AND PROD_NAME LIKE CONCAT('%', #{PROD_NAME}, '%')
+    		</if>
+    		<if test='stDate != null and stDate.trim() !="" and endDate != null and endDate.trim() !="" '>
+       	 		AND PROD_REGDATE BETWEEN #{stDate} AND #{endDate}
+    		</if>
+    	order by PROD_NUM desc limit #{limit} offset #{offset}
+	</select> 
+	
+	<!-- 재고관리 검색 게시글 갯수 구하기  -->
+	<select id="getTotalInventorySearchCount" parameterType="Map" resultType="int">
+		select count(*) from PRODUCT_T 
+		where 1=1
+		    <if test='PROD_NAME != null and PROD_NAME.trim() != "" '>
+        		AND PROD_NAME LIKE CONCAT('%', #{PROD_NAME}, '%')
+    		</if>
+    		<if test='stDate != null and stDate.trim() !="" and endDate != null and endDate.trim() !="" '>
+       	 		AND PROD_REGDATE BETWEEN #{stDate} AND #{endDate}
+    		</if>
+    	order by PROD_NUM desc 
+	</select> 
+	<!-- 재고 상세(수정) 페이지 --> 
+	<select id="getInventoryOneList" parameterType="String" resultType="invo"> 
+		select * from PRODUCT_T where PROD_NUM = #{prod_num}
+	</select>
+	<!-- 재고 정보 업데이트  -->
+	<update id="inventoryUpdate" parameterType="invo">
+		update PRODUCT_T
+		set 
+		PROD_NAME = #{PROD_NAME}, 
+		PROD_PRICE = #{PROD_PRICE}, 
+		PROD_SALE = #{PROD_SALE},
+		PROD_AMOUNT = #{PROD_AMOUNT},		
+		PROD_HIGH = #{PROD_HIGH}, 
+		PROD_LOW = #{PROD_LOW}, 
+		PROD_ST = #{PROD_ST},
+		PROD_MODIFYDATE = SYSDATE()
+		where PROD_NUM = #{PROD_NUM}
+	</update>
+	<!-- 재고 삭제   --> 
+	<delete id="deleteSelectProduct" parameterType="String">
+		delete from PRODUCT_T where PROD_NUM = #{prod_num}
+	</delete>
+	
+	<select id="returnonelist" parameterType="String"
+		resultType="rvo">
+		select * from PAYBACK_T where PB_NUM = #{pb_num}
+	</select>
+	<!-- 상품 등록 -->
+	<insert id="productinsert" parameterType="provo">
+		insert into PRODUCT_T
+		(PROD_NAME, PROD_IMG, PROD_PRICE, PROD_SALE,
+		PROD_AMOUNT,
+		PROD_REGDATE,
+		PROD_DETAIL, PROD_HIGH, PROD_LOW, PROD_ST)
+		VALUES (#{PROD_NAME},
+		#{PROD_IMG}, #{PROD_PRICE}, #{PROD_SALE},
+		#{PROD_AMOUNT},
+		sysdate(),
+		#{PROD_DETAIL}, #{PROD_HIGH}, #{PROD_LOW}, #{PROD_ST})
+	</insert>
 
-    <update id="productupdate" parameterType="String">
-    	update PRODUCT_T
-    	set PROD_ST = 0
-    	where PROD_NUM = #{PROD_NUM}
-    </update>
-    
-    
- </mapper>
+	<!-- 상품 홈페이지 반영 여부 업데이트 -->
+	<update id="productupdate" parameterType="String">
+		update PRODUCT_T
+		set
+		PROD_ST = 0
+		where PROD_NUM = #{PROD_NUM}
+	</update>
+	<!-- 상품 삭제 -->
+	<update id="productdelete" parameterType="String">
+		delete from PRODUCT_T
+		where PROD_NUM = #{PROD_NUM}
+	</update>
+	<!-- 반품 상태 업데이트 -->
+	<update id="returnstateupdate" parameterType="rvo">
+		update PAYBACK_T
+		set PB_ST = #{PB_ST}
+		where PB_NUM = #{PB_NUM}
+	</update>
+	<!-- 상품 번호로 상품 정보 조회 -->
+	<select id="getProductByProdNum" parameterType="int"
+		resultType="provo">
+		SELECT * FROM PRODUCT WHERE PROD_NUM = #{prod_num}
+	</select>
+
+	<!-- 상품 정보 업데이트 -->
+	<update id="updateProduct" parameterType="String">
+		UPDATE PRODUCT_T
+		SET PROD_NAME = #{PROD_NAME}, PROD_PRICE =
+		#{PROD_PRICE}, ...  <!-- 다른 필드들도 여기에 추가해주세요 -->
+		WHERE PROD_NUM = #{PROD_NUM}
+	</update>
+	
+	<!-- 페이징을 위한 시작과 끝구하고, 리스트 출력 -->
+	<select id="orderlist" parameterType="Map" resultType="ovo">
+		select * from PAY_T
+		order by PAY_OKNUM desc limit #{limit} offset #{offset}
+	</select>
+	<!--게시글 갯수구하기 -->
+	<select id="ordercount" resultType="int">
+		select count(*) from PAY_T
+	</select>
+	
+	<!-- 주문관리 목록 검색 -->
+	<select id="getOrederSearchList" parameterType="Map"
+		resultType="ovo">
+		select * from PAY_T
+		where 1=1
+		<if test='PAY_OKNUM != null and PAY_OKNUM.trim() != "" '>
+			AND PAY_OKNUM LIKE CONCAT('%', #{PAY_OKNUM}, '%')
+		</if>
+		<if
+			test='stDate != null and stDate.trim() !="" and endDate != null and endDate.trim() !="" '>
+			AND PAY_ORDERDATE BETWEEN #{stDate} AND #{endDate}
+		</if>
+		order by PAY_OKNUM desc limit #{limit} offset #{offset}
+	</select>
+
+	<!-- 주문관리 검색 게시글 갯수 구하기 -->
+	<select id="getTotalOrederSearchCount" parameterType="Map"
+		resultType="int">
+		select count(*) from PAY_T
+		where 1=1
+		<if test='PAY_OKNUM != null and PAY_OKNUM.trim() != "" '>
+			AND PAY_OKNUM LIKE CONCAT('%', #{PAY_OKNUM}, '%')
+		</if>
+		<if
+			test='stDate != null and stDate.trim() !="" and endDate != null and endDate.trim() !="" '>
+			AND PAY_ORDERDATE BETWEEN #{stDate} AND #{endDate}
+		</if>
+		order by PAY_OKNUM desc
+	</select>
+	<!--  주문상태 업데이트 -->
+	<update id="orderupdate" parameterType="ovo">
+		update PAY_T
+		set TAKE_ST = #{TAKE_ST}
+		where PAY_NUM = #{PAY_NUM}
+	</update>
+</mapper>

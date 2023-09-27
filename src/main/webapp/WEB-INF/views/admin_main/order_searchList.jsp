@@ -86,7 +86,7 @@ function selectAll(selectAll)  {
 			style="float: left; margin-left: 10%; margin-top: 10%; border: 1px solid black; width: 20%; height: 400px;">
 			<tr>
 					<th>전체 주문 건수:</th>
-					<td><c:out value= "${totalOrder}" /></td>
+					<td><c:out value= "${totalCount}" /></td>
 				</tr>
 				<tr>
 					<th>오늘 주문 건수:</th>
@@ -166,7 +166,7 @@ function selectAll(selectAll)  {
 					<c:forEach items="${list}" var="ovo">
 						<tr>
 							<td><input type="checkbox" name="th_column_1"></td>
-							<td><a href="/order_detail.do?client_num=${ovo.PAY_OKNUM}">${ovo.PAY_OKNUM}</a></td>
+							<td><a href="/order_detail.do?client_num=${ovo.PAY_NUM}">${ovo.PAY_NUM}</a></td>
 							<td>${ovo.CLIENT_NUM }</td>
 							<td>${ovo.TAKE_PEO }</td>
 							<td>${ovo.TAKE_ADDR}</td>
