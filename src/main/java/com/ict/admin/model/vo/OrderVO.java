@@ -4,9 +4,25 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class OrderVO {
 	private String PAY_NUM, TAKE_PEO, TAKE_ADDR, TAKE_PHONE, TAKE_MEMO, PAY_TYPE, 
-	PAY_CARD, PAY_OK, PAY_OKNUM, PAY_ST, CART_NUM, CLIENT_NUM;
+	PAY_CARD, PAY_OK, PAY_OKNUM, PAY_ST, CART_NUM, CLIENT_NUM, PAY_ORDERDATE, TAKE_ST;
 	
 	private MultipartFile file;
+	
+	public String getTAKE_ST() {
+		return TAKE_ST;
+	}
+
+	public void setTAKE_ST(String tAKE_ST) {
+		TAKE_ST = tAKE_ST;
+	}
+
+	public String getPAY_ORDERDATE() {
+		return PAY_ORDERDATE;
+	}
+
+	public void setPAY_ORDERDATE(String pAY_ORDERDATE) {
+		PAY_ORDERDATE = pAY_ORDERDATE;
+	}
 
 	public String getPAY_NUM() {
 		return PAY_NUM;

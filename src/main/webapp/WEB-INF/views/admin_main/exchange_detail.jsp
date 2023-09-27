@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,6 +32,19 @@ function selectAll(selectAll)  {
 	    checkbox.checked = selectAll.checked
 	  })
 	}
+	
+function st_update(){
+	
+	var checkbox = document.getElementById("exchk");
+	if (checkbox.checked) {
+		var frm = document.getElementById("frm");
+		document.getElementById("pb_st").value = document.getElementById("searchKey").value;
+		location.href="/exchange_update.do";
+		document.getElementById('frm').submit();
+	} else {
+		alert("업데이트 할 상품을 선택해 주세요");
+	}
+}
 </script>
 </head>
 <body>
@@ -41,6 +56,11 @@ function selectAll(selectAll)  {
 		</div>
 		<div class="author_table_wrap" style="width: 80%; margin: auto;">
 			<!-- 게시물 O -->
+			<c:if test="${listCheck != 'empty' }">
+			<form id="frm" name="frm" method="post" action="/exchange_update.do">
+			<input type ="hidden" id="pb_num" name="pb_num" value="${evo2.PB_NUM}"/>
+			<input type="hidden" id="pb_st" name="pb_st" value="${evo2.PB_ST }" />
+			<input type="hidden" id="payOkNum" name="payOkNum" value="${evo2.PAY_OKNUM }" />
 				<table class="order_table">
 					<colgroup>
 						<col width="5%">
@@ -63,129 +83,47 @@ function selectAll(selectAll)  {
 							<td class="th_column_4">아이디</td>
 							<td class="th_column_5">상품명</td>
 							<td class="th_column_6">구매가격</td>
-							<td class="th_column_7">구매수량</td>
 							<td class="th_column_8">신청날짜</td>
 							<td class="th_column_9">처리날짜</td>
-							<td class="th_column_10">처리상태</td>
 							<td class="th_column_11">관리자 서명</td>
 						</tr>
 					</thead>
 					<tbody>
 					
 						<tr>
-							<td><input type="checkbox" name="th_column_1"></td>
-							<td></td>
-							<td>20230828w</td>
-							<td>사용자1</td>
-							<td>뚝배기</td>
-							<td>12000</td>
-							<td>1</td>
-							<td>2023-01-01</td>
-							<td>2023-01-02</td>
-							<td>회수 완료</td>
-							<td>admin</td>
+							<td><input type="checkbox" name="exchk" id="exchk"></td>
+							<td><img src="resources/images/products/${evo2.getProductVO().getPROD_IMG()}" /></td>
+							<td>${evo2.PAY_OKNUM}</td>
+							<td>${evo2.CLIENT_NUM}</td>
+							<td>${evo2.getProductVO().getPROD_NAME()}</td>
+							<td>${evo2.getPAY_MONEY()}</td>
+							<td>${evo2.PB_DATE}</td>
+							<td>
+								<c:choose>
+									 <c:when test="${evo2.PB_ST == '0'}">교환 접수 중</c:when>
+       								 <c:when test="${evo2.PB_ST == '1'}">교환 접수 완료</c:when>
+       								 <c:when test="${evo2.PB_ST == '2'}">교환 회수 완료</c:when>
+       								 <c:when test="${evo2.PB_ST == '3'}">교환 완료</c:when>
+       								 <c:when test="${evo2.PB_ST == '4'}">반품 접수 중</c:when>
+       								 <c:when test="${evo2.PB_ST == '5'}">반품 접수 완료</c:when>
+       								 <c:when test="${evo2.PB_ST == '6'}">반품 회수 완료</c:when>
+       								 <c:when test="${evo2.PB_ST == '7'}">반품 완료</c:when>
+       								 <c:when test="${evo2.PB_ST == '8'}">상품 취소</c:when>
+      								 <c:otherwise>${evo2.PB_ST}</c:otherwise>
+   								 </c:choose>
+							</td>
+							<td>${evo2.CONFIRM_ID}</td>
 						</tr>
-						<tr>
-							<td><input type="checkbox" name="th_column_1"></td>
-							<td></td>
-							<td>20230828x</td>
-							<td>사용자1</td>
-							<td>뚝배기</td>
-							<td>12000</td>
-							<td>1</td>
-							<td>2023-01-01</td>
-							<td>2023-01-02</td>
-							<td>회수 완료</td>
-							<td>admin</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name="th_column_1"></td>
-							<td></td>
-							<td>20230828u</td>
-							<td>사용자1</td>
-							<td>뚝배기</td>
-							<td>12000</td>
-							<td>1</td>
-							<td>2023-01-01</td>
-							<td>2023-01-02</td>
-							<td>회수 완료</td>
-							<td>admin</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name="th_column_1"></td>
-							<td></td>
-							<td>20230828y</td>
-							<td>사용자1</td>
-							<td>뚝배기</td>
-							<td>12000</td>
-							<td>1</td>
-							<td>2023-01-01</td>
-							<td>2023-01-02</td>
-							<td>회수 완료</td>
-							<td>admin</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name="th_column_1"></td>
-							<td></td>
-							<td>20230828t</td>
-							<td>사용자1</td>
-							<td>뚝배기</td>
-							<td>12000</td>
-							<td>1</td>
-							<td>2023-01-01</td>
-							<td>2023-01-02</td>
-							<td>교환 신청</td>
-							<td>admin</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name="th_column_1"></td>
-							<td></td>
-							<td>20230828r</td>
-							<td>사용자1</td>
-							<td>뚝배기</td>
-							<td>12000</td>
-							<td>1</td>
-							<td>2023-01-01</td>
-							<td>2023-01-02</td>
-							<td>교환 신청</td>
-							<td>admin</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name="th_column_1"></td>
-							<td></td>
-							<td>20230828e</td>
-							<td>사용자1</td>
-							<td>뚝배기</td>
-							<td>12000</td>
-							<td>1</td>
-							<td>2023-01-01</td>
-							<td>2023-01-02</td>
-							<td>교환 완료</td>
-							<td>admin</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name="th_column_1"></td>
-							<td></td>
-							<td>20230828q</td>
-							<td>사용자1</td>
-							<td>뚝배기</td>
-							<td>12000</td>
-							<td>1</td>
-							<td>2023-01-01</td>
-							<td>2023-01-02</td>
-							<td>교환 완료</td>
-							<td>admin</td>
-						</tr>
-
 					</tbody>
 				</table>
-
+				</form>
+				</c:if>
 
 		</div>
 		<!-- 하단 버튼 -->
 		<div style="width: 80%; margin: auto;">
 			<span style="float: right; margin-top: 80px;">
-				<button type="button" value="삭제" style="width: 250px; height: 60px; font-size: 25px; background-color: #505BBD; color: white; border: none;">확인</button>
+				<button type="button" value="삭제" style="width: 250px; height: 60px; font-size: 25px; background-color: #505BBD; color: white; border: none;" onclick="st_update()">확인</button>
 			</span> 
 			<span style="float: right; margin-top: 80px; margin-right: 100px;">
 				<button type="button" value="삭제" style="width: 250px; height: 60px; font-size: 25px; background-color: #505BBD; color: white; border: none;" onclick="location.href='/exchange_list.do'">목록</button>
@@ -193,9 +131,15 @@ function selectAll(selectAll)  {
 			<span style="float: right; margin-top: 80px; margin-right: 100px;">
 				<select id="searchKey" name="searchKey" title="검색항목" class="select_option" style="width: 300px; height: 60px; font-size: 20px; text-align: center;">
 					<option value="">===== 상태 선택 =====</option>
-					<option value="producNm">교환 신청</option>
-					<option value="content">회수 완료</option>
-					<option value="createName">교환 완료</option>
+					<option value="0">교환 접수 중</option>
+					<option value="1">교환 접수 완료</option>
+					<option value="2">교환 회수 완료</option>
+					<option value="3">교환 완료</option>
+					<option value="4">반품 접수 중</option>
+					<option value="5">반품 접수 완료</option>
+					<option value="6">반품 회수 완료</option>
+					<option value="7">반품 완료</option>
+					<option value="8">상품 취소</option>
 				</select>
 			</span>
 		</div>

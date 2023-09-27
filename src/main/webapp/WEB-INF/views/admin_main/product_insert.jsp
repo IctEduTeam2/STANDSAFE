@@ -58,12 +58,31 @@ button {
 	border: none;
 }
 </style>
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 	function save_go() {
 		var form = document.getElementById("frm");
 		alert(frm.prod_name.value);
-		//f.action = "/product_insert.do";
+		
 		form.submit();
+	}
+</script> -->
+<script type="text/javascript">
+	function save_go() {
+		var form = document.getElementById("frm");
+		
+		// 판매가와 할인가격을 가져옵니다.
+		var regular_price = frm.regualr_price.value;
+		var sales_price = frm.sales_price.value;
+		
+		// 판매가와 할인가격이 같은 경우
+		if (parseInt(regular_price) <= parseInt(sales_price)) {
+			alert("할인가격이 판매가와 같거나 클수 없습니다.");
+			return false;  // 함수 종료
+		} else {
+			form.submit();
+		}
+
+		
 	}
 </script>
 <script>
@@ -80,13 +99,13 @@ button {
 			prodlowSelect.innerHTML += '<option value="1">소화기</option>';
 			prodlowSelect.innerHTML += '<option value="2">화재감지/대피</option>';
 		} else if (selectedCategory === "2") {
-			prodlowSelect.innerHTML += '<option value="3">구급함/제세동기</option>';
-			prodlowSelect.innerHTML += '<option value="4">재난안전용품</option>';
-			prodlowSelect.innerHTML += '<option value="5">방역안전용품</option>';
+			prodlowSelect.innerHTML += '<option value="1">구급함/제세동기</option>';
+			prodlowSelect.innerHTML += '<option value="2">재난안전용품</option>';
+			prodlowSelect.innerHTML += '<option value="3">방역안전용품</option>';
 		} else if (selectedCategory === "3") {
-			prodlowSelect.innerHTML += '<option value="6">마스크</option>';
-			prodlowSelect.innerHTML += '<option value="7">위생장갑</option>';
-			prodlowSelect.innerHTML += '<option value="8">통조림/비상식량</option>';
+			prodlowSelect.innerHTML += '<option value="1">마스크</option>';
+			prodlowSelect.innerHTML += '<option value="2">위생장갑</option>';
+			prodlowSelect.innerHTML += '<option value="3">통조림/비상식량</option>';
 		}
 	}
 </script>
@@ -127,26 +146,7 @@ button {
 						<option value="">중분류 선택</option>
 				</select></td>
 			</tr>
-			<!-- <tr>
-				<th>카테고리</th>
-				<td colspan="5">				
-				<select name="prodhigh" style="width:150px;height:50px;">
-						<option value="">소방/안전</option>
-						<option value="">재난/응급/긴급</option>
-						<option value=""> 일상/기타 </option>
-				</select>
-				<select name="prodlow" style="width:150px;height:50px;">
-						<option value="">소화기</option>
-						<option value="">화재감지/대피</option>
-						<option value="">구급함/제세동기</option>
-						<option value="">재난안전용품</option>
-						<option value="">방역안전용품</option>
-						<option value="">마스크</option>
-						<option value="">위생장갑</option>
-						<option value="">통조림/비상식량</option>
-				</select>
-				</td>
-			</tr> -->
+	
 			<tr>
 				<th>상품명</th>
 				<td colspan="5"><input type="text" name="prod_name" id="prod_name"></td>
@@ -155,7 +155,7 @@ button {
 			<tr>
 				<th>정상가</th>
 				<td><input type="text" name="regualr_price" id="regualr_price"></td>
-				<th>판매가</th>
+				<th>할인가격</th>
 				<td><input type="text" name="sales_price" id="sales_price"></td>
 			</tr>
 			<tr>
@@ -168,11 +168,11 @@ button {
 			</tr>
 			<tr>
 				<th>썸네일 이미지</th>
-				<td colspan="5"><input type="file" id="file_upload" name="file"></td>
+				<td colspan="5"><input type="file" id="thumbnail" name="thumbnail"></td>
 			</tr>
 			<tr>
 				<th>상세 이미지</th>
-				<td colspan="5"><input type="file" id="file_upload" name="file_detail"></td>
+				<td colspan="5"><input type="file" id="detail_img" name="detail_img"></td>
 			</tr>
 
 
@@ -185,7 +185,7 @@ button {
 		<!-- 하단 버튼 -->
 		<div style="margin-bottom: 20%; margin-left: 40%;">
 			<span style="float: left; margin-top: 80px; margin-right: 100px;">
-				<button type="submit" value="등록" onclick="save_go()">등록</button>
+				<button type="submit" value="등록" onclick="return save_go();">등록</button>
 			</span> <span style="float: left; margin-top: 80px; margin-right: 100px;">
 				<button type="button" value="목록"
 					onclick="location.href='/product_list.do'">목록</button>

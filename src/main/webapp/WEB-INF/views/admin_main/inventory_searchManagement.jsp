@@ -115,14 +115,14 @@ function delete_ok() {
 	<div style="width: 100%;">
 		<table
 			style="float: left; margin-left: 10%; margin-top: 10%; border: 1px solid black; width: 20%; height: 400px;">
-				<tr>
+			<tr>
 					<th>전체 등록 상품:</th>
 					<td><c:out value= "${totalCount}" /></td>
-				</tr>
-				<tr>
+			</tr>
+			<tr>
 					<th>오늘 등록 상품:</th>
 					<td><c:out value="${today_reg}" /></td>
-				</tr>
+			</tr>
 			<!-- <tr>
 				<th>전체 판매 상품:</th>
 				<td>100개</td>
@@ -142,22 +142,22 @@ function delete_ok() {
 				style="float: left; margin-left: 5%; margin-top: 10%; border: 1px solid black; width: 55%; height: 400px;">
 				<tr>
 					<th style="width: 200px;">상품명</th>
-					<td colspan="3"><input type="text" id="searchText" name="searchText"
-						value="" title="상품명검색" style="width: 300px; height: 40px;">
+					<td colspan="3"><input type="text" id="searchText"
+							name="searchText" value="${param.searchText}" title="상품명검색" style="width: 300px; height: 40px;">
 					</td>
 				</tr>
 				<tr>
 					<th style="width: 200px;">상품 등록일</th>
-					<td><input type="date" id="stDate" name="stDate" style="height: 40px; width: 300px;">
-					</td>
-					<td><input type="date" id="endDate" name="endDate" style="height: 40px; width: 300px;">
-					</td>
+					<td><input type="date" id="stDate" name="stDate"
+							value="${param.stDate}" style="height: 40px; width: 300px;"></td>
+					<td><input type="date" id="endDate" name="endDate"
+							value="${param.endDate}" style="height: 40px; width: 300px;"></td>
 				</tr>
 				<tr>
 					<td colspan="2"></td>
 					<td><input type="button" alt="검색" value="검색"
 						style="width: 200px; height: 60px; font-size: 25px; border-radius: 10px; background-color: #505BBD; color: white; border: none; float: right;"
-						onclick="searchList();">
+						onclick="searchList();" />
 					</td>
 					<td><input type="button" alt="초기화" value="초기화"
 						style="width: 200px; height: 60px; font-size: 25px; border-radius: 10px; background-color: #B5B5B5; color: white; border: none; float: right; margin-right: 20px;">
@@ -236,40 +236,44 @@ function delete_ok() {
 							<ol class="paging">
 								<!-- 이전버튼 : 첫블럭이면 비활성화-->
 								<c:choose>
-									<c:when test="${paging.beginBlock <= paging.pagePerBlock }">
+									<c:when test="${paging.beginBlock <= paging.pagePerBlock}">
 										<li class="disable">이전으로</li>
 									</c:when>
 									<c:otherwise>
 										<li><a
-											href="inventory_management.do?cPage=${paging.beginBlock-paging.pagePerBlock}">이전으로</a></li>
+											href="/inventorySearchList.do?cPage=${paging.beginBlock-paging.pagePerBlock}&pageSize=10&searchText=${param.searchText}&stDate=${param.stDate}&endDate=${param.endDate}">이전으로</a></li>
 									</c:otherwise>
 								</c:choose>
-								<c:forEach begin="${paging.beginBlock }"
-									end="${paging.endBlock }" step="1" var="k">
-									<c:choose>
-										<c:when test="${k == paging.nowPage }">
-											<li class="now">${k }</li>
-										</c:when>
-										<c:otherwise>
-											<li><a href="inventory_management.do?cPage=${k }"> ${k }</a></li>
-										</c:otherwise>
-									</c:choose>
+
+								<c:forEach begin="${paging.beginBlock}" end="${paging.endBlock}"
+									step="1" var="k">
+									<!-- 페이지 번호가 실제 총 페이지 수를 초과하는 경우 표시하지 않음 -->
+									<c:if test="${k <= paging.totalPage}">
+										<c:if test="${k == paging.nowPage}">
+											<!-- 현재페이지와 같으면 -->
+											<li class="now">${k}</li>
+										</c:if>
+										<c:if test="${k != paging.nowPage}">
+											<li><a
+												href="/inventorySearchList.do?cPage=${k}&pageSize=10&searchText=${param.searchText}&stDate=${param.stDate}&endDate=${param.endDate}">${k}</a></li>
+										</c:if>
+									</c:if>
 								</c:forEach>
 
-								<!-- 이후버튼  -->
+								<!-- 이후버튼 -->
 								<c:choose>
-									<c:when test="${paging.endBlock >= paging.totalPage }">
+									<c:when test="${paging.endBlock >= paging.totalPage}">
 										<li class="disable">다음으로</li>
 									</c:when>
 									<c:otherwise>
 										<li><a
-											href="inventory_management.do?cPage=${paging.beginBlock+paging.pagePerBlock }">다음으로</a></li>
+											href="/inventorySearchList.do?cPage=${paging.beginBlock+paging.pagePerBlock}&pageSize=10&searchText=${param.searchText}&stDate=${param.stDate}&endDate=${param.endDate}">다음으로</a></li>
 									</c:otherwise>
 								</c:choose>
 							</ol>
 						</td>
 					</tr>
-				</tfoot>
+				</tfoot> 
 			</table>
 		</div>
 		</form>

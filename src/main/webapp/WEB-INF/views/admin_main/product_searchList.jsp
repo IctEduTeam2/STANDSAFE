@@ -207,7 +207,6 @@ var st = d;
 			<table class="order_table">
 				<colgroup>
 					<col width="5%">
-					<%-- <col width="5%"> --%>
 					<col width="20%">
 					<col width="15%">
 					<col width="10%">
@@ -219,7 +218,6 @@ var st = d;
 				<thead>
 					<tr>
 						<td class="th_column_1">선택</td>
-						<!-- <td class="th_column_1">번호</td> -->
 						<td class="th_column_2">상품이미지</td>
 						<td class="th_column_3">상품명</td>
 						<td class="th_column_4">정상가</td>
@@ -244,7 +242,6 @@ var st = d;
 								value="${pvo.PROD_NUM}"
 								style="width: 20px; height: 20px; float: right; margin-right: 20px; margin-top: 20px;"
 								class="productCheckbox"></td>
-							 <%-- <td>${paging.totalRecord -((paging.nowPage-1)*paging.numPerPage + vs.index) }</td> --%>
 							<td><img src="resources/images/products/${pvo.PROD_IMG}" /></td>
 							<td>${pvo.PROD_NAME}</td>
 							<td>${pvo.PROD_PRICE}</td>
@@ -254,7 +251,6 @@ var st = d;
 									pattern="yyyy-MM-dd HH:mm:ss" /> <fmt:formatDate
 									value="${regdate}" pattern="yyyy-MM-dd" /></td>
 							<td>${pvo.PROD_ST == 0 ? '판매중' : '미판매중' }</td>
-							<%-- <td class="productStatus">${pvo.PROD_ST}</td> --%>
 						</tr>
 					</c:forEach>
 				</tbody>
@@ -263,7 +259,6 @@ var st = d;
 				<tfoot>
 					<tr>
 						<td colspan="8">
-							<!-- <div id="pagination-container"></div> -->
 						</td>
 					</tr>
 				</tfoot>
@@ -277,7 +272,8 @@ var st = d;
 										<li class="disable">이전으로</li>
 									</c:when>
 									<c:otherwise>
-										<li><a href="/product_list.do?cPage=${paging.beginBlock-paging.pagePerBlock}&pageSize=10">이전으로</a></li>
+										<li><a
+											href="/productSearchList.do?cPage=${paging.beginBlock-paging.pagePerBlock}&pageSize=10&searchText=${param.searchText}&searchST=${param.searchST}&stDate=${param.stDate}&endDate=${param.endDate}">이전으로</a></li>
 									</c:otherwise>
 								</c:choose>
 
@@ -290,7 +286,8 @@ var st = d;
 											<li class="now">${k}</li>
 										</c:if>
 										<c:if test="${k != paging.nowPage}">
-											<li><a href="/product_list.do?cPage=${k}&pageSize=10">${k}</a></li>
+											<li><a
+												href="/productSearchList.do?cPage=${k}&pageSize=10&searchText=${param.searchText}&searchST=${param.searchST}&stDate=${param.stDate}&endDate=${param.endDate}">${k}</a></li>
 										</c:if>
 									</c:if>
 								</c:forEach>
@@ -301,7 +298,8 @@ var st = d;
 										<li class="disable">다음으로</li>
 									</c:when>
 									<c:otherwise>
-										<li><a href="/product_list.do?cPage=${paging.beginBlock+paging.pagePerBlock}&pageSize=10">다음으로</a></li>
+										<li><a
+											href="/productSearchList.do?cPage=${paging.beginBlock+paging.pagePerBlock}&pageSize=10&searchText=${param.searchText}&searchST=${param.searchST}&stDate=${param.stDate}&endDate=${param.endDate}">다음으로</a></li>
 									</c:otherwise>
 								</c:choose>
 							</ol>

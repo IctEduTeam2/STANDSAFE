@@ -31,7 +31,17 @@ function selectAll(selectAll)  {
 	  checkboxes.forEach((checkbox) => {
 	    checkbox.checked = selectAll.checked
 	  })
-	}
+
+	  function st_update(){
+		    var checkbox = document.getElementById("ordchk");
+		    if (checkbox.checked) {
+		        var frm = document.getElementById("frm");
+		        document.getElementById("take_st").value = document.getElementById("searchKey").value;
+		        document.getElementById('frm').submit();
+		    } else {
+		        alert("업데이트 할 상품을 선택해 주세요");
+		    }
+		}
 </script>
 </head>
 <body>
@@ -45,32 +55,40 @@ function selectAll(selectAll)  {
 		</div>
 		<div class="author_table_wrap" style="width: 80%; margin: auto;">
 			<!-- 게시물 O -->
+			<c:if test="${listCheck != 'empty' }">
+			<form id="frm" name="frm" method="post" action="/order_detail.do">
+			<input type ="hidden" id="pay_num" name="pay_num" value="${ovo.PAY_NUM}"/>
+			<input type="hidden" id="take_st" name="take_st" value="${ovo.TAKE_ST }" />
+			<input type="hidden" id="payOkNum" name="payOkNum" value="${ovo.PAY_OKNUM }" />
 				<table class="order_table">
 					<colgroup>
 						<col width="5%">
+						<col width="15%">
 						<col width="10%">
+						<col width="15%">
+						<col width="15%">
+						<col width="15%">
 						<col width="10%">
-						<col width="10%">
-						<col width="10%">
-						<col width="10%">
-						<col width="10%">
+						<col width="15%">
 					</colgroup>
 					<thead>
 						<tr>
 							<td class="th_column_1"><input type="checkbox" name="th_column_1" onclick='selectAll(this)'></td>
-							<td class="th_column_2">회원 번호</td>
+							<td class="th_column_2">주문 번호</td>
 							<td class="th_column_3">결제 타입</td>
 							<td class="th_column_4">카드 번호</td>
 							<td class="th_column_5">승인 날짜</td>
 							<td class="th_column_6">승인 번호</td>
 							<td class="th_column_7">결제 상태</td>
+							<td class="th_column_8">처리 상태</td>
+							
 						</tr>
 					</thead>
 					<tbody>
 							<c:forEach items="${list}" var="ovo">
 	                    		<tr>
-	                    			<td><input type="checkbox" name="th_column_1" onclick='selectAll(this)'> </td>
-	                    			<td>${ovo.CLIENT_NUM}</td>
+	                    			<td><input type="checkbox" name="ordchk" id="ordchk" onclick='selectAll(this)'> </td>
+	                    			<td>${ovo.PAY_NUM}</td>
 	                    			<td>${ovo.PAY_TYPE}</td>
 	                    			<td>${ovo.PAY_CARD}</td>
 	                    			<td>
@@ -78,17 +96,28 @@ function selectAll(selectAll)  {
                                 	<fmt:formatDate value="${regdate}" pattern="yyyy-MM-dd" /></td>
 	                    			<td>${ovo.PAY_OKNUM}</td>
 	                    			<td>${ovo.PAY_ST}</td>
+	                    			<td>
+	                    				<c:choose>
+	                    					<c:when test="${ovo.TAKE_ST == '0' }">상품 준비중</c:when>
+	                    					<c:when test="${ovo.TAKE_ST == '1' }">상품 출고</c:when>
+	                    					<c:when test="${ovo.TAKE_ST == '2' }">상품 배송중</c:when>
+	                    					<c:when test="${ovo.TAKE_ST == '3' }">상품 배송완료</c:when>
+	                    					<c:otherwise>${ovo.TAKE_ST}</c:otherwise>
+	                    				</c:choose>
+	                    			</td>
 	             				</tr>
 	                    	</c:forEach>
 					</tbody>
 				</table>
+				</form>
+				</c:if>
 
 
 		</div>
 		<!-- 하단 버튼 -->
 		<div style="width: 80%; margin: auto;">
 			<span style="float: right; margin-top: 80px; ">
-				<button type="button" value="삭제" style="width: 250px; height: 60px; font-size: 25px; background-color: #505BBD; color: white; border: none;">확인</button>
+				<button type="button" value="삭제" style="width: 250px; height: 60px; font-size: 25px; background-color: #505BBD; color: white; border: none;" onclick="st_update()">확인</button>
 			</span> 
 			<span style="float: right; margin-top: 80px; margin-right: 100px;">
 				<button type="button" value="삭제" style="width: 250px; height: 60px; font-size: 25px; background-color: #505BBD; color: white; border: none;" onclick="location.href='/order_list.do'">목록</button>
@@ -96,10 +125,10 @@ function selectAll(selectAll)  {
 			<span style="float: right; margin-top: 80px; margin-right: 100px;">
 				<select id="searchKey" name="searchKey" title="검색항목" class="select_option" style="width: 300px; height: 60px; font-size: 20px; text-align: center;">
 					<option value="">===== 상태 선택 =====</option>
-					<option value="producNm">상품 준비중</option>
-					<option value="producNm2">상품 출고</option>
-					<option value="content">배송중</option>
-					<option value="createName">배송 완료</option>
+					<option value="0">상품 준비중</option>
+					<option value="1">상품 출고</option>
+					<option value="2">상품 배송중</option>
+					<option value="3">상품 배송완료</option>
 				</select>
 			</span>
 		</div>
