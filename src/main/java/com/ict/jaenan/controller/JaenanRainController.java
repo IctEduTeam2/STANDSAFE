@@ -42,8 +42,10 @@ public class JaenanRainController {
 
 	// 재난-강수-첫화면이자, 날씨실시간 jsp로 가는 컨트롤러
 	@RequestMapping("/jaenan_rainlive.do")
-	public ModelAndView jaenanRainLive(HttpSession session) {
+	public ModelAndView jaenanRainLive(HttpSession session
+		) {
 
+		
 		return new ModelAndView("jaenan/info_rainlive");
 	}
 
@@ -241,10 +243,7 @@ public class JaenanRainController {
 			StringBuilder urlBuilder = new StringBuilder(
 					"http://apis.data.go.kr/1360000/RadarImgInfoService/getCmpImg"); /* URL */
 			urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8")
-					+ "=U5K8ToP0OjUZWoCAD2t5c39BAudQefSGjnRhVZzlgmDMrYsxypjhEicS2%2FgRc%2BqJzx5WJMWLTv0sF7LEzgEn7A%3D%3D"); /*
-																															 * Service
-																															 * Key
-																															 */
+					+ "=U5K8ToP0OjUZWoCAD2t5c39BAudQefSGjnRhVZzlgmDMrYsxypjhEicS2%2FgRc%2BqJzx5WJMWLTv0sF7LEzgEn7A%3D%3D"); 																												
 			urlBuilder.append(
 					"&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /* 페이지번호 */
 			urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "="
@@ -263,7 +262,7 @@ public class JaenanRainController {
 			while ((msg = br.readLine()) != null) {
 				sb.append(msg);
 			}
-			System.out.println(sb.toString());
+		
 			InputSource in = new InputSource(new StringReader(sb.toString()));
 
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -284,7 +283,7 @@ public class JaenanRainController {
 				last_img = rdr_img;
 			}
 
-			System.out.println("마지막 사진이름은 " + last_img);
+			
 			String dateTimeStr = last_img.substring(last_img.lastIndexOf("_") + 1, last_img.lastIndexOf("."));
 
 			// 날짜와 시간을 분리
