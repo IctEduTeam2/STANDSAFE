@@ -60,6 +60,18 @@ public class AdminController {
 			System.out.println("관리자 로그인 실패");
 			return mv;
 		} else {
+			//1001 성진 추가
+			String admin_name = advo.getADMIN_NICK();
+            int a_num = advo.getADMIN_NUM();
+            String admin_num = String.valueOf(a_num); 
+            String dbpw = advo.getADMIN_PW();
+            session.setAttribute("admin_name", admin_name);
+            session.setAttribute("admin_num", admin_num);
+            session.setAttribute("dbpw", dbpw);
+            System.out.println("admin_name:" + admin_name);
+            System.out.println("admin_num:" + admin_num);
+            //위까지
+            
 			session.setAttribute("advo", advo);
 			session.setAttribute("loginChk", "ok");
 			// System.out.println("LoginChk: " + session.getAttribute("loginChk"));

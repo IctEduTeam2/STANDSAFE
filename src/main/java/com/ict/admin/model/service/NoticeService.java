@@ -1,8 +1,11 @@
 package com.ict.admin.model.service;
 
 import java.util.List;
+import java.util.Map;
 
+import com.ict.admin.model.vo.FaqVO;
 import com.ict.admin.model.vo.NoticeVO;
+import com.ict.admin.model.vo.QaVO;
 
 public interface NoticeService {
 	
@@ -29,22 +32,62 @@ public interface NoticeService {
 	//onelist
 	public NoticeVO getAdNoticeOneList(String notice_num);
 	
+	//notice 수정완료
+	int getNoticeUpdateOk(NoticeVO mvo);
+	
+	//notice 단독삭제
+	public int NoticeDeleteOk(String notice_num);
+	
+	//notice 작성완료
+	public int getNotiWriteOk(NoticeVO mvo);
+	
 	//테이블 삭제 버튼
-	int updateNoticeStatus(String notice_num);
+	int upNotitabst(String notice_num);
 	
 	//삭제게시물 검색 버튼
 	List<NoticeVO> getDeletedNoti();
-	//int getDeletedNoti(String notice_num);
-	
-	
+
 	//검색(전체리스트)
 	List<NoticeVO> getAllNotices();
 	
 	//검색 (특정 추출)
-	//searchKey,searchText,searchTitle,start1,close1
 	public List<NoticeVO> adNotiSearch(String searchKey,String searchText,String searchTitle,String start1,String close1,String mg_type);
 
 	//홈페이지 등록
-	boolean updateNoticeStatus(String notice_num, int notice_st);
-
+	public int updateNoticeStatus(String notice_num);
+	
+	//===============================================================================================
+	//QA
+	//공지사항 QA 게시물
+	int getTotalQa();
+	// 삭제된 QA 게시물
+	int getDeletedQa();
+	//삭제게시물 검색 버튼
+	List<QaVO> getDeleQa();	
+	//검색(전체리스트)
+	List<QaVO> getAllQa();
+	//검색 (특정 추출)
+	public List<QaVO> adSearchQa(String searchKey,String searchText,String searchTitle,String start1,String close1,String mg_type);
+	//테이블 삭제 버튼
+	int upQatabst(String board_num);
+	//
+	public QaVO getQaOneList(String board_num);
+	//삭제폼
+	public int QaDeleteOk(String board_num);
+	//답글
+	int getLevUpdate(Map<String, Integer> map);
+	//
+	int getAnsWriteOk(QaVO qvo);
+	
+	//===============================================================================================
+	//FQA
+	//FQA 전체 게시물
+	int getTotalFaq();
+	// 등록된 FQA 게시물
+	int getRegisteredFaq();
+	// 삭제된 FQA 게시물
+	int getDeletedFaq();
+	//삭제게시물 검색 버튼
+	List<FaqVO> getDeleFaq();
+	
 }

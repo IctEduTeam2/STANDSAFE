@@ -52,7 +52,7 @@
 		<% } %>
 		</div>
 		<div id="nav">
-			<a href="/admin_loginok.do" style="margin-left: 8px;"><img id="logo"
+			<a href="/admin_logohome.do" style="margin-left: 8px;"><img id="logo"
 				src="resources/images/admin_logo.png"></a>
 			<ul class="menu">
 				<li><a href="/userManagement.do">회원관리</a>
@@ -70,7 +70,6 @@
 						<li><a href="/order_list.do">주문내역조회</a></li>
 						<li><a href="/return_list.do">반품관리</a></li>
 						<li><a href="/exchange_list.do">교환관리</a></li>
-
 					</ul></li>
 				<li><a href="/admin_notice.do">게시판관리</a>
 					<ul class="submenu">

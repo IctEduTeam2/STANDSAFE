@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -77,15 +78,13 @@ label {
 </style>
 <script type="text/javascript">
 	function go_adqa_list(f) {
-		location.href="/ad_allqa.do"
-		/* 여기부분은 나중에 수정해야함, 목록 페이징, 게시글번호 들고 다녀야함. */
+		location.href="/admin_qa.do" /*목록*/
 	}
 	function go_adqa_delete(f) {
-		location.href="/adqa_delete.do"
-		/* 여기부분은 나중에 수정해야함, 목록 페이징, 게시글번호 들고 다녀야함. */
+		location.href="/adqa_delete.do?BOARD_NUM=" + ${qvo.BOARD_NUM};
 	}
 	 function go_adqa_writeform(f) {
-		location.href="/adqa_writeform.do";
+		location.href="/adqa_writeform.do?BOARD_NUM=" + ${qvo.BOARD_NUM};
 		
 	}
 	//관리자 내용말고, 사용자가 쓴 글 눌렀을때는 , 답글버튼이 나와야함.
@@ -106,36 +105,54 @@ label {
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">문의 유형</td>
 									<td id="type">
-										<span>환불 문의</span>	
+										<span>${qvo.BOARD_TYPE}</span>	
 									</td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">작성자</td>
 								<!--이건 로그인한 사람이 자동으로 뜨게하기.  -->
-								<td id="type">일라오이</td>
+								<td id="type">${qvo.BOARD_WRITER}</td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">제목</td>
-								<td id="type">상품이 찌그러졌어요..환불가능한가요?</td>
+								<td id="type">${qvo.BOARD_SUBJECT}</td>
 							</tr>
 							
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font" width="200px;">첨부파일</td>
-								<td id="type"><img src="resources/images/bbs/qa.PNG"  style="width: 200px; height: auto;"></td>
+								<td>
+									<c:choose>
+										<c:when test="${empty qvo.BOARD_FILE}">
+											<b>첨부 파일 없음</b>
+										</c:when>
+										<c:otherwise>
+											<img src="/resources/upload/${qvo.BOARD_FILE }" style="width: 200px; height: auto;" />
+										</c:otherwise>
+									</c:choose>
+								</td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">비밀글여부</td>
 								<td>
 									<div id="chkbox_div">
-										<input type="checkbox" id="chkbox" checked disabled/>
-										<label for="chkbox"></label>
+									<c:choose>
+										<c:when test="${qvo.BOARD_LOCK == 1}">
+											<input type="checkbox" id="chkbox" checked disabled/>
+											<label for="chkbox"></label>
+										</c:when>
+										<c:otherwise>
+											<input type="checkbox" id="chkbox" disabled/>
+											<label for="chkbox"></label>
+										</c:otherwise>
+									</c:choose>
 										비밀글여부
 									</div>
+								</td>
 							</tr>
 							<tr align="center">
 							
 								<td colspan="2" style="height: 800px;">
-									상품 환불가능한가요?... 찌그러졌는데... 절대 제가 밟은게 아닙니다...	
+									${qvo.BOARD_CONTENT}
 								</td>
 							</tr>
 							</tbody>

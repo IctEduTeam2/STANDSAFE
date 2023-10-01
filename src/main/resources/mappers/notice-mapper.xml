@@ -36,6 +36,41 @@
  	<select id="noticeonelist" parameterType="String" resultType="nvo">
  		select * from NOTICE_T where NOTICE_NUM = #{NOTICE_NUM}
  	</select>
+ 	
+ 	<!-- 공지사항 수정완료 -->
+ 	<update id="notiupcom" parameterType="nvo">
+	   	update NOTICE_T
+		set
+	    NOTICE_CONTENT=#{NOTICE_CONTENT},
+	    NOTICE_WRITER=#{NOTICE_WRITER},
+	    NOTICE_FILE=#{NOTICE_FILE},
+	    <if test="NOTICE_ST == null">
+            <choose>
+                <when test="NOTICE_ST == '1'">
+                    NOTICE_ST = 1,
+                </when>
+                <when test="NOTICE_ST == '0'">
+                    NOTIST_ST = 0,
+                </when>
+            </choose>
+        </if>
+        NOTICE_TYPE=#{NOTICE_TYPE},
+	    NOTICE_UPDATE=SYSDATE(),
+	    ADMIN_NUM=#{ADMIN_NUM}
+		where NOTICE_NUM=#{NOTICE_NUM}
+	   </update>
+	   
+	<!-- 공지사항 단독삭제 -->
+	<update id="noitupdelcom" parameterType="String">
+	   	update NOTICE_T
+	   	set NOTICE_ST = 2 where NOTICE_NUM = #{NOTICE_NUM}
+	</update>
+	
+	<!-- 공지사항 작성완료 -->
+	<insert id="notiwricom" parameterType="nvo">
+		insert into NOTICE_T (NOTICE_SUBJECT, NOTICE_WRITER, NOTICE_CONTENT, NOTICE_FILE, NOTICE_TYPE, NOTICE_DATE,ADMIN_NUM)
+	   	values(#{NOTICE_SUBJECT},#{NOTICE_WRITER},#{NOTICE_CONTENT},#{NOTICE_FILE},#{NOTICE_TYPE},SYSDATE(),#{ADMIN_NUM})
+	</insert>
 
 	<!-- 조회수  --> 	
  	<update id="noticehitup" parameterType="String">
@@ -46,56 +81,198 @@
  	<select id="allsel" resultType="nvo">
  		select * from NOTICE_T where NOTICE_ST in (0, 1)
  	</select>
- 	
- 	
- 	<!-- 검색  -->
-<select id="adsearchnoti" resultType="nvo">
-    select * from NOTICE_T 
-    <where>
-        <!-- 기본 조건 -->
-        (NOTICE_ST = 1 OR NOTICE_ST = 0)
-        
-        <!-- 항목 종류 검색  -->
-        <if test="searchKey != null and searchText != ''">
-            <choose>
-                <when test="searchKey == '제목'">
-                    AND NOTICE_SUBJECT LIKE  CONCAT('%', #{searchText}, '%') 
-                </when>
-                <when test="searchKey == '작성자'">
-                    AND NOTICE_WRITER LIKE CONCAT('%', #{searchText}, '%') 
-                </when>
-                <when test="searchKey == '내용'">
-                    AND NOTICE_CONTENT LIKE CONCAT('%', #{searchText}, '%') 
-                </when>
-            </choose>
-        </if>
 
-        <!-- 시작 날짜 검색 조건 -->
-        <if test="start1 != null and start1 != ''">
-            AND NOTICE_DATE &gt;= #{start1}
-        </if>
+	<!-- 검색 -->
+    <select id="adsearchnoti" resultType="nvo">
+        select * from NOTICE_T
+        <where>
+            <!-- 기본 조건 -->
+            (NOTICE_ST = 1 OR NOTICE_ST = 0)
 
-        <!-- 종료 날짜 검색 조건 -->
-        <if test="close1 != null and close1 != ''">
-            AND NOTICE_DATE &lt;= #{close1}
-        </if>
-    </where>
-    order by NOTICE_NUM desc
-</select>
+            <!-- 항목 종류 검색 -->
+            <if test="searchKey != null and searchKey != ''">
+                <choose>
+                    <when test="searchKey == '제목'">
+                        AND NOTICE_SUBJECT LIKE CONCAT('%', #{searchText},
+                        '%')
+                    </when>
+                    <when test="searchKey == '작성자'">
+                        AND NOTICE_WRITER LIKE CONCAT('%', #{searchText},
+                        '%')
+                    </when>
+                    <when test="searchKey == '내용'">
+                        AND NOTICE_CONTENT LIKE CONCAT('%', #{searchText},
+                        '%')
+                    </when>
+                </choose>
+            </if>
 
+            <if test="searchTitle != null and searchTitle != ''">
+                <choose>
+                    <when test="searchTitle == '작성일'">
+                        <!-- 시작 날짜 검색 조건 -->
+                        <if test="start1 != null and start1 != ''">
+                            AND NOTICE_DATE &gt;= #{start1}
+                        </if>
+                        <!-- 종료 날짜 검색 조건 -->
+                        <if test="close1 != null and close1 != ''">
+                            AND NOTICE_DATE &lt;= DATE_ADD(#{close1}, INTERVAL 1 DAY)  <!-- 종료 날짜까지 
+                                포함 -->
+                        </if>
+                    </when>
+                    <when test="searchTitle == '수정일'">
+                        <!-- 시작 날짜 검색 조건 -->
+                        <if test="start1 != null and start1 != ''">
+                            AND NOTICE_UPDATE &gt;= #{start1}
+                        </if>
+                        <!-- 종료 날짜 검색 조건 -->
+                        <if test="close1 != null and close1 != ''">
+                            AND NOTICE_UPDATE &lt;= DATE_ADD(#{close1}, INTERVAL 1 DAY)  <!-- 종료 
+                                날짜까지 포함 -->
+                        </if>
+                    </when>
+                </choose>
+            </if>
+        </where>
+        order by NOTICE_NUM desc
+    </select>
  	<!-- 테이블 삭제 버튼 -->
-	<update id="deluptab" parameterType="String">
-		UPDATE NOTICE_T SET NOTICE_ST = 2 WHERE NOTICE_NUM = #{NOTICE_NUM};
-	</update> 	
+    <update id="deluptab" parameterType="String">
+        UPDATE NOTICE_T SET
+        NOTICE_ST = 2 WHERE NOTICE_NUM = #{notice_num}
+    </update>	
 
  	<!-- 홈페이지 등록 -->
-	<update id="upnotihome" parameterType="Map">
-    	UPDATE NOTICE_T SET NOTICE_ST = #{NOTICE_ST} WHERE NOTICE_NUM = #{NOTICE_NUM};
+	<update id="upnotihome" parameterType="String">
+    	UPDATE NOTICE_T SET
+    	NOTICE_ST = 1 WHERE NOTICE_NUM = #{notice_num}
 	</update>
 
  	<!-- 삭제게시물 검색 버튼 -->
  	<select id="seldelbtn" resultType="nvo">
  		SELECT * FROM NOTICE_T WHERE NOTICE_ST = 2
  	</select>
+ 
+ 	<!-- QA -->
+ 	
+ 	<!-- 등록한 QA 게시글 수 -->
+	<!-- 전체 QA 게시글 -->
+	<select id="getTotalQa" resultType="int">
+		SELECT COUNT(*) FROM QA_T
+	</select>
+	<!-- 삭제된 QA 게시글 -->
+	<select id="getDeletedQa" resultType="int">
+		SELECT COUNT(*) FROM QA_T WHERE BOARD_ST = 0
+	</select>	
+	<!-- 삭제게시물 검색 버튼 -->
+ 	<select id="seldelqabtn" resultType="qavo">
+ 		SELECT * FROM QA_T WHERE BOARD_ST = 0
+ 	</select>
+ 	 <!-- 공지사항 검색(전체리스트) -->
+ 	<select id="allselqa" resultType="qavo">
+ 		select * from QA_T where BOARD_ST = 1
+ 	</select>
+ 	<!-- 검색 -->
+    <select id="adsearchqa" resultType="qavo">
+        select * from QA_T
+        <where>
+            <!-- 기본 조건 -->
+            (BOARD_ST = 1)
+
+            <!-- 항목 종류 검색 -->
+            <if test="searchKey != null and searchKey != ''">
+                <choose>
+                    <when test="searchKey == '제목'">
+                        AND BOARD_SUBJECT LIKE CONCAT('%', #{searchText},
+                        '%')
+                    </when>
+                    <when test="searchKey == '작성자'">
+                        AND BOARD_WRITER LIKE CONCAT('%', #{searchText},
+                        '%')
+                    </when>
+                    <when test="searchKey == '내용'">
+                        AND BOARD_CONTENT LIKE CONCAT('%', #{searchText},
+                        '%')
+                    </when>
+                </choose>
+            </if>
+
+            <if test="searchTitle != null and searchTitle != ''">
+                <choose>
+                    <when test="searchTitle == '작성일'">
+                        <!-- 시작 날짜 검색 조건 -->
+                        <if test="start1 != null and start1 != ''">
+                            AND BOARD_DATE &gt;= #{start1}
+                        </if>
+                        <!-- 종료 날짜 검색 조건 -->
+                        <if test="close1 != null and close1 != ''">
+                            AND BOARD_DATE &lt;= DATE_ADD(#{close1}, INTERVAL 1 DAY)  <!-- 종료 날짜까지 
+                                포함 -->
+                        </if>
+                    </when>
+                    <when test="searchTitle == '수정일'">
+                        <!-- 시작 날짜 검색 조건 -->
+                        <if test="start1 != null and start1 != ''">
+                            AND BOARD_UPDATE &gt;= #{start1}
+                        </if>
+                        <!-- 종료 날짜 검색 조건 -->
+                        <if test="close1 != null and close1 != ''">
+                            AND BOARD_UPDATE &lt;= DATE_ADD(#{close1}, INTERVAL 1 DAY)  <!-- 종료 
+                                날짜까지 포함 -->
+                        </if>
+                    </when>
+                </choose>
+            </if>
+        </where>
+        order by BOARD_NUM desc
+    </select>
+     <!-- 테이블 삭제 버튼 -->
+    <update id="delqauptab" parameterType="String">
+        UPDATE QA_T SET
+        BOARD_ST = 0 WHERE BOARD_NUM = #{board_num}
+        ORDER BY BOARD_NUM desc
+    </update>
+ 	
+ 	<!--  -->
+ 	<select id="onelist" parameterType="String" resultType="qavo">
+ 		select * from QA_T where BOARD_NUM = #{board_num}
+ 	</select>
+ 	<!-- 삭제 폼 -->
+ 	<update id="dellist" parameterType="String">
+	   	update QA_T
+	   	set BOARD_ST = 0 where BOARD_NUM = #{board_num}
+	</update>
+	<!-- 답글 -->
+	<update id="levup" parameterType="Map">
+ 		<!-- 그룹과 같은 원글을 찾자. 레벨이 같거나 크면 레벨 증가  -->
+ 			update QA_T set BOARD_LEV = BOARD_LEV +1 where BOARD_GROUPS = #{groups} and BOARD_LEV >= #{lev}
+ 	</update>
+ 	<!--  -->
+ 	<insert id="levup2" parameterType="qavo">
+ 		insert into QA_T (BOARD_SUBJECT, BOARD_WRITER, BOARD_CONTENT,BOARD_FILE, BOARD_DATE, BOARD_GROUPS, BOARD_STEP, BOARD_LEV, ADMIN_NUM)
+	   	values(#{BOARD_SUBJECT},#{BOARD_WRITER},#{BOARD_CONTENT},#{BOARD_FILE},SYSDATE(), #{BOARD_GROUPS}, #{BOARD_STEP}, #{BOARD_LEV}, #{ADMIN_NUM})
+ 	</insert>
+ 	 
+ 	<!-- FAQ -->
+ 	 <!-- 등록한 공지사항 게시글 수 -->
+	<!-- 전체 공지사항 게시글 -->
+	<select id="getTotalFqa" resultType="int">
+		SELECT COUNT(*) FROM FAQ_T
+	</select>
+
+	<!-- 등록된 공지사항 게시글 -->
+	<select id="getRegisteredFqa" resultType="int">
+		SELECT COUNT(*) FROM FAQ_T WHERE FA_ST = 1
+	</select>
+
+	<!-- 삭제된 공지사항 게시글 -->
+	<select id="getDeletedFqa" resultType="int">
+		SELECT COUNT(*) FROM FAQ_T WHERE FA_ST = 2
+	</select>
+	<!-- 삭제게시물 검색 버튼 -->
+ 	<select id="seldelfaqbtn" resultType="favo">
+ 		SELECT * FROM FAQ_T WHERE FA_ST = 2
+ 	</select>
+	
  	
  </mapper>
