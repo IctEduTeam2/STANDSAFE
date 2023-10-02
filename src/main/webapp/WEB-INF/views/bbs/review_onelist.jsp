@@ -85,8 +85,8 @@ label {
 
 			return ;
 		}
-	});
-</script>	
+	}); 
+</script>	  
 <script type="text/javascript">
 	function update_go(f) {
 		f.action="/bbs_review_updateform.do";
