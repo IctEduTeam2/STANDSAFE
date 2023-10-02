@@ -495,54 +495,177 @@ public class ProductController {
 //		return mv;
 //	}
 
-	// 반품 리스트
-	@RequestMapping("/return_list.do")
-	public ModelAndView getReturnList() {
-		ModelAndView mv = new ModelAndView("admin_main/return_list");
-		List<ReturnVO> list = productService.getReturnList();
-		mv.addObject("list", list);
-		return mv;
-	}
-
-	// 반품 상세보기
-	@RequestMapping("/return_detail.do")
-	public ModelAndView getReturnDetail(@ModelAttribute("pb_num") String pb_num) {
-		ModelAndView mv = new ModelAndView("admin_main/return_detail");
-		ReturnVO rvo2 = productService.getReturnOneList(pb_num);
-		mv.addObject("rvo2", rvo2);
-		return mv;
-	}
-
-	// 반품 상태 업데이트
-	@RequestMapping("/return_Update.do")
-	public ModelAndView getReturnUpdate(@ModelAttribute("pb_num") String pb_num, @ModelAttribute("pb_st") String pb_st,
-			ReturnVO rvo) {
-		ModelAndView mv = new ModelAndView();
-		rvo.setPB_NUM(pb_num);
-		rvo.setPB_ST(pb_st);
-		System.out.println("return Up :::" + rvo.getPB_NUM());
-		System.out.println("return Up :::" + rvo.getPB_ST());
-		int res = productService.getReturnStateUpdate(rvo);
-		if (res > 0) {
-			mv.setViewName("redirect:/return_detail.do");
-			return mv;
-		} else {
-			// 추가: 실패 응답 처리
-			mv.setViewName("error/error_page"); // 여기서 "error_page"는 실제 에러 페이지의 뷰 이름이어야 합니다.
-			mv.addObject("message", "Product insertion failed.");
-			return null;
-		}
-
-	}
+//	// 반품 리스트
+//	@RequestMapping("/return_list.do")
+//	public ModelAndView getReturnList() {
+//		ModelAndView mv = new ModelAndView("admin_main/return_list");
+//		List<ReturnVO> list = productService.getReturnList();
+//		mv.addObject("list", list);
+//		return mv;
+//	}
+//
+//	// 반품 상세보기
+//	@RequestMapping("/return_detail.do")
+//	public ModelAndView getReturnDetail(@ModelAttribute("pb_num") String pb_num) {
+//		ModelAndView mv = new ModelAndView("admin_main/return_detail");
+//		ReturnVO rvo2 = productService.getReturnOneList(pb_num);
+//		mv.addObject("rvo2", rvo2);
+//		return mv;
+//	}
+//
+//	// 반품 상태 업데이트
+//	@RequestMapping("/return_Update.do")
+//	public ModelAndView getReturnUpdate(@ModelAttribute("pb_num") String pb_num, @ModelAttribute("pb_st") String pb_st,
+//			ReturnVO rvo) {
+//		ModelAndView mv = new ModelAndView();
+//		rvo.setPB_NUM(pb_num);
+//		rvo.setPB_ST(pb_st);
+//		System.out.println("return Up :::" + rvo.getPB_NUM());
+//		System.out.println("return Up :::" + rvo.getPB_ST());
+//		int res = productService.getReturnStateUpdate(rvo);
+//		if (res > 0) {
+//			mv.setViewName("redirect:/return_detail.do");
+//			return mv;
+//		} else {
+//			// 추가: 실패 응답 처리
+//			mv.setViewName("error/error_page"); // 여기서 "error_page"는 실제 에러 페이지의 뷰 이름이어야 합니다.
+//			mv.addObject("message", "Product insertion failed.");
+//			return null;
+//		}
+//
+//	}
 
 	// 교환 / 반품 리스트
 	@RequestMapping("/exchange_list.do")
-	public ModelAndView getExchangeList() {
+	public ModelAndView getExchangeList(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("admin_main/exchange_list");
-		List<ExchangeVO> list = productService.getExchangeList();
+
+		// 전체 게시물의 수
+		int count = productService.getTotalExchangeCount();
+		System.out.println("total count :: " + count);
+		paging.setTotalRecord(count);
+	
+		// 전체 페이지의 수
+		if (paging.getTotalRecord() <= paging.getNumPerPage()) {
+			paging.setTotalPage(1);
+			System.out.println("getNumPerPage() ::::" + paging.getNumPerPage());
+
+		} else {
+			paging.setTotalPage(paging.getTotalRecord() / paging.getNumPerPage());
+			if (paging.getTotalRecord() % paging.getNumPerPage() != 0) {
+				paging.setTotalPage(paging.getTotalPage() + 1);
+			}
+		}
+		// 현재페이지
+		String cPage = request.getParameter("cPage");
+		if (cPage == null) {
+			paging.setNowPage(1);
+			System.out.println("paging null ::" + cPage);
+		} else {
+			paging.setNowPage(Integer.parseInt(cPage));
+			System.out.println("paging not null ::" + cPage);
+		}
+		paging.setOffset(paging.getNumPerPage() * (paging.getNowPage() - 1));
+	
+		paging.setBeginBlock(
+				(int) ((paging.getNowPage() - 1) / paging.getPagePerBlock()) * paging.getPagePerBlock() + 1);
+		paging.setEndBlock(paging.getBeginBlock() + paging.getPagePerBlock() - 1);
+	
+		if (paging.getEndBlock() > paging.getTotalPage()) {
+			paging.setEndBlock(paging.getTotalPage());
+		}
+		List<ExchangeVO> list = productService.getExchangeList(paging.getOffset(), paging.getNumPerPage());
+		LocalDate now = LocalDate.now();
+		System.out.println("now ::" + now);
+
+		int today_reg = 0;
+
+		if (list != null || !list.isEmpty()) {
+			for (ExchangeVO pro : list) {
+				if (now.toString() == pro.getPB_DATE()) {
+					today_reg = +1;
+				}
+			}
+
+		}
+
+		mv.addObject("TodayExchange", today_reg);
+		mv.addObject("AllExchange", count);
+		
 		mv.addObject("list", list);
+		mv.addObject("paging", paging);
 		return mv;
 	}
+	
+	// 교환 / 반품 리스트 - 검색 
+		@RequestMapping("/exchangeSearchList.do")
+		public ModelAndView getExchangeSearchList(HttpServletRequest request) {
+			ModelAndView mv = new ModelAndView("admin_main/exchange_searchList");
+
+			Map<String, Object> map = new HashMap<>();
+			map.put("PAY_OKNUM", request.getParameter("searchText"));
+			map.put("stDate", request.getParameter("stDate"));
+			map.put("endDate", request.getParameter("endDate"));
+
+			int allList = productService.getTotalExchangeCount();
+
+			int totalCount = productService.getTotalExchangeCountSearchList(map);
+			System.out.println("totalCount ::" + totalCount);
+			paging.setTotalRecord(totalCount);
+			// 전체 페이지의 수
+			if (paging.getTotalRecord() <= paging.getNumPerPage()) {
+				paging.setTotalPage(1);
+				System.out.println("getNumPerPage() ::::" + paging.getNumPerPage());
+
+			} else {
+				paging.setTotalPage(paging.getTotalRecord() / paging.getNumPerPage());
+				if (paging.getTotalRecord() % paging.getNumPerPage() != 0) {
+					paging.setTotalPage(paging.getTotalPage() + 1);
+				}
+			}
+			// 현재페이지
+			String cPage = request.getParameter("cPage");
+			if (cPage == null) {
+				paging.setNowPage(1);
+				System.out.println("paging null ::" + cPage);
+			} else {
+				paging.setNowPage(Integer.parseInt(cPage));
+				System.out.println("paging not null ::" + cPage);
+			}
+			paging.setOffset(paging.getNumPerPage() * (paging.getNowPage() - 1));
+
+			paging.setBeginBlock(
+					(int) ((paging.getNowPage() - 1) / paging.getPagePerBlock()) * paging.getPagePerBlock() + 1);
+			paging.setEndBlock(paging.getBeginBlock() + paging.getPagePerBlock() - 1);
+
+			if (paging.getEndBlock() > paging.getTotalPage()) {
+				paging.setEndBlock(paging.getTotalPage());
+			}
+			System.out.println("paging.getOffset() ::" + paging.getOffset());
+			System.out.println("paging.getNumPerPage() ::" + paging.getNumPerPage());
+
+			List<ExchangeVO> list = productService.getExchangeSearchList(map, paging.getOffset(), paging.getNumPerPage());
+			LocalDate now = LocalDate.now();
+			System.out.println("now ::" + now);
+
+			int today_order = 0;
+
+			if (list != null || !list.isEmpty()) {
+				for (ExchangeVO ord : list) {
+					if (now.toString() == ord.getPB_DATE()) {
+						today_order = +1;
+					}
+				}
+
+			}
+
+			mv.addObject("today_reg", today_order);
+			mv.addObject("totalCount", allList);
+
+			mv.addObject("list", list);
+			mv.addObject("paging", paging);
+			return mv;
+		}
 
 	// 교환 / 반품 상세보기
 	@RequestMapping("/exchange_detail.do")
@@ -628,7 +751,7 @@ public class ProductController {
 		System.out.println("endDate ::" + request.getParameter("endDate"));
 
 		Map<String, Object> map = new HashMap<>();
-		map.put("PAY_NUM", request.getParameter("searchText"));
+		map.put("PAY_OKNUM", request.getParameter("searchText"));
 		map.put("stDate", request.getParameter("stDate"));
 		map.put("endDate", request.getParameter("endDate"));
 
@@ -694,9 +817,9 @@ public class ProductController {
 
 	// 주문 상세보기
 	@RequestMapping("/order_detail.do")
-	public ModelAndView getOrderDetail(@ModelAttribute("client_num") String client_num) {
+	public ModelAndView getOrderDetail(@ModelAttribute("pay_oknum") String pay_oknum) {
 		ModelAndView mv = new ModelAndView("admin_main/order_detail");
-		List<OrderVO> list = productService.getOrderDetaileList(client_num);
+		List<OrderVO> list = productService.getOrderDetaileList(pay_oknum);
 		mv.addObject("list", list);
 		return mv;
 	}
@@ -708,11 +831,12 @@ public class ProductController {
 			ovo.setPAY_NUM(pay_num);
 			ovo.setTAKE_ST(take_st);
 			ovo.setPAY_OKNUM(payOkNum);
-			System.out.println("return Up :::" + ovo.getPAY_NUM());
-			System.out.println("return Up :::" + ovo.getTAKE_ST());
+			System.out.println("ovo.getPAY_NUM() :::" + ovo.getPAY_NUM());
+			System.out.println("ovo.getTAKE_ST() :::" + ovo.getTAKE_ST());
+			System.out.println("ovo.getTAKE_ST() :::" + ovo.getPAY_OKNUM());
 			int res = productService.getOrderUpdate(ovo);
 			if (res > 0) {
-				mv.setViewName("redirect:/order_detail.do");
+				mv.setViewName("redirect:/order_detail.do?pay_oknum="+ovo.getPAY_OKNUM());
 				return mv;
 			} else {
 				// 추가: 실패 응답 처리
