@@ -73,6 +73,9 @@ public class ShoppingController {
 		ModelAndView mv = new ModelAndView("index");
 		// 슬라이드
 		List<PopUpVO> popupList = shoppingService.getPopupList();
+		for(int i=0; i<popupList.size(); i++) {
+			System.out.println(popupList.get(i).getPopup_img());
+		}
 		mv.addObject("popuplist", popupList);
 		// 베스트 상품 리스트
 		List<ProductVO> productBestList = shoppingService.getProductBestList();
