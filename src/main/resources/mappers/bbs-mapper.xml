@@ -79,7 +79,8 @@
      <!-- 페이징을 위한 시작과 끝구하고, 리스트 출력  -->
 	   <select id="qnalist" parameterType="Map" resultType="qnabbsvo">
 	    select * from QA_T 
-	    order by BOARD_NUM desc limit #{limit} offset #{offset}	
+	    order by BOARD_GROUPS desc, BOARD_LEV asc
+	    limit #{limit} offset #{offset}	
 	   </select> 
      <!--게시글 갯수구하기  -->
 	   <select id="qnacount" resultType="int">
@@ -89,11 +90,19 @@
 	   <select id="qnaonelist" parameterType="String" resultType="qnabbsvo">
 	   	select * from QA_T where BOARD_NUM = #{BOARD_NUM}
 	   </select>
-   <!-- 삽입-->
+   <!-- 삽입
 	   <insert id="qnainsert" parameterType="qnabbsvo" >
 	   	insert into QA_T (BOARD_SUBJECT, BOARD_WRITER, BOARD_CONTENT, BOARD_FILE, BOARD_ST,BOARD_LOCK, BOARD_DATE, BOARD_TYPE,CLIENT_NUM,PROD_NUM)
 	   	values(#{BOARD_SUBJECT},#{BOARD_WRITER},#{BOARD_CONTENT},#{BOARD_FILE},1,#{BOARD_LOCK},SYSDATE(),#{BOARD_TYPE},#{CLIENT_NUM}, #{PROD_NUM})
-	   </insert>
+	   </insert>-->
+	   <!--답글추가로인한 insert 삽입의 수정쿼리   -->
+	   <insert id="qnainsert" parameterType="qnabbsvo" >
+	   <selectKey keyProperty="BOARD_GROUPS" resultType="String" order="BEFORE">
+   			SELECT (IFNULL(MAX(BOARD_NUM),0)+1) as BOARD_GROUPS FROM QA_T
+   		</selectKey>
+	   	insert into QA_T (BOARD_SUBJECT, BOARD_WRITER, BOARD_CONTENT,BOARD_FILE,BOARD_DATE,BOARD_TYPE ,BOARD_GROUPS, BOARD_STEP, BOARD_LEV,CLIENT_NUM,PROD_NUM,BOARD_LOCK)
+	   	values(#{BOARD_SUBJECT},#{BOARD_WRITER},#{BOARD_CONTENT},#{BOARD_FILE},SYSDATE(),#{BOARD_TYPE}, #{BOARD_GROUPS}, 0, 0,#{CLIENT_NUM},#{PROD_NUM},#{BOARD_LOCK)
+	   	</insert>
  	<!-- 수정 -->  
 	   <update id="qnaupdate" parameterType="qnabbsvo">
 	   	update QA_T

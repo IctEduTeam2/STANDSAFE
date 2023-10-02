@@ -6,11 +6,36 @@ import org.springframework.web.multipart.MultipartFile;
 	private String BOARD_NUM, BOARD_SUBJECT, BOARD_WRITER, BOARD_CONTENT, BOARD_FILE,
 	BOARD_TYPE, BOARD_DATE, BOARD_UPDATE, BOARD_ST, BOARD_LOCK, PROD_NUM, CLIENT_NUM,
 	old_f_name, PROD_NAME;
+	private String BOARD_GROUPS, BOARD_STEP, BOARD_LEV;
 	
 	private MultipartFile file;
 	
 	
 	
+	public String getBOARD_GROUPS() {
+		return BOARD_GROUPS;
+	}
+
+	public void setBOARD_GROUPS(String bOARD_GROUPS) {
+		BOARD_GROUPS = bOARD_GROUPS;
+	}
+
+	public String getBOARD_STEP() {
+		return BOARD_STEP;
+	}
+
+	public void setBOARD_STEP(String bOARD_STEP) {
+		BOARD_STEP = bOARD_STEP;
+	}
+
+	public String getBOARD_LEV() {
+		return BOARD_LEV;
+	}
+
+	public void setBOARD_LEV(String bOARD_LEV) {
+		BOARD_LEV = bOARD_LEV;
+	}
+
 	public String getPROD_NAME() {
 		return PROD_NAME;
 	}
