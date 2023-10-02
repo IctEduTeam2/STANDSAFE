@@ -14,7 +14,7 @@
 <script type="text/javascript">
 	function go_notice_list() {
 
-		location.href="/bbs_notice_go.do;"
+		location.href="/bbs_notice_go.do?cPage=" + ${cPage};
 		/* 여기부분은 나중에 수정해야함, 목록 페이징, 게시글번호 들고 다녀야함. */
 	}
 

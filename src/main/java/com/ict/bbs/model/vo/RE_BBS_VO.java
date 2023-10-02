@@ -6,11 +6,37 @@ import org.springframework.web.multipart.MultipartFile;
 	private String RE_NUM, RE_SUBJECT, RE_WRITER, RE_CONTENT, RE_FILE,
 	RE_TYPE, RE_HIT, RE_DATE, RE_UPDATE, RE_ST, RE_LOCK, PROD_NUM, CLIENT_NUM,
 	old_f_name, PROD_NAME;
-	
+	private String RE_GROUPS, RE_STEP, RE_LEV;
 	private MultipartFile file;
 
 	
 	
+	
+	
+	public String getRE_GROUPS() {
+		return RE_GROUPS;
+	}
+
+	public void setRE_GROUPS(String rE_GROUPS) {
+		RE_GROUPS = rE_GROUPS;
+	}
+
+	public String getRE_STEP() {
+		return RE_STEP;
+	}
+
+	public void setRE_STEP(String rE_STEP) {
+		RE_STEP = rE_STEP;
+	}
+
+	public String getRE_LEV() {
+		return RE_LEV;
+	}
+
+	public void setRE_LEV(String rE_LEV) {
+		RE_LEV = rE_LEV;
+	}
+
 	public String getPROD_NAME() {
 		return PROD_NAME;
 	}

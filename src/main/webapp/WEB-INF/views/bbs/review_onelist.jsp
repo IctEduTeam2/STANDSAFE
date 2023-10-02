@@ -191,7 +191,7 @@ label {
 										<input type="hidden" value="${reviewvo.RE_NUM}" name="RE_NUM">
 										<input type="hidden" value="${cPage}" name="cPage">
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										<button class="in_btn" onclick="go_search_list(this.form)">검색으로</button>
+										<input type="button" value="목록으로" onclick="list_go(this.form)" class="in_btn"/>
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										<input type="button" value="삭제"  onclick="delete_go(this.form)" class="in_btn"/>
 									</div>			

@@ -84,7 +84,7 @@
 	   </select> 
      <!--게시글 갯수구하기  -->
 	   <select id="qnacount" resultType="int">
-	   	select count(*) from QA_T where BOARD_ST =1
+	   	select count(*) from QA_T 
 	   </select>
    <!--상세  -->
 	   <select id="qnaonelist" parameterType="String" resultType="qnabbsvo">
@@ -101,7 +101,7 @@
    			SELECT (IFNULL(MAX(BOARD_NUM),0)+1) as BOARD_GROUPS FROM QA_T
    		</selectKey>
 	   	insert into QA_T (BOARD_SUBJECT, BOARD_WRITER, BOARD_CONTENT,BOARD_FILE,BOARD_DATE,BOARD_TYPE ,BOARD_GROUPS, BOARD_STEP, BOARD_LEV,CLIENT_NUM,PROD_NUM,BOARD_LOCK)
-	   	values(#{BOARD_SUBJECT},#{BOARD_WRITER},#{BOARD_CONTENT},#{BOARD_FILE},SYSDATE(),#{BOARD_TYPE}, #{BOARD_GROUPS}, 0, 0,#{CLIENT_NUM},#{PROD_NUM},#{BOARD_LOCK)
+	   	values(#{BOARD_SUBJECT},#{BOARD_WRITER},#{BOARD_CONTENT},#{BOARD_FILE},SYSDATE(),#{BOARD_TYPE}, #{BOARD_GROUPS}, 0, 0,#{CLIENT_NUM},#{PROD_NUM},#{BOARD_LOCK})
 	   	</insert>
  	<!-- 수정 -->  
 	   <update id="qnaupdate" parameterType="qnabbsvo">
@@ -129,8 +129,11 @@
   
   <!--신고 -->
 	  <select id="reportlist" parameterType="Map" resultType="repbbsvo">
-	    select * from REPORT_T where REPORT_ST = 1 
-	    order by REPORT_NUM desc limit #{limit} offset #{offset}
+	    <!-- select * from REPORT_T where REPORT_ST = 1 
+	    order by REPORT_NUM desc limit #{limit} offset #{offset} -->
+	     select * from REPORT_T  where REPORT_ST = 1 
+	    order by REPORT_GROUPS desc, REPORT_LEV asc
+	    limit #{limit} offset #{offset}	
 	   </select> 
    <!--게시글 갯수구하기  -->
 	   <select id="reportcount" resultType="int">
@@ -140,33 +143,53 @@
 	   <select id="reportonelist" parameterType="String" resultType="repbbsvo">
 	   	select * from REPORT_T where REPORT_NUM = #{REPORT_NUM}
 	   </select>
-	<!--삽입  -->
+	<!--삽입  
    <insert id="reportinsert" parameterType="repbbsvo" >
    	insert into REPORT_T (REPORT_SUBJECT, REPORT_WRITER,REPORT_CONTENT, REPORT_FILE, REPORT_DATE, REPORT_TYPE,CLIENT_NUM,PROD_NUM, REPORT_NICK)
    	values(#{REPORT_SUBJECT},#{REPORT_WRITER},#{REPORT_CONTENT},#{REPORT_FILE},SYSDATE(),#{REPORT_TYPE},#{CLIENT_NUM}, #{PROD_NUM}, #{REPORT_NICK})
-   </insert>
+   </insert>-->
+   <insert id="reportinsert" parameterType="repbbsvo" >
+	   <selectKey keyProperty="REPORT_GROUPS" resultType="String" order="BEFORE">
+   			SELECT (IFNULL(MAX(REPORT_NUM),0)+1) as REPORT_GROUPS FROM REPORT_T
+   		</selectKey>
+	   	insert into REPORT_T (REPORT_SUBJECT, REPORT_WRITER, REPORT_CONTENT,REPORT_FILE,REPORT_DATE,REPORT_TYPE ,REPORT_GROUPS, REPORT_STEP, REPORT_LEV,CLIENT_NUM,PROD_NUM,REPORT_NICK)
+	   	values(#{REPORT_SUBJECT},#{REPORT_WRITER},#{REPORT_CONTENT},#{REPORT_FILE},SYSDATE(),#{REPORT_TYPE}, #{REPORT_GROUPS}, 0, 0,#{CLIENT_NUM}, #{PROD_NUM}, #{REPORT_NICK})
+	   	</insert>
   
   
    <!-- review -->
    <!-- 페이징을 위한 시작과 끝구하고, 리스트 출력  -->
 	   <select id="reviewlist" parameterType="Map" resultType="reviewbbsvo">
+	    <!-- select * from REVIEW_T 
+	    order by RE_NUM desc limit #{limit} offset #{offset} -->
 	    select * from REVIEW_T 
-	    order by RE_NUM desc limit #{limit} offset #{offset}
+	    order by RE_GROUPS desc, RE_LEV asc
+	    limit #{limit} offset #{offset}	
+	    
 	   </select> 
    
    <!--게시글 갯수구하기  -->
 	   <select id="reviewcount" resultType="int">
-	   	select count(*) from REVIEW_T where RE_ST = 1
+	   	select count(*) from REVIEW_T 
 	   </select>
    <!--상세  -->
 	   <select id="reviewonelist" parameterType="String" resultType="reviewbbsvo">
 	   	select * from REVIEW_T where RE_NUM = #{RE_NUM}
 	   </select>
-   <!--삽입  -->
+   <!--삽입  
 	   <insert id="reviewinsert" parameterType="reviewbbsvo" >
 	   	insert into REVIEW_T (RE_SUBJECT, RE_WRITER, RE_CONTENT, RE_FILE, RE_TYPE,  RE_DATE, RE_UPDATE, RE_LOCK,CLIENT_NUM,PROD_NUM)
 	   	values(#{RE_SUBJECT},#{RE_WRITER},#{RE_CONTENT},#{RE_FILE},#{RE_TYPE},SYSDATE(),#{RE_UPDATE},#{RE_LOCK}, #{CLIENT_NUM}, #{PROD_NUM})
-	   </insert>
+	   </insert>-->
+	   
+  
+	   <insert id="reviewinsert" parameterType="reviewbbsvo" >
+	   <selectKey keyProperty="RE_GROUPS" resultType="String" order="BEFORE">
+   			SELECT (IFNULL(MAX(RE_NUM),0)+1) as RE_GROUPS FROM REVIEW_T
+   		</selectKey>
+	   	insert into REVIEW_T (RE_SUBJECT, RE_WRITER, RE_CONTENT,RE_FILE,RE_DATE,RE_TYPE ,RE_GROUPS, RE_STEP, RE_LEV,CLIENT_NUM,PROD_NUM,RE_LOCK)
+	   	values(#{RE_SUBJECT},#{RE_WRITER},#{RE_CONTENT},#{RE_FILE},SYSDATE(),#{RE_TYPE}, #{RE_GROUPS}, 0, 0,#{CLIENT_NUM}, #{PROD_NUM},#{RE_LOCK})
+	   	</insert>
    <!--수정  -->
 	   <update id="reviewupdate" parameterType="reviewbbsvo">
 	   	update REVIEW_T

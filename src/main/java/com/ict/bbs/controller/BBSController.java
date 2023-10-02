@@ -688,11 +688,11 @@ public class BBSController {
 			}
 			
 			//회원닉네임 갖고오기 - 작성자에 자동 뜨고 저장하기위함
-			String nick = (String) request.getSession().getAttribute("nick");
+			//String nick = (String) request.getSession().getAttribute("nick");
 
-			String maskNick;
+			//String maskNick;
 			
-			if(nick.length() <2) {
+			/*if(nick.length() <2) {
 				char firstChar = nick.charAt(0);
 				maskNick = firstChar + "**";
 			} else {
@@ -705,9 +705,16 @@ public class BBSController {
 				}
 				maskName.append(lastChar);
 				maskNick = maskName.toString();
+			}*/
+			String nick = (String) request.getSession().getAttribute("nick");
+			String maskNick = "";
+
+			for (int i = 0; i < nick.length(); i++) {
+			    maskNick += "*";
 			}
 	
-			
+			String writer = (String) request.getSession().getAttribute("nick");
+			repvo.setREPORT_WRITER(writer);
 
 			//회원client_num 갖고오자. 디비에 넣어야한다. 
 			String num = (String) request.getSession().getAttribute("id");
