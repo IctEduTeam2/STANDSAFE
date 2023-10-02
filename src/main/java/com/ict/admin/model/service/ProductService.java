@@ -49,8 +49,17 @@ public interface ProductService {
     
     void updateProduct(ProductVO provo);
 	
-	// 교환 리스트
-	public List<ExchangeVO> getExchangeList();
+	// 교환/ 반품 리스트
+	public List<ExchangeVO> getExchangeList(int offset, int limit);
+	
+	// 교환 / 반품 리스트 - 검색 총 게시글 수 
+	public int getTotalExchangeCountSearchList(Map<String, Object> map);
+	
+	public List<ExchangeVO> getExchangeSearchList(Map<String, Object> map, int offset, int limit);
+	
+	// 교환 / 반품 페이징 - 총 게시글 수 
+	public int getTotalExchangeCount();
+	
 	// 교환 상세페이지
 	ExchangeVO getExchangeOneList(String client_num);
 	// 교환 상태 업데이트 
@@ -70,7 +79,7 @@ public interface ProductService {
 	//시작과 끝 블럭 구하기
 	public List<OrderVO> getOrderList(int offset, int limit);
 	// 주문 상세페이지
-	public List<OrderVO> getOrderDetaileList(String pay_num);
+	public List<OrderVO> getOrderDetaileList(String pay_oknum);
 	// 주문 상태 업데트
 	int getOrderUpdate(OrderVO ovo);
 	// 상품 등록

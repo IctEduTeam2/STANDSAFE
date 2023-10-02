@@ -35,11 +35,24 @@ public class ProductServiceImpl implements ProductService{
         return productDAO.getProductSearchList(map, offset, limit);
     }
 	
-	// 교환리스트
+	// 교환/반품 리스트
 	@Override
-	public List<ExchangeVO> getExchangeList() {	
-		return productDAO.getExchangeList();
+	public List<ExchangeVO> getExchangeList(int offset, int limit) {	
+		return productDAO.getExchangeList(offset, limit);
 	}
+	// 교환/반품 총 게시글 수 
+	@Override
+	public int getTotalExchangeCount() {
+		return productDAO.getTotalExchangeCount();
+	}	
+	
+	// 교환/ 반품 총 게시글 수 -검색 
+	@Override
+	public int getTotalExchangeCountSearchList(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return productDAO.getTotalExchangeCountSearchList(map);
+	}
+	
 	// 교환상세보기
 	@Override
 	public ExchangeVO getExchangeOneList(String payOkNum) {
@@ -104,8 +117,8 @@ public class ProductServiceImpl implements ProductService{
 	}
 	// 주문 상세보기
 	@Override
-	public List<OrderVO> getOrderDetaileList(String client_num) {
-		return productDAO.getOrderDetaileList(client_num);
+	public List<OrderVO> getOrderDetaileList(String pay_oknum) {
+		return productDAO.getOrderDetaileList(pay_oknum);
 	}
 	// 상품등록
 	@Override
@@ -176,4 +189,10 @@ public class ProductServiceImpl implements ProductService{
 	public int getOrderUpdate(OrderVO ovo) {
 		return productDAO.getOrderUpdate(ovo);
 	}
+	// 교환/반품 검색 게시글 
+	@Override
+	public List<ExchangeVO> getExchangeSearchList(Map<String, Object> map, int offset, int limit) {
+		return productDAO.getExchangeSearchList(map, offset, limit);
+	}
+	
 }

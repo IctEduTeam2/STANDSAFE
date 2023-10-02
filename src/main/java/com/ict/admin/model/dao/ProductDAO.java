@@ -13,7 +13,6 @@ import com.ict.admin.model.vo.InventoryVO;
 import com.ict.admin.model.vo.OrderVO;
 import com.ict.admin.model.vo.ProductVO;
 import com.ict.admin.model.vo.ReturnVO;
-import com.ict.bbs.model.vo.NO_BBS_VO;
 
 @Repository
 public class ProductDAO {
@@ -49,8 +48,11 @@ public class ProductDAO {
 	}
 
 	// 교환리스트
-	public List<ExchangeVO> getExchangeList() {
-		return sqlSessionTemplate.selectList("mag.exchangelist");
+	public List<ExchangeVO> getExchangeList(int offset, int limit) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("limit", limit);
+		map.put("offset", offset);
+		return sqlSessionTemplate.selectList("mag.exchangelist", map);
 	}
 
 	// 재고리스트
@@ -107,6 +109,17 @@ public class ProductDAO {
 		sqlSessionTemplate.update("mag.updateProduct", provo);
 	}
 
+	// 교환/반품 게시글 총 수 구하기 
+	public int getTotalExchangeCount() {
+		return sqlSessionTemplate.selectOne("mag.getTotalExchangeCount");
+	}
+	
+	// 교환 / 반품 게시글 총 수 - 검색 
+	public int getTotalExchangeCountSearchList(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.selectOne("mag.getTotalExchangeCountSearchList", map);
+	}
+	
 	// 교환상세보기
 	public ExchangeVO getExchangeOneList(String payOkNum) {
 		ExchangeVO evo2 = sqlSessionTemplate.selectOne("mag.exchangeonelist", payOkNum);
@@ -155,12 +168,14 @@ public class ProductDAO {
 	public List<OrderVO> getOrderSearchList(Map<String, Object> map, int offset, int limit) {
 		map.put("limit", limit);
 		map.put("offset", offset);
+		System.out.println("stDate :::" + map.get("stDate"));
+		System.out.println("endDate :::" + map.get("endDate"));
 		return sqlSessionTemplate.selectList("mag.getOrederSearchList", map);
 	}
 
 	// 주문 상세보기
-	public List<OrderVO> getOrderDetaileList(String pay_num) {
-		return sqlSessionTemplate.selectList("mag.orderonelist", pay_num);
+	public List<OrderVO> getOrderDetaileList(String pay_oknum) {
+		return sqlSessionTemplate.selectList("mag.orderonelist", pay_oknum);
 	}
 	public int getOrderUpdate(OrderVO ovo) {
 		return sqlSessionTemplate.update("mag.orderupdate", ovo);
@@ -180,5 +195,12 @@ public class ProductDAO {
 
 	public int returnStateUpdate(ReturnVO rvo) {
 		return sqlSessionTemplate.update("mag.returnstateupdate", rvo);
+	}
+	
+	// 교환 / 반품 검색 게시글 리스트  
+	public List<ExchangeVO> getExchangeSearchList(Map<String, Object> map, int offset, int limit) {
+		map.put("limit", limit);
+		map.put("offset", offset);
+		return sqlSessionTemplate.selectList("mag.getExchangeSearchList", map);
 	}
 }

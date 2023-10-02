@@ -106,12 +106,12 @@ function selectAll(selectAll)  {
 	<div style="width: 100%;">
 	<table style="float: left; margin-left: 10%; margin-top: 10%; border: 1px solid black; width: 20%; height: 400px;">
 		<tr>
-			<th>총 교환/반품 건수:</th>
-			<td><c:out value= "${AllExchange}" /></td>
+			<th>오늘 교환 건수:</th>
+			<td><c:out value= "${today_Exchange }" /></td>
 		</tr>
 		<tr>
-			<th>오늘 교환/반품 건수:</th>
-			<td><c:out value= "${TodayExchange}" /></td>
+			<th>오늘 반품 건수:</th>
+			<td><c:out value= "${today_return }" /></td>
 		</tr>
 	</table>
 	<!-- 검색 영역 -->
@@ -121,7 +121,7 @@ function selectAll(selectAll)  {
 	<input type="hidden" name="cPage" value="1" />
 	<input type="hidden" name="pageSize" value="10" />
 	<table
-					style="float: right; margin-left: 2%; margin-top: 10%; border: 1px solid black; width: 60%; height: 400px;">
+					style="float: right; margin-left: 2%; margin-top: 10%; border: 1px solid black; width: 60%; height: 400px; margin-right: 3%">
 					<tr>
 					<th style="width: 200px;">주문번호</th>
 					<td colspan="3"><input type="text" id="searchText" name="searchText"
@@ -190,7 +190,7 @@ function selectAll(selectAll)  {
                         </tr>
 					</c:forEach>
 					</tbody>
-					<!-- 페이지 번호 출력 부분 -->
+						<!-- 페이지 번호 출력 부분 -->
 				<tfoot>
 					<tr>
 						<td colspan="6">

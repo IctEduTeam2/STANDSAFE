@@ -166,7 +166,7 @@ function selectAll(selectAll)  {
 					<c:forEach items="${list}" var="ovo">
 						<tr>
 							<td><input type="checkbox" name="th_column_1"></td>
-							<td><a href="/order_detail.do?client_num=${ovo.PAY_OKNUM}">${ovo.PAY_OKNUM}</a></td>
+							<td><a href="/order_detail.do?pay_oknum=${ovo.PAY_OKNUM}">${ovo.PAY_OKNUM}</a></td>
 							<td>${ovo.CLIENT_NUM }</td>
 							<td>${ovo.TAKE_PEO }</td>
 							<td>${ovo.TAKE_ADDR}</td>

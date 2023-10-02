@@ -113,7 +113,7 @@ function selectAll(selectAll)  {
 						<td class="th_column_2">주문번호</td>
 						<td class="th_column_3">아이디</td>
 						<td class="th_column_4">신청날짜</td>
-						<td class="th_column_5">처리상태</td>
+						<td class="th_column_5">처리날짜</td>
 					</tr>
 				</thead>
 				<tbody>
@@ -125,14 +125,7 @@ function selectAll(selectAll)  {
 							<td><fmt:parseDate value="${rvo.PB_DATE}" var="regdate"
 									pattern="yyyy-MM-dd HH:mm:ss" /> <fmt:formatDate
 									value="${regdate}" pattern="yyyy-MM-dd" /></td>
-							<td>
-								 <c:choose>
-       								 <c:when test="${rvo.PB_ST == '4'}">반품 접수 완료</c:when>
-       								 <c:when test="${rvo.PB_ST == '5'}">반품 회수 완료</c:when>
-       								 <c:when test="${rvo.PB_ST == '6'}">반품 완료</c:when>
-      								 <c:otherwise>${rvo.PB_ST}</c:otherwise>
-   								 </c:choose>
-							</td>
+							<td>${rvo.PB_ST}</td>
 						</tr>
 					</c:forEach>
 
