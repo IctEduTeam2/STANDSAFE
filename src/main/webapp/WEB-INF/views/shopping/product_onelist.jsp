@@ -262,7 +262,7 @@ table tfoot ol.paging li a:hover {
 
 		// 최소 수량 확인
 		if (quantity <= 0) {
-			alert("최소 1개 이상 입력하세요.");
+			alert("최소 주문수량은 1개 입니다.");
 			document.getElementById('quantityInput').value = 1;
 			var totalPriceText = price.toLocaleString() + quantityText;
 			document.getElementById('totalPrice').textContent = totalPriceText;
@@ -445,7 +445,7 @@ table tfoot ol.paging li a:hover {
 				<div class="function" id="test">
 					<button onclick="goToScroll('a')">Detail</button>
 					<button onclick="goToScroll('b')">Review</button>
-					<button onclick="goToScroll('c')">FAQ</button>
+					<button onclick="goToScroll('c')">QnA</button>
 				</div>
 				<div style="width: 70%; margin: auto;">
 					<div class="detail a" style="width: 100%; margin: auto;">
@@ -458,7 +458,7 @@ table tfoot ol.paging li a:hover {
 					<div class="review b">
 						<h1 style="text-align: center; margin: 80px 0; font-size: 60px;">Review</h1>  	
 							<c:choose>
-								<c:when test="${empty list}"><p>리뷰가 없습니다.</p>
+								<c:when test="${empty list}"><h3 style="text-align: center;">현재 상품은 리뷰가 존재하지 않습니다.</h3>
 								</c:when>
 								
 								<c:otherwise>
@@ -484,9 +484,7 @@ contentElements.forEach(function(element) {
 									
 									</c:forEach>
 									</div>
-									</c:otherwise>
-									</c:choose>
-					</div>		
+											
 						<table class="m_table">				
 						<tfoot>
 								<tr>
@@ -526,11 +524,16 @@ contentElements.forEach(function(element) {
 								</tr>
 						</tfoot>
 					</table>
+									</c:otherwise>
+									</c:choose>
 					</div>
+					</div>
+					<div style="width: 70%; margin: auto;">
 					<hr>
+					</div>
 					<div class="faq c">
-						<h1 style="text-align: center; margin: 80px 0; font-size: 60px;">Q&A</h1>
-						
+						<h1 style="text-align: center; margin: 80px 0; font-size: 60px;">QnA</h1>
+						<h3 style="text-align: center;">현재 상품은 QnA가 존재하지 않습니다.</h3>
 					</div>
 				</div>
 			</div>

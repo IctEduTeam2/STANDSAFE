@@ -158,8 +158,14 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 </script>
 <script type="text/javascript">
 function increaseQuantity(f) {
-	f.action = "/updateamount.do?st=+";
-	f.submit();
+	 if(f.amount.value.trim() > f.prod_amount.value.trim()) {
+			alert("재고량을 초과구매 불가능합니다.");
+			f.amount.value = f.prod_amount.value;
+			return;
+		} else {
+			f.action = "/updateamount.do?st=+";
+			f.submit();
+		}
 }</script>
 <script>
 function deleteSelectedProducts() {
@@ -176,7 +182,7 @@ function deleteSelectedProducts() {
   document.getElementById('selectedProducts').value = selectedProducts.join(',');
 
   if (selectedProducts.length === 0) {
-	    alert('삭제할 상품이 선택해주세요');
+	    alert('삭제할 상품을 선택해주세요');
 	  } else {
 	    document.getElementById('productForm').submit();
 	    alert('선택한 상품을 삭제하였습니다.');
@@ -278,6 +284,7 @@ function deleteSelectedProducts() {
 
 											<c:forEach var="k" items="${bvolist}">
 												<c:if test="${a.prod_num eq k.prod_num}">
+													<input type="hidden" value="${a.prod_amount}" name="prod_amount">
 													<input type="hidden" value="${id}" name="client_num">
 													<input type="hidden" value="${k.prod_num }" name="prod_num">
 													<input type="hidden" value="${k.cart_amount }"

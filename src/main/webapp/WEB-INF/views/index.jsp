@@ -161,12 +161,6 @@
 						style="width: 184px; height: 100%; border: 1px solid black;"></a>
 				</c:forEach>
 			</div>
-			<form style="float: right;">
-				<input type="search" placeholder="검색어를 입력하세요."
-					style="width: 300px; height: 40px; float: left;"> <input
-					type="image" src="resources/images/search.png" alt="검색버튼"
-					style="width: 18px; height: 25px; padding: 6px; float: left; border: 1px solid black;">
-			</form>
 			<div id="best">
 				<h3 style="color: red; margin-top: 50px;">BEST 상품</h3>
 				<hr

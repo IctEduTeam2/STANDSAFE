@@ -40,6 +40,20 @@
 .pay:hover {
 	opacity: 0.8;
 }
+							
+#userinfo:hover {
+	opacity: 0.8;
+}
+
+#userinfo {
+	width: 170px;
+	height: 45px;
+	background-color: rgba(27, 90, 194, 0.8);
+	color: white;
+	border: 0;
+	border-radius: 5px;
+	margin-left: 5px;
+}
 </style>
 <script>
         function selectAll(selectAll) {
