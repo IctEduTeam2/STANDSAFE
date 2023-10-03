@@ -8,11 +8,41 @@ public class REP_BBS_VO {
 		REPORT_TYPE, REPORT_DATE, REPORT_ST,PROD_NUM, CLIENT_NUM;
 		
 		private String REPORT_NICK;
+		private String REPORT_GROUPS, REPORT_STEP, REPORT_LEV;
 		
 		
 		
 		
-		
+
+
+		public String getREPORT_GROUPS() {
+			return REPORT_GROUPS;
+		}
+
+
+		public void setREPORT_GROUPS(String rEPORT_GROUPS) {
+			REPORT_GROUPS = rEPORT_GROUPS;
+		}
+
+
+		public String getREPORT_STEP() {
+			return REPORT_STEP;
+		}
+
+
+		public void setREPORT_STEP(String rEPORT_STEP) {
+			REPORT_STEP = rEPORT_STEP;
+		}
+
+
+		public String getREPORT_LEV() {
+			return REPORT_LEV;
+		}
+
+
+		public void setREPORT_LEV(String rEPORT_LEV) {
+			REPORT_LEV = rEPORT_LEV;
+		}
 
 
 		public String getREPORT_NICK() {

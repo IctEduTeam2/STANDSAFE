@@ -206,6 +206,7 @@ fieldset {
 										<input type="hidden" name="secret_flag" id="secret_flag" value="0" />
 										<input type="hidden" name="PROD_NUM" value="${reviewvo.PROD_NUM}">
 										<input type="hidden" name="RE_NUM" value="${reviewvo.RE_NUM}">
+										<input type="hidden" name="RE_TYPE" value="${reviewvo.RE_TYPE}">
 										<input type="hidden" name="cPage" value="${cPage}">
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										<input type="button" value="목록" onclick="list_go(this.form)" class="in_btn"/>

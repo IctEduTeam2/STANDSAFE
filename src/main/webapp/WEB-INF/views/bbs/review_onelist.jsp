@@ -85,8 +85,23 @@ label {
 
 			return ;
 		}
-	});
-</script>	
+	}); 
+</script>	 
+<script type="text/javascript">
+$(document).ready(function(){
+	if (${reviewvo.RE_ST == 3}) {
+		
+		$("#re_ok").css("display", "none"); // 수정, 삭제 버튼 숨기기
+		$("#re_no").css("display", "block"); // 목록으로 버튼 보이기
+		$("#viewno").css("display","none"); 
+		$("#viewok").css("display", "none");
+	}else {
+		$("#re_ok").css("display", "none"); // 수정, 삭제 버튼 숨기기
+		$("#re_no").css("display", "none"); // 목록으로 버튼 보이기
+		
+	}
+});
+</script> 
 <script type="text/javascript">
 	function update_go(f) {
 		f.action="/bbs_review_updateform.do";
@@ -191,7 +206,7 @@ label {
 										<input type="hidden" value="${reviewvo.RE_NUM}" name="RE_NUM">
 										<input type="hidden" value="${cPage}" name="cPage">
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										<button class="in_btn" onclick="go_search_list(this.form)">검색으로</button>
+										<input type="button" value="목록으로" onclick="list_go(this.form)" class="in_btn"/>
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										<input type="button" value="삭제"  onclick="delete_go(this.form)" class="in_btn"/>
 									</div>			
@@ -199,6 +214,21 @@ label {
 										<input type="hidden" value="${reviewvo.RE_NUM}" name="RE_NUM">
 										<input type="hidden" value="${cPage}" name="cPage">
 										<input type="button" value="목록으로" onclick="list_go(this.form)" class="in_btn"/>	
+									</div>
+									 <div id=re_ok style="display: none;">
+										<input type="button" value="수정" onclick="update_go(this.form)" class="in_btn"/>
+										<input type="hidden" value="${reviewvo.RE_NUM}" name="RE_NUM">
+										<input type="hidden" value="${reviewvo.PROD_NUM}" name="PROD_NUM">
+										<input type="hidden" value="${cPage}" name="cPage">
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										<input type="button" value="목록으로" onclick="list_go(this.form)" class="in_btn"/>
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										<input type="button" value="삭제"  onclick="delete_go(this.form)" class="in_btn"/>
+									</div>		
+									 <div id="re_no"style="display: none;" >									
+										<input type="hidden" value="${reviewvo.RE_NUM}" name="RE_NUM">
+										<input type="button" value="목록으로" onclick="list_go(this.form)" class="in_btn"/>
+										<input type="hidden" value="${cPage}" name="cPage">
 									</div>
 									</td>
 								</tr>
