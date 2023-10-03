@@ -485,7 +485,7 @@ contentElements.forEach(function(element) {
 									</c:forEach>
 									</div>
 											
-						<table class="m_table">				
+					<table class="m_table">				
 						<tfoot>
 								<tr>
 									<td colspan="2">
@@ -502,7 +502,7 @@ contentElements.forEach(function(element) {
 											<c:forEach begin="${paging.beginBlock }" end="${paging.endBlock }" step="1" var="k">
 												<c:if test="${k == paging.nowPage }">
 													<!--현재페이지와 같으면  -->
-													<li class="now">${k }</li>
+													<li class="now">${k}</li>
 												</c:if>
 												<c:if test="${k != paging.nowPage }">
 													<li><a href="/productOneListform.do?prod_num=${prod_num }&cPage=${k }"> ${k }</a></li>
@@ -512,8 +512,7 @@ contentElements.forEach(function(element) {
 											<!-- 이후버튼  -->	
 											<c:choose>
 												<c:when test="${paging.endBlock >= paging.totalPage }">
-													<li class="disable">
-					다음으로</li>
+													<li class="disable">다음으로</li>
 												</c:when>
 												<c:otherwise>
 													<li><a href="/productOneListform.do?prod_num=${prod_num }&cPage=${paging.beginBlock+paging.pagePerBlock }">다음으로</a></li>
