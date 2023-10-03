@@ -4,17 +4,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class InventoryVO {
 	private String PROD_NUM, PROD_NAME, PROD_IMG, PROD_DETAIL, PROD_AMOUNT, 
-	PROD_PRICE, PROD_SALE, PROD_HIGH, PROD_LOW, PROD_REGDATE, PROD_ST, PROD_MODIFYDATE;
+	PROD_PRICE, PROD_SALE, PROD_HIGH, PROD_LOW, PROD_REGDATE, PROD_ST, PROD_MODIFYDATE ;
 	
 	private MultipartFile file;
-	
-	public String getPROD_MODIFYDATE() {
-		return PROD_MODIFYDATE;
-	}
-
-	public void setPROD_MODIFYDATE(String pROD_MODIFYDATE) {
-		PROD_MODIFYDATE = pROD_MODIFYDATE;
-	}
 
 	public String getPROD_NUM() {
 		return PROD_NUM;
@@ -110,6 +102,14 @@ public class InventoryVO {
 
 	public void setFile(MultipartFile file) {
 		this.file = file;
+	}
+
+	public String getPROD_MODIFYDATE() {
+		return PROD_MODIFYDATE;
+	}
+
+	public void setPROD_MODIFYDATE(String pROD_MODIFYDATE) {
+		PROD_MODIFYDATE = pROD_MODIFYDATE;
 	}
 	
 }

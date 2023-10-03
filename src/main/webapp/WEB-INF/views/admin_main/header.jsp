@@ -68,8 +68,8 @@
 				<li><a href="/order_list.do">주문관리</a>
 					<ul class="submenu">
 						<li><a href="/order_list.do">주문내역조회</a></li>
-						<li><a href="/return_list.do">반품관리</a></li>
-						<li><a href="/exchange_list.do">교환관리</a></li>
+						<!-- <li><a href="/return_list.do">반품관리</a></li> -->
+						<li><a href="/exchange_list.do">교환/반품 관리</a></li>
 
 					</ul></li>
 				<li><a href="/admin_notice.do">게시판관리</a>

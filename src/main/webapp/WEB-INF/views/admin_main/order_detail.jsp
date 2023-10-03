@@ -31,17 +31,19 @@ function selectAll(selectAll)  {
 	  checkboxes.forEach((checkbox) => {
 	    checkbox.checked = selectAll.checked
 	  })
+}
 
-	  function st_update(){
-		    var checkbox = document.getElementById("ordchk");
-		    if (checkbox.checked) {
-		        var frm = document.getElementById("frm");
-		        document.getElementById("take_st").value = document.getElementById("searchKey").value;
-		        document.getElementById('frm').submit();
-		    } else {
-		        alert("업데이트 할 상품을 선택해 주세요");
-		    }
+function st_update(){
+	var checkbox = document.getElementById("ordchk");
+	var frm = document.getElementById("frm");
+		if (checkbox.checked) {
+			document.getElementById("take_st").value = document.getElementById("searchKey").value;
+			document.getElementById("payOkNum").value = document.getElementById("pay_oknum").value;
+			document.getElementById('frm').submit();
+		} else {
+		    alert("업데이트 할 상품을 선택해 주세요");
 		}
+}
 </script>
 </head>
 <body>
@@ -56,7 +58,7 @@ function selectAll(selectAll)  {
 		<div class="author_table_wrap" style="width: 80%; margin: auto;">
 			<!-- 게시물 O -->
 			<c:if test="${listCheck != 'empty' }">
-			<form id="frm" name="frm" method="post" action="/order_detail.do">
+			<form id="frm" name="frm" method="post" action="/order_update.do">
 			<input type ="hidden" id="pay_num" name="pay_num" value="${ovo.PAY_NUM}"/>
 			<input type="hidden" id="take_st" name="take_st" value="${ovo.TAKE_ST }" />
 			<input type="hidden" id="payOkNum" name="payOkNum" value="${ovo.PAY_OKNUM }" />
@@ -73,7 +75,7 @@ function selectAll(selectAll)  {
 					</colgroup>
 					<thead>
 						<tr>
-							<td class="th_column_1"><input type="checkbox" name="th_column_1" onclick='selectAll(this)'></td>
+							<td class="th_column_1"><input type="checkbox" name="ordchk" id="ordchk" onclick='selectAll(this)'></td>
 							<td class="th_column_2">주문 번호</td>
 							<td class="th_column_3">결제 타입</td>
 							<td class="th_column_4">카드 번호</td>
@@ -88,7 +90,8 @@ function selectAll(selectAll)  {
 							<c:forEach items="${list}" var="ovo">
 	                    		<tr>
 	                    			<td><input type="checkbox" name="ordchk" id="ordchk" onclick='selectAll(this)'> </td>
-	                    			<td>${ovo.PAY_NUM}</td>
+	                    			<td>${ovo.PAY_OKNUM}
+	                    				<input type="hidden" id="pay_oknum" name="pay_oknum" value="${ovo.PAY_OKNUM}" /></td>
 	                    			<td>${ovo.PAY_TYPE}</td>
 	                    			<td>${ovo.PAY_CARD}</td>
 	                    			<td>
