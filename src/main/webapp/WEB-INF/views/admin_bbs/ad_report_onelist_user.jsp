@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -72,20 +73,20 @@ label {
 	width: 100%;
 	height:800px;
 }
-
+#noti{color: red; font-size: 14px; text-align: left; margin-left: 70px}
 
 </style>
 <script type="text/javascript">
 	function go_adreport_list(f) {
-		location.href="/ad_allreport.do"
+		location.href="/admin_report.do"
 		/* 여기부분은 나중에 수정해야함, 목록 페이징, 게시글번호 들고 다녀야함. */
 	}
 	function go_adreport_delete(f) {
-		location.href="/adreport_delete.do"
+		location.href="/adreport_delete.do?REPORT_NUM=" + ${rpvo.REPORT_NUM};
 		/* 여기부분은 나중에 수정해야함, 목록 페이징, 게시글번호 들고 다녀야함. */
 	}
 	function bbs_go_adreport_reply(f) {
-		location.href="/adreport_writeform.do";
+		location.href="/adreport_writeform.do?REPORT_NUM=" + ${rpvo.REPORT_NUM};
 		
 	} 
 	//관리자 내용말고, 사용자가 쓴 글 눌렀을때는 , 답글버튼이 나와야함.
@@ -106,36 +107,39 @@ label {
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">신고 유형</td>
 									<td id="type">
-										<span>신고</span>	
+										<span>${rpvo.REPORT_TYPE}</span>	
 									</td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">작성자</td>
 								<!--이건 로그인한 사람이 자동으로 뜨게하기.  -->
-								<td id="type">베인32세</td>
+								<td id="type">${rpvo.REPORT_WRITER}</td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">제목</td>
-								<td id="type">솜털애기 신고합니다. </td>
+								<td id="type">${rpvo.REPORT_SUBJECT}</td>
 							</tr>
 							
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font" width="200px;">첨부파일</td>
-								<td id="type"><img src="resources/images/bbs/report.jpg"  style="width: 200px; height: auto;"></td>
-							</tr>
-							<tr align="center">
-								<td bgcolor="#1b5ac2" class="w_font">비밀글여부</td>
 								<td>
-									<div id="chkbox_div">
-										<input type="checkbox" id="chkbox" checked disabled/>
-										<label for="chkbox"></label>
-										비밀글여부
-									</div>
+									<c:choose>
+										<c:when test="${empty rpvo.REPORT_FILE}">
+											<b>첨부 파일 없음</b>
+										</c:when>
+										<c:otherwise>
+											<img src="/resources/upload/${rpvo.REPORT_FILE}" style="width: 200px; height: auto;" />
+										</c:otherwise>
+									</c:choose>
+								</td>
 							</tr>
 							<tr align="center">
-							
+                                <td bgcolor="#1b5ac2" class="w_font">비밀글여부</td>
+                                <td id="noti"><p>신고 게시글은 모두 비밀글 처리 됩니다. 무방비한 작성과 타인을 향한 욕설은 관리자에 의해 강제 삭제됩니다.<p></td>
+                            </tr>
+							<tr align="center">
 								<td colspan="2" style="height: 800px;">
-										솜털애기가 욕했어요. 또만났다구요, 
+									${rpvo.REPORT_CONTENT}
 								</td>
 							</tr>
 							</tbody>

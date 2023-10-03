@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -81,12 +82,12 @@ label {
 
 </style> 
 <script type="text/javascript">
-	function UpdateOk_go(f) {
-		f.action="";
+	function updateOk_go(f) {
+		f.action="/admin_upEveOK.do";
 		f.submit();
 	}
 	function list_go(f) {
-		f.action="/ad_eveall_go.do";
+		f.action="/admin_event.do";
 		f.submit();
 	}
 	
@@ -108,37 +109,48 @@ label {
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">유형</td>
 									<td id="radio">
-										<input type="radio" name="search" value="subject" checked />
+										<input type="radio" name="EVENT_TYPE" value="이벤트" checked />
 										<span>이벤트</span>	
 									</td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">작성자</td>
 								<!--이건 로그인한 사람이 자동으로 뜨게하기.  -->
-								<td><input type="text" name="name" size="20" autocomplete='off'/></td>
+								<td><input type="text" name="name" size="20" value="${evevo.EVENT_WRITER}" autocomplete='off' disabled /></td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">제목</td>
-								<td><input type="text" name="subject" size="20" autocomplete='off' /></td>
+								<td><input type="text" name="subject" size="20" value="${evevo.EVENT_SUBJECT}" autocomplete='off' disabled /></td>
 							</tr>
 							
-							<tr align="center">
-								<td bgcolor="#1b5ac2" class="w_font"  width="200px">첨부파일</td>
-								<td><input type="file" name="file" size="20" /></td>
-							</tr>
-							<tr align="center">
-								<td colspan="2">
-								<textarea rows="10" cols="60" name="content" id="content">
-									<div class="in_div_img">
-									<img src="resources/images/bbs/event_sale.jpg" class="in_img">
-									</div>
-								</textarea>
-								</td>
-							</tr>
+						<tr align="center">
+
+							<td bgcolor="#1b5ac2" class="w_font" width="200px">첨부파일</td>
+
+							<c:choose>
+								<c:when test="${empty evevo.EVENT_FILE}">
+									<td><input type="file" name="file"><b>이전 파일 없음</b></td>
+									<input type="hidden" name="old_f_name" value="">
+								</c:when>
+								<c:otherwise>
+									<td><input type="file" name="file">이전
+										파일명(${evevo.EVENT_FILE})</td>
+									<input type="hidden" name="old_f_name"
+										value="${evevo.EVENT_FILE}">
+								</c:otherwise>
+							</c:choose>
+						</tr>
+						<tr align="center">
+							<td colspan="2" style="border-bottom: none;"><textarea
+									rows="10" cols="60" name="EVENT_CONTENT" id="content">
+												${evevo.EVENT_CONTENT}
+						</textarea></td>
+						</tr>
 							<tfoot>
 								<tr align="center">
 									<td colspan="2">
 										<input type="button" value="작성" onclick="updateOk_go(this.form)" class="in_btn"/>
+										<input type="hidden" name="EVENT_NUM" value="${evevo.EVENT_NUM}">
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										<input type="button" value="목록" onclick="list_go(this.form)" class="in_btn"/>
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

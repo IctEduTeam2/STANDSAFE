@@ -79,7 +79,19 @@ label {
 
 
 </style> 
-
+<script type="text/javascript">
+	function go_popupwriteform(f) {
+		f.action="/popupswriteok.do";
+		f.submit();
+	}
+	function go_popuplistgo(f) {
+		f.action="/ad_popup.do";
+		f.submit();
+	}
+	
+	
+	
+</script>
 </head>
 <body>
 	<div id="mydiv"> 
@@ -97,17 +109,20 @@ label {
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">유형</td>
 									<td id="radio">
-										<input type="radio" name="search" value="subject" checked />
+										<input type="radio" name="TYPE" value="팝업" checked />
 										<span>팝업</span>	
-										<input type="radio" name="search" value="subject" checked />
+										<input type="radio" name="TYPE" value="슬라이드" />
 										<span>슬라이드</span>
 									</td>
 									
 							</tr>
 							<tr align="center">
-								<td bgcolor="#1b5ac2" class="w_font">제목</td>
-								<td><input type="text" name="subject" size="20" autocomplete='off' /></td>
+								<td bgcolor="#1b5ac2" class="w_font">작성자</td>
+								<td><input type="text" name="POPUP_WRITER" value="${admin_name}" disabled />
+								
+								</td>
 							</tr>
+							
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font" width="200px">첨부파일</td>
 								<td><input type="file" name="file" size="20" /></td>
@@ -116,9 +131,9 @@ label {
 							<tfoot>
 								<tr align="center">
 									<td colspan="2">
-										<input type="button" value="작성" onclick="location.href='/'" class="in_btn"/>
+										<input type="button" value="작성" onclick="go_popupwriteform(this.form)" class="in_btn"/>
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										<input type="button" value="목록" onclick="location.href='/ad_popup.do'" class="in_btn"/>
+										<input type="button" value="목록" onclick="go_popuplistgo(this.form)" class="in_btn"/>
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										<input type="reset" value="취소" class="in_btn" id="reset"/>
 									</td>

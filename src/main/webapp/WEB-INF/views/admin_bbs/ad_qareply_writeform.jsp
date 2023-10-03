@@ -117,7 +117,7 @@ fieldset {
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">유형</td>
 									<td id="radio">
-										<input type="radio" name="BOARD_TYPE" value="subject" checked />
+										<input type="radio" name="BOARD_TYPE" value="답글" checked />
 										<span>답글</span>	
 									</td>
 							</tr>
@@ -125,11 +125,11 @@ fieldset {
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">작성자</td>
 								<!--이건 로그인한 사람이 자동으로 뜨게하기.  -->
-								<td><input type="text" name="BOARD_WRITER" size="20" autocomplete='off' value="${admin_name}"/></td>
+								<td><input type="text" name="BOARD_WRITER" size="20" autocomplete='off' value="${admin_name}" disabled /></td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">제목</td>
-								<td><input type="text" name="BOARD_SUBJECT" size="20" autocomplete='off' /></td>
+								<td><input type="text" name="BOARD_SUBJECT" size="20" value="답글입니다." autocomplete='off' disabled /></td>
 							</tr>
 							
 							<tr align="center">
@@ -146,6 +146,7 @@ fieldset {
 									<td colspan="2">
 										<input type="button" value="작성" onclick="save_go(this.form)" class="in_btn"/>
 										<input type="hidden" name="BOARD_TYPE" value="${BOARD_TYPE}">
+										<input type="hidden" name="BOARD_SUBJECT" value="답글입니다.">
 										<input type="hidden" name="BOARD_NUM" value="${BOARD_NUM}">
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										<input type="button" value="목록" onclick="list_go(this.form)" class="in_btn"/>

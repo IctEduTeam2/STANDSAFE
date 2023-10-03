@@ -77,7 +77,7 @@ label {
 </style>
 <script type="text/javascript">
 	function go_adreview_list(f) {
-		location.href="/ad_allreview.do"
+		location.href="/admin_reivew.do"
 		/* 여기부분은 나중에 수정해야함, 목록 페이징, 게시글번호 들고 다녀야함. */
 	}
 	function go_adreview_delete(f) {

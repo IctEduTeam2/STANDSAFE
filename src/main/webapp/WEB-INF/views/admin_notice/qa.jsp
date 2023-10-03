@@ -107,6 +107,7 @@ function resetFields() {
     document.getElementById('searchTitleSelect').value = "작성일"; // 검색어 필드 초기화 
     document.getElementById('start1').value = ""; // 'start' 필드 초기화
     document.getElementById('close1').value = ""; // 'close' 필드 초기화
+    document.getElementById('fromDate').value = "";
 }
 function setStartField() {
     var startDate = document.getElementById('startDate').value;

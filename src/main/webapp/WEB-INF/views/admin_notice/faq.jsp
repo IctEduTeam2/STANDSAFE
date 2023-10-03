@@ -105,6 +105,7 @@ function resetFields() {
     document.getElementById('searchTitleSelect').value = "작성일"; // 검색어 필드 초기화 
     document.getElementById('start1').value = ""; // 'start' 필드 초기화
     document.getElementById('close1').value = ""; // 'close' 필드 초기화
+    document.getElementById('fromDate').value = "";
 }
 function setStartField() {
     var startDate = document.getElementById('startDate').value;
@@ -118,7 +119,7 @@ $(document).ready(function() {
         e.preventDefault(); // Prevent the form from being submitted
 
         $.ajax({
-            url: '/adnotice_search.do',
+            url: '/adfaq_search.do',
             type: 'POST',
             data: $("#searchForm").serialize(),
             success: function(response) {
@@ -159,16 +160,16 @@ $(document).ready(function() {
 //테이블 삭제 버튼
 $(document).ready(function() {
     $("#del_btn").click(function() { // 클릭 이벤트 핸들러 설정
-        var selectedNotices = [];
+        var selectedFaq = [];
         $("input[name='chk']:checked").each(function() { // 체크된 체크박스 찾기
-            selectedNotices.push($(this).val()); // 선택된 NOTICE_NUM을 배열에 추가
+        	selectedFaq.push($(this).val()); // 선택된 NOTICE_NUM을 배열에 추가
         });
 
         // Ajax 요청을 보냅니다.
         $.ajax({
             type: "POST", // 또는 GET
-            url: "/adnotice_deleted1.do", // 다른 컨트롤러의 URL을 여기에 입력
-            data: { selectedNotices: selectedNotices }, // 선택된 NOTICE_NUM 값을 전송
+            url: "/adfaq_deleted1.do", // 다른 컨트롤러의 URL을 여기에 입력
+            data: { selectedFaq: selectedFaq }, // 선택된 NOTICE_NUM 값을 전송
             success: function(response) {
                 // Ajax 요청이 성공했을 때 실행할 코드
                 // 서버에서 반환한 응답(response)을 처리합니다.
@@ -185,16 +186,16 @@ $(document).ready(function() {
 //홈페이지 등록
 $(document).ready(function() {
     $("#home_btn").click(function() { // 클릭 이벤트 핸들러 설정
-        var selectedNotices = [];
+        var selectedFaq = [];
         $("input[name='chk']:checked").each(function() { // 체크된 체크박스 찾기
-            selectedNotices.push($(this).val()); // 선택된 NOTICE_NUM을 배열에 추가
+        	selectedFaq.push($(this).val()); // 선택된 NOTICE_NUM을 배열에 추가
         });
 
         // Ajax 요청을 보냅니다.
         $.ajax({
             type: "POST", // 또는 GET
-            url: "/update_adnoticestatus.do", // 다른 컨트롤러의 URL을 여기에 입력
-            data: { selectedNotices: selectedNotices }, // 선택된 NOTICE_NUM 값을 전송
+            url: "/update_adfaqstatus.do", // 다른 컨트롤러의 URL을 여기에 입력
+            data: { selectedFaq: selectedFaq }, // 선택된 NOTICE_NUM 값을 전송
             success: function(response) {
                 // Ajax 요청이 성공했을 때 실행할 코드
                 // 서버에서 반환한 응답(response)을 처리합니다.
@@ -314,7 +315,7 @@ $(document).ready(function() {
 									style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
 									onclick="resetTableAndFields()"></span>
 								 <span style="float: right; margin-top: 130px; margin-right: -328px;">
-								 <input type="hidden" value="공지사항" name="mg_type">
+								 <input type="hidden" value="FAQ" name="mg_type">
 									<button class="searchbtn" type="submit"
 									style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;">검색</button>
 								</span>
@@ -335,15 +336,15 @@ $(document).ready(function() {
 	<div class="table_wrap" style="clear: both; margin-right: 35px;">
 		<table class="table_a" style="width: 84%">
 			<colgroup>
-				<col width="5%">
-				<col width="5%">
+				<col width="3%">
+				<col width="3%">
 				<col width="15%">
 				<!--<col width="15%"> -->
 				<!--<col width="10%"> -->
-				<col width="5%">
+				<col width="20%">
 				<col width="10%">
 				<col width="10%">
-				<col width="10%">
+				<col width="7%">
 				<col width="5%">
 			</colgroup>
 			<thead>
@@ -353,7 +354,7 @@ $(document).ready(function() {
 					<td class="column_3">게시물 제목</td>
 					<!-- <td class="column_4">내용</td> -->
 					<!-- <td class="column_5">파일 이름</td> -->
-					<td class="column_6">조회수</td>
+					<td class="column_6">답변</td>
 					<td class="column_7">작성일</td>
 					<td class="column_8">수정일</td>
 					<td class="column_9">작성자</td>
@@ -411,7 +412,7 @@ $(document).ready(function() {
 		<span style="float: right; margin-top: 25px; margin-right: 50px;">
 			<button type="button" alt="글쓰기" value="글쓰기"
 				style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
-				onclick="location.href='/ad_noticeform.do'">글쓰기</button>
+				onclick="location.href='/ad_faqform.do'">글쓰기</button>
 		</span> 
 		<span style="float: right; margin-top: 25px; margin-right: 50px;">
 			<button type="button" alt="홈페이지 등록" value="홈페이지 등록"

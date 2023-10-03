@@ -5,8 +5,40 @@ import org.springframework.web.multipart.MultipartFile;
 public class ReportVO {
 	
 	private String REPORT_NUM, REPORT_SUBJECT, REPORT_WRITER, REPORT_CONTENT, REPORT_FILE,
-	REPORT_TYPE, REPORT_DATE, REPORT_ST,PROD_NUM, CLIENT_NUM;
+	REPORT_TYPE, REPORT_DATE, REPORT_ST,PROD_NUM, CLIENT_NUM, ADMIN_NUM,REPORT_GROUPS, REPORT_LEV,REPORT_STEP;
 	
+	public String getREPORT_STEP() {
+		return REPORT_STEP;
+	}
+
+	public void setREPORT_STEP(String rEPORT_STEP) {
+		REPORT_STEP = rEPORT_STEP;
+	}
+
+	public String getREPORT_GROUPS() {
+		return REPORT_GROUPS;
+	}
+
+	public void setREPORT_GROUPS(String rEPORT_GROUPS) {
+		REPORT_GROUPS = rEPORT_GROUPS;
+	}
+
+	public String getREPORT_LEV() {
+		return REPORT_LEV;
+	}
+
+	public void setREPORT_LEV(String rEPORT_LEV) {
+		REPORT_LEV = rEPORT_LEV;
+	}
+
+	public String getADMIN_NUM() {
+		return ADMIN_NUM;
+	}
+
+	public void setADMIN_NUM(String aDMIN_NUM) {
+		ADMIN_NUM = aDMIN_NUM;
+	}
+
 	private String REPORT_NICK;
 	
 	private MultipartFile file;
