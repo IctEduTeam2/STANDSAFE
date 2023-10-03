@@ -37,6 +37,11 @@ public class ShoppingDAO {
 	public List<ProductVO> getProductNewList() {
 		return sqlSessionTemplate.selectList("shopping.productNewList");
 	}
+	
+	// 세일 리스트
+	public List<ProductVO> getProductSaleList() {
+		return sqlSessionTemplate.selectList("shopping.productSaleList");
+	}
 
 	// 상품 한개
 	public ProductVO getProductOne(String prod_num) {
