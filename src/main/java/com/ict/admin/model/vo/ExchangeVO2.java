@@ -2,7 +2,7 @@ package com.ict.admin.model.vo;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public class ExchangeVO {
+public class ExchangeVO2 {
 	private String PB_NUM, PB_CONTENT, PB_DP, PB_FILE, PB_DATE, PB_ST, CLIENT_NUM, PAY_NUM, PAY_OKNUM, CONFIRM_ID, PROD_NUM, PROD_NAME, PROD_IMG, PROD_DETAIL, PROD_AMOUNT, 
 	PROD_PRICE, PROD_SALE, PROD_HIGH, PROD_LOW, PROD_REGDATE, PROD_ST, PB_TITLE, PAY_MONEY;
 	

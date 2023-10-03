@@ -2,7 +2,7 @@ package com.ict.admin.model.vo;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public class InventoryVO {
+public class InventoryVO2 {
 	private String PROD_NUM, PROD_NAME, PROD_IMG, PROD_DETAIL, PROD_AMOUNT, 
 	PROD_PRICE, PROD_SALE, PROD_HIGH, PROD_LOW, PROD_REGDATE, PROD_ST, PROD_MODIFYDATE;
 	
