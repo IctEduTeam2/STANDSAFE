@@ -15,7 +15,7 @@
 	<div id="mydiv">
 		<section id="contents" style="border: 0px solid black;">
 			<div style="width: 55%; margin: auto; padding-top: 100px;">
-				<a href="/mainform.do"><img src="resources/images/logo.png"
+				<a href="/"><img src="resources/images/logo.png"
 					style="width: 200px;"></a>
 			</div>
 			<div

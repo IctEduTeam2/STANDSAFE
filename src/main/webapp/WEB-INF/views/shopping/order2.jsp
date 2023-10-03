@@ -40,7 +40,7 @@
 .pay:hover {
 	opacity: 0.8;
 }
-							
+
 #userinfo:hover {
 	opacity: 0.8;
 }
@@ -268,47 +268,49 @@ $(document).ready(function() {
 						</tr>
 					</thead>
 					<tbody class="order_list_td">
-					<c:forEach var="k" items="${pvolist}">
-						<tr class="cart-item">
-							<td><input type="checkbox" name="select" value="제품번호"></td>
-							<td><img src="resources/images/products/${k.prod_img }"
-								style="width: 120px; height: 160px"></td>
-							<td><a href="/productOneListform.do?prod_num=${k.prod_num }"
-								style="font-size: 16px;">${k.prod_name }</a></td>
-							<td><c:choose>
-									<c:when test="${k.prod_sale == '0'}">
-										<fmt:formatNumber value="${k.prod_price}" type="number"
-											pattern="#,###원" />
-									</c:when>
-									<c:otherwise>
-										<p>
-											<del>
-												<fmt:formatNumber value="${k.prod_price}" type="number"
-													pattern="#,### 원" />
-											</del>
-											▶ <b style="color: red; font-size: 14px;"><fmt:formatNumber
-													value="${k.prod_sale}" type="number" pattern="#,### 원" /></b>
-										</p>
-										<b style="font-size: 14px;"> (${((k.prod_price - k.prod_sale) / k.prod_price * 100).intValue()}%↓)</b>
-									</c:otherwise>
-								</c:choose></td>
+						<c:forEach var="k" items="${pvolist}">
+							<tr class="cart-item">
+								<td><input type="checkbox" name="select" value="제품번호"></td>
+								<td><img src="resources/images/products/${k.prod_img }"
+									style="width: 120px; height: 160px"></td>
+								<td><a
+									href="/productOneListform.do?prod_num=${k.prod_num }"
+									style="font-size: 16px;">${k.prod_name }</a></td>
+								<td><c:choose>
+										<c:when test="${k.prod_sale == '0'}">
+											<fmt:formatNumber value="${k.prod_price}" type="number"
+												pattern="#,###원" />
+										</c:when>
+										<c:otherwise>
+											<p>
+												<del>
+													<fmt:formatNumber value="${k.prod_price}" type="number"
+														pattern="#,### 원" />
+												</del>
+												▶ <b style="color: red; font-size: 14px;"><fmt:formatNumber
+														value="${k.prod_sale}" type="number" pattern="#,### 원" /></b>
+											</p>
+											<b style="font-size: 14px;"> (${((k.prod_price - k.prod_sale) / k.prod_price * 100).intValue()}%↓)</b>
+										</c:otherwise>
+									</c:choose></td>
 								<c:forEach var="a" items="${bvolist}">
-								<c:choose>
-								<c:when test="${a.prod_num == k.prod_num }">
-							<td>${a.cart_amount }개</td>
-							<td><c:choose>
-									<c:when test="${k.prod_sale == '0'}">
-										<fmt:formatNumber value="${k.prod_price * a.cart_amount}"
-											type="number" pattern="#,###원" />
-									</c:when>
-									<c:otherwise>
-										<fmt:formatNumber value="${k.prod_sale * a.cart_amount}"
-											type="number" pattern="#,### 원" />
-									</c:otherwise>
-								</c:choose></td>
-								</c:when></c:choose>
+									<c:choose>
+										<c:when test="${a.prod_num == k.prod_num }">
+											<td>${a.cart_amount }개</td>
+											<td><c:choose>
+													<c:when test="${k.prod_sale == '0'}">
+														<fmt:formatNumber value="${k.prod_price * a.cart_amount}"
+															type="number" pattern="#,###원" />
+													</c:when>
+													<c:otherwise>
+														<fmt:formatNumber value="${k.prod_sale * a.cart_amount}"
+															type="number" pattern="#,### 원" />
+													</c:otherwise>
+												</c:choose></td>
+										</c:when>
+									</c:choose>
 								</c:forEach>
-						</tr>
+							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
@@ -651,10 +653,9 @@ $(document).ready(function() {
 									style="margin-top: 150px;">
 									<div
 										style="font-size: 30px; font-weight: 700; margin-bottom: 40px;">
-										
-												<fmt:formatNumber
-													value="${price_sum}" type="number"
-													pattern="#,### 원" />
+
+										<fmt:formatNumber value="${price_sum}" type="number"
+											pattern="#,### 원" />
 									</div>
 
 									<!-- 결제하기 버튼 -->
@@ -740,42 +741,19 @@ $(document).ready(function() {
 		    	alert("핸드폰 번호는 11글자로 입력해주세요.");
 		    	return;
 		    } else {
-      paymentWidget.requestPayment({
-        orderId: orderid,            // 주문 ID(직접 만들어주세요)
-        orderName: ordername,                 // 주문명
-        successUrl:  "http://localhost:8090/basketordercard.do?take_peo=" + encodeURIComponent(take_peo) + "&take_addr=" + encodeURIComponent(address) + "&take_phone=" + encodeURIComponent(take_phone) + "&take_memo=" + encodeURIComponent(take_memo) + "&pay_type=0&pay_oknum=" + encodeURIComponent(orderid) + "&client_num=" + encodeURIComponent(client_num) + "&cart_price=" + encodeURIComponent(pay) + "&prod_num=" + encodeURIComponent(prod_num) + "&cart_amount=" + encodeURIComponent(cart_amount),
-        failUrl: "http://localhost:8090/error.do",        // 결제에 실패하면 이동하는 페이지(직접 만들어주세요)
-        customerEmail: email,
-        customerName: name
-      });
-
-/* $.ajax({
-	url : "/ordercom2.do",
-	type : 'post',
-	data : {
-		take_peo : take_peo,
-		take_addr : address,
-		take_phone : take_phone,
-		take_memo : take_memo,
-		pay_type : 0,
-		pay_oknum : orderid,
-		client_num : client_num,
-		cart_price : pay,
-		prod_num : prod_num,
-		cart_amount : cart_amount
-	},
-	success : function(data) {
-				
-     },
-	error : function() {
-		alert("error");
-	}
-}); */
+		      	paymentWidget.requestPayment({
+			        orderId: orderid,            // 주문 ID(직접 만들어주세요)
+			        orderName: ordername,                 // 주문명
+			        successUrl:  "http://localhost:8090/basketordercard.do?take_peo=" + encodeURIComponent(take_peo) + "&take_addr=" + encodeURIComponent(address) + "&take_phone=" + encodeURIComponent(take_phone) + "&take_memo=" + encodeURIComponent(take_memo) + "&pay_type=0&pay_oknum=" + encodeURIComponent(orderid) + "&client_num=" + encodeURIComponent(client_num) + "&cart_price=" + encodeURIComponent(pay) + "&prod_num=" + encodeURIComponent(prod_num) + "&cart_amount=" + encodeURIComponent(cart_amount),
+			        failUrl: "http://localhost:8090/error.do",        // 결제에 실패하면 이동하는 페이지(직접 만들어주세요)
+			        customerEmail: email,
+			        customerName: name
+		      });
 		    }
     });
     
   </script>
-									<script>
+	<script>
     const cardPayment = document.getElementById("cardPayment");
     const pointPayment = document.getElementById("pointPayment");
     const card = document.getElementById("card");
