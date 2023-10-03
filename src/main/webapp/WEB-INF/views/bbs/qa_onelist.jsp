@@ -72,11 +72,29 @@ label {
 		if(qaonelist == "update") {
 			$("#viewno").css("display","none"); 
 			$("#viewok").css("display", "block");
+			$("#re_ok").css("display", "none"); // 수정, 삭제 버튼 숨기기
+			$("#re_no").css("display", "none"); // 목록으로 버튼 보이기
 
 			return ;
 		}
+		
 	});
 </script>	
+<script type="text/javascript">
+$(document).ready(function(){
+	if (${qnavo.BOARD_ST == 3}) {
+		
+		$("#re_ok").css("display", "none"); // 수정, 삭제 버튼 숨기기
+		$("#re_no").css("display", "block"); // 목록으로 버튼 보이기
+		$("#viewno").css("display","none"); 
+		$("#viewok").css("display", "none");
+	}else {
+		$("#re_ok").css("display", "none"); // 수정, 삭제 버튼 숨기기
+		$("#re_no").css("display", "none"); // 목록으로 버튼 보이기
+		
+	}
+});
+</script>
 <script type="text/javascript">
 	function update_go(f) {
 		f.action="/bbs_qa_updateform.do";
@@ -190,6 +208,21 @@ label {
 										<input type="button" value="삭제"  onclick="delete_go(this.form)" class="in_btn"/>
 									</div>						
 									 <div id="viewno" >									
+										<input type="hidden" value="${qnavo.BOARD_NUM}" name="BOARD_NUM">
+										<input type="button" value="목록으로" onclick="list_go(this.form)" class="in_btn"/>
+										<input type="hidden" value="${cPage}" name="cPage">
+									</div>
+									 <div id=re_ok style="display: none;">
+										<input type="button" value="수정" onclick="update_go(this.form)" class="in_btn"/>
+										<input type="hidden" value="${qnavo.BOARD_NUM}" name="BOARD_NUM">
+										<input type="hidden" value="${qnavo.PROD_NUM}" name="PROD_NUM">
+										<input type="hidden" value="${cPage}" name="cPage">
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										<input type="button" value="목록으로" onclick="list_go(this.form)" class="in_btn"/>
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										<input type="button" value="삭제"  onclick="delete_go(this.form)" class="in_btn"/>
+									</div>		
+									 <div id="re_no"style="display: none;" >									
 										<input type="hidden" value="${qnavo.BOARD_NUM}" name="BOARD_NUM">
 										<input type="button" value="목록으로" onclick="list_go(this.form)" class="in_btn"/>
 										<input type="hidden" value="${cPage}" name="cPage">

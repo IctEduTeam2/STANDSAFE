@@ -471,6 +471,7 @@ public class BBSController {
 		
 		String prod_name = bbsService.getProdName(p_num);
 		qnavo.setPROD_NAME(prod_name);
+
 		
 
 			if(lock.equals("1") && !dbnum.equals(c_num)) {
@@ -482,6 +483,7 @@ public class BBSController {
 				session.setAttribute("qaonelist", "view");
 					if(dbnum.equals(c_num)) {
 						session.setAttribute("qaonelist", "update");
+
 					}
 					mv.setViewName("bbs/qa_onelist");
 					return mv;
@@ -863,6 +865,15 @@ public class BBSController {
 		
 		//로그인한 회원의 비번갖고오기. 입력한 비번과 비교하기위함 
 		String dbpw = (String) request.getSession().getAttribute("dbpw");
+		
+		QA_BBS_VO re_del_ad = bbsService.getQnaOneList(BOARD_NUM);
+		String g_num = re_del_ad.getBOARD_GROUPS();
+		List<QA_BBS_VO> glist = bbsService.getQnqGList(g_num);
+		for (QA_BBS_VO k : glist) {
+			System.out.println("삭제할 답글 번호는:"+ k.getBOARD_NUM());
+			int re_del = bbsService.getQna_re_del(k.getBOARD_NUM());
+			
+		}
 	
 		if( !passwordEncoder.matches(pwd, dbpw)) {
 			System.out.println("틀린암호");
@@ -900,7 +911,14 @@ public class BBSController {
 		//로그인한 회원의 비번갖고오기. 입력한 비번과 비교하기위함 
 			String dbpw = (String) request.getSession().getAttribute("dbpw");
 		
-	
+			RE_BBS_VO re_del_ad = bbsService.getReviewOneList(RE_NUM);
+			String g_num = re_del_ad.getRE_GROUPS();
+			List<RE_BBS_VO> glist = bbsService.getReGList(g_num);
+			for (RE_BBS_VO k : glist) {
+				System.out.println("삭제할 답글 번호는:"+ k.getRE_NUM());
+				int re_del = bbsService.getRe_re_del(k.getRE_NUM());
+				
+			}
 		if( !passwordEncoder.matches(pwd, dbpw)) {
 			System.out.println("틀린암호");
 			mv.setViewName("bbs/review_delete");

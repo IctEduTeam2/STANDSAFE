@@ -69,7 +69,8 @@ public interface BBS_Service {
 	
 	int BbsQaDeleteOk(String BOARD_NUM);
 
-
+	public List<QA_BBS_VO> getQnqGList(String g_num);
+	int getQna_re_del(String k);
 	
 	//신고
 	public List<REP_BBS_VO> getreportlist();
@@ -101,7 +102,8 @@ public interface BBS_Service {
 	//수정
 	int getReviewUpdateOk(RE_BBS_VO reivewvo);
 	int BbsReviewDeleteOk(String RE_NUM);
-	
+	public List<RE_BBS_VO> getReGList(String g_num);
+	int getRe_re_del(String k);
 	
 	
 	//=========================================================================

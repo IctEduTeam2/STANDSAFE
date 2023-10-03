@@ -154,7 +154,12 @@ public class BBS_DAO {
 		return sqlSessionTemplate.update("bbs.qnadelete",BOARD_NUM );
 	}
 	
-	
+	public List<QA_BBS_VO> getQnqGList(String g_num){
+		return sqlSessionTemplate.selectList("bbs.qnareplyupdate", g_num);
+	}
+	public int getQna_re_del(String k) {
+		return sqlSessionTemplate.update("bbs.re_del", k);
+	}
 	
 	//신고
 	public List<REP_BBS_VO> getreportlist() {
@@ -223,7 +228,13 @@ public class BBS_DAO {
 		return sqlSessionTemplate.update("bbs.reviewdelete", RE_NUM);
 	}
 	
-	
+	public List<RE_BBS_VO> getReGList(String g_num) {
+		return sqlSessionTemplate.selectList("bbs.revreply", g_num);
+	}
+
+	public int getRe_re_del(String k) {
+		return sqlSessionTemplate.update("bbs.revre_up", k);
+	}
 	
 	
 	//===============================================================

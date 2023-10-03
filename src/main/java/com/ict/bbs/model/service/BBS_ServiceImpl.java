@@ -125,8 +125,15 @@ public class BBS_ServiceImpl implements BBS_Service{
 	public int BbsQaDeleteOk(String BOARD_NUM) {
 		return bbsDAO.BbsQaDeleteOk(BOARD_NUM);
 	}
-
 	
+	@Override
+	public List<QA_BBS_VO> getQnqGList(String g_num){
+		return bbsDAO.getQnqGList(g_num);
+	}
+	@Override
+	public int getQna_re_del(String k) {
+		return bbsDAO.getQna_re_del(k);
+	}
 	
 	
 	
@@ -184,7 +191,14 @@ public class BBS_ServiceImpl implements BBS_Service{
 	public int BbsReviewDeleteOk(String RE_NUM) {
 		return bbsDAO.BbsReviewDeleteOk(RE_NUM);
 	}
-	
+	@Override
+	public List<RE_BBS_VO> getReGList(String g_num) {
+		return bbsDAO.getReGList(g_num);
+	}
+	@Override
+	public int getRe_re_del(String k) {
+		return bbsDAO.getRe_re_del(k);
+	}
 	
 	//====================================================================
 	//검색 : 이벤트- 검색

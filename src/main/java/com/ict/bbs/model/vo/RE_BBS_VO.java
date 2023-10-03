@@ -5,7 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 	public class RE_BBS_VO {
 	private String RE_NUM, RE_SUBJECT, RE_WRITER, RE_CONTENT, RE_FILE,
 	RE_TYPE, RE_HIT, RE_DATE, RE_UPDATE, RE_ST, RE_LOCK, PROD_NUM, CLIENT_NUM,
-	old_f_name, PROD_NAME;
+	old_f_name, PROD_NAME, ADMIN_NUM;
 	private String RE_GROUPS, RE_STEP, RE_LEV;
 	private MultipartFile file;
 
@@ -13,6 +13,14 @@ import org.springframework.web.multipart.MultipartFile;
 	
 	
 	
+	public String getADMIN_NUM() {
+		return ADMIN_NUM;
+	}
+
+	public void setADMIN_NUM(String aDMIN_NUM) {
+		ADMIN_NUM = aDMIN_NUM;
+	}
+
 	public String getRE_GROUPS() {
 		return RE_GROUPS;
 	}

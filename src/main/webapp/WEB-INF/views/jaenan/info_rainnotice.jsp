@@ -117,62 +117,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-<script type="text/javascript">
-	function selectArea() {
-		var selectStep1 = document.getElementById("step1").value;
-		var selectStep2 = document.getElementById("step2");
-		var selectStep3 = document.getElementById("step3");
 
-		// Step 1 변경 시, Step 2와 Step 3 초기화
-		selectStep2.innerHTML = "";
-		selectStep2.innerHTML = "<option value=''>시/도를 선택하세요</option>";
-		selectStep3.innerHTML = "";
-		selectStep3.innerHTML = "<option value=''>읍/면/동을 선택하세요</option>";
-
-		if (selectStep1 !== "") {
-			$.ajax({
-				url : "/get_areacity.do?selectStep1=" + selectStep1,
-				method : "post",
-				dataType : "text",
-				async : false,
-				success : function(data) {
-					console.log(data);
-					selectStep2.innerHTML = "";
-					selectStep2.innerHTML = data;
-				},
-				error : function() {
-					alert("읽기 실패");
-				}
-			});
-		}
-	}
-
-	function selectcounty() {
-		var selectStep2 = document.getElementById("step2").value;
-		var selectStep3 = document.getElementById("step3");
-
-		// Step 2 변경 시, Step 3 초기화
-		selectStep3.innerHTML = "";
-		selectStep3.innerHTML = "<option value=''>읍/면/동을 선택하세요</option>";
-
-		if (selectStep2 !== "") {
-			$.ajax({
-				url : "/get_areacity.do?selectStep2=" + selectStep2,
-				method : "post",
-				dataType : "text",
-				async : false,
-				success : function(data) {
-					console.log(data);
-					selectStep3.innerHTML = "";
-					selectStep3.innerHTML = data;
-				},
-				error : function() {
-					alert("읽기 실패");
-				}
-			});
-		}
-	}
-</script>
 
 <script type="text/javascript">
 	function getWeatherList(f) {

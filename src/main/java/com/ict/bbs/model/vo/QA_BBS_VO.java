@@ -5,13 +5,21 @@ import org.springframework.web.multipart.MultipartFile;
 	public class QA_BBS_VO {
 	private String BOARD_NUM, BOARD_SUBJECT, BOARD_WRITER, BOARD_CONTENT, BOARD_FILE,
 	BOARD_TYPE, BOARD_DATE, BOARD_UPDATE, BOARD_ST, BOARD_LOCK, PROD_NUM, CLIENT_NUM,
-	old_f_name, PROD_NAME;
+	old_f_name, PROD_NAME, ADMIN_NUM;
 	private String BOARD_GROUPS, BOARD_STEP, BOARD_LEV;
 	
 	private MultipartFile file;
 	
 	
 	
+	public String getADMIN_NUM() {
+		return ADMIN_NUM;
+	}
+
+	public void setADMIN_NUM(String aDMIN_NUM) {
+		ADMIN_NUM = aDMIN_NUM;
+	}
+
 	public String getBOARD_GROUPS() {
 		return BOARD_GROUPS;
 	}

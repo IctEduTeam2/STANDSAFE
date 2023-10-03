@@ -195,6 +195,7 @@ label {
 													<input type="hidden" name="secret_flag" id="secret_flag" value="0" />
 													<input type="hidden" name="BOARD_NUM" value="${qnavo.BOARD_NUM}">
 													<input type="hidden" name="PROD_NUM" value="${qnavo.PROD_NUM}">
+													<input type="hidden" name="BOARD_TYPE" value="${qnavo.BOARD_TYPE}">
 													<input type="hidden" name="cPage" value="${cPage}">
 													&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 													<input type="button" value="목록" onclick="list_go(this.form)" class="in_btn"/>
