@@ -168,6 +168,65 @@
 					style="width: 18px; height: 25px; padding: 6px; float: left; border: 1px solid black;">
 			</form>
 			<div id="best">
+				<h3 style="color: red; margin-top: 50px;">BEST 상품</h3>
+				<hr
+					style="margin-bottom: 30px; margin-top: 20px; border: 3px solid #1b5ac2;">
+				<ul class="prod-list">
+					<c:forEach var="a" items="${productBestList2}">
+						<li class="product"><img
+							src="resources/images/products/${a.prod_img }"
+							class="product_img">
+							<p class="product_text" style="margin-top: 10px;">
+								${a.prod_name }</p> <br> <c:choose>
+								<c:when test="${a.prod_sale == '0'}">
+									<p class="product_text">
+										<fmt:formatNumber value="${a.prod_price}" type="number"
+											pattern="#,### 원" />
+									</p>
+								</c:when>
+								<c:otherwise>
+									<p class="product_text">
+										<del>
+											<fmt:formatNumber value="${a.prod_price}" type="number"
+												pattern="#,### 원" />
+										</del>
+										▶ <b style="color: red; font-size: 14px;"><fmt:formatNumber
+												value="${a.prod_sale}" type="number" pattern="#,### 원" /></b> <b
+											style="font-size: 14px;"> (${((a.prod_price - a.prod_sale) / a.prod_price * 100).intValue()}%↓)</b>
+									</p>
+								</c:otherwise>
+							</c:choose>
+							<p class="product_text">
+							<div class="caption">
+								<button class="product_btn1"
+									onclick="window.location.href='/productOneListform.do?prod_num=${a.prod_num}'">상세보기</button>
+								<button class="product_btn2" onclick="addToCart(this)"
+									data-prodnum="${a.prod_num}" data-usernum="${id }">장바구니
+									담기</button>
+							</div></li>
+
+						<div id="myModal${a.prod_num }" class="modal">
+							<div class="modal-content">
+								<h2 style="font-size: 24px; margin-bottom: 10px;">장바구니에 상품이
+									추가되었습니다</h2>
+								<p>선택한 상품: ${a.prod_name }</p>
+								<div class="button-container">
+									<button class="btn continue-shopping-button"
+										onclick="continueShopping(this)" data-prodnum="${a.prod_num}"
+										data-usernum="${id }">쇼핑 계속하기</button>
+									<button class="btn view-cart-button" onclick="viewCart(this)"
+										data-prodnum="${a.prod_num}" data-usernum="${id }">장바구니
+										보기</button>
+								</div>
+							</div>
+						</div>
+					</c:forEach>
+				</ul>
+			</div>
+			<script type="text/javascript">
+				
+			</script>
+			<div id="event">
 				<h3 style="color: red; margin-top: 50px;">최신 상품</h3>
 				<hr
 					style="margin-bottom: 30px; margin-top: 20px; border: 3px solid #1b5ac2;">
@@ -223,22 +282,60 @@
 					</c:forEach>
 				</ul>
 			</div>
-			<script type="text/javascript">
-				
-			</script>
 			<div id="event">
-				<h3 style="color: red;">필수품</h3>
+				<h3 style="color: red; margin-top: 50px;">할인 상품</h3>
 				<hr
 					style="margin-bottom: 30px; margin-top: 20px; border: 3px solid #1b5ac2;">
 				<ul class="prod-list">
-					<li class="product"><img
-						src="resources/images/products/product1.jpg" class="product_img">
-						<p class="product_text">친환경 분말 소화기 주방 가정용요용용용용용용용용</p> <br>
-						<p class="product_text">28,000원</p>
-						<div class="caption">
-							<button class="product_btn1">상세보기</button>
-							<button class="product_btn2">장바구니 담기</button>
-						</div></li>
+					<c:forEach var="a" items="${productSaleList}">
+						<li class="product"><img
+							src="resources/images/products/${a.prod_img }"
+							class="product_img">
+							<p class="product_text" style="margin-top: 10px;">
+								${a.prod_name }</p> <br> <c:choose>
+								<c:when test="${a.prod_sale == '0'}">
+									<p class="product_text">
+										<fmt:formatNumber value="${a.prod_price}" type="number"
+											pattern="#,### 원" />
+									</p>
+								</c:when>
+								<c:otherwise>
+									<p class="product_text">
+										<del>
+											<fmt:formatNumber value="${a.prod_price}" type="number"
+												pattern="#,### 원" />
+										</del>
+										▶ <b style="color: red; font-size: 14px;"><fmt:formatNumber
+												value="${a.prod_sale}" type="number" pattern="#,### 원" /></b> <b
+											style="font-size: 14px;"> (${((a.prod_price - a.prod_sale) / a.prod_price * 100).intValue()}%↓)</b>
+									</p>
+								</c:otherwise>
+							</c:choose>
+							<p class="product_text">
+							<div class="caption">
+								<button class="product_btn1"
+									onclick="window.location.href='/productOneListform.do?prod_num=${a.prod_num}'">상세보기</button>
+								<button class="product_btn2" onclick="addToCart(this)"
+									data-prodnum="${a.prod_num}" data-usernum="${id }">장바구니
+									담기</button>
+							</div></li>
+
+						<div id="myModal${a.prod_num }" class="modal">
+							<div class="modal-content">
+								<h2 style="font-size: 24px; margin-bottom: 10px;">장바구니에 상품이
+									추가되었습니다</h2>
+								<p>선택한 상품: ${a.prod_name }</p>
+								<div class="button-container">
+									<button class="btn continue-shopping-button"
+										onclick="continueShopping(this)" data-prodnum="${a.prod_num}"
+										data-usernum="${id }">쇼핑 계속하기</button>
+									<button class="btn view-cart-button" onclick="viewCart(this)"
+										data-prodnum="${a.prod_num}" data-usernum="${id }">장바구니
+										보기</button>
+								</div>
+							</div>
+						</div>
+					</c:forEach>
 				</ul>
 			</div>
 		</section>

@@ -37,6 +37,11 @@ public class ShoppingService {
 		return shoppingDAO.getProductNewList();
 	}
 	
+	// 새 상품 리스트
+	public List<ProductVO> getProductSaleList() {
+		return shoppingDAO.getProductSaleList();
+	}
+	
 	// 상품 한개
 	public ProductVO getProductOne(String prod_num) {
 		return shoppingDAO.getProductOne(prod_num);
