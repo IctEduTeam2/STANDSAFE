@@ -165,15 +165,27 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 </script>
 <script type="text/javascript">
 function increaseQuantity(f) {
-	 if(f.amount.value.trim() > f.prod_amount.value.trim()) {
-			alert("재고량을 초과구매 불가능합니다.");
-			f.amount.value = f.prod_amount.value;
-			return;
-		} else {
-			f.action = "/updateamount.do?st=+";
-			f.submit();
-		}
-}</script>
+    // 값들을 정수로 변환
+    var currentAmount = parseInt(f.amount.value.trim(), 10);
+    var productAmount = parseInt(f.prod_amount.value.trim(), 10);
+
+    // NaN 체크: 입력값이 정수로 변환할 수 없는 경우 처리
+    if (isNaN(currentAmount) || isNaN(productAmount)) {
+        alert("유효하지 않은 수량입니다.");
+        return;
+    }
+
+    if(currentAmount > productAmount) {
+        alert("재고량을 초과구매 불가능합니다.");
+        f.amount.value = productAmount; // 정수 값을 문자열로 다시 설정
+        return;
+    } else {
+        f.action = "/updateamount.do?st=+";
+        f.submit();
+    }
+}
+</script>
+
 <script>
 function deleteSelectedProducts() {
   // 체크된 항목을 배열로 저장
