@@ -333,7 +333,7 @@
 
         <!-- 종료 날짜 검색 조건 -->
         <if test="end != null and end != ''">
-            AND NOTICE_DATE &lt;= DATE_ADD(#{close1}, INTERVAL 1 DAY) 
+            AND NOTICE_DATE &lt;= DATE_ADD(#{end}, INTERVAL 1 DAY) 
         </if> 
       order by NOTICE_NUM desc
         
@@ -368,7 +368,7 @@
 
         <!-- 종료 날짜 검색 조건 -->
         <if test="end != null and end != ''">
-            AND FA_DATE &lt;= DATE_ADD(#{close1}, INTERVAL 1 DAY)  
+            AND FA_DATE &lt;= DATE_ADD(#{end}, INTERVAL 1 DAY) 
         </if> 
       order by FA_NUM desc
         
@@ -398,7 +398,7 @@
 
         <!-- 시작 날짜 검색 조건 -->
         <if test="start != null and start != ''">
-            AND EVENT_DATE &gt;= #{start}
+            AND EVENT_DATE &lt;= DATE_ADD(#{end}, INTERVAL 1 DAY) 
         </if>
 
         <!-- 종료 날짜 검색 조건 -->
@@ -437,7 +437,7 @@
 
         <!-- 종료 날짜 검색 조건 -->
         <if test="end != null and end != ''">
-            AND BOARD_DATE &lt;= DATE_ADD(#{close1}, INTERVAL 1 DAY) 
+            AND BOARD_DATE  &lt;= DATE_ADD(#{end}, INTERVAL 1 DAY) 
         </if> 
         order by BOARD_NUM desc
     </select>
@@ -471,7 +471,7 @@
 
         <!-- 종료 날짜 검색 조건 -->
         <if test="end != null and end != ''">
-            AND RE_DATE &lt;= DATE_ADD(#{close1}, INTERVAL 1 DAY)  
+            AND RE_DATE  &lt;= DATE_ADD(#{end}, INTERVAL 1 DAY) 
         </if> 
         order by RE_NUM desc
     </select>    
