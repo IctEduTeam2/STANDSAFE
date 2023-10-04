@@ -378,7 +378,7 @@ public class Admin_notice {
 		return msg;
 	}
 
-	// 홈페이지 등록123
+	// 홈페이지 등록
 	@RequestMapping(value = "/update_adnoticestatus.do", produces = "text/html; charset=utf-8")
 	@ResponseBody
 	public String updateNoticeStatus(HttpServletRequest request, HttpSession session,
@@ -406,9 +406,6 @@ public class Admin_notice {
 			html.append("<td>").append(no).append("</td>"); // 번호 추가
 			html.append("<td><a href='/adnotice_onelist.do?NOTICE_NUM=").append(k.getNOTICE_NUM()).append("'>")
 					.append(k.getNOTICE_SUBJECT()).append("</a></td>");
-			// html.append("<td>").append(k.getNOTICE_SUBJECT()).append("</td>");
-			// html.append("<td>").append(k.getNOTICE_CONTENT()).append("</td>");
-			// html.append("<td>").append(k.getNOTICE_FILE()).append("</td>");
 			if (k.getNOTICE_FILE() == null || k.getNOTICE_FILE().isEmpty()) {
 				html.append("<td>없음</td>");
 			} else {
@@ -418,7 +415,6 @@ public class Admin_notice {
 			html.append("<td>").append(k.getNOTICE_DATE()).append("</td>");
 			html.append("<td>").append(k.getNOTICE_UPDATE()).append("</td>");
 			html.append("<td>").append(k.getNOTICE_WRITER()).append("</td>");
-			// html.append("<td>").append(k.getNOTICE_ST()).append("</td>");
 			html.append("<td>");
 			if (k.getNOTICE_ST().equals("1")) {
 				html.append("[등록]");
@@ -465,24 +461,20 @@ public class Admin_notice {
 					.append("' /></td>");
 			html.append("<input type='hidden' id ='checknum' name='checknum' value='").append(k.getNOTICE_NUM())
 					.append("' />");
-			// html.append("<td>").append(k.getNOTICE_NUM()).append("</td>");
 			html.append("<td>").append(no).append("</td>");
 			html.append("<td><a href='/adnotice_onelist.do?NOTICE_NUM=").append(k.getNOTICE_NUM()).append("'>")
 					.append(k.getNOTICE_SUBJECT()).append("</a></td>");
-			// html.append("<td>").append(k.getNOTICE_CONTENT()).append("</td>");
-			// html.append("<td>").append(k.getNOTICE_FILE()).append("</td>");
+
 			if (k.getNOTICE_FILE() == null || k.getNOTICE_FILE().isEmpty()) {
 				html.append("<td>없음</td>");
 			} else {
 				html.append("<td>있음</td>");
 			}
-
 			String result = html.toString();
 			html.append("<td>").append(k.getNOTICE_HIT()).append("</td>");
 			html.append("<td>").append(k.getNOTICE_DATE()).append("</td>");
 			html.append("<td>").append(k.getNOTICE_UPDATE()).append("</td>");
 			html.append("<td>").append(k.getNOTICE_WRITER()).append("</td>");
-			// html.append("<td>").append(k.getNOTICE_ST()).append("</td>");
 			html.append("<td>");
 			if (k.getNOTICE_ST().equals("1")) {
 				html.append("[등록]");
@@ -519,22 +511,14 @@ public class Admin_notice {
 				html.append("<td id='RE'>").append("<a href='/adqa_onelist_user.do?BOARD_NUM=").append(k.getBOARD_NUM())
 						.append("'>").append(k.getBOARD_SUBJECT()).append("</a></td>");
 			}
-
-//			html.append("<td><a href='/adqa_onelist_user.do?BOARD_NUM=").append(k.getBOARD_NUM()).append("'>")
-//					.append(k.getBOARD_SUBJECT()).append("</a></td>");
-			// html.append("<td>").append(k.getBOARD_SUBJECT()).append("</td>");
-			// html.append("<td>").append(k.getNOTICE_CONTENT()).append("</td>");
-			// html.append("<td>").append(k.getNOTICE_FILE()).append("</td>");
 			if (k.getBOARD_FILE() == null || k.getBOARD_FILE().isEmpty()) {
 				html.append("<td>없음</td>");
 			} else {
 				html.append("<td>있음</td>");
 			}
-			// html.append("<td>").append(k.getNOTICE_HIT()).append("</td>");
 			html.append("<td>").append(k.getBOARD_DATE()).append("</td>");
 			html.append("<td>").append(k.getBOARD_UPDATE()).append("</td>");
 			html.append("<td>").append(k.getBOARD_WRITER()).append("</td>");
-			// html.append("<td>").append(k.getNOTICE_ST()).append("</td>");
 			html.append("<td>");
 			if (k.getBOARD_ST().equals("1")) {
 				html.append("[답변대기]");
@@ -591,11 +575,6 @@ public class Admin_notice {
 						.append("'>").append(k.getBOARD_SUBJECT()).append("</a></td>");
 			}
 
-			// html.append("<td><a
-			// href='/adqa_onelist_user.do?BOARD_NUM=").append(k.getBOARD_NUM()).append("'>")
-			// .append(k.getBOARD_SUBJECT()).append("</a></td>");
-			// html.append("<td>").append(k.getNOTICE_CONTENT()).append("</td>");
-			// html.append("<td>").append(k.getNOTICE_FILE()).append("</td>");
 			if (k.getBOARD_FILE() == null || k.getBOARD_FILE().isEmpty()) {
 				html.append("<td>없음</td>");
 			} else {
@@ -735,7 +714,6 @@ public class Admin_notice {
 			qvo.setBOARD_LEV(String.valueOf(lev));
 			// 위에서 증가시킨것을스트링으로 변환 후 setter로 입력시키자.
 			// 변화가 있는건 스텝과 레벨이고 그룹은 변화가 없어서 두개만 집어넣기.
-
 			// 암호화와 첨부파일 처리
 			// 첨부
 			String path = request.getSession().getServletContext().getRealPath("/resources/images");
@@ -755,7 +733,6 @@ public class Admin_notice {
 			}
 
 			// 비번을 암호화
-			// bv.setPwd(passwordEncoder.encode(bv.getPwd()));
 
 			String admin_name = (String) request.getSession().getAttribute("admin_name");
 			qvo.setBOARD_WRITER(admin_name);
@@ -800,12 +777,6 @@ public class Admin_notice {
 	}
 
 	// 이용안내 FAQ
-	@RequestMapping("/ad_allfaq.do")
-	public ModelAndView AdminAllFaq() {
-		ModelAndView mv = new ModelAndView("admin_bbs/ad_faq");
-		return mv;
-	}
-
 	// 삭제게시물 검색
 	@RequestMapping(value = "/adfaq_deleted.do", produces = "text/html; charset=utf-8")
 	@ResponseBody
@@ -821,14 +792,6 @@ public class Admin_notice {
 			html.append("<td>").append(no).append("</td>"); // 번호 추가
 			html.append("<td><a href='/bbs_faq_onelist.do?FA_NUM=").append(k.getFA_NUM()).append("'>")
 					.append(k.getFA_SUBJECT()).append("</a></td>");
-			// html.append("<td>").append(k.getNOTICE_SUBJECT()).append("</td>");
-			// html.append("<td>").append(k.getNOTICE_CONTENT()).append("</td>");
-			// html.append("<td>").append(k.getNOTICE_FILE()).append("</td>");
-//	        if (k.getNOTICE_FILE() == null || k.getNOTICE_FILE().isEmpty()) {
-//	            html.append("<td>없음</td>");
-//	        } else {
-//	        	html.append("<td>있음</td>");
-//	        }
 			html.append("<td>").append(k.getFA_HIT()).append("</td>");
 			html.append("<td>").append(k.getFA_DATE()).append("</td>");
 			html.append("<td>").append(k.getFA_UPDATE()).append("</td>");
@@ -883,13 +846,6 @@ public class Admin_notice {
 			// html.append("<td>").append(k.getNOTICE_NUM()).append("</td>");
 			html.append("<td>").append(no).append("</td>");
 			html.append("<td>").append(k.getFA_SUBJECT()).append("</td>");
-			// html.append("<td>").append(k.getNOTICE_CONTENT()).append("</td>");
-			// html.append("<td>").append(k.getNOTICE_FILE()).append("</td>");
-//			        if (k.getNOTICE_FILE() == null || k.getNOTICE_FILE().isEmpty()) {
-//			            html.append("<td>없음</td>");
-//			        } else {
-//			        	html.append("<td>있음</td>");
-//			        }
 			String result = html.toString();
 			html.append("<td>").append(k.getFA_ANSWER()).append("</td>");
 			html.append("<td>").append(k.getFA_DATE()).append("</td>");
@@ -953,21 +909,6 @@ public class Admin_notice {
 		ModelAndView mv = new ModelAndView("redirect:/admin_faq.do");
 		try {
 			String path = request.getSession().getServletContext().getRealPath("/resources/upload");
-
-//			MultipartFile f_param = faqvo.getFile();
-//			if (f_param.isEmpty()) {
-//				faqvo.setNOTICE_FILE("");
-//			} else {
-//				UUID uuid = UUID.randomUUID();
-//				String f_name = uuid.toString() + "_" + faqvo.getFile().getOriginalFilename();
-//				faqvo.setNOTICE_FILE(f_name);
-//
-//				byte[] in = faqvo.getFile().getBytes();
-//				File out = new File(path, f_name);
-//
-//				FileCopyUtils.copy(in, out);
-//			}
-
 			String admin_name = (String) request.getSession().getAttribute("admin_name");
 			faqvo.setFA_WRITER(admin_name);
 			String num = (String) request.getSession().getAttribute("admin_num");
@@ -1017,9 +958,7 @@ public class Admin_notice {
 			html.append("<td>").append(no).append("</td>"); // 번호 추가
 			html.append("<td><a href='/adevent_onelist.do?EVENT_NUM=").append(k.getEVENT_NUM()).append("'>")
 					.append(k.getEVENT_SUBJECT()).append("</a></td>");
-			// html.append("<td>").append(k.getNOTICE_SUBJECT()).append("</td>");
 			html.append("<td>").append(k.getEVENT_CONTENT()).append("</td>");
-			// html.append("<td>").append(k.getNOTICE_FILE()).append("</td>");
 			if (k.getEVENT_FILE() == null || k.getEVENT_FILE().isEmpty()) {
 				html.append("<td>없음</td>");
 			} else {
@@ -1029,7 +968,6 @@ public class Admin_notice {
 			html.append("<td>").append(k.getEVENT_DATE()).append("</td>");
 			html.append("<td>").append(k.getEVENT_UPDATE()).append("</td>");
 			html.append("<td>").append(k.getEVENT_WRITER()).append("</td>");
-			// html.append("<td>").append(k.getNOTICE_ST()).append("</td>");
 			html.append("<td>");
 			if (k.getEVENT_ST().equals("1")) {
 				html.append("[등록]");
@@ -1136,12 +1074,6 @@ public class Admin_notice {
 		return msg;
 	}
 
-//	@RequestMapping("/ad_evewrite_go.do")lllkkjj
-//	public ModelAndView AdminEveWriteForm() {
-//		ModelAndView mv = new ModelAndView("admin_bbs/ad_event_writeform");
-//		return mv;
-//	}jju
-
 	// 작성 페이지 이동
 	@RequestMapping("/ad_eventform.do") //
 	public ModelAndView AdminEveWriteForm(@ModelAttribute("EVENT_NUM") String EVENT_NUM, HttpSession session) {
@@ -1195,23 +1127,6 @@ public class Admin_notice {
 
 	}
 
-//	@RequestMapping("/adevent_update.do")
-//	public ModelAndView AdminEveUpdate() {
-//		ModelAndView mv = new ModelAndView("admin_bbs/ad_event_update");
-//		return mv;
-//	}
-
-//	@RequestMapping("/adevent_delete.do")
-//	public ModelAndView AdminEveDelete() {
-//		ModelAndView mv = new ModelAndView("admin_bbs/ad_event_delete");
-//		return mv;
-//	}
-
-//	@RequestMapping("/adevent_onelist.do")
-//	public ModelAndView AdminEveOnelist() {
-//		ModelAndView mv = new ModelAndView("admin_bbs/ad_event_onelist");
-//		return mv;
-//	}
 	// 상세보기
 	@RequestMapping("/adevent_onelist.do") //
 	public ModelAndView AdminEveOnelist(@ModelAttribute("EVENT_NUM") String EVENT_NUM) {
@@ -1366,12 +1281,6 @@ public class Admin_notice {
 				html.append("<td id='RE'>").append("<a href='/adreview_onelist_user.do?RE_NUM=").append(k.getRE_NUM())
 						.append("'>").append(k.getRE_SUBJECT()).append("</a></td>");
 			}
-
-//				html.append("<td><a href='/adqa_onelist_user.do?BOARD_NUM=").append(k.getBOARD_NUM()).append("'>")
-//						.append(k.getBOARD_SUBJECT()).append("</a></td>");
-			// html.append("<td>").append(k.getBOARD_SUBJECT()).append("</td>");
-			// html.append("<td>").append(k.getRE_CONTENT()).append("</td>");
-			// html.append("<td>").append(k.getNOTICE_FILE()).append("</td>");
 			if (k.getRE_FILE() == null || k.getRE_FILE().isEmpty()) {
 				html.append("<td>없음</td>");
 			} else {
@@ -1438,11 +1347,6 @@ public class Admin_notice {
 						.append("'>").append(k.getRE_SUBJECT()).append("</a></td>");
 			}
 
-			// html.append("<td><a
-			// href='/adqa_onelist_user.do?BOARD_NUM=").append(k.getBOARD_NUM()).append("'>")
-			// .append(k.getBOARD_SUBJECT()).append("</a></td>");
-			// html.append("<td>").append(k.getRE_CONTENT()).append("</td>");
-			// html.append("<td>").append(k.getRE_FILE()).append("</td>");
 			if (k.getRE_FILE() == null || k.getRE_FILE().isEmpty()) {
 				html.append("<td>없음</td>");
 			} else {
@@ -1601,7 +1505,6 @@ public class Admin_notice {
 			}
 
 			// 비번을 암호화
-			// bv.setPwd(passwordEncoder.encode(bv.getPwd()));
 
 			String admin_name = (String) request.getSession().getAttribute("admin_name");
 			rvo.setRE_WRITER(admin_name);
@@ -1672,22 +1575,13 @@ public class Admin_notice {
 				html.append("<td id='RE'>").append("<a href='/ad_report_onelist_user.do?REPORT_NUM=").append(k.getREPORT_NUM())
 						.append("'>").append(k.getREPORT_SUBJECT()).append("</a></td>");
 			}
-
-//				html.append("<td><a href='/adqa_onelist_user.do?BOARD_NUM=").append(k.getBOARD_NUM()).append("'>")
-//						.append(k.getBOARD_SUBJECT()).append("</a></td>");
-			// html.append("<td>").append(k.getBOARD_SUBJECT()).append("</td>");
-			// html.append("<td>").append(k.getRE_CONTENT()).append("</td>");
-			// html.append("<td>").append(k.getNOTICE_FILE()).append("</td>");
 			if (k.getREPORT_FILE() == null || k.getREPORT_FILE().isEmpty()) {
 				html.append("<td>없음</td>");
 			} else {
 				html.append("<td>있음</td>");
 			}
-			// html.append("<td>").append(k.getRE_HIT()).append("</td>");
 			html.append("<td>").append(k.getREPORT_DATE()).append("</td>");
-			//html.append("<td>").append(k.getREPORT_UPDATE()).append("</td>");
 			html.append("<td>").append(k.getREPORT_WRITER()).append("</td>");
-			// html.append("<td>").append(k.getNOTICE_ST()).append("</td>");
 			html.append("<td>");
 			if (k.getREPORT_ST().equals("1")) {
 				html.append("[답변대기]");
@@ -1742,23 +1636,14 @@ public class Admin_notice {
 				html.append("<td id='RE'>").append("<a href='/ad_report_onelist_user.do?REPORT_NUM=").append(k.getREPORT_NUM())
 						.append("'>").append(k.getREPORT_SUBJECT()).append("</a></td>");
 			}
-
-			// html.append("<td><a
-			// href='/adqa_onelist_user.do?BOARD_NUM=").append(k.getBOARD_NUM()).append("'>")
-			// .append(k.getBOARD_SUBJECT()).append("</a></td>");
-			// html.append("<td>").append(k.getRE_CONTENT()).append("</td>");
-			// html.append("<td>").append(k.getRE_FILE()).append("</td>");
 			if (k.getREPORT_FILE() == null || k.getREPORT_FILE().isEmpty()) {
 				html.append("<td>없음</td>");
 			} else {
 				html.append("<td>있음</td>");
 			}
 			String result = html.toString();
-			// html.append("<td>").append(k.getNOTICE_HIT()).append("</td>");
 			html.append("<td>").append(k.getREPORT_DATE()).append("</td>");
-			//html.append("<td>").append(k.getRE_UPDATE()).append("</td>");
 			html.append("<td>").append(k.getREPORT_WRITER()).append("</td>");
-			// html.append("<td>").append(k.getNOTICE_ST()).append("</td>");
 			html.append("<td>");
 			if (k.getREPORT_ST().equals("1")) {
 				html.append("[답변대기]");
@@ -1901,8 +1786,6 @@ public class Admin_notice {
 			}
 
 			// 비번을 암호화
-			// bv.setPwd(passwordEncoder.encode(bv.getPwd()));
-
 			String admin_name = (String) request.getSession().getAttribute("admin_name");
 			rpvo.setREPORT_WRITER(admin_name);
 			String num = (String) request.getSession().getAttribute("admin_num");
@@ -1926,8 +1809,6 @@ public class Admin_notice {
 
 		}
 	}
-	
-
 	@RequestMapping("/adreport_update.do")
 	public ModelAndView AdminRepUpdate() {
 		ModelAndView mv = new ModelAndView("admin_bbs/ad_report_update");
@@ -1985,10 +1866,6 @@ public class Admin_notice {
 
 			String admin_name = (String) request.getSession().getAttribute("admin_name");
 			popvo.setPOPUP_WRITER(admin_name);
-			//String num = (String) request.getSession().getAttribute("admin_num");
-
-			//popvo.setADMIN_NUM(num);
-			//mvo.setNOTICE_SUBJECT(NOTICE_SUBJECT);
 			String type = request.getParameter("TYPE");
 			if(type.equals("팝업")) {
 				popvo.setPOPUP_ST("0");
@@ -1996,7 +1873,7 @@ public class Admin_notice {
 				popvo.setPOPUP_ST("1");
 			}
 			// vo에 갖고온값 저장.
-			//popvo.setPOPUP_CHK(type);
+
 			int result = notiService.getPopupWriteOk(popvo);
 			if (result > 0) {
 				return mv;
@@ -2025,21 +1902,12 @@ public class Admin_notice {
 			html.append("<td>").append(no).append("</td>"); // 번호 추가
 			html.append("<td><a href='/adpopup_onelist.do?POPUP_NUM=").append(k.getPOPUP_NUM()).append("'>")
 					.append(k.getPOPUP_IMG()).append("</a></td>");
-			// html.append("<td>").append(k.getNOTICE_SUBJECT()).append("</td>");
-			// html.append("<td>").append(k.getNOTICE_CONTENT()).append("</td>");
-			// html.append("<td>").append(k.getNOTICE_FILE()).append("</td>");
-
-			
-			//html.append("<td>").append(k.getNOTICE_HIT()).append("</td>");
-			//html.append("<td>").append(k.getNOTICE_DATE()).append("</td>");
-			//html.append("<td>").append(k.getNOTICE_UPDATE()).append("</td>");
 			if(k.getPOPUP_ST().equals("0")) {
 				html.append("<td>팝업</td>");
 			}else {
 				html.append("<td>슬라이드</td>");
 			}
 			html.append("<td>").append(k.getPOPUP_WRITER()).append("</td>");
-			// html.append("<td>").append(k.getNOTICE_ST()).append("</td>");
 			html.append("<td>");
 			
 			if (k.getPOPUP_CHK().equals("1")) {
@@ -2091,20 +1959,13 @@ public class Admin_notice {
 			html.append("<td>").append(no).append("</td>");
 			html.append("<td><a href='/adpopup_onelist.do?POPUP_NUM=").append(k.getPOPUP_NUM()).append("'>")
 					.append(k.getPOPUP_IMG()).append("</a></td>");
-			// html.append("<td>").append(k.getNOTICE_CONTENT()).append("</td>");
-			// html.append("<td>").append(k.getNOTICE_FILE()).append("</td>");
-			
 			if(k.getPOPUP_ST().equals("0")) {
 				html.append("<td>팝업</td>");
 			}else {
 				html.append("<td>슬라이드</td>");
 			}
 			String result = html.toString();
-			//html.append("<td>").append(k.getNOTICE_HIT()).append("</td>");
-			//html.append("<td>").append(k.getNOTICE_DATE()).append("</td>");
-			//html.append("<td>").append(k.getNOTICE_UPDATE()).append("</td>");
 			html.append("<td>").append(k.getPOPUP_WRITER()).append("</td>");
-			// html.append("<td>").append(k.getNOTICE_ST()).append("</td>");
 			html.append("<td>");
 			if (k.getPOPUP_CHK().equals("1")) {
 				html.append("[등록]");
