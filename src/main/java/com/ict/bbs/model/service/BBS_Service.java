@@ -153,5 +153,5 @@ public interface BBS_Service {
 	public List<Review_comVO> getReviewcomList(String sessionid);
 	
 	//pay_t의 review_st 1로 변경하기
-	int updateReviewStonPayT(String review_prod);
+	int updateReviewStonPayT(String p_num);
 }
