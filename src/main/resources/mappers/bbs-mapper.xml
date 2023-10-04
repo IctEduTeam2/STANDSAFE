@@ -398,12 +398,12 @@
 
         <!-- 시작 날짜 검색 조건 -->
         <if test="start != null and start != ''">
-            AND EVENT_DATE &lt;= DATE_ADD(#{end}, INTERVAL 1 DAY) 
+           AND EVENT_DATE &gt;= #{start}
         </if>
 
         <!-- 종료 날짜 검색 조건 -->
         <if test="end != null and end != ''">
-            AND EVENT_DATE &lt;= DATE_ADD(#{close1}, INTERVAL 1 DAY) 
+            AND EVENT_DATE &lt;= DATE_ADD(#{end}, INTERVAL 1 DAY) 
         </if> 
       order by EVENT_NUM desc
     </select>
