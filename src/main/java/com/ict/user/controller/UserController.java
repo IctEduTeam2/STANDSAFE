@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.http.ResponseEntity;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -58,7 +62,7 @@ public class UserController {
 	// 관리자에서 로고눌렀을때
 	@RequestMapping("/admin_logo.do")
 	public ModelAndView getLAdminLogo() {
-		return new ModelAndView("/admin_main/index");
+		return new ModelAndView("/admin_main/");
 	}
 
 	// 가입화면으로
@@ -157,20 +161,29 @@ public class UserController {
 
 	// 회원가입 완료->메인
 	@RequestMapping("/user_joinok.do")
-	public ModelAndView getJoinOk(UserVO uVO) {
-		ModelAndView mv = new ModelAndView("redirect:/");
-		// 패스워드 암호화 하자
-		uVO.setPW(passwordEncoder.encode(uVO.getPW()));
-		int result = userService.getUserAdd(uVO);
-		// 내부 DAO에 포인트 금액 넣는것 있음
-		if (result > 0) {
-			// 성공
-			return mv;
-		} else {
-			// 실패
-			return new ModelAndView("errorPage");
-		}
+	public ResponseEntity<Map<String, Object>> getJoinOk(UserVO uVO) {
+	    Map<String, Object> resultData = new HashMap<>();
+
+	    try {
+	        // 패스워드 암호화
+	        uVO.setPW(passwordEncoder.encode(uVO.getPW()));
+	        int result = userService.getUserAdd(uVO);
+
+	        if (result > 0) {
+	            // 성공
+	            resultData.put("success", true);
+	        } else {
+	            // 실패
+	            resultData.put("success", false);
+	        }
+	    } catch (Exception e) {
+	        resultData.put("success", false);
+	        resultData.put("error", e.getMessage());
+	    }
+
+	    return ResponseEntity.ok(resultData);
 	}
+
 
 	// 비번 중복
 	@ResponseBody

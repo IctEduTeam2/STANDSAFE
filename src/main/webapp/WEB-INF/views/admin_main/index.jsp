@@ -8,7 +8,45 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<style type="text/css">
+/* 테이블 기본 스타일 */
+table {
+	width: 100%;
+	border-collapse: collapse; /* 셀 사이의 테두리를 합침 */
+	margin: 25px 0;
+}
 
+/* 테이블 헤더 스타일 */
+table thead th {
+	background-color: #1b5ac2;
+	color: white;
+	padding: 10px;
+	border: 1px solid #ddd;
+}
+
+/* 테이블 셀 스타일 */
+table th, table td {
+	padding: 12px 15px;
+	border: 1px solid #ddd;
+}
+
+/* 테이블 row에 대한 호버 효과 */
+table tbody tr:hover {
+	background-color: #f5f5f5;
+}
+
+/* 짝수 번째 row의 배경색 */
+table tbody tr:nth-child(even) {
+	background-color: #f3f3f3;
+	select
+	,
+	input[type="text"]
+	{
+	height
+	:
+	28px; /* 원하는 크기로 조정하세요 */
+}
+</style>
 <title>STANDSAFE</title>
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
@@ -21,7 +59,6 @@
 <link rel="stylesheet" href="resources/css/slide.css" />
 <link rel="stylesheet" href="resources/css/basis.css" />
 <link rel="stylesheet" href="resources/css/admin_main.css" />
-
 </head>
 <body onload="">
 	<!-- InitializeStaticMenu(); -->
@@ -220,6 +257,7 @@ $(document).ready(function(){
 			</article>
 		</section>
 		<jsp:include page="../Semantic/footer.jsp"></jsp:include>
+		
 	</div>
 	<!-- 동적 데이터 로딩 스크립트 -->
 	<script>
@@ -308,12 +346,10 @@ function loadData(postType) {
     });
 }
 </script>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script>
+		<script>
 $(document).ready(function() {
     loadTop5Products();
 });
-
 function loadTop5Products() {
     $.ajax({
         type: "GET",
@@ -322,11 +358,14 @@ function loadTop5Products() {
         success: function(data) {
             $(".product-item").remove(); // 기존 상품 항목 제거
             data.forEach(function(product) {
-                var productItem = '<div class="product-item">' +
-                                  '<img src="' + product.PROD_IMG + '" alt="상품 이미지">' +
-                                  '<div class="product-info">' +
-                                  '<span class="product-name">' + product.PROD_NAME + '</span> <span class="product-revenue">₩' + product.REVENUE + '</span>' +
-                                  '</div></div>';
+            	console.log(product.PROD_IMG);
+            	var productItem = '<div class="product-item">' +
+            	'<img src="resources/images/products/' + product.PROD_IMG + '" alt="상품 이미지">'+
+                '<div class="product-info">' +
+                '<span class="product-name" style="font-size: 20px;">' + product.PROD_NAME + ' </span>'+
+                '<br>'+
+                '<span class="product-revenue" style="font-size: 20px;">' + product.REVENUE + '원</span>'+
+                '</div></div>';
                 $(".top-products").append(productItem);
             });
         },
@@ -336,6 +375,5 @@ function loadTop5Products() {
     });
 }
 </script>
-
 </body>
 </html>

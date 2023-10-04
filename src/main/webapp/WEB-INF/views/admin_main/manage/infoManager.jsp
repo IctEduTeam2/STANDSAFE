@@ -92,29 +92,28 @@
 						</tr>
 						<tr>
 							<td>주소</td>
-							<c:set var="addressParts" value="${adVO.ADMIN_ADDR.split(',')}" />
-
 							<td><input type="text" name="postcode" id="postcode"
 								placeholder="우편번호"
-								value="${fn:length(addressParts) > 0 ? addressParts[0] : ''}"
-								readonly> <input type="button"
-								onclick="execDaumPostcode()" value="우편번호 찾기"><br> <input
-								type="text" name="address" id="address" placeholder="주소"
-								value="${fn:length(addressParts) > 1 ? addressParts[1] : ''}"
-								readonly> <input type="text" name="extraAddress"
-								id="extraAddress" placeholder="참고주소"
-								value="${fn:length(addressParts) > 2 ? addressParts[2] : ''}"
-								readonly> <input type="text" name="detailAddress"
-								id="detailAddress" placeholder="상세주소"
-								value="${fn:length(addressParts) > 3 ? addressParts[3] : ''}">
+								value="${adVO.ADMIN_ADDR.split(',')[0]}" readonly>
+								<input type="button" onclick="execDaumPostcode()"
+								value="우편번호 찾기"><br> <input type="text"
+								name="address" id="address" placeholder="주소"
+								value="${adVO.ADMIN_ADDR.split(',')[1]}" readonly>
+								<input type="text" name="extraAddress" id="extraAddress"
+								placeholder="참고주소"
+								value="${adVO.ADMIN_ADDR.split(',')[2]}" readonly>
 								<span id="guide" style="color: #999; display: none"></span> <input
-								type="hidden" id="ADMIN_ADDR" name="ADMIN_ADDR"
+								type="text" name="detailAddress" id="detailAddress"
+								placeholder="상세주소"
+								value="${adVO.ADMIN_ADDR.split(',')[3]}"> <!-- Hidden field -->
+								<input type="hidden" id="ADMIN_ADDR" name="ADMIN_ADDR"
 								value="${adVO.ADMIN_ADDR}"></td>
 						</tr>
 					</table>
 					<div style="width: 100%; text-align: center;">
 						<button type="submit" class="save-button"
-							onclick="return prepareAndSubmit()">수정</button>
+							onclick="event.preventDefault(); prepareAndSubmitAdmin();">수정</button>
+							
 						<button class="cancel-button" onclick="user_infoFixCancel(event)">나가기</button>
 						<!-- <button class="cancel-button" onclick="deleteAdmin(event)">삭제하기</button> -->
 					</div>
@@ -293,8 +292,9 @@
 			}
 		}).open();
 	}
-	//addr 추합
-	// 주소를 적절하게 조합하는 함수
+//addr 추합
+//addr 추합
+// 주소를 적절하게 조합하는 함수
 function prepareAddr() {
     var postcode = document.getElementById("postcode").value;
     var address = document.getElementById("address").value;
@@ -310,7 +310,9 @@ function prepareAddr() {
         fullAddressParts.push(address.trim());
     }
     if (extraAddress && extraAddress.trim() !== "") {
-        fullAddressParts.push(extraAddress.trim());
+        // 괄호 안의 쉼표를 예외 처리하여 그대로 유지
+        var modifiedExtraAddress = extraAddress.replace(/, ([^()]+)$/, ' $1');
+        fullAddressParts.push(modifiedExtraAddress.trim());
     }
     if (detailAddress && detailAddress.trim() !== "") {
         fullAddressParts.push(detailAddress.trim());
@@ -318,32 +320,39 @@ function prepareAddr() {
 
     // 배열의 요소들을 쉼표로 연결하여 문자열로 변환
     var fullAddress = fullAddressParts.join(", ");
+    
+    // 마지막 쉼표를 제거합니다.
+    fullAddress = fullAddress.replace(/, $/, '');
 
-    console.log("Full Address:", fullAddress);
     document.getElementById("ADMIN_ADDR").value = fullAddress.trim();
 }
-</script>
-	<script type="text/javascript">
-//페이지 로드 시 주소 분할 및 할당 코드
-document.addEventListener("DOMContentLoaded", function() {
-    var fullAddress = "${sessionScope.adVO.ADMIN_ADDR}";
-    var addressParts = fullAddress.split(", ");
 
-    if (addressParts[0] && addressParts[0].trim() !== "") {
-        // 괄호만 제거합니다.
-        var postcode = addressParts[0].replace(/[()]/g, '').trim();
-        document.getElementById("postcode").value = postcode;
-    }
-    if (addressParts[1] && addressParts[1].trim() !== "") {
-        document.getElementById("address").value = addressParts[1].trim();
-    }
-    if (addressParts[2] && addressParts[2].trim() !== "") {
-        document.getElementById("extraAddress").value = addressParts[2].trim();
-    }
-    if (addressParts[3] && addressParts[3].trim() !== "") {
-        document.getElementById("detailAddress").value = addressParts[3].trim();
-    }
-});
+</script>
+<script type="text/javascript">
+//페이지 로드 시 주소 분할 및 할당 코드
+    document.addEventListener("DOMContentLoaded", function() {
+    	var fullAddress = "${adVO.ADMIN_ADDR}";
+        // 괄호 안의 쉼표를 일시적으로 다른 문자열로 치환
+        fullAddress = fullAddress.replace(/\(([^)]+), ([^)]+)\)/g, '($1<COMMA>$2)');
+        var addressParts = fullAddress.split(", ");
+
+        if (addressParts[0] && addressParts[0].trim() !== "") {
+            // 괄호만 제거합니다.
+            var postcode = addressParts[0].replace(/[()]/g, '').trim();
+            document.getElementById("postcode").value = postcode;
+        }
+        if (addressParts[1] && addressParts[1].trim() !== "") {
+            document.getElementById("address").value = addressParts[1].trim();
+        }
+        if (addressParts[2] && addressParts[2].trim() !== "") {
+            // 일시적으로 치환했던 문자열을 다시 쉼표로 바꾸어 줍니다.
+            var modifiedExtraAddress = addressParts[2].replace('<COMMA>', ',');
+            document.getElementById("extraAddress").value = modifiedExtraAddress.trim();
+        }
+        if (addressParts[3] && addressParts[3].trim() !== "") {
+            document.getElementById("detailAddress").value = addressParts[3].trim();
+        }
+    });
 </script>
 	<script type="text/javascript">
 	function user_infoFixCancel(event) {
@@ -362,7 +371,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		console.log("validateAll 도착");
 		if (validateNickname() && validatePhone()
 			&& validatePassword() && checkEmail() 
-			&& validateEmail())) {
+			&& validateEmail()) {
 			console.log("수정완료");
 			return true;
 		}
@@ -371,32 +380,70 @@ document.addEventListener("DOMContentLoaded", function() {
 	}
 </script>
 	<script type="text/javascript">
-function prepareAndSubmit() {
-	prepareAddr(); 
-	
-    const fields = ["password", "birth" ,"nickname", "phone", "email", "addr"]; // 여기에 모든 필드 이름을 추가하세요.
+	async function prepareAndSubmitAdmin() {
+	    prepareAddr(); 
+	    let formData = new FormData(document.getElementById("userForm")); 
+	     
+	    // 비밀번호 유효성 검사
+	    if (!validatePassword()) {
+	        alert("비밀번호는 최소 8자리, 하나 이상의 문자, 하나 이상의 숫자, 하나 이상의 특수 문자가 필요합니다.");
+	        return;
+	    }
 
-	
-    fields.forEach(field => {
-        const viewElement = document.getElementById(field + "View");
-        const editElement = document.getElementById(field + "Edit");
-        let passwordField = document.getElementById("password");
-     // 원래의 비밀번호 값을 해당 필드에 채웁니다.
-        if (actualPassword) {
-        document.getElementById("password").value = actualPassword;
-    }
-     
-        if (editElement.style.display === "none") {
-            // 편집 중이 아닌 경우, span에서 값을 가져와 input에 설정합니다.
-            const inputField = editElement.querySelector('input');
-            inputField.value = viewElement.innerText;
-            return true;
-        }
-    });
+	    // 현재 사용자의 기존 닉네임을 JavaScript 변수로 저장
+	    const originalNickname = "${adVO.ADMIN_NICK}";
+	    const nickname = document.getElementById("ADMIN_NICK").value;
+	    const resultSpan = document.getElementById("nickname_result");
 
-    // 이제 폼을 제출합니다.
-    document.getElementById("userForm").submit();
-}
+	    // 닉네임이 기존 닉네임과 동일한 경우 중복 검사를 건너뜁니다.
+	    if (nickname !== originalNickname) {
+	        const isNicknameValid = await checkAdminNickDuplicate();
+	        if (!isNicknameValid) {
+	            alert("닉네임이 중복되었습니다.");
+	            return;
+	        }
+	    }
+
+	    // 전화번호 유효성 검사 수행
+	    if (!validatePhone()) {
+	        alert("전화번호는 11자리의 숫자만 가능합니다.");
+	        return;
+	    }
+
+	    // 이메일 유효성 검사 수행
+	    if (!checkEmail()) {
+	        alert("이메일 형식이 올바르지 않습니다.");
+	        return;
+	    }
+
+	    try {
+	    	let response = await fetch('admin_fixok.do', { 
+	    	    method: 'POST',
+	    	    body: formData
+	    	});
+
+	    	if (!response.ok) {
+	    	    throw new Error("서버 응답 오류");
+	    	}
+
+	    	let result = await response.json();
+	    	if (result.status === "success") {
+	    	    alert("관리자 정보 수정이 완료되었습니다.");
+	    	    location.href = "adminManagement.do";  // 원하는 창으로 리디렉션
+	    	} else {
+	    	    alert(result.message || "관리자 정보 수정에 실패하였습니다.");
+	    	}
+
+	    } catch (error) {
+	    	mv.addObject("status", "error");
+	    	mv.addObject("message", "관리자를 업데이트하는 동안 오류가 발생했습니다.");
+	    	mv.setViewName("jsonView");  // 이 부분은 JSON 응답을 반환하도록 설정된 View의 이름이어야 합니다.
+
+	        console.error("오류:", error);
+	        alert("오류가 발생했습니다. 다시 시도해 주세요.");
+	    }
+	}
+
 </script>
 </body>
 </html>

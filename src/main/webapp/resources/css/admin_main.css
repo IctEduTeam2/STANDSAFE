@@ -43,9 +43,6 @@
 	text-align: center;
 }
 
-.post-table th {
-	background-color: #f5f5f5;
-}
 .new-posts{
 	margin-top: 20px;
 }
@@ -64,9 +61,9 @@
 }
 
 .top-products img {
-	width: 50px; /* 이미지의 기본 너비. 원하는대로 조절 가능 */
-	height: 50px;
-	margin-right: 10px;
+	width: 120px; /* 이미지의 기본 너비. 원하는대로 조절 가능 */
+	height: 120px;
+	margin-right: 20px;
 }
 
 .product-item {

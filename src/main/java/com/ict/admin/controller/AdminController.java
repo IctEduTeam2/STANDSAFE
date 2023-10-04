@@ -3,7 +3,9 @@ package com.ict.admin.controller;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -88,18 +90,18 @@ public class AdminController {
 	}
 
 	// 관리자 등록완료
-	@RequestMapping("/adminManageGo.do")
-	public ModelAndView getUserManageGo(AdminVO adVO) {
-		ModelAndView mv = new ModelAndView("/admin_main/index");
-		adVO.setADMIN_PW(passwordEncoder.encode(adVO.getADMIN_PW()));
-		int result = adminService.getAdminAdd(adVO);
-		if (result > 0) {
-			// 성공
-			return mv;
-		} else {
-			// 실패
-			return new ModelAndView("errorPage");
-		}
+	@RequestMapping(value="/adminManageGo.do", method=RequestMethod.POST, produces = "application/json; charset=utf8")
+	@ResponseBody
+	public ResponseEntity<String> getUserManageGo(AdminVO adVO) {
+	    adVO.setADMIN_PW(passwordEncoder.encode(adVO.getADMIN_PW()));
+	    int result = adminService.getAdminAdd(adVO);
+	    if (result > 0) {
+	        // 성공
+	        return new ResponseEntity<String>("{\"success\": true}", HttpStatus.OK);
+	    } else {
+	        // 실패
+	        return new ResponseEntity<String>("{\"success\": false}", HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
 	}
 
 	// 닉 중복
@@ -217,9 +219,10 @@ public class AdminController {
 	// 관리자 개인정보 수정
 	@Transactional
 	@RequestMapping("/admin_fixok.do")
-	public ModelAndView AdminInfoFixOk(@ModelAttribute AdminVO adVO, HttpSession httpSession) {
-		ModelAndView mv = new ModelAndView();
-		try {
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> AdminInfoFixOk(@ModelAttribute AdminVO adVO, HttpSession httpSession) {
+	    Map<String, Object> response = new HashMap<>();
+	    try {
 			System.out.println("넘어온 아이디" + adVO.getADMIN_ID());
 			System.out.println("넘어온 비번" + adVO.getADMIN_PW());
 			System.out.println("넘어온 닉넴" + adVO.getADMIN_NICK());
@@ -263,27 +266,20 @@ public class AdminController {
 			// 관리자업데이트
 			int updatedRows = adminService.updateAdmin(adVO);
 			System.out.println("updatedRows" + updatedRows);
-			if (updatedRows > 0) {
-				httpSession.setAttribute("adVO", adVO);
-				httpSession.setAttribute("ADMIN_ID", ADMIN_ID);
-				httpSession.setAttribute("message", "관리자 업데이트를 성공했습니다.");
-				mv.addObject("ADMIN_NUM", ADMIN_NUM);
-				mv.setViewName("redirect:/infoManager.do");
-				System.out.println("수정 성공");
-			} else {
-				httpSession.setAttribute("updateMessage", "실패");
-				throw new Exception("관리자 업데이트 실패");
-			}
-		} catch (Exception e) {
-			// 예외 메시지와 스택 트레이스 출력
-			e.printStackTrace();
-			mv.addObject("error", "관리자를 업데이트하는 동안 오류가 발생했습니다.");
-			mv.setViewName("redirect:/infoManager.do");
-			System.out.println("업데이트하는 동안 오류");
-
+			 if (updatedRows > 0) {
+		            response.put("status", "success");
+		            response.put("message", "관리자 업데이트를 성공했습니다.");
+		        } else {
+		            response.put("status", "failure");
+		            response.put("message", "관리자 업데이트 실패");
+		        }
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		        response.put("status", "error");
+		        response.put("message", "관리자를 업데이트하는 동안 오류가 발생했습니다.");
+		    }
+		    return ResponseEntity.ok(response);
 		}
-		return mv;
-	}
 
 	// 선택한 관리자(들) 삭제
 	@RequestMapping(value = "/deletemanager.do", method = RequestMethod.POST)
@@ -449,11 +445,10 @@ public class AdminController {
 	}
 
 	// 관리자 개인정보 수정
-	@Transactional
 	@RequestMapping("/user_fixok.do")
-	public ModelAndView AdminInfoFixOk(@ModelAttribute UserVO uVO, HttpSession httpSession) {
-		ModelAndView mv = new ModelAndView();
-		try {
+	public ResponseEntity<Map<String, String>> AdminInfoFixOk(@ModelAttribute UserVO uVO, HttpSession httpSession) {
+	    Map<String, String> response = new HashMap<>();
+	    try {
 
 			UserVO currentUser = userService.getUserPw(uVO.getID());
 
@@ -480,25 +475,20 @@ public class AdminController {
 			int updatedRows = userService.updateUser(uVO);// 이거 기존거 쓰기때무넹 되는지 안되는치 체크 필요
 			System.out.println("updatedRows" + updatedRows);
 			if (updatedRows > 0) {
-				httpSession.setAttribute("adVO", uVO);
-				httpSession.setAttribute("ID", ID);
-				httpSession.setAttribute("message", "관리자 업데이트를 성공했습니다.");
-				mv.addObject("CLIENT_NUM", CLIENT_NUM);
-				mv.setViewName("redirect:/info_user.do");
-				System.out.println("수정 성공");
-			} else {
-				httpSession.setAttribute("updateMessage", "실패");
-				throw new Exception("관리자 업데이트 실패");
-			}
-		} catch (Exception e) {
-			// 예외 메시지와 스택 트레이스 출력
-			e.printStackTrace();
-			mv.addObject("error", "관리자를 업데이트하는 동안 오류가 발생했습니다.");
-			mv.setViewName("redirect:/info_user.do");
-			System.out.println("업데이트하는 동안 오류");
-
-		}
-		return mv;
+	            httpSession.setAttribute("adVO", uVO);
+	            httpSession.setAttribute("ID", ID);
+	            httpSession.setAttribute("message", "관리자 업데이트를 성공했습니다.");
+	            response.put("status", "success");
+	            return ResponseEntity.ok(response);
+	        } else {
+	            httpSession.setAttribute("updateMessage", "실패");
+	            throw new Exception("관리자 업데이트 실패");
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        response.put("status", "fail");
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+	    }
 	}
 
 	// 선택한 유저(들) 삭제
