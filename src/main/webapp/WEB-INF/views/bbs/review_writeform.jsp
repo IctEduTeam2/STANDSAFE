@@ -214,7 +214,7 @@ function review_cate() {
 								<c:when test="${prod_st==1 }">
 								 <td>
 								 <input type="text" name="review_prod" size="20" autocomplete='off' value="${pvo.prod_name }" disabled/>						
-								 <input type="hidden" name="PROD_NUM" size="20" value="${pvo.prod_num }"/>						
+								 <input type="hidden" name="PROD_NUM" size="20" value="${pvo.prod_num }"/>					 					
 								 </td>
 								
 								</c:when>

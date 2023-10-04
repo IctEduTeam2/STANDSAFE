@@ -1,7 +1,7 @@
 package com.ict.shopping.model.vo;
 
 public class BasketVO {
-	private String cart_num, prod_num, cart_amount, cart_price, cart_st, client_num;
+	private String cart_num, prod_num, cart_amount, cart_price, cart_st, review_st, client_num;
 	
 	public String getCart_num() {
 		return cart_num;
@@ -9,6 +9,14 @@ public class BasketVO {
 
 	public void setCart_num(String cart_num) {
 		this.cart_num = cart_num;
+	}
+
+	public String getReview_st() {
+		return review_st;
+	}
+
+	public void setReview_st(String review_st) {
+		this.review_st = review_st;
 	}
 
 	public String getProd_num() {

@@ -319,9 +319,15 @@ td {
 													<c:when test="${deliveryvo.deli_st == 3}">
 														<button
 															onclick="location.href = '/productOneListform.do?prod_num=${b.prod_num }'">재구매</button>
-														<button
-															onclick="location.href = '/reviewprodwriteform.do?prod_num=${b.prod_num }'">리뷰쓰기</button>
-
+															<c:choose>
+																<c:when test="${a.review_st == 0}">
+															<button
+															onclick="location.href = '/reviewprodwriteform.do?prod_num=${b.prod_num }&cart_num=${a.cart_num }'">리뷰쓰기</button>
+															</c:when>
+																<c:otherwise>
+																
+																</c:otherwise>
+															</c:choose>
 													</c:when>
 												</c:choose>
 												<!-- 구매완료시 반품요청 / 배송준비시 환불요청-->

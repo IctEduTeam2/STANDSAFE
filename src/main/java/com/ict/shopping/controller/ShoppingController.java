@@ -48,6 +48,7 @@ import com.ict.bbs.model.service.BBS_Service;
 import com.ict.bbs.model.vo.FA_BBS_VO;
 import com.ict.bbs.model.vo.NO_BBS_VO;
 import com.ict.common.Paging;
+import com.ict.common.Paging2;
 import com.ict.shopping.model.service.ShoppingService;
 import com.ict.shopping.model.vo.BasketVO;
 import com.ict.shopping.model.vo.DeliveryVO;
@@ -70,7 +71,7 @@ public class ShoppingController {
 	@Autowired
 	private Paging paging;
 	@Autowired
-	private Paging paging2;
+	private Paging2 paging2;
 	@Autowired
 	private BBS_Service bbs_Service;
 	
