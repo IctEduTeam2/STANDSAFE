@@ -115,8 +115,8 @@
                             AND NOTICE_DATE &gt;= #{start1}
                         </if>
                         <!-- 종료 날짜 검색 조건 -->
-                        <if test="close1 != null and close1 != ''">
-                            AND NOTICE_DATE &lt;= DATE_ADD(#{close1}, INTERVAL 1 DAY)  <!-- 종료 날짜까지 
+                        <if test="end != null and end != ''">
+                            AND NOTICE_DATE &lt;= DATE_ADD(#{end}, INTERVAL 1 DAY)  <!-- 종료 날짜까지 
                                 포함 -->
                         </if>
                     </when>
@@ -126,10 +126,11 @@
                             AND NOTICE_UPDATE &gt;= #{start1}
                         </if>
                         <!-- 종료 날짜 검색 조건 -->
-                        <if test="close1 != null and close1 != ''">
-                            AND NOTICE_UPDATE &lt;= DATE_ADD(#{close1}, INTERVAL 1 DAY)  <!-- 종료 
+                        <if test="end != null and end != ''">
+                            AND NOTICE_UPDATE &lt;= DATE_ADD(#{end}, INTERVAL 1 DAY)  <!-- 종료 
                                 날짜까지 포함 -->
                         </if>
+       
                     </when>
                 </choose>
             </if>
@@ -203,8 +204,8 @@
                             AND BOARD_DATE &gt;= #{start1}
                         </if>
                         <!-- 종료 날짜 검색 조건 -->
-                        <if test="close1 != null and close1 != ''">
-                            AND BOARD_DATE &lt;= DATE_ADD(#{close1}, INTERVAL 1 DAY)  <!-- 종료 날짜까지 
+                        <if test="end != null and end != ''">
+                            AND BOARD_DATE &lt;= DATE_ADD(#{end}, INTERVAL 1 DAY)  <!-- 종료 날짜까지 
                                 포함 -->
                         </if>
                     </when>
@@ -214,10 +215,11 @@
                             AND BOARD_UPDATE &gt;= #{start1}
                         </if>
                         <!-- 종료 날짜 검색 조건 -->
-                        <if test="close1 != null and close1 != ''">
-                            AND BOARD_UPDATE &lt;= DATE_ADD(#{close1}, INTERVAL 1 DAY)  <!-- 종료 
+                        <if test="end != null and end != ''">
+                            AND BOARD_UPDATE &lt;= DATE_ADD(#{end}, INTERVAL 1 DAY)  <!-- 종료 
                                 날짜까지 포함 -->
                         </if>
+                     
                     </when>
                 </choose>
             </if>
@@ -308,8 +310,8 @@
                             AND FA_DATE &gt;= #{start1}
                         </if>
                         <!-- 종료 날짜 검색 조건 -->
-                        <if test="close1 != null and close1 != ''">
-                            AND FA_DATE &lt;= DATE_ADD(#{close1}, INTERVAL 1 DAY)  <!-- 종료 날짜까지 
+                        <if test="end != null and end != ''">
+                            AND FA_DATE &lt;= DATE_ADD(#{end}, INTERVAL 1 DAY)  <!-- 종료 날짜까지 
                                 포함 -->
                         </if>
                     </when>
@@ -319,10 +321,11 @@
                             AND FA_UPDATE &gt;= #{start1}
                         </if>
                         <!-- 종료 날짜 검색 조건 -->
-                        <if test="close1 != null and close1 != ''">
-                            AND FA_UPDATE &lt;= DATE_ADD(#{close1}, INTERVAL 1 DAY)  <!-- 종료 
+                        <if test="end != null and end != ''">
+                            AND FA_UPDATE &lt;= DATE_ADD(#{end}, INTERVAL 1 DAY)  <!-- 종료 
                                 날짜까지 포함 -->
                         </if>
+    
                     </when>
                 </choose>
             </if>
@@ -401,8 +404,8 @@
                             AND EVENT_DATE &gt;= #{start1}
                         </if>
                         <!-- 종료 날짜 검색 조건 -->
-                        <if test="close1 != null and close1 != ''">
-                            AND EVENT_DATE &lt;= DATE_ADD(#{close1}, INTERVAL 1 DAY)  <!-- 종료 날짜까지 
+                        <if test="end != null and end != ''">
+                            AND EVENT_DATE &lt;= DATE_ADD(#{end}, INTERVAL 1 DAY)  <!-- 종료 날짜까지 
                                 포함 -->
                         </if>
                     </when>
@@ -412,8 +415,8 @@
                             AND EVENT_UPDATE &gt;= #{start1}
                         </if>
                         <!-- 종료 날짜 검색 조건 -->
-                        <if test="close1 != null and close1 != ''">
-                            AND EVENT_UPDATE &lt;= DATE_ADD(#{close1}, INTERVAL 1 DAY)  <!-- 종료 
+                        <if test="end != null and end != ''">
+                            AND EVENT_UPDATE &lt;= DATE_ADD(#{end}, INTERVAL 1 DAY)  <!-- 종료 
                                 날짜까지 포함 -->
                         </if>
                     </when>
@@ -523,8 +526,8 @@
                             AND RE_DATE &gt;= #{start1}
                         </if>
                         <!-- 종료 날짜 검색 조건 -->
-                        <if test="close1 != null and close1 != ''">
-                            AND RE_DATE &lt;= DATE_ADD(#{close1}, INTERVAL 1 DAY)  <!-- 종료 날짜까지 
+                        <if test="end != null and end != ''">
+                            AND RE_DATE &lt;= DATE_ADD(#{end}, INTERVAL 1 DAY)  <!-- 종료 날짜까지 
                                 포함 -->
                         </if>
                     </when>
@@ -534,8 +537,8 @@
                             AND RE_UPDATE &gt;= #{start1}
                         </if>
                         <!-- 종료 날짜 검색 조건 -->
-                        <if test="close1 != null and close1 != ''">
-                            AND RE_UPDATE &lt;= DATE_ADD(#{close1}, INTERVAL 1 DAY)  <!-- 종료 
+                        <if test="end != null and end != ''">
+                            AND RE_UPDATE &lt;= DATE_ADD(#{end}, INTERVAL 1 DAY)  <!-- 종료 
                                 날짜까지 포함 -->
                         </if>
                     </when>
@@ -625,8 +628,8 @@
                             AND REPORT_DATE &gt;= #{start1}
                         </if>
                         <!-- 종료 날짜 검색 조건 -->
-                        <if test="close1 != null and close1 != ''">
-                            AND RE_DATE &lt;= DATE_ADD(#{close1}, INTERVAL 1 DAY)  <!-- 종료 날짜까지 
+                        <if test="end != null and end != ''">
+                            AND RE_DATE &lt;= DATE_ADD(#{end}, INTERVAL 1 DAY)  <!-- 종료 날짜까지 
                                 포함 -->
                         </if>
                     </when>
