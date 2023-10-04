@@ -158,12 +158,12 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 }
 function addToCart(id, prodNum) {
 	location.href = "/cartadd.do?client_num=" + id + "&prod_num=" + prodNum + "&quantity=1&st=2";
-	alert("상품을 장바구니에 담았습니다.");
+	alert("선택한 상품을 장바구니에 담았습니다.");
 }
 
 function deleteItem(id, prodNum) {
 	location.href = "/deleteWish.do?client_num=" + id + "&prod_num=" + prodNum;
-    alert("상품을 위시리스트에서 삭제하였습니다.");
+    alert("선택한 상품을 위시리스트에서 삭제하였습니다.");
 }
 
 function deleteSelectedProducts() {
@@ -180,10 +180,10 @@ function deleteSelectedProducts() {
 	  document.getElementById('selectedProducts').value = selectedProducts.join(',');
 
 	  if (selectedProducts.length === 0) {
-		    alert('삭제할 상품이 선택해주세요');
+		    alert('삭제할 상품을 선택해주세요');
 		  } else {
 		    document.getElementById('productWishDelForm').submit();
-		    alert('선택한 상품을 삭제하였습니다.');
+		    alert('선택한 상품을 위시리스트에서 삭제하였습니다.');
 		  }
 	}
 function basketSelectedProducts() {

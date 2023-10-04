@@ -42,29 +42,29 @@
             <h1 style="text-align: center; margin-top: 20px;">팀원 소개</h1>
             <div class="team-member-container">
                 <div class="team-member">
-                    <img class="member-photo" src="resources/images/team/team1.jpg" alt="팀원 1 사진">
+                    <img class="member-photo" src="resources/images/team/team1.png" alt="팀원 1 사진">
                     <h2 style="margin-bottom: 20px;">권연준</h2>
-                    <p>안녕하세요! 저는 팀원 1입니다. 개발 분야에 관심이 많으며 항상 새로운 기술을 배우고 적용하는 것을 즐깁니다.</p>
+                    <p>안녕하세요! 메인페이지와 쇼핑관련 페이지를 맡은 팀원 권연준입니다.<br>항상 최선을 다했고 완벽하게 만들고자 노력했습니다!!</p>
                 </div>
                 <div class="team-member">
-                    <img class="member-photo" src="resources/images/team/team2.jpg" alt="팀원 2 사진">
+                    <img class="member-photo" src="resources/images/team/team2.png" alt="팀원 2 사진">
                     <h2 style="margin-bottom: 20px;">김지수</h2>
-                    <p>여러분 안녕하세요! 저는 팀원 2입니다. 디자인과 예술에 관심이 많아서 항상 창조적인 아이디어를 통해 문제를 해결하려 노력합니다.</p>
+                    <p>안녕하세요. 여러분 고객님이 쉽고 효율적으로 서비스를 이용하도록 팀원들과 지속적인 소통을노력하는 팀원 김지수 입니다!</p>
                 </div>
                 <div class="team-member">
-                    <img class="member-photo" src="resources/images/team/team3.jpg" alt="팀원 3 사진">
+                    <img class="member-photo" src="resources/images/team/team3.png" alt="팀원 3 사진">
                     <h2 style="margin-bottom: 20px;">김혜인</h2>
-                    <p>여러분 안녕하세요! 반갑습니다! 저는 팀원 3이라고 합니다. 데이터 분석에 빠져서 데이터 속에서 패턴을 찾는 것을 좋아하며 복잡한 문제를 해결하는 것을 좋아합니다.</p>
+                    <p>안녕하세요~ 팀장 김혜인입니다. 사이트에서 멤버 관리와 통계/지진을 맡고 있습니다! 잘 부탁드립니다~</p>
                 </div>
                 <div class="team-member">
-                    <img class="member-photo" src="resources/images/team/team4.jpg" alt="팀원 4 사진">
+                    <img class="member-photo" src="resources/images/team/team4.png" alt="팀원 4 사진">
                     <h2 style="margin-bottom: 20px;">이지혜</h2>
-                    <p>여러분 안녕하세요! 저는 팀원 4입니다. 저는 팀원 4입니다. 커뮤니케이션을 중요시하며 팀원들과의 원활한 협력으로 프로젝트를 성공적으로 이끌어가려 노력합니다.</p>
+                    <p>안녕하세요 여러분! 고객님들을 위해 열심히뛰고 최선을 다하며 프로젝트를 다함께 이끌어갈수있도록 노력하는 팀원 이지혜입니다!</p>
                 </div>
                 <div class="team-member">
-                    <img class="member-photo" src="resources/images/team/team5.jpg" alt="팀원 5 사진">
+                    <img class="member-photo" src="resources/images/team/team5.png" alt="팀원 5 사진">
                     <h2 style="margin-bottom: 20px;">강성진</h2>
-                    <p>여러분 안녕하세요! 저는 팀원 5라고 합니다. 프로그래밍을 사랑하며 효율적인 코드 작성을 위해 끊임없이 연구하고 개선하는 것을 추구합니다.</p>
+                    <p>안녕하세요! 여러분과 함께 혁신적인 서비스를 만들어 나가며, 불가능은 없다는 것을 보여드리겠습니다. 여러분의 아이디어와 피드백을 받아 더 나은 서비스를 구현하는 팀원 강성진입니다.</p>
                 </div>
             </div>
         </section>

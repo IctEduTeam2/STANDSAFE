@@ -181,7 +181,7 @@
 			<div class="top_header">
 				<h1>■ 재난 정보</h1>
 				<br>
-				<p id="small_news">한줄뉴스처럼 재난문자 뜨게할것(?)</p>
+				<!-- <p id="small_news">한줄뉴스처럼 재난문자 뜨게할것(?)</p> -->
 			</div>
 
 			<div class="top_btns">
@@ -239,6 +239,8 @@
 						<option id="town" value="">시/군/구 를 선택하세요</option>
 					</select> <label for="dateInput">현재 날짜 및 시간</label> <input type="text"
 						id="dateInput" name="dateInput" readonly>
+						
+						
 					<button type="submit" class="go_btn" id="search_btn"
 						onclick="getWeather(this.form)">
 						<!-- <button type="button" class="go_btn" onclick="getWeather()"> -->

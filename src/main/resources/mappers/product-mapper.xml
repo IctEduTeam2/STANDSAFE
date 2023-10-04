@@ -49,8 +49,41 @@
 	
 	<select id="exchangelist" resultType="evo">
 		select * from PAYBACK_T
-		order by PAY_OKNUM desc
+		order by PAY_OKNUM desc limit #{limit} offset #{offset}
 	</select>
+	
+	<select id="getTotalExchangeCount" resultType="int">
+		select count(*) from PAYBACK_T
+	</select>
+	
+	<!-- 교환/ 반품 검색 총 게시글 수  -->
+	<select id="getTotalExchangeCountSearchList" parameterType="Map" resultType="int">
+		select count(*) from PAYBACK_T 
+		where 1=1
+		    <if test='PAY_OKNUM != null and PAY_OKNUM.trim() != "" '>
+        		AND PAY_OKNUM LIKE CONCAT('%', #{PAY_OKNUM}, '%')
+    		</if>
+    		<if test='stDate != null and stDate.trim() !="" and endDate != null and endDate.trim() !="" '>
+       	 		AND PB_DATE BETWEEN #{stDate} AND #{endDate}
+    		</if>
+    	order by PAY_OKNUM desc 
+	</select> 
+	
+	<!-- 교환/반품 목록 검색 -->
+	<select id="getExchangeSearchList" parameterType="Map"
+		resultType="evo">
+		select * from PAYBACK_T
+		where 1=1
+		<if test='PAY_OKNUM != null and PAY_OKNUM.trim() != "" '>
+			AND PAY_OKNUM LIKE CONCAT('%', #{PAY_OKNUM}, '%')
+		</if>
+		<if
+			test='stDate != null and stDate.trim() !="" and endDate != null and endDate.trim() !="" '>
+			AND PB_DATE BETWEEN #{stDate} AND #{endDate}
+		</if>
+		order by PAY_OKNUM desc limit #{limit} offset #{offset}
+	</select>
+	
 	<!-- 교환/반품 상세보기  -->
 	<select id="exchangeonelist" parameterType="String" resultType="evo" resultMap="exchangeMap">
     	select * 
@@ -256,6 +289,6 @@
 	<update id="orderupdate" parameterType="ovo">
 		update PAY_T
 		set TAKE_ST = #{TAKE_ST}
-		where PAY_NUM = #{PAY_NUM}
+		where PAY_OKNUM = #{PAY_OKNUM}
 	</update>
 </mapper>

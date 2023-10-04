@@ -78,10 +78,20 @@ public class ShoppingController {
 		List<ProductVO> productBestList = shoppingService.getProductBestList();
 		mv.addObject("productBestList", productBestList);
 
+		// 베스트 상품 리스트2
+		List<ProductVO> productBestList2 = new ArrayList<>(); 
+		for(int i=0; i<8; i++) {
+			productBestList2.add(productBestList.get(i));
+		}
+		mv.addObject("productBestList2", productBestList2);
+		
 		// 새 상품 리스트
 		List<ProductVO> productNewList = shoppingService.getProductNewList();
-
 		mv.addObject("productNewList", productNewList);
+		
+		// 세일 리스트
+		List<ProductVO> productSaleList = shoppingService.getProductSaleList();
+		mv.addObject("productSaleList", productSaleList);
 		return mv;
 	}
 

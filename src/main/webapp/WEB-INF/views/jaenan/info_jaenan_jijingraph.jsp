@@ -88,7 +88,7 @@
 		<div class="top_header">
 			<h1>■ 재난 정보</h1>
 			<br>
-			<p id="small_news">한줄뉴스처럼 재난문자 뜨게할것(?)</p>
+			<!-- <p id="small_news">한줄뉴스처럼 재난문자 뜨게할것(?)</p> -->
 		</div>
 		
 			<div class="top_btns" >

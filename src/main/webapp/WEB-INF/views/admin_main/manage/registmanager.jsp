@@ -83,21 +83,20 @@
 							<!-- 카카오 주소 -->
 							<td>주소<span class="required">*</span></td>
 							<td><input type="text" name="postcode" id="postcode"
-								placeholder="우편번호" disabled="readonly"> <input
-								type="button" onclick="execDaumPostcode()" value="우편변호 찾기">
-								<br> <input type="text" name="address" id="address"
-								placeholder="주소" disabled="readonly"> <input type="text"
-								name="extraAddress" id="extraAddress" placeholder="참고주소"
-								disabled="readonly"> <span id="guide"
-								style="color: #999; display: none"></span> <input type="text"
-								name="detailAddress" id="detailAddress" placeholder="상세주소">
-								<!-- 히든 필드 --> <input type="hidden" id="ADMIN_ADDR" name="ADMIN_ADDR">
-							</td>
+								placeholder="우편번호" readonly> <input type="button"
+								onclick="execDaumPostcode()" value="우편변호 찾기"><br> <input
+								type="text" name="address" id="address" placeholder="주소"
+								readonly> <input type="text" name="extraAddress"
+								id="extraAddress" placeholder="참고주소" readonly> <span
+								id="guide" style="color: #999; display: none"></span> <input
+								type="text" name="detailAddress" id="detailAddress"
+								placeholder="상세주소"> <!-- 히든 필드 --> <input type="hidden"
+								id="ADMIN_ADDR" name="ADMIN_ADDR"></td>
 						</tr>
 				</table>
 				<div style="width: 100%; text-align: center;">
 						<button type="submit" class="save-button" onclick="prepareAddr()"
-							id="signUpButton">회원가입</button>
+							id="signUpButton">등록</button>
 						<button type="button" class="cancel-button"
 							onclick="admin_joincancel()">취소</button>
 					</div>
@@ -165,19 +164,29 @@
 
 		//addr 추합
 		function prepareAddr() {
-			var postcode = document.getElementById("postcode").value;
-			var address = document.getElementById("address").value;
-			var extraAddress = document.getElementById("extraAddress").value;
-			var detailAddress = document.getElementById("detailAddress").value;
+    var postcode = document.getElementById("postcode").value;
+    var address = document.getElementById("address").value;
+    var extraAddress = document.getElementById("extraAddress").value;
+    var detailAddress = document.getElementById("detailAddress").value;
 
-			var fullAddress = "(" + postcode + ")" + " " + address + ""
-					+ extraAddress + " " + detailAddress;
-			console.log(fullAddress);
-			// 띄어쓰기로 구분하여 저장
-			document.getElementById("ADMIN_ADDR").value = fullAddress.trim();
-		}
+    var fullAddress = "(" + postcode + ")";
+
+    if (address) {
+        fullAddress += ", " + address;
+    }
+    
+    if (extraAddress) {
+        fullAddress += ", " + extraAddress;
+    }
+    
+    if (detailAddress) {
+        fullAddress += ", " + detailAddress;
+    }
+
+    document.getElementById("ADMIN_ADDR").value = fullAddress.trim();
+}
 	</script>
-	<script type="text/javascript">
+	<script defer type="text/javascript">
 		//비밀번호 일치 색 확인
 		document.addEventListener("DOMContentLoaded", function() {
 			const password = document.getElementById("password");
@@ -343,5 +352,88 @@
 			}
 		}
 	</script>
+		<script defer type="text/javascript">
+		function validateForm() {
+			const id = document.getElementById("ADMIN_ID").value;
+			const password = document.getElementById("password").value;
+			const password_confirm = document
+					.getElementById("password_confirm").value;
+			const nickname = document.getElementById("ADMIN_NICK").value;
+			const name = document.getElementById("ADMIN_NAME").value;
+			const birth = document.getElementById("ADMIN_BIRTH").value;
+			const phone = document.getElementById("ADMIN_PHONE").value;
+			const email = document.getElementById("ADMIN_MAIL").value;
+			const address = document.getElementById("address").value;
+			const idResult = document.getElementById("id_result").textContent;
+			const nicknameResult = document.getElementById("nickname_result").textContent;
+			//비밀번호
+			const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+			//이메일
+			const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+			//전화번호
+			const phoneRegex = /^\d{11}$/;
+
+			if (!passwordRegex.test(password)) {
+				alert("비밀번호는 최소 8자리, 하나 이상의 문자, 하나 이상의 숫자, 하나 이상의 특수 문자가 필요합니다.");
+				return false;
+			}
+
+			if (password !== password_confirm) {
+				alert("비밀번호가 일치하지 않습니다.");
+				return false;
+			}
+
+			if (idResult === "아이디가 중복됩니다.") {
+				alert("아이디가 중복됩니다. 다른 아이디를 선택해주세요.");
+				return false;
+			}
+
+			if (nicknameResult === "닉네임이 중복됩니다.") {
+				alert("닉네임이 중복됩니다. 다른 닉네임을 선택해주세요.");
+				return false;
+			}
+
+			if (!emailRegex.test(email)) {
+				alert("이메일 형식이 올바르지 않습니다.");
+				return false;
+			}
+
+			if (!phoneRegex.test(phone)) {
+				alert("전화번호는 11자리의 숫자만 가능합니다.");
+				return false;
+			}
+			
+			return true;
+		}
+	</script>
+<script defer type="text/javascript">
+    document.getElementById("adminForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // 폼 제출 방지
+        if (!validateForm()) { 
+            // 유효성 검사에 실패한 경우
+            return false; 
+        }
+        const formData = new FormData(this);
+
+        // AJAX 요청
+        fetch("/adminManageGo.do", {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("관리자 등록이 성공적으로 완료되었습니다!");
+                window.location.href = "adminManagement.do";
+            } else {
+                alert("회원가입 중 오류가 발생했습니다. 다시 시도해주세요.");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("서버와의 통신 중 오류가 발생했습니다. 다시 시도해주세요.");
+        });
+    });
+</script>
 </body>
 </html>

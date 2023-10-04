@@ -22,6 +22,67 @@ body {
 #results {
 	margin: 20px;
 }
+/* paging */
+table tfoot ol.paging {
+	list-style: none;
+	text-align: center; /* 가운데 정렬을 위한 변경 */
+}
+
+table tfoot ol.paging li {
+	display: inline-block; /* 가로 정렬을 위해 float 제거하고 inline-block으로 변경 */
+	margin-right: 8px;
+}
+
+table tfoot ol.paging li a {
+	display: block;
+	padding: 3px 7px;
+	border: 1px solid #6c98c2;
+	color: #2f313e;
+	font-weight: bold;
+}
+
+table tfoot ol.paging li a:hover {
+	background: #6c98c2;
+	color: white;
+	font-weight: bold;
+}
+
+.disable {
+	padding: 3px 7px;
+	border: 1px solid silver;
+	color: silver;
+}
+
+.now {
+	padding: 3px 7px;
+	border: 1px solid #1b5ac2;
+	background: #1b5ac2;
+	color: white;
+	font-weight: bold;
+}
+/* 페이지네이션 스타일 추가 */
+.paginationjs {
+	display: inline-block;
+	margin: 20px 0;
+	text-align: center;
+}
+
+.paginationjs a {
+	border: 1px solid #ddd;
+	padding: 6px 12px;
+	margin-left: -1px;
+	color: #337ab7;
+	text-decoration: none;
+}
+
+.paginationjs a.active {
+	background-color: #337ab7;
+	color: white;
+}
+
+.paginationjs a:hover {
+	background-color: #eee;
+}
 </style>
 <script type="text/javascript">
 function searchList(){
@@ -45,12 +106,12 @@ function selectAll(selectAll)  {
 	<div style="width: 100%;">
 	<table style="float: left; margin-left: 10%; margin-top: 10%; border: 1px solid black; width: 20%; height: 400px;">
 		<tr>
-			<th>오늘 교환 건수:</th>
-			<td><c:out value= "${today_Exchange }" /></td>
+			<th>총 교환/반품 건수:</th>
+			<td><c:out value= "${AllExchange}" /></td>
 		</tr>
 		<tr>
-			<th>오늘 반품 건수:</th>
-			<td><c:out value= "${today_return }" /></td>
+			<th>오늘 교환/반품 건수:</th>
+			<td><c:out value= "${TodayExchange}" /></td>
 		</tr>
 	</table>
 	<!-- 검색 영역 -->
@@ -60,7 +121,7 @@ function selectAll(selectAll)  {
 	<input type="hidden" name="cPage" value="1" />
 	<input type="hidden" name="pageSize" value="10" />
 	<table
-					style="float: right; margin-left: 2%; margin-top: 10%; border: 1px solid black; width: 60%; height: 400px; margin-right: 3%">
+					style="float: right; margin-left: 2%; margin-top: 10%; border: 1px solid black; width: 60%; height: 400px;">
 					<tr>
 					<th style="width: 200px;">주문번호</th>
 					<td colspan="3"><input type="text" id="searchText" name="searchText"
@@ -113,7 +174,6 @@ function selectAll(selectAll)  {
 							<td class="th_column_2">주문번호</td>
 							<td class="th_column_3">아이디</td>
 							<td class="th_column_4">신청날짜</td>
-							<td class="th_column_5">처리날짜</td>
 							<td class="th_column_6">처리 상태</td>
 							<td class="th_column_7">관리자 서명</td>
 						</tr>
@@ -125,12 +185,60 @@ function selectAll(selectAll)  {
 							<td><a href="/exchange_detail.do?payOkNum=${pvo.PAY_OKNUM}">${pvo.PAY_OKNUM} </a></td>
 							<td>${pvo.CLIENT_NUM }</td>
 							<td>${pvo.PB_DATE }</td>
-							<td>처리 날짜 디비 컬럼 없음 </td>
 							<td>${pvo.PB_ST }</td>
 							<td>${pvo.CONFIRM_ID }</td>
                         </tr>
 					</c:forEach>
 					</tbody>
+					<!-- 페이지 번호 출력 부분 -->
+				<tfoot>
+					<tr>
+						<td colspan="6">
+							<!-- <div id="pagination-container"></div> -->
+						</td>
+					</tr>
+				</tfoot>
+				 <tfoot>
+					<tr>
+						<td colspan="6">
+							<ol class="paging">
+								<!-- 이전버튼 : 첫블럭이면 비활성화-->
+								<c:choose>
+									<c:when test="${paging.beginBlock <= paging.pagePerBlock}">
+										<li class="disable">이전으로</li>
+									</c:when>
+									<c:otherwise>
+										<li><a href="/product_list.do?cPage=${paging.beginBlock-paging.pagePerBlock}&pageSize=10">이전으로</a></li>
+									</c:otherwise>
+								</c:choose>
+
+								<c:forEach begin="${paging.beginBlock}" end="${paging.endBlock}"
+									step="1" var="k">
+									<!-- 페이지 번호가 실제 총 페이지 수를 초과하는 경우 표시하지 않음 -->
+									<c:if test="${k <= paging.totalPage}">
+										<c:if test="${k == paging.nowPage}">
+											<!-- 현재페이지와 같으면 -->
+											<li class="now">${k}</li>
+										</c:if>
+										<c:if test="${k != paging.nowPage}">
+											<li><a href="/product_list.do?cPage=${k}&pageSize=10">${k}</a></li>
+										</c:if>
+									</c:if>
+								</c:forEach>
+
+								<!-- 이후버튼 -->
+								<c:choose>
+									<c:when test="${paging.endBlock >= paging.totalPage}">
+										<li class="disable">다음으로</li>
+									</c:when>
+									<c:otherwise>
+										<li><a href="/product_list.do?cPage=${paging.beginBlock+paging.pagePerBlock}&pageSize=10">다음으로</a></li>
+									</c:otherwise>
+								</c:choose>
+							</ol>
+						</td>
+					</tr>
+				</tfoot> 
 				</table>
 
 		</div>
