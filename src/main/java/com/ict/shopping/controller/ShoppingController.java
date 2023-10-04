@@ -44,6 +44,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
+import com.ict.bbs.model.service.BBS_Service;
+import com.ict.bbs.model.vo.FA_BBS_VO;
 import com.ict.bbs.model.vo.NO_BBS_VO;
 import com.ict.common.Paging;
 import com.ict.shopping.model.service.ShoppingService;
@@ -67,7 +69,11 @@ public class ShoppingController {
 	private PointService pointService;
 	@Autowired
 	private Paging paging;
-
+	@Autowired
+	private Paging paging2;
+	@Autowired
+	private BBS_Service bbs_Service;
+	
 	@GetMapping("/")
 	public ModelAndView getMain() {
 		ModelAndView mv = new ModelAndView("index");
@@ -143,11 +149,55 @@ public class ShoppingController {
 
 			rvo.setOffset(paging.getOffset());
 			rvo.setLimit(paging.getNumPerPage());
-
 			List<ReviewVO> list = shoppingService.getReviewList(rvo);
 			mv.addObject("list", list);
 			mv.addObject("prod_num", prod_num);
 			mv.addObject("paging", paging);
+			
+			// FAQ페이징
+						paging2.setNumPerPage(5);
+						//페이징을 위해 게시물의 전체글 구하기
+						int count2 = bbs_Service.getTotalFaqCount();
+						paging2.setTotalRecord(count2);
+						
+						//페이징처리
+						if(paging2.getTotalRecord() <= paging2.getNumPerPage()) {
+							paging2.setTotalPage(1);
+						}else {
+							paging2.setTotalPage(paging2.getTotalRecord()/paging2.getNumPerPage());
+							if(paging2.getTotalRecord()%paging2.getNumPerPage() != 0) {
+								paging2.setTotalPage(paging2.getTotalPage() +1);
+							}
+						}
+						
+						
+						String cPage2 = request.getParameter("cPage2");
+						if(cPage2==null) {
+							paging2.setNowPage(1);
+						}else {
+							paging2.setNowPage(Integer.parseInt(cPage2));
+						}
+						
+						paging2.setOffset(paging2.getNumPerPage()*(paging2.getNowPage()-1));
+						
+						paging2.setBeginBlock((int)((paging2.getNowPage()-1)/paging2.getPagePerBlock())
+								*paging2.getPagePerBlock()+1);
+						
+						paging2.setEndBlock(paging2.getBeginBlock()+paging2.getPagePerBlock()-1);
+						
+						if(paging2.getEndBlock() > paging2.getTotalPage()) {
+							paging2.setEndBlock(paging2.getTotalPage());
+						}
+						
+						List<FA_BBS_VO> list2 = bbs_Service.getfaqlist(paging2.getOffset(),paging2.getNumPerPage());
+						
+						
+
+					
+						mv.addObject("cPage2", cPage2);
+
+						mv.addObject("list2", list2);
+						mv.addObject("paging2", paging2);
 		} catch (Exception e) {
 			System.out.println(e);
 			return new ModelAndView("shopping/error");
@@ -849,8 +899,8 @@ public class ShoppingController {
 		// sortedList를 화면에 전달
 		mv.addObject("prodlist", sortedList);
 		mv.addObject("count", prodlist.size());
-		mv.addObject("prod_high", prodlist.get(0).getProd_high());
-		mv.addObject("prod_low", prodlist.get(0).getProd_low());
+		mv.addObject("prod_high", prod_high);
+		mv.addObject("prod_low", prod_low);
 		return mv;
 	}
 

@@ -207,7 +207,20 @@ table tfoot ol.paging li a:hover {
 	font-weight: bold;
 }
 
+    .content-row .conts {
+    display: none;
+    text-align: left;
+    padding-left: 400px;
+    font-size: 14px;
+    background-color: #1b5ac2;
+    color: white;
+    
+  }
 
+.title {
+	text-align:left;
+  cursor: pointer; /* 링크인 제목에 마우스 커서를 손 모양으로 변경 */
+}
 
 .disable {
 	padding: 3px 7px;
@@ -231,6 +244,27 @@ table tfoot ol.paging li a:hover {
 			behavior : 'smooth'
 		});
 	}
+</script>
+<script type="text/javascript">
+$(document).ready(function() {
+	 $('.title').click(function() {
+		 
+		 const toggleCell = $(this).closest('tr').next('.content-row').find('.conts');
+		    
+		    // 클릭한 행의 답변 상태 확인 후 처리
+		    if (toggleCell.is(':visible')) {
+		      toggleCell.hide(); // 이미 열려있는 경우 닫기
+		    } else {
+		      // 모든 답변 숨기기
+		      $('.conts').hide();
+		      toggleCell.show(); // 클릭한 행의 답변 열기
+		    }
+		  });
+	 
+	 
+		});
+
+	
 </script>
 <script>
 	$(document).ready(function() {
@@ -445,7 +479,7 @@ table tfoot ol.paging li a:hover {
 				<div class="function" id="test">
 					<button onclick="goToScroll('a')">Detail</button>
 					<button onclick="goToScroll('b')">Review</button>
-					<button onclick="goToScroll('c')">QnA</button>
+					<button onclick="goToScroll('c')">FAQ</button>
 				</div>
 				<div style="width: 70%; margin: auto;">
 					<div class="detail a" style="width: 100%; margin: auto;">
@@ -531,8 +565,78 @@ contentElements.forEach(function(element) {
 					<hr>
 					</div>
 					<div class="faq c">
-						<h1 style="text-align: center; margin: 80px 0; font-size: 60px;">QnA</h1>
-						<h3 style="text-align: center;">현재 상품은 QnA가 존재하지 않습니다.</h3>
+						<h1 style="text-align: center; margin: 80px 0; font-size: 60px;">FAQ</h1>
+						<div style="width: 70%; margin: auto;">
+											<table class="m_table" style="width: 100%;">				
+						<thead class="mh_table">
+							 <tr>
+							 	<th id="th1">번호</th><th id="th2">제목</th>
+							 </tr>
+						</thead>
+						
+						<tbody class="mb_table">		
+							<c:choose>
+								<c:when test="${empty list2}">
+									<tr>
+										<td colspan="6">
+						<h3 style="text-align: center;">현재 상품은 FAQ가 존재하지 않습니다.</h3></td>
+									</tr>
+								</c:when>
+								<c:otherwise>
+									<c:forEach var="k" items="${list2}" varStatus="vs">
+										<tr>
+											<td>${paging2.totalRecord -((paging2.nowPage-1)*paging2.numPerPage + vs.index) }</td>
+												<td style="text-align: left;">
+													<a class="title">
+													${k.FA_SUBJECT}</a>
+												</td>
+											</tr>
+											<tr class="content-row">
+												<td colspan="6" class="conts">
+												<p style="margin-left: 50px;">${k.FA_ANSWER}</p>
+												</td>
+											</tr>
+									</c:forEach>
+								</c:otherwise>
+							</c:choose>
+						</tbody>
+							<tfoot>
+								<tr>
+									<td colspan="6">
+										<ol class="paging">
+											<!-- 이전버튼 : 첫블럭이면 비활성화-->
+											<c:choose>
+												<c:when test="${paging2.beginBlock <= paging2.pagePerBlock }">
+													<li class="disable">이전으로</li>
+												</c:when>
+												<c:otherwise>
+													<li><a href="/productOneListform.do?prod_num=${prod_num }&cPage2=${paging2.beginBlock-paging2.pagePerBlock }">이전으로</a></li>
+												</c:otherwise>
+											</c:choose>	
+											<c:forEach begin="${paging2.beginBlock }" end="${paging2.endBlock }" step="1" var="k">
+												<c:if test="${k == paging2.nowPage }">
+													<!--현재페이지와 같으면  -->
+													<li class="now">${k }</li>
+												</c:if>
+												<c:if test="${k != paging2.nowPage }">
+													<li><a href="/productOneListform.do?prod_num=${prod_num }&cPage2=${k }"> ${k }</a></li>
+												</c:if>
+											</c:forEach>
+															
+											<!-- 이후버튼  -->	
+											<c:choose>
+												<c:when test="${paging2.endBlock >= paging2.totalPage }">
+													<li class="disable">다음으로</li>
+												</c:when>
+												<c:otherwise>
+													<li><a href="/productOneListform.do?prod_num=${prod_num }&cPage2=${paging.beginBlock+paging.pagePerBlock }">다음으로</a></li>
+												</c:otherwise>
+											</c:choose>					
+										</ol>
+									</td>
+								</tr>
+						</tfoot>
+					</table>
 					</div>
 				</div>
 			</div>
