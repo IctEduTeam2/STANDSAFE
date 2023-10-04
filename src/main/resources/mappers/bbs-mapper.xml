@@ -26,7 +26,7 @@
 	   	set NOTICE_HIT = NOTICE_HIT +1
 	   	where NOTICE_NUM = #{NOTICE_NUM}
 	   </update>
-	   
+	
    
    
    	<!--이벤트 -->
@@ -333,7 +333,7 @@
 
         <!-- 종료 날짜 검색 조건 -->
         <if test="end != null and end != ''">
-            AND NOTICE_DATE &lt;= #{end}
+            AND NOTICE_DATE &lt;= DATE_ADD(#{close1}, INTERVAL 1 DAY) 
         </if> 
       order by NOTICE_NUM desc
         
@@ -368,7 +368,7 @@
 
         <!-- 종료 날짜 검색 조건 -->
         <if test="end != null and end != ''">
-            AND FA_DATE &lt;= #{end}
+            AND FA_DATE &lt;= DATE_ADD(#{close1}, INTERVAL 1 DAY)  
         </if> 
       order by FA_NUM desc
         
@@ -403,7 +403,7 @@
 
         <!-- 종료 날짜 검색 조건 -->
         <if test="end != null and end != ''">
-            AND EVENT_DATE &lt;= #{end}
+            AND EVENT_DATE &lt;= DATE_ADD(#{close1}, INTERVAL 1 DAY) 
         </if> 
       order by EVENT_NUM desc
     </select>
@@ -437,7 +437,7 @@
 
         <!-- 종료 날짜 검색 조건 -->
         <if test="end != null and end != ''">
-            AND BOARD_DATE &lt;= #{end}
+            AND BOARD_DATE &lt;= DATE_ADD(#{close1}, INTERVAL 1 DAY) 
         </if> 
         order by BOARD_NUM desc
     </select>
@@ -471,7 +471,7 @@
 
         <!-- 종료 날짜 검색 조건 -->
         <if test="end != null and end != ''">
-            AND RE_DATE &lt;= #{end}
+            AND RE_DATE &lt;= DATE_ADD(#{close1}, INTERVAL 1 DAY)  
         </if> 
         order by RE_NUM desc
     </select>    
