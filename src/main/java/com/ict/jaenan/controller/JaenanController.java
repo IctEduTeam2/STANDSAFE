@@ -224,6 +224,7 @@ public class JaenanController {
 	                earthquakeData.put("lon", eElement.getElementsByTagName("lon").item(0).getTextContent());
 	                earthquakeData.put("loc", eElement.getElementsByTagName("loc").item(0).getTextContent());
 	                earthquakeData.put("dep", eElement.getElementsByTagName("dep").item(0).getTextContent());
+	                earthquakeData.put("mt", eElement.getElementsByTagName("mt").item(0).getTextContent());
 	                earthquakeData.put("rem", eElement.getElementsByTagName("rem").item(0).getTextContent());
 	                earthquakeData.put("img", eElement.getElementsByTagName("img").item(0).getTextContent());
 

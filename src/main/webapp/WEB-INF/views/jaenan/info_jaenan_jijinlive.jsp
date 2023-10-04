@@ -237,7 +237,7 @@ ul .earthquakeItem {
 			<div class="top_header">
 				<h1>■ 재난 정보</h1>
 				<br>
-				<p id="small_news">한줄뉴스처럼 재난문자 뜨게할것(?)</p>
+				<!-- <p id="small_news">한줄뉴스처럼 재난문자 뜨게할것(?)</p> -->
 			</div>
 
 			<div class="top_btns">
@@ -276,7 +276,7 @@ ul .earthquakeItem {
 						%>
 						<li class="earthquakeItem">발표시각: <%=earthquake.get("tmFc")%>,
 							<br> 진앙시: <%=earthquake.get("tmEqk")%>, <br> 위치: <%=earthquake.get("loc")%>,
-							<br> <%=earthquake.get("rem")%>, <br> 진도: <%=earthquake.get("dep")%>
+							<br> <%=earthquake.get("rem")%>, <br> 진도: <%=earthquake.get("mt")%>
 							<br> <!-- 버튼 추가 -->
 							<button class="mapButton"
 								onclick="showImagePopup('<%=earthquake.get("img")%>')">지도

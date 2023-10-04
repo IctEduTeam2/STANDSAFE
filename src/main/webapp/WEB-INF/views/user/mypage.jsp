@@ -9,6 +9,8 @@
 <!-- <meta name="viewport"
 	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" /> -->
 <!-- Link Swiper's CSS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script type="text/javascript">
 $(document).ready(function() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -27,8 +29,9 @@ $(document).ready(function() {
 	}
 
 	function OrderGo() {
-		location.href = "/orderlistform.do";
+	    location.href = "/orderlistform.do?client_num=<%= session.getAttribute("client_num") %>";
 	}
+
 	
 	function WishlistGo() {
 		location.href = "/wishlist.do";

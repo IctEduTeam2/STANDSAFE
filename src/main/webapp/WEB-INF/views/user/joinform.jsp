@@ -54,8 +54,7 @@
 				<br>
 				<h1
 					style="text-align: center; font-size: 30px; margin-bottom: 20px;">회원가입</h1>
-				<form action="user_joinok.do" method="POST" id="userForm"
-					onsubmit="return checkAll()">
+				<form action="user_joinok.do" method="POST" id="userForm">
 					<table style="margin: auto;">
 						<tr>
 							<td>아이디<span class="required">*</span></td>
@@ -112,17 +111,17 @@
 							<!-- 카카오 주소 -->
 							<td>주소<span class="required">*</span></td>
 							<td><input type="text" name="postcode" id="postcode"
-								placeholder="우편번호" disabled="readonly"> <input
-								type="button" onclick="execDaumPostcode()" value="우편변호 찾기">
-								<br> <input type="text" name="address" id="address"
-								placeholder="주소" disabled="readonly"> <input type="text"
-								name="extraAddress" id="extraAddress" placeholder="참고주소"
-								disabled="readonly"> <span id="guide"
-								style="color: #999; display: none"></span> <input type="text"
-								name="detailAddress" id="detailAddress" placeholder="상세주소">
-								<!-- 히든 필드 --> <input type="hidden" id="ADDR" name="ADDR">
-							</td>
+								placeholder="우편번호" readonly> <input type="button"
+								onclick="execDaumPostcode()" value="우편변호 찾기"><br> <input
+								type="text" name="address" id="address" placeholder="주소"
+								readonly> <input type="text" name="extraAddress"
+								id="extraAddress" placeholder="참고주소" readonly> <span
+								id="guide" style="color: #999; display: none"></span> <input
+								type="text" name="detailAddress" id="detailAddress"
+								placeholder="상세주소"> <!-- 히든 필드 --> <input type="hidden"
+								id="ADDR" name="ADDR"></td>
 						</tr>
+
 					</table>
 
 					<div class="agreebox">
@@ -220,46 +219,55 @@
 		}
 	</script>
 	<script type="text/javascript">
-		function user_loginform() {
+		function user_joincancel() {
 			location.href = "user_joincancel.do";
 		}
 
 		//addr 추합
 		function prepareAddr() {
-			var postcode = document.getElementById("postcode").value;
-			var address = document.getElementById("address").value;
-			var extraAddress = document.getElementById("extraAddress").value;
-			var detailAddress = document.getElementById("detailAddress").value;
+    var postcode = document.getElementById("postcode").value;
+    var address = document.getElementById("address").value;
+    var extraAddress = document.getElementById("extraAddress").value;
+    var detailAddress = document.getElementById("detailAddress").value;
 
-			var fullAddress = "(" + postcode + ")" + " " + address + ""
-					+ extraAddress + " " + detailAddress;
+    var fullAddress = "(" + postcode + ")";
 
-			// 띄어쓰기로 구분하여 저장
-			document.getElementById("ADDR").value = fullAddress.trim();
-		}
+    if (address) {
+        fullAddress += ", " + address;
+    }
+    
+    if (extraAddress) {
+        fullAddress += ", " + extraAddress;
+    }
+    
+    if (detailAddress) {
+        fullAddress += ", " + detailAddress;
+    }
+
+    document.getElementById("ADDR").value = fullAddress.trim();
+}
 	</script>
 	<script>
-	//체크박스
+		//체크박스
 		function updateAgreements() {
-			const agreement = document.getElementById('agreement');
-			const agreeMandatory1 = document.getElementById('agreeMandatory1');
-			const agreeMandatory2 = document.getElementById('agreeMandatory2');
-			const emailAgreeCheckbox = document
-					.getElementById('emailAgreeCheckbox');
-			const email_st = document.getElementById('email_st');
+    const agreement = document.getElementById('agreement');
+    const agreeMandatory1 = document.getElementById('agreeMandatory1');
+    const agreeMandatory2 = document.getElementById('agreeMandatory2');
+    const emailAgreeCheckbox = document.getElementById('emailAgreeCheckbox');
+    const email_st = document.getElementById('email_st');
 
-			agreement.checked = agreeMandatory1.checked
-					&& agreeMandatory2.checked;
+    // 전체 동의 체크박스의 상태 업데이트
+    agreement.checked = agreeMandatory1.checked && agreeMandatory2.checked && emailAgreeCheckbox.checked;
 
-			if (!agreeMandatory1.checked || !agreeMandatory2.checked) {
-				document.getElementById('warning').style.display = 'block';
-			} else {
-				document.getElementById('warning').style.display = 'none';
-			}
+    if (!agreeMandatory1.checked || !agreeMandatory2.checked) {
+        document.getElementById('warning').style.display = 'block';
+    } else {
+        document.getElementById('warning').style.display = 'none';
+    }
 
-			emailAgreeCheckbox.checked ? email_st.value = 1
-					: email_st.value = 0;
-		}
+    emailAgreeCheckbox.checked ? email_st.value = 1 : email_st.value = 0;
+}
+
 
 		function checkAll() {
 			const agreement = document.getElementById('agreement');
@@ -345,26 +353,28 @@
 			}
 		}
 	</script>
-	<script defer type="text/javascript" >
+	<script defer type="text/javascript">
 		// 별명 유효성 검사
 		function checkNickDuplicate() {
 			//console.log("Before Ajax call"); // Ajax 호출 전 log
 			const nickname = document.getElementById("NICKNAME").value;
 			const resultSpan = document.getElementById("nickname_result");
 
-	        // 별명이 빈 문자열인 경우
-	        if (nickname.trim() === '') {
-	            resultSpan.textContent = "별명을 입력해주세요.";
-	            resultSpan.style.color = "red";
-	            return;  // 여기서 함수를 종료
-	        }
+			// 별명이 빈 문자열인 경우
+			if (nickname.trim() === '') {
+				resultSpan.textContent = "별명을 입력해주세요.";
+				resultSpan.style.color = "red";
+				return; // 여기서 함수를 종료
+			}
 			//console.log(`NICKNAME to check: ${nickname}`);
 
 			$.ajax({
 				url : "/checkNickDuplicate.do",
 				type : "POST",
-				data : {'NICKNAME' : nickname},
-				
+				data : {
+					'NICKNAME' : nickname
+				},
+
 				success : function(result) {
 					//console.log("After Ajax call"); // Ajax 호출 후 log
 					//console.log(`Server response: ${result}`);
@@ -384,7 +394,8 @@
 					//console.log("Error block"); // 에러 발생 시 log
 					//console.log(`Error occurred: ${error}`);
 
-					const resultSpan = document.getElementById("nickname_result");
+					const resultSpan = document
+							.getElementById("nickname_result");
 					resultSpan.textContent = "서버 에러, 다시 시도해 주세요.";
 					resultSpan.style.color = "red";
 				}
@@ -398,12 +409,12 @@
 			const id = document.getElementById("ID").value;
 			const resultSpan = document.getElementById("id_result");
 			// 아이디가 빈 문자열인 경우
-		    if (id.trim() === '') {
-		        resultSpan.textContent = "아이디를 입력해주세요.";
-		        resultSpan.style.color = "red";
-		        return;  // 여기서 함수를 종료
-		    }
-			
+			if (id.trim() === '') {
+				resultSpan.textContent = "아이디를 입력해주세요.";
+				resultSpan.style.color = "red";
+				return; // 여기서 함수를 종료
+			}
+
 			const formData = new FormData();
 			formData.append('ID', id);
 			//console.log(`ID to check: ${id}, ${ID}`);
@@ -418,7 +429,8 @@
 				//console.log(`HTTP Status Code: ${response.status}`); // HTTP 상태 코드
 
 				//서버 응답 처리
-				const result = await response.text();
+				const result = await
+				response.text();
 				//내용과 스타일을 변경
 				const resultSpan = document.getElementById("id_result");
 
@@ -440,6 +452,108 @@
 				resultSpan.style.color = "red";
 			}
 		}
+	</script>
+	<script type="text/javascript">
+		function validateForm() {
+			const id = document.getElementById("ID").value;
+			const password = document.getElementById("password").value;
+			const password_confirm = document
+					.getElementById("password_confirm").value;
+			const nickname = document.getElementById("NICKNAME").value;
+			const name = document.getElementById("M_NAME").value;
+			const birth = document.getElementById("BIRTH").value;
+			const phone = document.getElementById("PHONE").value;
+			const email = document.getElementById("MAIL").value;
+			const address = document.getElementById("address").value;
+			const idResult = document.getElementById("id_result").textContent;
+			const nicknameResult = document.getElementById("nickname_result").textContent;
+			//비밀번호
+			const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+			//이메일
+			const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+			//전화번호
+			const phoneRegex = /^\d{11}$/;
+			// 전체동의 체크박스 유효성 검사
+		    const agreement = document.getElementById('agreement');
+		    const agreeMandatory1 = document.getElementById('agreeMandatory1');
+		    const agreeMandatory2 = document.getElementById('agreeMandatory2');
+
+			if (id.trim() === '' || password.trim() === ''
+					|| password_confirm.trim() === '' || nickname.trim() === ''
+					|| name.trim() === '' || birth.trim() === ''
+					|| phone.trim() === '' || email.trim() === ''
+					|| address.trim() === '') {
+				alert("모든 필드를 입력해주세요.");
+				return false;
+			}
+
+			if (!passwordRegex.test(password)) {
+				alert("비밀번호는 최소 8자리, 하나 이상의 문자, 하나 이상의 숫자, 하나 이상의 특수 문자가 필요합니다.");
+				return false;
+			}
+
+			if (password !== password_confirm) {
+				alert("비밀번호가 일치하지 않습니다.");
+				return false;
+			}
+
+			if (idResult === "아이디가 중복됩니다.") {
+				alert("아이디가 중복됩니다. 다른 아이디를 선택해주세요.");
+				return false;
+			}
+
+			if (nicknameResult === "닉네임이 중복됩니다.") {
+				alert("닉네임이 중복됩니다. 다른 닉네임을 선택해주세요.");
+				return false;
+			}
+
+			if (!emailRegex.test(email)) {
+				alert("이메일 형식이 올바르지 않습니다.");
+				return false;
+			}
+
+			if (!phoneRegex.test(phone)) {
+				alert("전화번호는 11자리의 숫자만 가능합니다.");
+				return false;
+			}
+			
+			if (!agreeMandatory1.checked || !agreeMandatory2.checked) {
+		        alert("필수 체크 항목에 동의해주세요.");
+		        return false;
+		    }
+
+			return true;
+		}
+	</script>
+	<script type="text/javascript">
+	document.getElementById("userForm").addEventListener("submit", function(event) {
+	    event.preventDefault(); // 폼 제출 방지
+	    if (!validateForm()) { 
+	        // 유효성 검사에 실패한 경우
+	        return false; 
+	    }
+	    const formData = new FormData(this);
+
+	    // AJAX 요청
+	    fetch("user_joinok.do", {
+	        method: 'POST',
+	        body: formData
+	    })
+	    .then(response => response.json())
+	    .then(data => {
+	        if (data.success) {
+	            alert("회원가입이 성공적으로 완료되었습니다!");
+	            window.location.href = "/";
+	        } else {
+	            alert("회원가입 중 오류가 발생했습니다. 다시 시도해주세요.");
+	        }
+	    })
+	    .catch(error => {
+	        console.error("Error:", error);
+	        alert("서버와의 통신 중 오류가 발생했습니다. 다시 시도해주세요.");
+	    });
+	});
+
 	</script>
 </body>
 </html>
