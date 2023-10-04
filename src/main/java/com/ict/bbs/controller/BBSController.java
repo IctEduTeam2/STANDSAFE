@@ -793,9 +793,13 @@ public class BBSController {
 		
 		//비밀글 체크시 제목앞에 붙이기.
 		String lock =  request.getParameter("secret_flag");
-		String review_prod = request.getParameter("review_prod");
-		reviewvo.setPROD_NUM(review_prod);
+		//String review_prod = request.getParameter("review_prod");
+		//reviewvo.setPROD_NUM(review_prod);
 		
+		String p_num = request.getParameter("PROD_NUM");
+		System.out.println("p_num:" + p_num);
+		
+		reviewvo.setPROD_NUM(p_num);
 		
 		
 		//[비밀] 을 붙일 제목가져오기
@@ -807,11 +811,12 @@ public class BBSController {
 			reviewvo.setRE_LOCK("0");
 		}
 
+		
 		int result = bbsService.getReviewWriteOk(reviewvo);
 		
 	
 		String sessionid = (String) request.getSession().getAttribute("id");
-		int changereview = bbsService.updateReviewStonPayT(review_prod);
+		int changereview = bbsService.updateReviewStonPayT(p_num);
 		
 		
 		if(result >0) {

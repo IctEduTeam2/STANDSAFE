@@ -302,7 +302,7 @@ public class BBS_ServiceImpl implements BBS_Service{
 	}
 	
 	@Override
-	public int updateReviewStonPayT(String review_prod) {
-		return bbsDAO.updateReviewStonPayT(review_prod);
+	public int updateReviewStonPayT(String p_num) {
+		return bbsDAO.updateReviewStonPayT(p_num);
 	}
 }

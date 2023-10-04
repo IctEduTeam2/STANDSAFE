@@ -373,7 +373,7 @@ public class BBS_DAO {
 		return sqlSessionTemplate.selectList("bbs.reviewcomlist",sessionid);
 	}
 	
-	public int updateReviewStonPayT(String review_prod) {
-		return sqlSessionTemplate.update("bbs.updatereviewst",review_prod );
+	public int updateReviewStonPayT(String p_num) {
+		return sqlSessionTemplate.update("bbs.updatereviewst",p_num );
 	}
 }
