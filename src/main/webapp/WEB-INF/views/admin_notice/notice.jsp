@@ -104,9 +104,10 @@ function resetTableAndFields() {
 
 function resetFields() {
     document.getElementById('searchKey').value = "제목"; // 검색어 필드 초기화 
-    document.getElementById('searchTitleSelect').value = "기간"; // 검색어 필드 초기화 
+    document.getElementById('searchTitleSelect').value = "작성일"; // 검색어 필드 초기화 
     document.getElementById('start1').value = ""; // 'start' 필드 초기화
     document.getElementById('close1').value = ""; // 'close' 필드 초기화
+    document.getElementById('fromDate').value = "";
 }
 function setStartField() {
     var startDate = document.getElementById('startDate').value;
@@ -159,71 +160,57 @@ $(document).ready(function() {
 });
 
 //테이블 삭제 버튼
-function deleteSelectedItems() {
-    // 선택된 체크박스를 찾습니다.
-    var checkedCheckboxes = $("input[name='chk']:checked");
-    
-    if (checkedCheckboxes.length === 0) {
-        alert("선택된 항목이 없습니다.");
-        return;
-    }
-    
-    // 선택된 각 체크박스에 대해 처리합니다.
-    checkedCheckboxes.each(function() {
-        var row = $(this).closest("tr"); // 체크박스가 속한 행을 찾습니다.
-        var notice_num = row.find(".column_2").text(); // 게시물 번호 열의 텍스트를 가져옵니다.
-        
-        // AJAX를 사용하여 서버에 삭제 요청을 보냅니다.
+$(document).ready(function() {
+    $("#del_btn").click(function() { // 클릭 이벤트 핸들러 설정
+        var selectedNotices = [];
+        $("input[name='chk']:checked").each(function() { // 체크된 체크박스 찾기
+            selectedNotices.push($(this).val()); // 선택된 NOTICE_NUM을 배열에 추가
+        });
+
+        // Ajax 요청을 보냅니다.
         $.ajax({
-            url: '/addelete_notices.do',
-            type: 'POST',
-            data: { notice_num: notice_num },
+            type: "POST", // 또는 GET
+            url: "/adnotice_deleted1.do", // 다른 컨트롤러의 URL을 여기에 입력
+            data: { selectedNotices: selectedNotices }, // 선택된 NOTICE_NUM 값을 전송
             success: function(response) {
-                // 서버에서 성공적인 응답을 받았을 때 실행할 코드를 작성합니다.
-                // 여기에서는 행을 숨깁니다.
-                row.hide();
+                // Ajax 요청이 성공했을 때 실행할 코드
+                // 서버에서 반환한 응답(response)을 처리합니다.
+                alert(response);
+                location.reload();
             },
             error: function(error) {
-                // 오류가 발생한 경우 처리할 코드를 작성합니다.
-                alert("오류가 발생했습니다.");
+                // Ajax 요청이 실패했을 때 실행할 코드
+                console.error("Ajax request failed: " + error);
             }
         });
     });
-}
-
+});
 //홈페이지 등록
-function updateNoticeStatus() {
-    // 선택된 체크박스를 찾습니다.
-    var checkedCheckboxes = $("input[name='chk']:checked");
+$(document).ready(function() {
+    $("#home_btn").click(function() { // 클릭 이벤트 핸들러 설정
+        var selectedNotices = [];
+        $("input[name='chk']:checked").each(function() { // 체크된 체크박스 찾기
+            selectedNotices.push($(this).val()); // 선택된 NOTICE_NUM을 배열에 추가
+        });
 
-    if (checkedCheckboxes.length === 0) {
-        alert("선택된 항목이 없습니다.");
-        return;
-    }
-
-    // 선택된 각 체크박스에 대해 처리합니다.
-    checkedCheckboxes.each(function () {
-        var row = $(this).closest("tr"); // 체크박스가 속한 행을 찾습니다.
-        var notice_num = row.find(".column_2").text(); // 게시물 번호 열의 텍스트를 가져옵니다.
-
-        // AJAX를 사용하여 서버에 상태 업데이트 요청을 보냅니다.
+        // Ajax 요청을 보냅니다.
         $.ajax({
-            url: '/update_adnoticestatus.do',
-            type: 'POST',
-            data: { notice_num: notice_num, status: 1 }, // status를 1로 변경하려면 여기서 지정합니다.
-            success: function (response) {
-            	alert("등록 되었습니다");
-                // 서버에서 성공적인 응답을 받았을 때 실행할 코드를 작성합니다.
-  
-            	location.reload();
+            type: "POST", // 또는 GET
+            url: "/update_adnoticestatus.do", // 다른 컨트롤러의 URL을 여기에 입력
+            data: { selectedNotices: selectedNotices }, // 선택된 NOTICE_NUM 값을 전송
+            success: function(response) {
+                // Ajax 요청이 성공했을 때 실행할 코드
+                // 서버에서 반환한 응답(response)을 처리합니다.
+                alert(response);
+                location.reload();
             },
-            error: function (error) {
-                // 오류가 발생한 경우 처리할 코드를 작성합니다.
-                alert("오류가 발생했습니다.");
+            error: function(error) {
+                // Ajax 요청이 실패했을 때 실행할 코드
+                console.error("Ajax request failed: " + error);
             }
         });
     });
-}
+});
 
 
 </script>
@@ -264,9 +251,9 @@ function updateNoticeStatus() {
 							<p>
 								<span> <span
 									style="font-family: '맑은 고딕'; font-size: 16px; float: left; margin-left: 50px;">검색어
-										&nbsp</span> <select id="searchKey" name="searchKey" title="검색항목선택"
+										</span> <select id="searchKey" name="searchKey" title="검색항목선택"
 									class="select_option"
-									style="margin-left: 55px; width: 300px; height: 50px; font-size: 20px;">
+									style="margin-left: 50px; width: 300px; height: 50px; font-size: 20px;">
 										<option value="제목">제목</option>
 										<option value="작성자">작성자</option>
 										<option value="내용">내용</option>
@@ -275,7 +262,7 @@ function updateNoticeStatus() {
 								</span> <span style="margin-left: 10px;"> <input type="text"
 									id="fromDate" name="searchText" title="검색어 입력" 
 									maxlength="10" style="width: 240px; height: 50px;">
-								</span>&nbsp&nbsp&nbsp&nbsp
+								</span>
 							</p>
 						</dd>
 					</dl>
@@ -284,12 +271,12 @@ function updateNoticeStatus() {
 						<dd>
 							<p>
 								<span
-									style="font-family: '맑은 고딕'; font-size: 16px; margin-left: 50px; float: left;">기간검색</span>
+									style="font-family: '맑은 고딕'; font-size: 16px; margin-left: 50px; float: left;">기　간</span>
 								<span>
 								<select id="searchTitleSelect" name="searchTitle" title="작성일 선택" class="select_option" style="margin-left: 50px; width: 300px; height: 50px; font-size: 20px;">
     								<option value="기간">기간</option>
-    								<option value="dateCreated1">작성일</option>
-    								<option value="dateCreated2">수정일</option>
+    								<option value="작성일">작성일</option>
+    								<option value="수정일">수정일</option>
 								</select>
 								</span>
 																
@@ -353,20 +340,21 @@ function updateNoticeStatus() {
 			<colgroup>
 				<col width="5%">
 				<col width="5%">
-				<col width="10%">
 				<col width="15%">
+				<!--<col width="15%"> -->
 				<col width="10%">
 				<col width="5%">
 				<col width="10%">
 				<col width="10%">
 				<col width="10%">
+				<col width="5%">
 			</colgroup>
 			<thead>
 				<tr>
 					<td class="column_1">선택</td>
 					<td class="column_2">NO.</td>
 					<td class="column_3">게시물 제목</td>
-					<td class="column_4">내용</td>
+					<!-- <td class="column_4">내용</td> -->
 					<td class="column_5">파일 이름</td>
 					<td class="column_6">조회수</td>
 					<td class="column_7">작성일</td>
@@ -379,11 +367,11 @@ function updateNoticeStatus() {
 	
 			</tbody>
 	<!-- 페이지 번호 출력 부분 -->
-<tfoot>
+<!-- <tfoot>
     <tr>
-        <td colspan="10">
+        <td colspan="9">
             <ol class="paging">
-                <!-- 이전 버튼 -->
+                <!-- 이전 버튼
                 <c:if test="${paging.beginBlock > paging.pagePerBlock}">
                     <li><a href="/admin_notice.do?cPage=${paging.beginBlock-paging.pagePerBlock}">이전으로</a></li>
                 </c:if>
@@ -391,7 +379,7 @@ function updateNoticeStatus() {
                     <li class="disable">이전으로</li>
                 </c:if>
                 
-                <!-- 페이지 번호 출력 -->
+                <!-- 페이지 번호 출력
                 <c:forEach begin="${paging.beginBlock }" end="${paging.endBlock }" step="1" var="k">
                     <c:choose>
                         <c:when test="${k == paging.nowPage }">
@@ -403,7 +391,7 @@ function updateNoticeStatus() {
                     </c:choose>
                 </c:forEach>
                 
-                <!-- 다음 버튼 -->
+                <!-- 다음 버튼
                 <c:if test="${paging.endBlock < paging.totalPage}">
                     <li><a href="/admin_notice.do?cPage=${paging.beginBlock+paging.pagePerBlock }">다음으로</a></li>
                 </c:if>
@@ -413,20 +401,15 @@ function updateNoticeStatus() {
             </ol>
         </td>
     </tr>
-</tfoot>
+</tfoot> -->
 	</table>
 	</div>
 	<!-- 하단 버튼 -->
 	<div>
-		<span style="float: right; margin-top: 25px; margin-right: 170px;">
-			<button type="button" alt="공지사항" value="공지사항"
-				style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
-				onclick="location.href='/ad_allnotice.do'">공지사항❐</button>
-		</span>
 		<span style="float: right; margin-top: 25px; margin-right: 50px;">
-    		<button type="button" alt="삭제" value="삭제"
-        	style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
-        	onclick="deleteSelectedItems()">삭제</button>
+    		  <button type="button" alt="삭제" value="삭제"
+                style="margin-right:100px; width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
+                id="del_btn">삭제</button>
 		</span>
 		<span style="float: right; margin-top: 25px; margin-right: 50px;">
 			<button type="button" alt="글쓰기" value="글쓰기"
@@ -435,8 +418,8 @@ function updateNoticeStatus() {
 		</span> 
 		<span style="float: right; margin-top: 25px; margin-right: 50px;">
 			<button type="button" alt="홈페이지 등록" value="홈페이지 등록"
-				style="width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
-				onclick="updateNoticeStatus()">홈페이지 등록</button>
+                style=" width: 150px; height: 50px; font-size: 16px; border-radius: 10px; background-color: #505BBD; color: white; border: none;"
+                id="home_btn">홈페이지 등록</button>
 		</span>
 	</div>
 

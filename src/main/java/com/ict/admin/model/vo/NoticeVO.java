@@ -5,7 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class NoticeVO {
 
 	private String NOTICE_NUM, NOTICE_SUBJECT, NOTICE_TYPE, NOTICE_WRITER, NOTICE_CONTENT, NOTICE_HIT,
-					NOTICE_DATE, NOTICE_UPDATE, NOTICE_ST, NOTICE_FILE, ADMIN_NUM;
+					NOTICE_DATE, NOTICE_UPDATE, NOTICE_ST, NOTICE_FILE, ADMIN_NUM, ADMIN_NAME, old_f_name;
 	
 	
 
@@ -17,6 +17,24 @@ public class NoticeVO {
 
 	public void setFile(MultipartFile file) {
 		this.file = file;
+	}
+
+	
+	
+	public String getADMIN_NAME() {
+		return ADMIN_NAME;
+	}
+
+	public void setADMIN_NAME(String aDMIN_NAME) {
+		ADMIN_NAME = aDMIN_NAME;
+	}
+
+	public String getOld_f_name() {
+		return old_f_name;
+	}
+
+	public void setOld_f_name(String old_f_name) {
+		this.old_f_name = old_f_name;
 	}
 
 	public String getNOTICE_NUM() {

@@ -54,12 +54,31 @@ th {
 
  }
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <script type="text/javascript">
-	function list_go() {
-		location.href="/ad_allreview.do";
+$(document).ready(function(){
+	var pwchk = "${pwchk}";
+	if(pwchk == "fail") {
+		alert("비밀번호틀립니다. 다시 입력하세요");
+		$("#pwd").focus();
+		return ;
 	}
-	function delete_ok(){
-		location.href="";
+});
+</script>
+<script type="text/javascript">
+	function list_go(f) {
+		f.action="/admin_reivew.do";
+		f.submit();
+	}
+	function delete_ok(f){
+		if(f.pwd.value.trim().length <=0){
+			alert("비번을 입력해주세요");
+			f.pwd.focus();
+			event.preventDefault();
+			return;  //비번입력을해야지만 넘어갈수있게함.
+		}
+		f.action="/admin_re_del_ok.do";
+		f.submit();
 	}
 </script>
 </head>
@@ -69,6 +88,7 @@ th {
 		<section id="contents">
 		<hr class="hr">
 			<div id="bbs_sub"><h3>삭제화면</h3></div>
+			<form method="post">
 				<table class="m_table">				
 						<thead class="mh_table">
 							 <tr>
@@ -88,9 +108,11 @@ th {
 						   정말 삭제를 원할 시에만 삭제버튼을 눌러주세요 </p>
 					</div>
 					<div style="text-align: center;">
-						<button class="d_btn" onclick="delete_ok()">삭제</button>
-						<button class="d_btn" onclick="list_go()">목록</button>
+					<input type="hidden" name="RE_NUM" value="${RE_NUM}">
+						<button class="d_btn" onclick="delete_ok(this.form)">삭제</button>
+						<button class="d_btn" onclick="list_go(this.form)">목록</button>
 					</div>
+				</form>
 		</section>
 
 		<jsp:include page="../Semantic/footer.jsp"></jsp:include>

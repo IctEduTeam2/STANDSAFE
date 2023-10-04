@@ -89,11 +89,11 @@ fieldset {
 </style> 
 <script type="text/javascript">
 	function save_go(f) {
-		f.action="";
+		f.action="/ad_writeeve.do";
 		f.submit();
 	}
 	function list_go(f) {
-		f.action="/ad_eveall_go.do";
+		f.action="/admin_event.do";
 		f.submit();
 	}
 
@@ -117,7 +117,7 @@ fieldset {
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">유형</td>
 									<td id="radio">
-										<input type="radio" name="search" value="subject" checked />
+										<input type="radio" name="EVENT_TYPE" value="이벤트" checked />
 										<span>이벤트</span>	
 									</td>
 							</tr>
@@ -125,11 +125,11 @@ fieldset {
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">작성자</td>
 								<!--이건 로그인한 사람이 자동으로 뜨게하기.  -->
-								<td><input type="text" name="name" size="20" autocomplete='off'/></td>
+								<td><input type="text" name="name" size="20" value="${admin_name}" autocomplete='off' disabled /></td>
 							</tr>
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">제목</td>
-								<td><input type="text" name="subject" size="20" autocomplete='off' /></td>
+								<td><input type="text" name="EVENT_SUBJECT" size="20" autocomplete='off' /></td>
 							</tr>
 							
 							<tr align="center">
@@ -138,7 +138,7 @@ fieldset {
 							</tr>	
 							<tr align="center">
 								<td colspan="2">
-									<textarea rows="10" cols="60" name="content" id="content"></textarea>
+									<textarea rows="10" cols="60" name="EVENT_CONTENT" id="content"></textarea>
 								</td>
 							</tr>
 							<tfoot>
