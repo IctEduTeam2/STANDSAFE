@@ -156,6 +156,13 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 		}
 	}
 </script>
+
+<script type="text/javascript">	
+	function just_buy(f) {
+		f.action = "/justbuy.do?prod_num=" + f.prod_num.value + "&quantity=" + f.amount.value + "&client_num=" + f.client_num.value;
+		f.submit();
+	}
+</script>
 <script type="text/javascript">
 function increaseQuantity(f) {
 	 if(f.amount.value.trim() > f.prod_amount.value.trim()) {
