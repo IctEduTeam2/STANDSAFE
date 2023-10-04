@@ -516,6 +516,7 @@ public class Admin_notice {
 			} else {
 				html.append("<td>있음</td>");
 			}
+			
 			html.append("<td>").append(k.getBOARD_DATE()).append("</td>");
 			html.append("<td>").append(k.getBOARD_UPDATE()).append("</td>");
 			html.append("<td>").append(k.getBOARD_WRITER()).append("</td>");
@@ -565,7 +566,6 @@ public class Admin_notice {
 					.append("' /></td>");
 			html.append("<input type='hidden' id ='checknum' name='checknum' value='").append(k.getBOARD_NUM())
 					.append("' />");
-			// html.append("<td>").append(k.getNOTICE_NUM()).append("</td>");
 			html.append("<td>").append(no).append("</td>");
 			if (k.getBOARD_ST().equals("3")) {
 				html.append("<td id='RE'>").append("　　[Re]").append("<a href='/adqa_onelist_user.do?BOARD_NUM=")
@@ -582,11 +582,9 @@ public class Admin_notice {
 			}
 
 			String result = html.toString();
-			// html.append("<td>").append(k.getNOTICE_HIT()).append("</td>");
 			html.append("<td>").append(k.getBOARD_DATE()).append("</td>");
 			html.append("<td>").append(k.getBOARD_UPDATE()).append("</td>");
 			html.append("<td>").append(k.getBOARD_WRITER()).append("</td>");
-			// html.append("<td>").append(k.getNOTICE_ST()).append("</td>");
 			html.append("<td>");
 			if (k.getBOARD_ST().equals("1")) {
 				html.append("[답변대기]");
@@ -790,9 +788,11 @@ public class Admin_notice {
 			html.append("<tr>");
 			html.append("<td><input type='checkbox' name='chk' value='").append(k.getFA_NUM()).append("' /></td>");
 			html.append("<td>").append(no).append("</td>"); // 번호 추가
-			html.append("<td><a href='/bbs_faq_onelist.do?FA_NUM=").append(k.getFA_NUM()).append("'>")
-					.append(k.getFA_SUBJECT()).append("</a></td>");
-			html.append("<td>").append(k.getFA_HIT()).append("</td>");
+			html.append("<td><a href='/bbs_faq_onelist.do?FA_NUM=").append(k.getFA_NUM()).append("'>").append("Q.　").append(k.getFA_SUBJECT()).append("</a></td>");
+            
+			
+			String answerWithoutPTags = k.getFA_ANSWER().replaceAll("<p>", "").replaceAll("</p>", "");
+            html.append("<td>").append("A.　").append(answerWithoutPTags).append("</td>");
 			html.append("<td>").append(k.getFA_DATE()).append("</td>");
 			html.append("<td>").append(k.getFA_UPDATE()).append("</td>");
 			html.append("<td>").append(k.getFA_WRITER()).append("</td>");
@@ -843,15 +843,17 @@ public class Admin_notice {
 					.append("' /></td>");
 			html.append("<input type='hidden' id ='checknum' name='checknum' value='").append(k.getFA_NUM())
 					.append("' />");
-			// html.append("<td>").append(k.getNOTICE_NUM()).append("</td>");
+			
 			html.append("<td>").append(no).append("</td>");
-			html.append("<td>").append(k.getFA_SUBJECT()).append("</td>");
+			html.append("<td><a href='/bbs_faq_onelist.do?FA_NUM=").append(k.getFA_NUM()).append("'>").append("Q.　").append(k.getFA_SUBJECT()).append("</a></td>");
 			String result = html.toString();
-			html.append("<td>").append(k.getFA_ANSWER()).append("</td>");
+			
+			String answerWithoutPTags = k.getFA_ANSWER().replaceAll("<p>", "").replaceAll("</p>", "");
+            html.append("<td>").append("A.　").append(answerWithoutPTags).append("</td>");
 			html.append("<td>").append(k.getFA_DATE()).append("</td>");
 			html.append("<td>").append(k.getFA_UPDATE()).append("</td>");
 			html.append("<td>").append(k.getFA_WRITER()).append("</td>");
-			// html.append("<td>").append(k.getNOTICE_ST()).append("</td>");
+			
 			html.append("<td>");
 			if (k.getFA_ST().equals("1")) {
 				html.append("[등록]");
@@ -964,7 +966,7 @@ public class Admin_notice {
 			} else {
 				html.append("<td>있음</td>");
 			}
-			html.append("<td>").append(k.getEVENT_HIT()).append("</td>");
+			
 			html.append("<td>").append(k.getEVENT_DATE()).append("</td>");
 			html.append("<td>").append(k.getEVENT_UPDATE()).append("</td>");
 			html.append("<td>").append(k.getEVENT_WRITER()).append("</td>");
@@ -1027,7 +1029,7 @@ public class Admin_notice {
 			}
 
 			String result = html.toString();
-			html.append("<td>").append(k.getEVENT_HIT()).append("</td>");
+			
 			html.append("<td>").append(k.getEVENT_DATE()).append("</td>");
 			html.append("<td>").append(k.getEVENT_UPDATE()).append("</td>");
 			html.append("<td>").append(k.getEVENT_WRITER()).append("</td>");
@@ -1847,7 +1849,7 @@ public class Admin_notice {
 
 		ModelAndView mv = new ModelAndView("redirect:/ad_popup.do");
 		try {
-			String path = request.getSession().getServletContext().getRealPath("/resources/upload");
+			String path = request.getSession().getServletContext().getRealPath("/resources/images/slide");
 
 			MultipartFile f_param = popvo.getFile();
 			if (f_param.isEmpty()) {
