@@ -57,15 +57,16 @@
 					<br> <a href="/loginform.do"><img
 						src="resources/images/quick/login.png" class="quickIcon"
 						style="width: 90px; height: 90px;"><span class="quickText">로그인</span></a>
+						<br> <a href="/registerform.do"><img
+						src="resources/images/quick/register.png" class="quickIcon"
+						style="width: 90px; height: 90px;"><span class="quickText">회원가입</span></a>
 					<br> <a href="/jaenan_rainlive.do"><img
 						src="resources/images/quick/weather_icon.png" class="quickIcon"
 						style="width: 90px; height: 90px;"><span class="quickText">실시간
 							날씨</span></a> <br> <a href="/bbs_notice_go.do"><img
 						src="resources/images/quick/notice_icon.png" class="quickIcon"
 						style="width: 90px; height: 90px;"><span class="quickText">공지사항</span></a>
-					<br> <a href="/registerform.do"><img
-						src="resources/images/quick/register.png" class="quickIcon"
-						style="width: 90px; height: 90px;"><span class="quickText">회원가입</span></a>
+					
 				</div>
 				<div class="quick2" style="padding-top: 30px;">
 					<a href="javascript:void(0);" id="scrollToTop"> <img
