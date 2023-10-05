@@ -69,7 +69,7 @@
 									</c:when>
 										<c:otherwise>
 											<a href="">
-											<img src="/resources/images/${mvo.NOTICE_FILE }" style="width: 80%"></a>
+											<img src="/resources/upload/${mvo.NOTICE_FILE }" style="width: 80%"></a>
 											<br>
 											${mvo.NOTICE_CONTENT}
 									</c:otherwise>

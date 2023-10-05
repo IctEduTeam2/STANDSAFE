@@ -788,8 +788,9 @@ public class Admin_notice {
 			html.append("<tr>");
 			html.append("<td><input type='checkbox' name='chk' value='").append(k.getFA_NUM()).append("' /></td>");
 			html.append("<td>").append(no).append("</td>"); // 번호 추가
-			html.append("<td><a href='/bbs_faq_onelist.do?FA_NUM=").append(k.getFA_NUM()).append("'>").append("Q.　").append(k.getFA_SUBJECT()).append("</a></td>");
-            
+			//html.append("<td><a href='/bbs_faq_onelist.do?FA_NUM=").append(k.getFA_NUM()).append("'>").append("Q.　").append(k.getFA_SUBJECT()).append("</a></td>");
+			html.append("<td>").append("Q.　").append(k.getFA_SUBJECT()).append("</td>");
+
 			
 			String answerWithoutPTags = k.getFA_ANSWER().replaceAll("<p>", "").replaceAll("</p>", "");
             html.append("<td>").append("A.　").append(answerWithoutPTags).append("</td>");
@@ -845,7 +846,8 @@ public class Admin_notice {
 					.append("' />");
 			
 			html.append("<td>").append(no).append("</td>");
-			html.append("<td><a href='/bbs_faq_onelist.do?FA_NUM=").append(k.getFA_NUM()).append("'>").append("Q.　").append(k.getFA_SUBJECT()).append("</a></td>");
+//			html.append("<td><a href='/bbs_faq_onelist.do?FA_NUM=").append(k.getFA_NUM()).append("'>").append("Q.　").append(k.getFA_SUBJECT()).append("</a></td>");
+			html.append("<td>").append("Q.　").append(k.getFA_SUBJECT()).append("</td>");
 			String result = html.toString();
 			
 			String answerWithoutPTags = k.getFA_ANSWER().replaceAll("<p>", "").replaceAll("</p>", "");
@@ -1959,8 +1961,10 @@ public class Admin_notice {
 					.append("' />");
 			// html.append("<td>").append(k.getNOTICE_NUM()).append("</td>");
 			html.append("<td>").append(no).append("</td>");
-			html.append("<td><a href='/adpopup_onelist.do?POPUP_NUM=").append(k.getPOPUP_NUM()).append("'>")
-					.append(k.getPOPUP_IMG()).append("</a></td>");
+//			html.append("<td><a href='/adpopup_onelist.do?POPUP_NUM=").append(k.getPOPUP_NUM()).append("'>")
+//					.append(k.getPOPUP_IMG()).append("</a></td>");
+			html.append("<td>").append(k.getPOPUP_IMG()).append("</td>");
+
 			if(k.getPOPUP_ST().equals("0")) {
 				html.append("<td>팝업</td>");
 			}else {
@@ -1985,7 +1989,7 @@ public class Admin_notice {
 	@ResponseBody
 	public String adPopUpDeleted(HttpServletRequest request, HttpSession session,
 			@RequestParam("selectedPopUp[]") List<String> selectedPopUp) {
-		// 여기에서 NOTICE_ST 값이 2인 데이터만 필터링하여 list를 가져옵니다.
+		
 		for (String k : selectedPopUp) {
 			int del = notiService.upPopUptabst(k);
 		}
@@ -2014,7 +2018,7 @@ public class Admin_notice {
 		}
 		return null;
 		}
-		// 여기에서 NOTICE_ST 값이 2인 데이터만 필터링하여 list를 가져옵니다.
+
 
 	@RequestMapping("/ad_popup.do")
 	public ModelAndView AdminPopup() {
