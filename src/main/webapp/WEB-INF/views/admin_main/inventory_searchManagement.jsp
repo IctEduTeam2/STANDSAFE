@@ -159,7 +159,7 @@ function delete_ok() {
 						style="width: 200px; height: 60px; font-size: 25px; border-radius: 10px; background-color: #505BBD; color: white; border: none; float: right;"
 						onclick="searchList();" />
 					</td>
-					<td><input type="button" alt="초기화" value="초기화"
+					<td><input type="reset" alt="초기화" value="초기화"
 						style="width: 200px; height: 60px; font-size: 25px; border-radius: 10px; background-color: #B5B5B5; color: white; border: none; float: right; margin-right: 20px;">
 					</td>
 				</tr>
@@ -212,7 +212,7 @@ function delete_ok() {
 							<td><input type="checkbox" id="chk" name="chk" />
 								<input type="hidden" id="prod_num" name="prod_num" value="${ivo.PROD_NUM }" />
 							</td>
-							<td><img src="resources/images/products/${ivo.PROD_IMG}" /></td>
+							<td><img src="resources/images/products/${ivo.PROD_IMG}" style="width: 200px; height:200px;"/></td>
 							<td><a
 								href="/inventory_updateform.do?prod_num=${ivo.PROD_NUM}">${ivo.PROD_NAME}</a></td>
 							<td>${ivo.PROD_PRICE}</td>

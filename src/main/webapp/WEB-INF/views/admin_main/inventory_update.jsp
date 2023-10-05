@@ -88,7 +88,7 @@ button {
 					</tr>
 					<tr>
 						<th>상품명</th>
-						<td colspan="5"><input type="text" id="prod_name"
+						<td colspan="3"><input type="text" id="prod_name"
 							name="prod_name" value="${invo.PROD_NAME }"></td>
 					</tr>
 					<tr>
@@ -98,28 +98,18 @@ button {
 						<td><input type="text" name="sales_price" id="sales_price" value="${invo.PROD_SALE}"></td>
 					</tr>
 					<tr>
-						<th>판매 수량</th>
-						<td colspan="5"><input type="text" id="salesq" name="salesq"
-							value=""></td>
-					</tr>
-					<tr>
 						<th>재고 수량</th>
-						<td colspan="5"><input type="text" id="invenq" name="invenq"
+						<td colspan="3"><input type="text" id="invenq" name="invenq"
 							value="${invo.PROD_AMOUNT}"></td>
 					</tr>
-				<%-- 	<tr>
-						<th>등록일자</th>
-						<td colspan="5"><input type="date" id="regdate"
-							name="regdate" value="${invo.PROD_REGDATE}"></td>
-					</tr> --%>
 					<tr>
 						<th>썸네일 이미지</th>
-						<td colspan="5">
+						<td colspan="3">
 						<img src="resources/images/products/${invo.PROD_IMG}" />
 					</tr>
 					<tr>
 						<th>상세 이미지 </th>
-						<td colspan="5">
+						<td colspan="3">
 						<img src="resources/images/products/${invo.PROD_DETAIL}" /></td>
 					</tr>
 
@@ -134,7 +124,7 @@ button {
 							onclick="location.href='/inventory_management.do'">목록</button>
 					</span> <span style="float: left; margin-top: 80px; margin-right: 100px;">
 						<button type="button" value="취소"
-							style="background-color: #B5B5B5;">취소</button>
+							onclick="location.href='/inventory_management.do'">취소</button>
 					</span>
 				</div>
 			</form>

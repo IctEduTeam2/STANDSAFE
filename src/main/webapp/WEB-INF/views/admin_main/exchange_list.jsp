@@ -121,7 +121,7 @@ function selectAll(selectAll)  {
 	<input type="hidden" name="cPage" value="1" />
 	<input type="hidden" name="pageSize" value="10" />
 	<table
-					style="float: right; margin-left: 2%; margin-top: 10%; border: 1px solid black; width: 60%; height: 400px;">
+					style="float: left; margin-left: 2%; margin-top: 10%; border: 1px solid black; width: 58%; height: 400px;">
 					<tr>
 					<th style="width: 200px;">주문번호</th>
 					<td colspan="3"><input type="text" id="searchText" name="searchText"
@@ -144,7 +144,7 @@ function selectAll(selectAll)  {
 							name="searchBtn" onclick="searchList();"
 							style="width: 200px; height: 60px; font-size: 25px; border-radius: 10px; background-color: #505BBD; color: white; border: none; float: right;">
 						</td>
-						<td><input type="button" alt="초기화" value="초기화"
+						<td><input type="reset" alt="초기화" value="초기화"
 							style="width: 200px; height: 60px; font-size: 25px; border-radius: 10px; background-color: #B5B5B5; color: white; border: none; float: right; margin-right: 20px;">
 						</td>
 					</tr>
@@ -185,7 +185,20 @@ function selectAll(selectAll)  {
 							<td><a href="/exchange_detail.do?payOkNum=${pvo.PAY_OKNUM}">${pvo.PAY_OKNUM} </a></td>
 							<td>${pvo.CLIENT_NUM }</td>
 							<td>${pvo.PB_DATE }</td>
-							<td>${pvo.PB_ST }</td>
+							<td>
+							<c:choose>
+									 <c:when test="${pvo.PB_ST == '0'}">교환 접수 중</c:when>
+       								 <c:when test="${pvo.PB_ST == '1'}">교환 접수 완료</c:when>
+       								 <c:when test="${pvo.PB_ST == '2'}">교환 회수 완료</c:when>
+       								 <c:when test="${pvo.PB_ST == '3'}">교환 완료</c:when>
+       								 <c:when test="${pvo.PB_ST == '4'}">반품 접수 중</c:when>
+       								 <c:when test="${pvo.PB_ST == '5'}">반품 접수 완료</c:when>
+       								 <c:when test="${pvo.PB_ST == '6'}">반품 회수 완료</c:when>
+       								 <c:when test="${pvo.PB_ST == '7'}">반품 완료</c:when>
+       								 <c:when test="${pvo.PB_ST == '8'}">상품 취소</c:when>
+      								 <c:otherwise>${pvo.PB_ST}</c:otherwise>
+   								 </c:choose>
+							</td>
 							<td>${pvo.CONFIRM_ID }</td>
                         </tr>
 					</c:forEach>

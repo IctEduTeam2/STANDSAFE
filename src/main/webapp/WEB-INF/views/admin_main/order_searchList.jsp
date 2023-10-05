@@ -101,7 +101,7 @@ function selectAll(selectAll)  {
 				<input type="hidden" name="cPage" value="1" /> <input
 					type="hidden" name="pageSize" value="10" />
 				<table
-					style="float: right; margin-left: 2%; margin-top: 10%; border: 1px solid black; width: 60%; height: 400px; margin-right: 3%">
+					style="float: left; margin-left: 2%; margin-top: 10%; border: 1px solid black; width: 58%; height: 400px; margin-right: 3%">
 					<tr>
 					<th style="width: 200px;">주문번호</th>
 					<td colspan="3"><input type="text" id="searchText" name="searchText"
@@ -124,7 +124,7 @@ function selectAll(selectAll)  {
 							name="searchBtn" onclick="searchList();"
 							style="width: 200px; height: 60px; font-size: 25px; border-radius: 10px; background-color: #505BBD; color: white; border: none; float: right;">
 						</td>
-						<td><input type="button" alt="초기화" value="초기화"
+						<td><input type="reset" alt="초기화" value="초기화"
 							style="width: 200px; height: 60px; font-size: 25px; border-radius: 10px; background-color: #B5B5B5; color: white; border: none; float: right; margin-right: 20px;">
 						</td>
 					</tr>
@@ -175,43 +175,54 @@ function selectAll(selectAll)  {
 						</tr>
 					</c:forEach>
 				</tbody>
-				<!-- 페이지 번호 출력 부분 -->
 				<tfoot>
-								<tr>
-									<td colspan="7">
-										<ol class="paging">
-											<!-- 이전버튼 : 첫블럭이면 비활성화-->
-											<c:choose>
-												<c:when test="${paging.beginBlock <= paging.pagePerBlock }">
-													<li class="disable">이전으로</li>
-												</c:when>
-												<c:otherwise>
-													<li><a href="/order_list.do?cPage=${paging.beginBlock-paging.pagePerBlock}">이전으로</a></li>
-												</c:otherwise>
-											</c:choose>	
-											<c:forEach begin="${paging.beginBlock }" end="${paging.endBlock }" step="1" var="k">
-												<c:if test="${k == paging.nowPage }">
-													<!--현재페이지와 같으면  -->
-													<li class="now">${k }</li>
-												</c:if>
-												<%-- <c:if test="${k != paging.nowPage }">
-													<li><a href="/order_list.do?cPage=${k }"> ${k }</a></li>
-												</c:if> --%>
-											</c:forEach>
-															
-											<!-- 이후버튼  -->	
-											<c:choose>
-												<c:when test="${paging.endBlock >= paging.totalPage }">
-													<li class="disable">다음으로</li>
-												</c:when>
-												<c:otherwise>
-													<li><a href="/order_list.do?cPage=${paging.beginBlock+paging.pagePerBlock }">다음으로</a></li>
-												</c:otherwise>
-											</c:choose>					
-										</ol>
-									</td>
-								</tr>
-						</tfoot>
+					<tr>
+						<td colspan="7">
+							<!-- <div id="pagination-container"></div> -->
+						</td>
+					</tr>
+				</tfoot>
+				 <tfoot>
+					<tr>
+						<td colspan="7">
+							<ol class="paging">
+								<!-- 이전버튼 : 첫블럭이면 비활성화-->
+								<c:choose>
+									<c:when test="${paging.beginBlock <= paging.pagePerBlock}">
+										<li class="disable">이전으로</li>
+									</c:when>
+									<c:otherwise>
+										<li><a href="/orderSearchList.do?cPage=${paging.beginBlock-paging.pagePerBlock}&pageSize=10">이전으로</a></li>
+									</c:otherwise>
+								</c:choose>
+
+								<c:forEach begin="${paging.beginBlock}" end="${paging.endBlock}"
+									step="1" var="k">
+									<!-- 페이지 번호가 실제 총 페이지 수를 초과하는 경우 표시하지 않음 -->
+									<c:if test="${k <= paging.totalPage}">
+										<c:if test="${k == paging.nowPage}">
+											<!-- 현재페이지와 같으면 -->
+											<li class="now">${k}</li>
+										</c:if>
+										<c:if test="${k != paging.nowPage}">
+											<li><a href="/orderSearchList.do?cPage=${k}&pageSize=10">${k}</a></li>
+										</c:if>
+									</c:if>
+								</c:forEach>
+
+								<!-- 이후버튼 -->
+								<c:choose>
+									<c:when test="${paging.endBlock >= paging.totalPage}">
+										<li class="disable">다음으로</li>
+									</c:when>
+									<c:otherwise>
+										<li><a href="/orderSearchList.do?cPage=${paging.beginBlock+paging.pagePerBlock}&pageSize=10">다음으로</a></li>
+									</c:otherwise>
+								</c:choose>
+							</ol>
+						</td>
+					</tr>
+				</tfoot> 
 			</table>
 
 		</div>

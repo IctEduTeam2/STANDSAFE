@@ -96,7 +96,7 @@ public class ProductDAO {
 
 	// 재고 삭제
 	public int deleteSelectProduct(String prod_num) {
-		return sqlSessionTemplate.delete("mag.deleteSelectProduct", prod_num);
+		return sqlSessionTemplate.update("mag.deleteSelectProduct", prod_num);
 	}
 
 	// 상품 번호를 기반으로 상품 정보를 가져오는 메서드
@@ -180,6 +180,12 @@ public class ProductDAO {
 	public int getOrderUpdate(OrderVO ovo) {
 		return sqlSessionTemplate.update("mag.orderupdate", ovo);
 	}
+	public int getDeliupdate(String payOkNum,String msg) {
+		Map<String, String>params = new HashMap<String, String>();
+		params.put("payOkNum", payOkNum);
+		params.put("msg", msg);
+		return sqlSessionTemplate.update("mag.deliup", params);
+	}
 
 	public int getProductInsert(ProductVO provo) {
 		return sqlSessionTemplate.insert("mag.productinsert", provo);
@@ -190,7 +196,7 @@ public class ProductDAO {
 	}
 
 	public int productDelete(String select) {
-		return sqlSessionTemplate.delete("mag.productdelete", select);
+		return sqlSessionTemplate.update("mag.productdelete", select);
 	}
 
 	public int returnStateUpdate(ReturnVO rvo) {

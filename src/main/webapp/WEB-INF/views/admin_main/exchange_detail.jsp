@@ -84,7 +84,7 @@ function st_update(){
 							<td class="th_column_5">상품명</td>
 							<td class="th_column_6">구매가격</td>
 							<td class="th_column_8">신청날짜</td>
-							<td class="th_column_9">처리날짜</td>
+							<td class="th_column_9">처리상태</td>
 							<td class="th_column_11">관리자 서명</td>
 						</tr>
 					</thead>
