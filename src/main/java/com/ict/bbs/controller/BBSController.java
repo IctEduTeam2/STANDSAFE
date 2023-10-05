@@ -793,14 +793,22 @@ public class BBSController {
 		
 		//비밀글 체크시 제목앞에 붙이기.
 		String lock =  request.getParameter("secret_flag");
-		//String review_prod = request.getParameter("review_prod");
+		String review_prod = request.getParameter("review_prod");
 		//reviewvo.setPROD_NUM(review_prod);
+		System.out.println("게시판-리뷰미작성으로클릭하여: " + review_prod);
 		
 		String p_num = request.getParameter("PROD_NUM");
 		System.out.println("p_num:" + p_num);
 		
-		reviewvo.setPROD_NUM(p_num);
+		//reviewvo.setPROD_NUM(p_num);
 		
+		if(review_prod != null && p_num ==null ) { //게시판-리뷰미작성시로 작성했을때 넘어오는것이 review_prod 가 있으면서ㅡ , 주문조회-리뷰쓰기 넘버가 없을때
+			reviewvo.setPROD_NUM(review_prod);
+			int changereview = bbsService.updateReviewStonPayT(review_prod);
+		}else if(review_prod == null && p_num !=null) {  //주문조회 - 리뷰쓰기 로 넘어왔을때 
+			reviewvo.setPROD_NUM(p_num);
+			int changereview = bbsService.updateReviewStonPayT(p_num);
+		}
 		
 		//[비밀] 을 붙일 제목가져오기
 		String sub = reviewvo.getRE_SUBJECT();
@@ -816,7 +824,7 @@ public class BBSController {
 		
 	
 		String sessionid = (String) request.getSession().getAttribute("id");
-		int changereview = bbsService.updateReviewStonPayT(p_num);
+		
 		
 		
 		if(result >0) {
