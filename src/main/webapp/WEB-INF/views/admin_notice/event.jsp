@@ -343,7 +343,7 @@ $(document).ready(function() {
 				<col width="15%">
 				<col width="15%">
 				<col width="10%">
-				<col width="5%">
+
 				<col width="10%">
 				<col width="10%">
 				<col width="10%">
@@ -356,7 +356,7 @@ $(document).ready(function() {
 					<td class="column_3">게시물 제목</td>
 					<td class="column_4">내용</td>
 					<td class="column_5">파일 이름</td>
-					<td class="column_6">조회수</td>
+
 					<td class="column_7">작성일</td>
 					<td class="column_8">수정일</td>
 					<td class="column_9">작성자</td>
