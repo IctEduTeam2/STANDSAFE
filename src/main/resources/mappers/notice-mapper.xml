@@ -721,7 +721,7 @@
     <!-- 테이블 삭제 버튼 -->
     <update id="delpoptab" parameterType="String">
         UPDATE POPUP_T SET
-        POPUP_ST = 0 WHERE POPUP_NUM = #{popup_num}
+        POPUP_CHK = 0 WHERE POPUP_NUM = #{popup_num}
         ORDER BY POPUP_NUM desc
     </update>
     <!-- 홈페이지 등록 -->

@@ -69,7 +69,7 @@
 									</c:when>
 										<c:otherwise>
 											<a href="">
-											<img src="/resources/images/${evevo.EVENT_FILE}" style="width: 80%"></a>
+											<img src="/resources/upload/${evevo.EVENT_FILE}" style="width: 80%"></a>
 											<br>
 											${evevo.EVENT_CONTENT}
 									</c:otherwise>
