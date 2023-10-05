@@ -805,7 +805,7 @@ public class BBSController {
 		if(review_prod != null && p_num ==null ) { //게시판-리뷰미작성시로 작성했을때 넘어오는것이 review_prod 가 있으면서ㅡ , 주문조회-리뷰쓰기 넘버가 없을때
 			reviewvo.setPROD_NUM(review_prod);
 			int changereview = bbsService.updateReviewStonPayT(review_prod);
-		}else if(review_prod == null && p_num !=null) {
+		}else if(review_prod == null && p_num !=null) {  //주문조회 - 리뷰쓰기 로 넘어왔을때 
 			reviewvo.setPROD_NUM(p_num);
 			int changereview = bbsService.updateReviewStonPayT(p_num);
 		}
