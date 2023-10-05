@@ -199,6 +199,10 @@ public class BBS_ServiceImpl implements BBS_Service{
 	public int getRe_re_del(String k) {
 		return bbsDAO.getRe_re_del(k);
 	}
+	@Override
+	public int getCartnumSt(String c_num) {
+		return bbsDAO.getCartnumSt(c_num);
+	}
 	
 	//====================================================================
 	//검색 : 이벤트- 검색

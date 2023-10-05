@@ -235,7 +235,9 @@ public class BBS_DAO {
 	public int getRe_re_del(String k) {
 		return sqlSessionTemplate.update("bbs.revre_up", k);
 	}
-	
+	public int getCartnumSt(String c_num) {
+		return sqlSessionTemplate.update("bbs.cartSt", c_num);
+	}
 	
 	//===============================================================
 	//검색  : 이벤트 - 검색

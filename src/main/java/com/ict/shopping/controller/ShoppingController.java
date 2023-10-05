@@ -1044,11 +1044,12 @@ public class ShoppingController {
 
 	// 상품 하나 리뷰쓰기
 	@GetMapping("/reviewprodwriteform.do")
-	public ModelAndView getOrder(@RequestParam("prod_num") String prod_num) {
+	public ModelAndView getOrder(@RequestParam("prod_num") String prod_num,@RequestParam("cart_num") String cart_num) {
 		ModelAndView mv = new ModelAndView("bbs/review_writeform");
 		ProductVO pvo = shoppingService.getProductOne(prod_num);
 		mv.addObject("prod_st", 1);
 		mv.addObject("pvo", pvo);
+		mv.addObject("cart_num", cart_num);
 		return mv;
 	}
 

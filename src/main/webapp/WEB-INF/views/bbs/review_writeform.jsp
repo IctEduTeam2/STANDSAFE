@@ -255,6 +255,7 @@ function review_cate() {
 									<td colspan="2">
 										<input type="button" value="작성" onclick="save_go(this.form)" class="in_btn"/>
 										<input type="hidden" name="secret_flag" id="secret_flag" value="0" />
+										<input type="hidden" name="cart_num" id="cart_num" value="${cart_num}" />
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										<input type="button" value="목록" onclick="list_go(this.form)" class="in_btn"/>
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
