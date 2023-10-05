@@ -77,7 +77,7 @@ button {
 		// 판매가와 할인가격이 같은 경우
 		if (parseInt(regular_price) <= parseInt(sales_price)) {
 			alert("할인가격이 판매가와 같거나 클수 없습니다.");
-			return false;  // 함수 종료
+			return false; 
 		} else {
 			form.submit();
 		}

@@ -18,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Base64.Encoder;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +30,7 @@ import javax.servlet.http.HttpSession;
 
 import org.checkerframework.checker.units.qual.g;
 import org.checkerframework.framework.qual.RequiresQualifier;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +76,7 @@ public class ShoppingController {
 	private Paging2 paging2;
 	@Autowired
 	private BBS_Service bbs_Service;
-	
+
 	@GetMapping("/")
 	public ModelAndView getMain() {
 		ModelAndView mv = new ModelAndView("index");
@@ -86,16 +88,16 @@ public class ShoppingController {
 		mv.addObject("productBestList", productBestList);
 
 		// 베스트 상품 리스트2
-		List<ProductVO> productBestList2 = new ArrayList<>(); 
-		for(int i=0; i<8; i++) {
+		List<ProductVO> productBestList2 = new ArrayList<>();
+		for (int i = 0; i < 8; i++) {
 			productBestList2.add(productBestList.get(i));
 		}
 		mv.addObject("productBestList2", productBestList2);
-		
+
 		// 새 상품 리스트
 		List<ProductVO> productNewList = shoppingService.getProductNewList();
 		mv.addObject("productNewList", productNewList);
-		
+
 		// 세일 리스트
 		List<ProductVO> productSaleList = shoppingService.getProductSaleList();
 		mv.addObject("productSaleList", productSaleList);
@@ -154,51 +156,47 @@ public class ShoppingController {
 			mv.addObject("list", list);
 			mv.addObject("prod_num", prod_num);
 			mv.addObject("paging", paging);
-			
+
 			// FAQ페이징
-						paging2.setNumPerPage(5);
-						//페이징을 위해 게시물의 전체글 구하기
-						int count2 = bbs_Service.getTotalFaqCount();
-						paging2.setTotalRecord(count2);
-						
-						//페이징처리
-						if(paging2.getTotalRecord() <= paging2.getNumPerPage()) {
-							paging2.setTotalPage(1);
-						}else {
-							paging2.setTotalPage(paging2.getTotalRecord()/paging2.getNumPerPage());
-							if(paging2.getTotalRecord()%paging2.getNumPerPage() != 0) {
-								paging2.setTotalPage(paging2.getTotalPage() +1);
-							}
-						}
-						
-						
-						String cPage2 = request.getParameter("cPage2");
-						if(cPage2==null) {
-							paging2.setNowPage(1);
-						}else {
-							paging2.setNowPage(Integer.parseInt(cPage2));
-						}
-						
-						paging2.setOffset(paging2.getNumPerPage()*(paging2.getNowPage()-1));
-						
-						paging2.setBeginBlock((int)((paging2.getNowPage()-1)/paging2.getPagePerBlock())
-								*paging2.getPagePerBlock()+1);
-						
-						paging2.setEndBlock(paging2.getBeginBlock()+paging2.getPagePerBlock()-1);
-						
-						if(paging2.getEndBlock() > paging2.getTotalPage()) {
-							paging2.setEndBlock(paging2.getTotalPage());
-						}
-						
-						List<FA_BBS_VO> list2 = bbs_Service.getfaqlist(paging2.getOffset(),paging2.getNumPerPage());
-						
-						
+			paging2.setNumPerPage(5);
+			// 페이징을 위해 게시물의 전체글 구하기
+			int count2 = bbs_Service.getTotalFaqCount();
+			paging2.setTotalRecord(count2);
 
-					
-						mv.addObject("cPage2", cPage2);
+			// 페이징처리
+			if (paging2.getTotalRecord() <= paging2.getNumPerPage()) {
+				paging2.setTotalPage(1);
+			} else {
+				paging2.setTotalPage(paging2.getTotalRecord() / paging2.getNumPerPage());
+				if (paging2.getTotalRecord() % paging2.getNumPerPage() != 0) {
+					paging2.setTotalPage(paging2.getTotalPage() + 1);
+				}
+			}
 
-						mv.addObject("list2", list2);
-						mv.addObject("paging2", paging2);
+			String cPage2 = request.getParameter("cPage2");
+			if (cPage2 == null) {
+				paging2.setNowPage(1);
+			} else {
+				paging2.setNowPage(Integer.parseInt(cPage2));
+			}
+
+			paging2.setOffset(paging2.getNumPerPage() * (paging2.getNowPage() - 1));
+
+			paging2.setBeginBlock(
+					(int) ((paging2.getNowPage() - 1) / paging2.getPagePerBlock()) * paging2.getPagePerBlock() + 1);
+
+			paging2.setEndBlock(paging2.getBeginBlock() + paging2.getPagePerBlock() - 1);
+
+			if (paging2.getEndBlock() > paging2.getTotalPage()) {
+				paging2.setEndBlock(paging2.getTotalPage());
+			}
+
+			List<FA_BBS_VO> list2 = bbs_Service.getfaqlist(paging2.getOffset(), paging2.getNumPerPage());
+
+			mv.addObject("cPage2", cPage2);
+
+			mv.addObject("list2", list2);
+			mv.addObject("paging2", paging2);
 		} catch (Exception e) {
 			System.out.println(e);
 			return new ModelAndView("shopping/error");
@@ -398,7 +396,6 @@ public class ShoppingController {
 			String secretKey = "test_sk_GjLJoQ1aVZJbq22do15Vw6KYe2RN:";
 
 			Base64.Encoder encoder = Base64.getEncoder();
-			System.out.println("");
 			byte[] encodedBytes = encoder.encode(secretKey.getBytes("UTF-8"));
 
 			String authorizations = "Basic " + new String(encodedBytes, 0, encodedBytes.length);
@@ -421,38 +418,30 @@ public class ShoppingController {
 
 			int code = connection.getResponseCode();
 			boolean isSuccess = code == 200 ? true : false;
-			System.out.println(code);
 			InputStream responseStream = isSuccess ? connection.getInputStream() : connection.getErrorStream();
 
 			Reader reader = new InputStreamReader(responseStream, StandardCharsets.UTF_8);
 			JSONParser parser = new JSONParser();
 			JSONObject jsonObject = (JSONObject) parser.parse(reader);
 			responseStream.close();
-			
+
 			if (isSuccess) {
-				System.out.println(jsonObject.toJSONString());
-				System.out.println(jsonObject.get("orderName"));
-				pvo2.setPay_method((String)jsonObject.get("method"));
-				
+				pvo2.setPay_method((String) jsonObject.get("method"));
+
 				if (jsonObject.get("method").equals("카드")) {
-					pvo2.setPay_card_type((String)((JSONObject) jsonObject.get("card")).get("cardType"));
-					pvo2.setPay_card((String)((JSONObject) jsonObject.get("card")).get("number"));
-					pvo2.setPay_installmentPlanMonths((long)((JSONObject) jsonObject.get("card")).get("installmentPlanMonths"));
-					System.out.println(((JSONObject) jsonObject.get("card")).get("cardType")); // 카드타입
-					System.out.println(((JSONObject) jsonObject.get("card")).get("number")); // 카드번호
-					System.out.println(((JSONObject) jsonObject.get("card")).get("installmentPlanMonths")); // 할부
+					pvo2.setPay_card_type((String) ((JSONObject) jsonObject.get("card")).get("cardType"));
+					pvo2.setPay_card((String) ((JSONObject) jsonObject.get("card")).get("number"));
+					pvo2.setPay_installmentPlanMonths(
+							(long) ((JSONObject) jsonObject.get("card")).get("installmentPlanMonths"));
 				}
 				if (jsonObject.get("method").equals("가상계좌")) {
-					pvo2.setPay_card((String)((JSONObject) jsonObject.get("virtualAccount")).get("accountNumber"));
-					System.out.println(((JSONObject) jsonObject.get("virtualAccount")).get("accountNumber"));
+					pvo2.setPay_card((String) ((JSONObject) jsonObject.get("virtualAccount")).get("accountNumber"));
 				}
 				if (jsonObject.get("method").equals("계좌이체")) {
-					pvo2.setPay_card((String)((JSONObject) jsonObject.get("transfer")).get("bank"));
-					System.out.println(((JSONObject) jsonObject.get("transfer")).get("bank"));
+					pvo2.setPay_card((String) ((JSONObject) jsonObject.get("transfer")).get("bank"));
 				}
 				if (jsonObject.get("method").equals("휴대폰")) {
-					pvo2.setPay_card((String)((JSONObject) jsonObject.get("mobilePhone")).get("customerMobilePhone"));
-					System.out.println(((JSONObject) jsonObject.get("mobilePhone")).get("customerMobilePhone"));
+					pvo2.setPay_card((String) ((JSONObject) jsonObject.get("mobilePhone")).get("customerMobilePhone"));
 				}
 			}
 		} catch (Exception e) {
@@ -789,7 +778,7 @@ public class ShoppingController {
 		String key = shoppingService.getBasket(bvo2);
 
 		PayVO pvo = new PayVO();
-		
+
 		try {
 			String orderId = (String) (map.get("pay_oknum"));
 			String paymentKey = (String) (map.get("paymentKey"));
@@ -798,7 +787,6 @@ public class ShoppingController {
 			String secretKey = "test_sk_GjLJoQ1aVZJbq22do15Vw6KYe2RN:";
 
 			Base64.Encoder encoder = Base64.getEncoder();
-			System.out.println("");
 			byte[] encodedBytes = encoder.encode(secretKey.getBytes("UTF-8"));
 
 			String authorizations = "Basic " + new String(encodedBytes, 0, encodedBytes.length);
@@ -821,30 +809,30 @@ public class ShoppingController {
 
 			int code = connection.getResponseCode();
 			boolean isSuccess = code == 200 ? true : false;
-			System.out.println(code);
 			InputStream responseStream = isSuccess ? connection.getInputStream() : connection.getErrorStream();
 
 			Reader reader = new InputStreamReader(responseStream, StandardCharsets.UTF_8);
 			JSONParser parser = new JSONParser();
 			JSONObject jsonObject = (JSONObject) parser.parse(reader);
 			responseStream.close();
-			
+
 			if (isSuccess) {
-				pvo.setPay_method((String)jsonObject.get("method")); // 결제타입
+				pvo.setPay_method((String) jsonObject.get("method")); // 결제타입
 				if (jsonObject.get("method").equals("카드")) {
-					pvo.setPay_card_type((String)((JSONObject) jsonObject.get("card")).get("cardType")); // 카드타입
-					pvo.setPay_card((String)((JSONObject) jsonObject.get("card")).get("number")); // 카드번호
-					pvo.setPay_installmentPlanMonths((long)((JSONObject) jsonObject.get("card")).get("installmentPlanMonths")); // 카드할부
+					pvo.setPay_card_type((String) ((JSONObject) jsonObject.get("card")).get("cardType")); // 카드타입
+					pvo.setPay_card((String) ((JSONObject) jsonObject.get("card")).get("number")); // 카드번호
+					pvo.setPay_installmentPlanMonths(
+							(long) ((JSONObject) jsonObject.get("card")).get("installmentPlanMonths")); // 카드할부
 
 				}
 				if (jsonObject.get("method").equals("가상계좌")) {
-					pvo.setPay_card((String)((JSONObject) jsonObject.get("virtualAccount")).get("accountNumber"));
+					pvo.setPay_card((String) ((JSONObject) jsonObject.get("virtualAccount")).get("accountNumber"));
 				}
 				if (jsonObject.get("method").equals("계좌이체")) {
-					pvo.setPay_card((String)((JSONObject) jsonObject.get("transfer")).get("bank"));
+					pvo.setPay_card((String) ((JSONObject) jsonObject.get("transfer")).get("bank"));
 				}
 				if (jsonObject.get("method").equals("휴대폰")) {
-					pvo.setPay_card((String)((JSONObject) jsonObject.get("mobilePhone")).get("customerMobilePhone"));
+					pvo.setPay_card((String) ((JSONObject) jsonObject.get("mobilePhone")).get("customerMobilePhone"));
 				}
 			}
 		} catch (Exception e) {
@@ -1010,6 +998,48 @@ public class ShoppingController {
 
 		// 카드 취소
 		if (st.equals("0") || st.equals("1")) {
+
+			List<PayVO> paylist2 = shoppingService.getOrderOneList(pay_oknum);
+			String paymentKey = paylist2.get(0).getPaymentKey();
+			String cancelReason = pb_content;
+			String secretKey = "test_sk_GjLJoQ1aVZJbq22do15Vw6KYe2RN:";
+
+			try {
+
+				Encoder encoder = Base64.getEncoder();
+				byte[] encodedBytes = encoder.encode(secretKey.getBytes("UTF-8"));
+				String authorizations = "Basic " + new String(encodedBytes, 0, encodedBytes.length);
+
+				URL url = new URL("https://api.tosspayments.com/v1/payments/" + paymentKey + "/cancel");
+
+				HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+				connection.setRequestProperty("Authorization", authorizations);
+				connection.setRequestProperty("Content-Type", "application/json");
+				connection.setRequestMethod("POST");
+				connection.setDoOutput(true);
+
+				JSONObject obj = new JSONObject();
+				obj.put("cancelReason", cancelReason);
+
+				JSONObject refundReceiveAccount = new JSONObject();
+
+				obj.put("refundReceiveAccount", refundReceiveAccount);
+
+				OutputStream outputStream = connection.getOutputStream();
+				outputStream.write(obj.toString().getBytes("UTF-8"));
+
+				int code = connection.getResponseCode();
+				boolean isSuccess = code == 200 ? true : false;
+
+				InputStream responseStream = isSuccess ? connection.getInputStream() : connection.getErrorStream();
+
+				Reader reader = new InputStreamReader(responseStream, StandardCharsets.UTF_8);
+				JSONParser parser = new JSONParser();
+				responseStream.close();
+			} catch (Exception e) {
+				return new ModelAndView("shopping/error");
+			}
+
 			shoppingService.getPayUpdateST(pay_oknum);
 			PayBackVO pbvo = new PayBackVO();
 			pbvo.setClient_num(client_num);
@@ -1023,17 +1053,17 @@ public class ShoppingController {
 			PayVO pvo = new PayVO();
 			pvo.setClient_num(client_num);
 			pvo.setPay_oknum(pay_oknum);
-			if(st.equals("1")) {
+			if (st.equals("1")) {
 				List<PayVO> paylist = shoppingService.getPaySelect(pvo);
-			PointVO point = new PointVO();
-			point.setCLIENT_NUM(Integer.parseInt(client_num));
+				PointVO point = new PointVO();
+				point.setCLIENT_NUM(Integer.parseInt(client_num));
 
-			point.setPOINT_REM(shoppingService.getPoint(client_num).getPOINT_REM() + paylist.get(0).getPay_money());
-			point.setPOINT_SAVE(paylist.get(0).getPay_money());
-			shoppingService.getPointPlus(point);
-			session.removeAttribute("POINT_REM");
-			session.setAttribute("POINT_REM", pointService.getPointsByUserId(Integer.parseInt(client_num)));
-				
+				point.setPOINT_REM(shoppingService.getPoint(client_num).getPOINT_REM() + paylist.get(0).getPay_money());
+				point.setPOINT_SAVE(paylist.get(0).getPay_money());
+				shoppingService.getPointPlus(point);
+				session.removeAttribute("POINT_REM");
+				session.setAttribute("POINT_REM", pointService.getPointsByUserId(Integer.parseInt(client_num)));
+
 			}
 		} else if (st.equals("2")) {
 			// 구매 확정시
@@ -1044,11 +1074,12 @@ public class ShoppingController {
 
 	// 상품 하나 리뷰쓰기
 	@GetMapping("/reviewprodwriteform.do")
-	public ModelAndView getOrder(@RequestParam("prod_num") String prod_num) {
+	public ModelAndView getOrder(@RequestParam("prod_num") String prod_num, @RequestParam("cart_num") String cart_num) {
 		ModelAndView mv = new ModelAndView("bbs/review_writeform");
 		ProductVO pvo = shoppingService.getProductOne(prod_num);
 		mv.addObject("prod_st", 1);
 		mv.addObject("pvo", pvo);
+		mv.addObject("cart_num", cart_num);
 		return mv;
 	}
 

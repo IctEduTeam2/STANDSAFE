@@ -104,7 +104,7 @@ public interface BBS_Service {
 	int BbsReviewDeleteOk(String RE_NUM);
 	public List<RE_BBS_VO> getReGList(String g_num);
 	int getRe_re_del(String k);
-	
+	int getCartnumSt(String c_num);
 	
 	//=========================================================================
 	//검색 이벤트 -검색

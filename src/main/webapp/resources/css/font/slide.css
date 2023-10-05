@@ -19,7 +19,7 @@
 	/* layout */
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	justify-content: center;  
 	/* position - 버튼 클릭시 left offset값을 적용시키기 위해 */
 	position: relative;
 	left: 0px;
