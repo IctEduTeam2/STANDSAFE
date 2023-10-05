@@ -2,17 +2,17 @@
   /* layout */
   display: flex;
   flex-wrap: nowrap;
-  /* 컨테이너의 내용물이 컨테이너 크기(width, height)를 넘어설 때 보이지 않도록 하기 위해 hidden을 준다. */
+  /* 而⑦뀒�씠�꼫�쓽 �궡�슜臾쇱씠 而⑦뀒�씠�꼫 �겕湲�(width, height)瑜� �꽆�뼱�꽕 �븣 蹂댁씠吏� �븡�룄濡� �븯湲� �쐞�빐 hidden�쓣 以��떎. */
   overflow: hidden;
 
   /* position */
-  /* slide_button의 position absolute가 컨테이너 안쪽에서 top, left, right offset이 적용될 수 있도록 relative를 준다. (기본값이 static인데, static인 경우 그 상위 컨테이너로 나가면서 현재 코드에선 html을 기준으로 offset을 적용시키기 때문) */
+  /* slide_button�쓽 position absolute媛� 而⑦뀒�씠�꼫 �븞履쎌뿉�꽌 top, left, right offset�씠 �쟻�슜�맆 �닔 �엳�룄濡� relative瑜� 以��떎. (湲곕낯媛믪씠 static�씤�뜲, static�씤 寃쎌슦 洹� �긽�쐞 而⑦뀒�씠�꼫濡� �굹媛�硫댁꽌 �쁽�옱 肄붾뱶�뿉�꽑 html�쓣 湲곗��쑝濡� offset�쓣 �쟻�슜�떆�궎湲� �븣臾�) */
   position: relative;
 
   /* size */
   width: 100%;
 
-  /* slide drag를 위해 DOM요소가 드래그로 선택되는것을 방지 */
+  /* slide drag瑜� �쐞�빐 DOM�슂�냼媛� �뱶�옒洹몃줈 �꽑�깮�릺�뒗寃껋쓣 諛⑹� */
   user-select: none;
 }
 .slide_item {
@@ -21,14 +21,14 @@
   align-items: center;
   justify-content: center;
 
-  /* position - 버튼 클릭시 left offset값을 적용시키기 위해 */
+  /* position - 踰꾪듉 �겢由��떆 left offset媛믪쓣 �쟻�슜�떆�궎湲� �쐞�빐 */
   position: relative;
   left: 0px;
 
   /* size */
   width: 100%;
-  height: 300px;
-  /* flex item의 flex-shrink는 기본값이 1이므로 컨테이너 크기에 맞게 줄어드는데, 슬라이드를 구현할 것이므로 줄어들지 않도록 0을 준다. */
+
+  /* flex item�쓽 flex-shrink�뒗 湲곕낯媛믪씠 1�씠誘�濡� 而⑦뀒�씠�꼫 �겕湲곗뿉 留욊쾶 以꾩뼱�뱶�뒗�뜲, �뒳�씪�씠�뱶瑜� 援ы쁽�븷 寃껋씠誘�濡� 以꾩뼱�뱾吏� �븡�룄濡� 0�쓣 以��떎. */
   flex-shrink: 0;
 
   /* transition */
@@ -42,7 +42,7 @@
 
   /* position */
   position: absolute;
-  /* 버튼이 중앙에 위치하게 하기위해 계산 */
+  /* 踰꾪듉�씠 以묒븰�뿉 �쐞移섑븯寃� �븯湲곗쐞�빐 怨꾩궛 */
   top: calc(50% - 16px);
 
   /* size */
@@ -62,7 +62,7 @@
   right: 10px;
 }
 
-/* 페이지네이션 스타일 */
+/* �럹�씠吏��꽕�씠�뀡 �뒪���씪 */
 ul,
 li {
   list-style-type: none;
@@ -77,18 +77,18 @@ li {
   /* position */
   position: absolute;
   bottom: 0;
-  /* left:50%, translateX(-50%)를 하면 가로 가운데로 위치시킬 수 있다. */
+  /* left:50%, translateX(-50%)瑜� �븯硫� 媛�濡� 媛��슫�뜲濡� �쐞移섏떆�궗 �닔 �엳�떎. */
   left: 50%;
   transform: translateX(-50%);
 }
 .slide_pagination > li {
-  /* 현재 슬라이드가 아닌 것은 투명도 부여 */
+  /* �쁽�옱 �뒳�씪�씠�뱶媛� �븘�땶 寃껋� �닾紐낅룄 遺��뿬 */
   color: #7fb5ff88;
   cursor: pointer;
   font-size: 25px;
 }
 .slide_pagination > li.active {
-  /* 현재 슬라이드 색상은 투명도 없이 */
+  /* �쁽�옱 �뒳�씪�씠�뱶 �깋�긽�� �닾紐낅룄 �뾾�씠 */
   color: #7fb5ff;
 }
 
