@@ -139,7 +139,7 @@
 	  <select id="reportlist" parameterType="Map" resultType="repbbsvo">
 	    <!-- select * from REPORT_T where REPORT_ST = 1 
 	    order by REPORT_NUM desc limit #{limit} offset #{offset} -->
-	     select * from REPORT_T  where REPORT_ST = 1 or REPORT_ST =3
+	     select * from REPORT_T 
 	    order by REPORT_GROUPS desc, REPORT_LEV asc
 	    limit #{limit} offset #{offset}	
 	   </select> 
