@@ -187,7 +187,7 @@ var st = d;
 							name="searchBtn" onclick="searchList();"
 							style="width: 200px; height: 60px; font-size: 25px; border-radius: 10px; background-color: #505BBD; color: white; border: none; float: right;">
 						</td>
-						<td><input type="button" alt="초기화" value="초기화"
+						<td><input type="reset" alt="초기화" value="초기화"
 							style="width: 200px; height: 60px; font-size: 25px; border-radius: 10px; background-color: #B5B5B5; color: white; border: none; float: right; margin-right: 20px;">
 						</td>
 					</tr>
@@ -245,7 +245,7 @@ var st = d;
 								style="width: 20px; height: 20px; float: right; margin-right: 20px; margin-top: 20px;"
 								class="productCheckbox"></td>
 							 <%-- <td>${paging.totalRecord -((paging.nowPage-1)*paging.numPerPage + vs.index) }</td> --%>
-							<td><img src="resources/images/products/${pvo.PROD_IMG}" /></td>
+							<td><img src="/resources/images/products/${pvo.PROD_IMG}" style="width: 200px; height:200px;"/></td>
 							<td>${pvo.PROD_NAME}</td>
 							<td>${pvo.PROD_PRICE}</td>
 							<td>${pvo.PROD_SALE}</td>

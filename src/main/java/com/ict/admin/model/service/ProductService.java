@@ -30,6 +30,9 @@ public interface ProductService {
 	// 상품 검색 리스트 
 	public List<ProductVO> getProductSearchList(Map<String, Object> map, int offset, int limit);
 	
+	//주문목록상태업데이트
+	int getDeliupdate(String payOkNum,String msg);
+	
     
 	ProductVO getProductByProdNum(String prod_num);
     

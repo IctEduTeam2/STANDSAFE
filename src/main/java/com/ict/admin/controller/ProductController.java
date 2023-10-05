@@ -9,8 +9,11 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
@@ -237,7 +240,8 @@ public class ProductController {
 
 	// UUID+파일명 함수
 	public String saveFileWithUUID(MultipartFile file) throws IOException {
-		String uploadDir = "///Users/gahee/Desktop/jisoo/team2/src/main/webapp/resources/images/products/";
+		String uploadDir = "/Users/gahee/Desktop/jisoo/team2/src/main/webapp/resources/images/products/";
+		///Users/gahee/Desktop/jisoo/team2/src/main/webapp/resources/images/products
 		String originalFilename = file.getOriginalFilename();
 		String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
 		String uuid = UUID.randomUUID().toString();
@@ -709,34 +713,53 @@ public class ProductController {
 		paging.setTotalRecord(count);
 
 		// 전체 페이지의 수
-		if (paging.getTotalRecord() <= paging.getNumPerPage()) {
-			System.out.println("getNumPerPage() ::::" + paging.getNumPerPage());
+			if (paging.getTotalRecord() <= paging.getNumPerPage()) {
+				System.out.println("getNumPerPage() ::::" + paging.getNumPerPage());
 
-		} else {
-			paging.setTotalPage(paging.getTotalRecord() / paging.getNumPerPage());
-			if (paging.getTotalRecord() % paging.getNumPerPage() != 0) {
-				paging.setTotalPage(paging.getTotalPage() + 1);
+			} else {
+				paging.setTotalPage(paging.getTotalRecord() / paging.getNumPerPage());
+				if (paging.getTotalRecord() % paging.getNumPerPage() != 0) {
+					paging.setTotalPage(paging.getTotalPage() + 1);
+				}
 			}
-		}
-		// 현재페이지
-		String cPage = request.getParameter("cPage");
-		if (cPage == null) {
-			paging.setNowPage(1);
-			System.out.println("paging null ::" + cPage);
-		} else {
-			paging.setNowPage(Integer.parseInt(cPage));
-			System.out.println("paging not null ::" + cPage);
-		}
-		paging.setOffset(paging.getNumPerPage() * (paging.getNowPage() - 1));
+			// 현재페이지
+			String cPage = request.getParameter("cPage");
+			if (cPage == null) {
+				paging.setNowPage(1);
+				System.out.println("paging null ::" + cPage);
+			} else {
+				paging.setNowPage(Integer.parseInt(cPage));
+				System.out.println("paging not null ::" + cPage);
+			}
+			paging.setOffset(paging.getNumPerPage() * (paging.getNowPage() - 1));
 
-		paging.setBeginBlock(
-				(int) ((paging.getNowPage() - 1) / paging.getPagePerBlock()) * paging.getPagePerBlock() + 1);
-		paging.setEndBlock(paging.getBeginBlock() + paging.getPagePerBlock() - 1);
+			paging.setBeginBlock(
+					(int) ((paging.getNowPage() - 1) / paging.getPagePerBlock()) * paging.getPagePerBlock() + 1);
+			paging.setEndBlock(paging.getBeginBlock() + paging.getPagePerBlock() - 1);
 
-		if (paging.getEndBlock() > paging.getTotalPage()) {
-			paging.setEndBlock(paging.getTotalPage());
-		}
+			if (paging.getEndBlock() > paging.getTotalPage()) {
+				paging.setEndBlock(paging.getTotalPage());
+			}
 		List<OrderVO> list = productService.getOrderList(paging.getOffset(), paging.getNumPerPage());
+		
+		LocalDate now = LocalDate.now();
+		System.out.println("now ::" + now);
+
+		int today_order = 0;
+
+		if (list != null || !list.isEmpty()) {
+			for (OrderVO ord : list) {
+				if (now.toString() == ord.getPAY_ORDERDATE()) {
+					today_order = +1;
+				}
+			}
+
+		}
+
+		mv.addObject("today_order", today_order);
+		mv.addObject("totalOrder", count);
+		
+		
 		mv.addObject("list", list);
 		mv.addObject("paging", paging);
 		return mv;
@@ -757,38 +780,38 @@ public class ProductController {
 
 		int allList = productService.getTotalOrderCount();
 
-		int totalCount = productService.getTotalCountSearchList(map);
+		int totalCount = productService.getTotalOrderSearchCount(map);
 		System.out.println("totalCount ::" + totalCount);
 		paging.setTotalRecord(totalCount);
 		// 전체 페이지의 수
-		if (paging.getTotalRecord() <= paging.getNumPerPage()) {
-			paging.setTotalPage(1);
-			System.out.println("getNumPerPage() ::::" + paging.getNumPerPage());
+				if (paging.getTotalRecord() <= paging.getNumPerPage()) {
+					System.out.println("getNumPerPage() ::::" + paging.getNumPerPage());
+					paging.setTotalPage(1);
 
-		} else {
-			paging.setTotalPage(paging.getTotalRecord() / paging.getNumPerPage());
-			if (paging.getTotalRecord() % paging.getNumPerPage() != 0) {
-				paging.setTotalPage(paging.getTotalPage() + 1);
-			}
-		}
-		// 현재페이지
-		String cPage = request.getParameter("cPage");
-		if (cPage == null) {
-			paging.setNowPage(1);
-			System.out.println("paging null ::" + cPage);
-		} else {
-			paging.setNowPage(Integer.parseInt(cPage));
-			System.out.println("paging not null ::" + cPage);
-		}
-		paging.setOffset(paging.getNumPerPage() * (paging.getNowPage() - 1));
+				} else {
+					paging.setTotalPage((paging.getTotalRecord() - 1) / (paging.getNumPerPage() + 1));
+					if (paging.getTotalRecord() % paging.getNumPerPage() != 0) {
+						paging.setTotalPage(paging.getTotalPage() + 1);
+					}
+				}
+				// 현재페이지
+				String cPage = request.getParameter("cPage");
+				if (cPage == null) {
+					paging.setNowPage(1);
+					System.out.println("paging null ::" + cPage);
+				} else {
+					paging.setNowPage(Integer.parseInt(cPage));
+					System.out.println("paging not null ::" + cPage);
+				}
+				paging.setOffset(paging.getNumPerPage() * (paging.getNowPage() - 1));
 
-		paging.setBeginBlock(
-				(int) ((paging.getNowPage() - 1) / paging.getPagePerBlock()) * paging.getPagePerBlock() + 1);
-		paging.setEndBlock(paging.getBeginBlock() + paging.getPagePerBlock() - 1);
+				paging.setBeginBlock(
+						(int) ((paging.getNowPage() - 1) / paging.getPagePerBlock()) * paging.getPagePerBlock() + 1);
+				paging.setEndBlock(paging.getBeginBlock() + paging.getPagePerBlock() - 1);
 
-		if (paging.getEndBlock() > paging.getTotalPage()) {
-			paging.setEndBlock(paging.getTotalPage());
-		}
+				if (paging.getEndBlock() > paging.getTotalPage()) {
+					paging.setEndBlock(paging.getTotalPage());
+				}
 		System.out.println("paging.getOffset() ::" + paging.getOffset());
 		System.out.println("paging.getNumPerPage() ::" + paging.getNumPerPage());
 
@@ -817,15 +840,18 @@ public class ProductController {
 
 	// 주문 상세보기
 	@RequestMapping("/order_detail.do")
-	public ModelAndView getOrderDetail(@ModelAttribute("pay_oknum") String pay_oknum) {
+	public ModelAndView getOrderDetail(@ModelAttribute("pay_oknum") String pay_oknum,
+			@ModelAttribute("cPage")String cPage) {
 		ModelAndView mv = new ModelAndView("admin_main/order_detail");
 		List<OrderVO> list = productService.getOrderDetaileList(pay_oknum);
 		mv.addObject("list", list);
+		mv.addObject("cPage", cPage);
 		return mv;
 	}
 	// 주문 상태 업데이트
 		@RequestMapping("/order_update.do")
 		public ModelAndView getOrderUpdate(@ModelAttribute("pay_num") String pay_num,
+				@ModelAttribute("cPage")String cPage,
 				@ModelAttribute("take_st") String take_st, @ModelAttribute("payOkNum") String payOkNum, OrderVO ovo) {
 			ModelAndView mv = new ModelAndView();
 			ovo.setPAY_NUM(pay_num);
@@ -834,7 +860,18 @@ public class ProductController {
 			System.out.println("ovo.getPAY_NUM() :::" + ovo.getPAY_NUM());
 			System.out.println("ovo.getTAKE_ST() :::" + ovo.getTAKE_ST());
 			System.out.println("ovo.getTAKE_ST() :::" + ovo.getPAY_OKNUM());
+			String msg= "";
+			if(take_st.equals("0")) {
+				msg="0";
+			}else if(take_st.equals("1")){
+				msg="1";
+			}else if(take_st.equals("2")){
+				msg="2";
+			}else if(take_st.equals("3")){
+				msg="3";
+			}
 			int res = productService.getOrderUpdate(ovo);
+			int result = productService.getDeliupdate(payOkNum,msg);
 			if (res > 0) {
 				mv.setViewName("redirect:/order_detail.do?pay_oknum="+ovo.getPAY_OKNUM());
 				return mv;

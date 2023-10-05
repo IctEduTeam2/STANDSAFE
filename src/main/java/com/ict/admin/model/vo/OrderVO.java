@@ -2,11 +2,16 @@ package com.ict.admin.model.vo;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ict.shopping.model.vo.DeliveryVO;
+
 public class OrderVO {
 	private String PAY_NUM, TAKE_PEO, TAKE_ADDR, TAKE_PHONE, TAKE_MEMO, PAY_TYPE, 
-	PAY_CARD, PAY_OK, PAY_OKNUM, PAY_ST, CART_NUM, CLIENT_NUM, PAY_ORDERDATE, TAKE_ST;
+	PAY_CARD, PAY_OK, PAY_OKNUM, PAY_ST, CART_NUM, CLIENT_NUM, PAY_ORDERDATE, TAKE_ST, deli_num, deli_date, deli_st;
+	
 	
 	private MultipartFile file;
+	
+	private DeliveryVO deliveryVO;
 	
 	public String getTAKE_ST() {
 		return TAKE_ST;
@@ -127,6 +132,44 @@ public class OrderVO {
 	public void setFile(MultipartFile file) {
 		this.file = file;
 	}
+
+	public DeliveryVO getDeliveryVO() {
+		return deliveryVO;
+	}
+
+	public void setDeliveryVO(DeliveryVO deliveryVO) {
+		this.deliveryVO = deliveryVO;
+	}
+
+	public String getDeli_num() {
+		return deli_num;
+	}
+
+	public void setDeli_num(String deli_num) {
+		this.deli_num = deli_num;
+	}
+
+	public String getDeli_date() {
+		return deli_date;
+	}
+
+	public void setDeli_date(String deli_date) {
+		this.deli_date = deli_date;
+	}
+
+
+
+	public String getDeli_st() {
+		return deli_st;
+	}
+
+	public void setDeli_st(String deli_st) {
+		this.deli_st = deli_st;
+	}
+
+	
+
+	
 	
 	
 }

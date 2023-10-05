@@ -7,18 +7,18 @@
 		order by PROD_NUM desc </select> -->
 	<!-- 페이징을 위한 시작과 끝구하고, 리스트 출력 -->
 	<select id="productlist" parameterType="Map" resultType="provo">
-		select * from PRODUCT_T
+		select * from PRODUCT_T where PROD_ST != 2
 		order by PROD_NUM desc limit #{limit} offset #{offset}
 	</select>
 	<!--게시글 갯수구하기 -->
 	<select id="productcount" resultType="int">
-		select count(*) from PRODUCT_T
+		select count(*) from PRODUCT_T where PROD_ST = 0 or PROD_ST = 1
 	</select>
 		
 	<!-- 상품목록 검색  -->
 	<select id="getProductSearchList" parameterType="Map" resultType="provo">
 		select * from PRODUCT_T 
-		where 1=1
+		where 1=1 and PROD_ST != 2
 		    <if test='PROD_NAME != null and PROD_NAME.trim() != "" '>
         		AND PROD_NAME LIKE CONCAT('%', #{PROD_NAME}, '%')
     		</if>
@@ -34,7 +34,7 @@
 	<!-- 상품 검색 게시글 갯수 구하기  -->
 	<select id="getTotalCountSearchList" parameterType="Map" resultType="int">
 		select count(*) from PRODUCT_T 
-		where 1=1
+		where 1=1 and PROD_ST != 2
 		    <if test='PROD_NAME != null and PROD_NAME.trim() != "" '>
         		AND PROD_NAME LIKE CONCAT('%', #{PROD_NAME}, '%')
     		</if>
@@ -124,7 +124,8 @@
 	<!-- 교환 / 반품 상태 업데이트 -->
 	<update id="exchangestateupdate" parameterType="evo">
 		update PAYBACK_T
-		set PB_ST = #{PB_ST}
+		set PB_ST = #{PB_ST},
+		CONFIRM_ID = 'admin'
 		where PB_NUM = #{PB_NUM}
 	</update>
 	<select id="returnlist" resultType="rvo">
@@ -132,26 +133,62 @@
 		by PAY_OKNUM desc
 	</select>
 	
-	<select id="orderonelist" parameterType="String"
+<!-- 	<select id="orderonelist" parameterType="String"
 		resultType="ovo">
 		select * from PAY_T where PAY_OKNUM = #{pay_oknum} order by
 		PAY_OKNUM desc
 		LIMIT 1
+	</select> -->
+	
+	<select id="orderonelist" parameterType="String" resultType="evo" resultMap="orderDetailMap">
+    	select * from PAY_T t1
+		join  DELIVERY_T t2 on t1.PAY_OKNUM = t2.PAY_OKNUM
+    	where t1.PAY_OKNUM = #{payOkNum} limit 1
 	</select>
+	<resultMap id="orderDetailMap" type="com.ict.admin.model.vo.OrderVO">
+    	<result column="TAKE_PEO" property="TAKE_PEO" />
+    	<result column="TAKE_ADDR" property="TAKE_ADDR" />
+    	<result column="TAKE_PHONE" property="TAKE_PHONE" />
+    	<result column="TAKE_MEMO" property="TAKE_MEMO" />
+    	<result column="PAY_TYPE" property="PAY_TYPE" />
+    	<result column="PAY_CARD" property="PAY_CARD" />
+    	<result column="PAY_OK" property="PAY_OK" />
+    	<result column="PAY_OKNUM" property="PAY_OKNUM" />
+    	<result column="PAY_ST" property="PAY_ST" />
+    	<result column="CART_NUM" property="CART_NUM" />
+    	<result column="CLIENT_NUM" property="CLIENT_NUM" />
+    	<result column="PAY_ORDERDATE" property="PAY_ORDERDATE" />
+    	<result column="TAKE_ST" property="TAKE_ST" />    	
+    
+    	<association property="deliveryVO" javaType="com.ict.shopping.model.vo.DeliveryVO">
+        	<result column="DELI_NUM" property="deli_num"/>
+        	<result column="DELI_DATE" property="deli_date"/>
+        	<result column="DELI_ST" property="deli_st"/>
+        	<result column="PAY_OKNUM" property="pay_oknum"/>
+    	</association>
+	</resultMap>
+	
+	<!--주문상태업데이트  -->
+	<update id="deliup" parameterType="String">
+		update DELIVERY_T 
+		set DELI_ST =  #{msg}
+		where PAY_OKNUM = #{payOkNum}
+	</update>
+	
 	
 	<!-- 페이징을 위한 시작과 끝구하고, 리스트 출력 -->
 	<select id="inventorymanagement" parameterType="Map" resultType="invo">
-		select * from PRODUCT_T
+		select * from PRODUCT_T where PROD_ST = 0 or PROD_ST = 1
 		order by PROD_NUM desc limit #{limit} offset #{offset}
 	</select>
 	<!--게시글 갯수구하기 -->
 	<select id="inventorycount" resultType="int">
-		select count(*) from PRODUCT_T
+		select count(*) from PRODUCT_T where PROD_ST = 0 or PROD_ST = 1
 	</select>
 	<!-- 재고관리 목록 검색  -->
 	<select id="getInventorySearchList" parameterType="Map" resultType="invo">
 		select * from PRODUCT_T 
-		where 1=1
+		where 1=1 and PROD_ST != 2
 		    <if test='PROD_NAME != null and PROD_NAME.trim() != "" '>
         		AND PROD_NAME LIKE CONCAT('%', #{PROD_NAME}, '%')
     		</if>
@@ -164,7 +201,7 @@
 	<!-- 재고관리 검색 게시글 갯수 구하기  -->
 	<select id="getTotalInventorySearchCount" parameterType="Map" resultType="int">
 		select count(*) from PRODUCT_T 
-		where 1=1
+		where 1=1 and PROD_ST != 2
 		    <if test='PROD_NAME != null and PROD_NAME.trim() != "" '>
         		AND PROD_NAME LIKE CONCAT('%', #{PROD_NAME}, '%')
     		</if>
@@ -192,9 +229,12 @@
 		where PROD_NUM = #{PROD_NUM}
 	</update>
 	<!-- 재고 삭제   --> 
-	<delete id="deleteSelectProduct" parameterType="String">
-		delete from PRODUCT_T where PROD_NUM = #{prod_num}
-	</delete>
+	<update id="deleteSelectProduct" parameterType="String">
+		update PRODUCT_T 
+		set
+		PROD_ST = 2
+		where PROD_NUM = #{prod_num}
+	</update>
 	
 	<select id="returnonelist" parameterType="String"
 		resultType="rvo">
@@ -223,7 +263,8 @@
 	</update>
 	<!-- 상품 삭제 -->
 	<update id="productdelete" parameterType="String">
-		delete from PRODUCT_T
+		update PRODUCT_T
+		set PROD_ST = 2
 		where PROD_NUM = #{PROD_NUM}
 	</update>
 	<!-- 반품 상태 업데이트 -->

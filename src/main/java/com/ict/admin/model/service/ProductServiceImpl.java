@@ -120,6 +120,10 @@ public class ProductServiceImpl implements ProductService{
 	public List<OrderVO> getOrderDetaileList(String pay_oknum) {
 		return productDAO.getOrderDetaileList(pay_oknum);
 	}
+	@Override
+	public int getDeliupdate(String payOkNum, String msg) {
+		return productDAO.getDeliupdate(payOkNum,msg);
+	}
 	// 상품등록
 	@Override
 	public int getProductInsert(ProductVO provo) {
