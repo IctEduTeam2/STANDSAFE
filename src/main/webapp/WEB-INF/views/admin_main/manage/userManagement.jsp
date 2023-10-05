@@ -286,8 +286,8 @@ table tbody tr:nth-child(even) {
 								<tr class="deleted-user">
 									<td>-</td>
 									<td>${user.ID}(Deleted)</td>
-									<td>${user.NICKNAME}(Deleted)</td>
 									<td>${user.m_NAME}(Deleted)</td>
+									<td>${user.NICKNAME}(Deleted)</td>
 									<td>${user.MAIL}(Deleted)</td>
 									<td>${user.EMAIL_ST == 1 ? 'Y' : 'N'}(Deleted)</td>
 									<td>${user.BIRTH}(Deleted)</td>
@@ -302,8 +302,8 @@ table tbody tr:nth-child(even) {
 									<td><input type="checkbox" class="userCheckbox"
 										value="${user.CLIENT_NUM}" onclick="event.stopPropagation();"></td>
 									<td>${user.ID}</td>
-									<td>${user.NICKNAME}</td>
 									<td>${user.m_NAME}</td>
+									<td>${user.NICKNAME}</td>
 									<td>${user.MAIL}</td>
 									<td>${user.EMAIL_ST == 1 ? 'Y' : 'N'}</td>
 									<td>${user.BIRTH}</td>
