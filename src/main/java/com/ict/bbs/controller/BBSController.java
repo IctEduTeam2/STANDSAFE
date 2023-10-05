@@ -800,6 +800,8 @@ public class BBSController {
 		String p_num = request.getParameter("PROD_NUM");
 		System.out.println("p_num:" + p_num);
 		
+		
+		
 		//reviewvo.setPROD_NUM(p_num);
 		
 		if(review_prod != null && p_num ==null ) { //게시판-리뷰미작성시로 작성했을때 넘어오는것이 review_prod 가 있으면서ㅡ , 주문조회-리뷰쓰기 넘버가 없을때
@@ -809,7 +811,8 @@ public class BBSController {
 			reviewvo.setPROD_NUM(p_num);
 			int changereview = bbsService.updateReviewStonPayT(p_num);
 		}
-		
+		String cart_num = request.getParameter("cart_num");
+		int res = bbsService.getCartnumSt(cart_num);
 		//[비밀] 을 붙일 제목가져오기
 		String sub = reviewvo.getRE_SUBJECT();
 		

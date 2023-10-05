@@ -227,6 +227,12 @@
   		update REVIEW_T
 	   	set RE_ST = 0 where RE_NUM = #{k}
   	</update>
+  	<!--리뷰작성시 카트넘버 상태값변경(cart_t의 review_st)  -->
+  	<update id="cartSt" parameterType="String">
+  		update CART_T
+  		set REVIEW_ST = 1
+  		where CART_NUM = #{cart_num}
+  	</update>
    <!-- =============================================================================== -->
    <!-- 검색 이벤트 - 검색-->
    <select id="searchevscon" parameterType="String" resultType="ebbsvo">
