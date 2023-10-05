@@ -122,8 +122,8 @@ label {
 							<tr align="center">
 								<td bgcolor="#1b5ac2" class="w_font">문의유형</td>
 									<td id="radio">
-										<input type="radio" name="BOARD_TYPE" value="배송문의" ${qnavo.BOARD_TYPE eq '배송문의' ? 'checked' : ""}  />
-									    <span>배송문의</span>	
+										<input type="radio" name="BOARD_TYPE" value="상품문의" ${qnavo.BOARD_TYPE eq '상품문의' ? 'checked' : ""}  />
+									    <span>상품문의</span>	
 									    
 									    <input type="radio" name="BOARD_TYPE" value="결제/주문문의" ${qnavo.BOARD_TYPE eq '결제/주문문의' ? 'checked' : ""}  />
 									    <span>결제/주문문의</span>	
