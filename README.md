@@ -41,6 +41,7 @@
 </div>
 <div align=center>
 		<img src="https://img.shields.io/badge/kakao-FFCD00?style=flat&logo=kakao&logoColor=white" />
+		<img src="https://img.shields.io/badge/googlemaps-4285F4?style=flat&logo=googlemaps&logoColor=white" />
 		<img src="https://img.shields.io/badge/naver-03C75A?style=flat&logo=naver&logoColor=white" />
 		<img src="https://daoift3qrrnil.cloudfront.net/business_employment_companies/images/000/035/386/original/logo-toss.png?1688458316" style="width:150px; height:30px;" />
 		<img src="https://www.data.go.kr/images/biz/common/logo/logo-footer-01.png" style="width:150px; height:30px;"/>
