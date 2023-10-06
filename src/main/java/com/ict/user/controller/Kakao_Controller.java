@@ -45,7 +45,7 @@ public class Kakao_Controller {
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
 			StringBuffer sb = new StringBuffer();
 			sb.append("grant_type=authorization_code");
-			sb.append("&client_id=1b5cf56e8cc2a06876bd756e6307c0ad");
+			sb.append("&client_id=your_client_id");
 			//서버 확인하고 바꿔줘야함
 			//sb.append("&redirect_uri=http://localhost:8080/kakaologin.do");
 			sb.append("&redirect_uri=https://nohssam.site/kakaologin.do");

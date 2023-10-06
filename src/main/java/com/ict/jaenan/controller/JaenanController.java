@@ -76,7 +76,7 @@ public class JaenanController {
 	    StringBuilder sb = new StringBuilder();
 	    try {
 	        StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1741000/DomesticEarthqMagn4HigherOccur/getDomesticEarthqMagn4HigherOccur");
-	        urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=nwGcgvkIwJsPyPvd9Fbbm5Q%2FTmb6CJTcyBVkkjoS3qZIubHVtipbeNzBXQyMyiVIK%2BMprnCOBGK8XajyF774iQ%3D%3D"); 
+	        urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=serviceKey"); 
 	        urlBuilder.append("&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(paging.getNowPage()), "UTF-8"));
 	        urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode("10", "UTF-8"));
 	        
@@ -179,7 +179,7 @@ public class JaenanController {
 	        StringBuilder urlBuilder = new StringBuilder(
 	                "http://apis.data.go.kr/1360000/EqkInfoService/getEqkMsg"); /* URL */
 	        urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8")
-	                + "=nwGcgvkIwJsPyPvd9Fbbm5Q%2FTmb6CJTcyBVkkjoS3qZIubHVtipbeNzBXQyMyiVIK%2BMprnCOBGK8XajyF774iQ%3D%3D"); /*
+	                + "=serviceKey"); /*
 	                                                                                                                            * Service
 	                                                                                                                            * Key
 	                                                                                                                            */

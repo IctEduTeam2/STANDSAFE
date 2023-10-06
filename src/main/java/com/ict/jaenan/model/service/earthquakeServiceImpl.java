@@ -40,7 +40,7 @@ public class earthquakeServiceImpl implements earthquakeService {
 	            StringBuilder urlBuilder = new StringBuilder(
 	                    "http://apis.data.go.kr/1360000/EqkInfoService/getEqkMsg"); /* URL */
 	            urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8")
-	                    + "=nwGcgvkIwJsPyPvd9Fbbm5Q%2FTmb6CJTcyBVkkjoS3qZIubHVtipbeNzBXQyMyiVIK%2BMprnCOBGK8XajyF774iQ%3D%3D"); /*
+	                    + "=serviceKey"); /*
 	                                                                                                                            * Service
 	                                                                                                                            * Key
 	                                                                                                                            */
