@@ -317,7 +317,7 @@ ul .earthquakeItem {
     }
 </script>
 	<script
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAb3NBYkG16DZLB73H30uLi4yz0x7RjOtU&callback=initMap"
+		src="https://maps.googleapis.com/maps/api/js?key=serviceKey&callback=initMap"
 		defer></script>
 </body>
 </html>
