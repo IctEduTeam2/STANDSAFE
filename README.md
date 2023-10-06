@@ -46,7 +46,7 @@
 		<img src="https://www.data.go.kr/images/biz/common/logo/logo-footer-01.png" style="width:150px; height:30px;"/>
 	<br>
 </div>
-
+<br><br><br><br>
 <div align=center>
 	<p>보안상 AWS와 API키는 삭제되어 있는 상태입니다. 프로젝트 작동을 위해서는 아래 API키가 필요합니다.</p>
 	1. 행정안전부_통계연보_국내지진규모 4.0이상 발생 <br>
