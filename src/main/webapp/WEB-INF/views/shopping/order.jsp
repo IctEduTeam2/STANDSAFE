@@ -754,8 +754,8 @@ $(document).ready(function() {
       paymentWidget.requestPayment({
         orderId: orderid,            // 주문 ID(직접 만들어주세요)
         orderName: ordername,                 // 주문명
-        successUrl:  "https://nohssam.site/ordercom2.do?take_peo=" + encodeURIComponent(take_peo) + "&take_addr=" + encodeURIComponent(address) + "&take_phone=" + encodeURIComponent(take_phone) + "&take_memo=" + encodeURIComponent(take_memo) + "&pay_type=0&pay_oknum=" + encodeURIComponent(orderid) + "&client_num=" + encodeURIComponent(client_num) + "&cart_price=" + encodeURIComponent(pay) + "&prod_num=" + encodeURIComponent(prod_num) + "&cart_amount=" + encodeURIComponent(cart_amount),
-        failUrl: "https://nohssam.site/error.do",        // 결제에 실패하면 이동하는 페이지(직접 만들어주세요)
+        successUrl:  "http://localhost:8080/ordercom2.do?take_peo=" + encodeURIComponent(take_peo) + "&take_addr=" + encodeURIComponent(address) + "&take_phone=" + encodeURIComponent(take_phone) + "&take_memo=" + encodeURIComponent(take_memo) + "&pay_type=0&pay_oknum=" + encodeURIComponent(orderid) + "&client_num=" + encodeURIComponent(client_num) + "&cart_price=" + encodeURIComponent(pay) + "&prod_num=" + encodeURIComponent(prod_num) + "&cart_amount=" + encodeURIComponent(cart_amount),
+        failUrl: "http://localhost:8080/error.do",        // 결제에 실패하면 이동하는 페이지(직접 만들어주세요)
         customerEmail: email,
         customerName: name
       });

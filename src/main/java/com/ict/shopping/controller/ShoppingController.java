@@ -393,7 +393,9 @@ public class ShoppingController {
 			String paymentKey = (String) (map.get("paymentKey"));
 			String amount = (String) (map.get("cart_price"));
 
-			String secretKey = "test_sk_GjLJoQ1aVZJbq22do15Vw6KYe2RN:";
+			// 토스API 시크릿키를 넣어주세요. 마지막 :해주셔야합니다.
+			// ex) test_sk_tttfbczbadzrted:
+			String secretKey = ":";
 
 			Base64.Encoder encoder = Base64.getEncoder();
 			byte[] encodedBytes = encoder.encode(secretKey.getBytes("UTF-8"));
@@ -783,8 +785,10 @@ public class ShoppingController {
 			String orderId = (String) (map.get("pay_oknum"));
 			String paymentKey = (String) (map.get("paymentKey"));
 			String amount = (String) (map.get("cart_price"));
-
-			String secretKey = "test_sk_GjLJoQ1aVZJbq22do15Vw6KYe2RN:";
+			
+			// 토스API 시크릿키를 넣어주세요. 마지막 :해주셔야합니다.
+			// ex) test_sk_tttfbczbadzrted:
+			String secretKey = ":";
 
 			Base64.Encoder encoder = Base64.getEncoder();
 			byte[] encodedBytes = encoder.encode(secretKey.getBytes("UTF-8"));
@@ -1002,7 +1006,10 @@ public class ShoppingController {
 			List<PayVO> paylist2 = shoppingService.getOrderOneList(pay_oknum);
 			String paymentKey = paylist2.get(0).getPaymentKey();
 			String cancelReason = pb_content;
-			String secretKey = "test_sk_GjLJoQ1aVZJbq22do15Vw6KYe2RN:";
+			
+			// 토스API 시크릿키를 넣어주세요. 마지막 :해주셔야합니다.
+			// ex) test_sk_tttfbczbadzrted:
+			String secretKey = ":";
 
 			try {
 

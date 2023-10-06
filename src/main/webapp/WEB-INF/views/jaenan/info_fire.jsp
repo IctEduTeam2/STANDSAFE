@@ -183,7 +183,7 @@ $(function () {
 			var queryParams = '?'
 					+ encodeURIComponent('serviceKey')
 					+ '='
-					+ 's5XZ4UZ0i%2FT8pulopVQB5C5AW1yjyQzb7hB%2BIpHW5%2FsGi%2FlJTkQohr%2BKCnon%2BdEDLn2nHdCXf2xdc5C1hgbwZQ%3D%3D'; /*Service Key*/
+					+ ''; /*Service Key*/
 			queryParams += '&' + encodeURIComponent('pageNo') + '='
 					+ encodeURIComponent('1'); /**/
 			queryParams += '&' + encodeURIComponent('numOfRows') + '='
