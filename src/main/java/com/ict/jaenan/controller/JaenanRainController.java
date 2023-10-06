@@ -162,7 +162,7 @@ public class JaenanRainController {
 			StringBuilder urlBuilder = new StringBuilder(
 					"http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst");
 			urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8")
-					+ "=U5K8ToP0OjUZWoCAD2t5c39BAudQefSGjnRhVZzlgmDMrYsxypjhEicS2%2FgRc%2BqJzx5WJMWLTv0sF7LEzgEn7A%3D%3D");
+					+ "=서비스키");
 			urlBuilder.append("&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + URLEncoder.encode("1", "UTF-8"));
 			urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode("1000", "UTF-8"));
 			urlBuilder.append("&" + URLEncoder.encode("dataType", "UTF-8") + "=" + URLEncoder.encode("XML", "UTF-8"));
@@ -243,7 +243,7 @@ public class JaenanRainController {
 			StringBuilder urlBuilder = new StringBuilder(
 					"http://apis.data.go.kr/1360000/RadarImgInfoService/getCmpImg"); /* URL */
 			urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8")
-					+ "=U5K8ToP0OjUZWoCAD2t5c39BAudQefSGjnRhVZzlgmDMrYsxypjhEicS2%2FgRc%2BqJzx5WJMWLTv0sF7LEzgEn7A%3D%3D"); 																												
+					+ "=서비스키"); 																												
 			urlBuilder.append(
 					"&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /* 페이지번호 */
 			urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "="
