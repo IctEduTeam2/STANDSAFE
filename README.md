@@ -46,3 +46,15 @@
 		<img src="https://www.data.go.kr/images/biz/common/logo/logo-footer-01.png" style="width:150px; height:30px;"/>
 	<br>
 </div>
+
+<div align=center>
+	<p>보안상 AWS와 API키는 삭제되어 있는 상태입니다. 프로젝트 작동을 위해서는 아래 API키가 필요합니다.</p>
+	1. 행정안전부_통계연보_국내지진규모 4.0이상 발생 <br>
+	2. 기상청_지진정보 조회서비스 <br>
+	3. 카카오로그인 API <br>
+	4. Google Maps Platform API <br>
+	5. 기상청_레이더영상 조회서비스 <br>
+	6. 기상청_단기예보((구)_동네예보) 조회서비스 <br>
+	7. 토스 결제 API <br>
+	8. 소방처_화재정보서비스 <br>
+</div>
